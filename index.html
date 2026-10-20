@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Cards — Тренажер и Печать</title>
+<style>
+  /* ================= ОБЩИЕ СТИЛИ ================= */
+  :root {
+    --main-color: #1f4e9c;
+    --plural-color: #1f7a3a;
+    --bg-color: #f0f4f8;
+    --nav-height: 64px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    font-family: Arial, "Segoe UI", sans-serif;
+    color: #000;
+    height: 100%;
+    overflow: hidden; /* Убираем скролл на главной */
+  }
+
+  /* Навигация */
+  .nav {
+    background: #fff;
+    height: var(--nav-height);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 100;
+  }
+
+  .nav button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #e0e7ff;
+    color: var(--main-color);
+    transition: 0.2s;
+  }
+
+  .nav button:hover { background: #c7d2fe; }
+  .nav button.active { background: var(--main-color); color: #fff; }
+
+  /* ================= ГЛАВНАЯ (ТРЕНАЖЕР) ================= */
+  #home-view {
+    height: calc(100vh - var(--nav-height));
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+  }
+
+  /* ФИКСИРОВАННЫЙ РАЗМЕР КАРТОЧКИ */
+  .trainer-card {
+    background: #fff;
+    border: 3px dashed #666;
+    border-radius: 20px;
+    padding: 20px 20px;
+    width: 100%;
+    max-width: 450px;
+    height: 520px; /* Фиксированная высота для всех карточек на ПК */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .trainer-icon {
+    font-size: 110px;
+    line-height: 1;
+    margin-bottom: 15px;
+  }
+
+  .trainer-color-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 3px solid #333;
+  }
+
+  .trainer-entry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .trainer-entry:last-child { margin-bottom: 0; }
+
+  .trainer-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #666;
+    margin-bottom: 5px;
+  }
+
+  .trainer-word {
+    font-size: 32px;
+    font-weight: 800;
+    white-space: nowrap;
+    line-height: 1.1;
+  }
+
+  .trainer-pron { font-weight: 400; }
+  .trainer-trans { font-size: 26px; color: #444; margin-top: 5px; }
+
+  .divider {
+    width: 80%;
+    height: 2px;
+    background: #eee;
+    margin: 15px 0;
+  }
+
+  .speak-btn {
+    background: #ffdb4d;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.1s, background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .speak-btn:hover { background: #ffd633; }
+  .speak-btn:active { transform: scale(0.95); }
+
+  .next-btn {
+    margin-top: 20px;
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    background: var(--main-color);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(31, 78, 156, 0.3);
+    transition: 0.2s;
+    flex-shrink: 0;
+  }
+
+  .next-btn:hover {
+    background: #173a75;
+    transform: translateY(-2px);
+  }
+
+  /* ================= МОБИЛЬНАЯ ВЕРСИЯ (На весь экран) ================= */
+  @media (max-width: 768px) {
+    #home-view {
+      padding: 10px;
+    }
+    
+    .trainer-card {
+      max-width: none;
+      width: 100%;
+      height: 100%; /* На телефонах занимает все доступное пространство */
+      border-radius: 15px;
+      padding: 10px;
+    }
+
+    .trainer-icon { font-size: clamp(80px, 25vw, 120px); margin-bottom: 10px; }
+    .trainer-color-circle { width: clamp(70px, 20vw, 100px); height: clamp(70px, 20vw, 100px); }
+    
+    .trainer-label { font-size: clamp(12px, 3vw, 16px); }
+    .trainer-word { font-size: clamp(24px, 7vw, 36px); white-space: normal; }
+    .trainer-trans { font-size: clamp(20px, 6vw, 30px); }
+    
+    .divider { margin: 10px 0; }
+    .speak-btn { padding: 6px 15px; font-size: 14px; }
+    .next-btn { margin-top: 10px; padding: 12px 30px; font-size: 18px; }
+  }
+
+  /* ================= ПЕЧАТЬ (СЕТКА) ================= */
+  #print-view {
+    display: none;
+    padding: 20px;
+    background: #fff;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .sheet {
+    width: 185mm; 
+    height: 270mm;
+    margin: 0 auto 20px auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 4mm;
+    background: #fff;
+  }
+
+  .card {
+    border: 1.5px dashed #666;
+    border-radius: 6mm;
+    padding: 3mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #fff;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-icon {
+    font-size: 76px;
+    line-height: 1;
+    margin-bottom: 2mm;
+    font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+  }
+
+  .print-color-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-bottom: 3mm;
+    border: 2px solid #333;
+  }
+
+  .print-entry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1.5mm;
+  }
+
+  .print-entry:last-child { margin-bottom: 0; }
+
+  .form-label {
+    font-size: 10pt;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #555;
+    margin-bottom: 0.5mm;
+  }
+
+  .print-word {
+    font-size: 18pt;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .print-trans {
+    font-size: 18pt;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #333;
+    margin-top: 0.5mm;
+  }
+
+  .single-form .print-icon { font-size: 90px; margin-bottom: 4mm; }
+  .single-form .print-word { font-size: 24pt; margin-bottom: 2mm; }
+  .single-form .print-trans { font-size: 22pt; }
+
+  /* Стили для печати */
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  @media print {
+    body { background: #fff; height: auto; overflow: visible; }
+    .nav, #home-view { display: none !important; }
+    #print-view { display: block !important; padding: 0; height: auto; overflow: visible; }
+    .sheet { page-break-after: always; margin: 0 auto; }
+    .sheet:last-child { page-break-after: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Навигация -->
+<div class="nav">
+  <button id="btn-home" class="active" onclick="switchView('home')">🏠 Тренажер</button>
+  <button id="btn-print" onclick="switchView('print')">🖨️ Печать всех карточек</button>
+</div>
+
+<!-- Главная страница (Одна карточка) -->
+<div id="home-view">
+  <div class="trainer-card" id="trainer-card-container">
+    <!-- Сюда JS будет вставлять карточку -->
+  </div>
+  <button class="next-btn" onclick="showRandomCard()">Следующее слово ➔</button>
+</div>
+
+<!-- Страница для печати (Генерируется скриптом) -->
+<div id="print-view">
+  <!-- Сюда JS сгенерирует сетку -->
+</div>
+
+<script>
+  // ================= БАЗА ДАННЫХ (114 карточек) =================
+  const cardsData = [
+    // --- ЛЮДИ ---
+    { icon: "👶", word: "Child", pron: "чайлд", trans: "ребёнок", plural: "Children", pronP: "чилдрен", transP: "дети" },
+    { icon: "👨", word: "Man", pron: "мэн", trans: "мужчина", plural: "Men", pronP: "мен", transP: "мужчины" },
+    { icon: "👩", word: "Woman", pron: "ву́мэн", trans: "женщина", plural: "Women", pronP: "уи́мин", transP: "женщины" },
+    { icon: "🧑", word: "Person", pron: "пёрсон", trans: "человек", plural: "People", pronP: "пипл", transP: "люди" },
+    { icon: "👨‍👩‍👧", word: "Family", pron: "фэ́мили", trans: "семья", plural: "Families", pronP: "фэ́милиз", transP: "семьи" },
+    { icon: "👩‍🦰", word: "Mother", pron: "ма́зэ", trans: "мама", plural: "Mothers", pronP: "ма́зэз", transP: "мамы" },
+    { icon: "👨‍🦰", word: "Father", pron: "фа́зэ", trans: "папа", plural: "Fathers", pronP: "фа́зэз", transP: "папы" },
+    { icon: "👧", word: "Sister", pron: "си́стэ", trans: "сестра", plural: "Sisters", pronP: "си́стэз", transP: "сёстры" },
+    { icon: "👦", word: "Brother", pron: "бра́зэ", trans: "брат", plural: "Brothers", pronP: "бра́зэз", transP: "братья" },
+
+    // --- ЖИВОТНЫЕ ---
+    { icon: "🐑", word: "Sheep", pron: "шип", trans: "овца", plural: "Sheep", pronP: "шип", transP: "овцы" },
+    { icon: "🐂", word: "Ox", pron: "окс", trans: "бык", plural: "Oxen", pronP: "оксен", transP: "быки" },
+    { icon: "🦢", word: "Goose", pron: "гус", trans: "гусь", plural: "Geese", pronP: "гис", transP: "гуси" },
+    { icon: "🦌", word: "Deer", pron: "дир", trans: "олень", plural: "Deer", pronP: "дир", transP: "олени" },
+    { icon: "🐭", word: "Mouse", pron: "ма́ус", trans: "мышь", plural: "Mice", pronP: "майс", transP: "мыши" },
+    { icon: "🐈", word: "Cat", pron: "кэт", trans: "кошка", plural: "Cats", pronP: "кэтс", transP: "кошки" },
+    { icon: "🐕", word: "Dog", pron: "дог", trans: "собака", plural: "Dogs", pronP: "догз", transP: "собаки" },
+    { icon: "🐦", word: "Bird", pron: "бёёд", trans: "птица", plural: "Birds", pronP: "бёёдз", transP: "птицы" },
+    { icon: "🐎", word: "Horse", pron: "хо́ос", trans: "лошадь", plural: "Horses", pronP: "хо́осиз", transP: "лошади" },
+    { icon: "🐄", word: "Cow", pron: "ка́у", trans: "корова", plural: "Cows", pronP: "ка́уз", transP: "коровы" },
+    { icon: "🐖", word: "Pig", pron: "пиг", trans: "свинья", plural: "Pigs", pronP: "пигз", transP: "свиньи" },
+    { icon: "🦆", word: "Duck", pron: "дак", trans: "утка", plural: "Ducks", pronP: "дакс", transP: "утки" },
+    { icon: "🐓", word: "Chicken", pron: "чи́кен", trans: "курица", plural: "Chickens", pronP: "чи́кенз", transP: "курицы" },
+    { icon: "🦁", word: "Lion", pron: "ла́йэн", trans: "лев", plural: "Lions", pronP: "ла́йэнз", transP: "львы" },
+    { icon: "🐅", word: "Tiger", pron: "та́йгэ", trans: "тигр", plural: "Tigers", pronP: "та́йгэз", transP: "тигры" },
+    { icon: "🐘", word: "Elephant", pron: "э́лефэнт", trans: "слон", plural: "Elephants", pronP: "э́лефэнтс", transP: "слоны" },
+    { icon: "🐒", word: "Monkey", pron: "ма́нки", trans: "обезьяна", plural: "Monkeys", pronP: "ма́нкиз", transP: "обезьяны" },
+    { icon: "🐻", word: "Bear", pron: "бэ́э", trans: "медведь", plural: "Bears", pronP: "бэ́эз", transP: "медведи" },
+    { icon: "🐺", word: "Wolf", pron: "уу́лф", trans: "волк", plural: "Wolves", pronP: "уу́лвз", transP: "волки" },
+    { icon: "🦊", word: "Fox", pron: "фокс", trans: "лиса", plural: "Foxes", pronP: "фо́ксиз", transP: "лисы" },
+    { icon: "🐇", word: "Rabbit", pron: "рэ́бит", trans: "кролик", plural: "Rabbits", pronP: "рэ́битс", transP: "кролики" },
+    { icon: "🐸", word: "Frog", pron: "фрог", trans: "лягушка", plural: "Frogs", pronP: "фрогз", transP: "лягушки" },
+    { icon: "🐍", word: "Snake", pron: "снэйк", trans: "змея", plural: "Snakes", pronP: "снэйкс", transP: "змеи" },
+    { icon: "🐢", word: "Turtle", pron: "тё́тл", trans: "черепаха", plural: "Turtles", pronP: "тё́тлз", transP: "черепахи" },
+    { icon: "🦋", word: "Butterfly", pron: "ба́тэфлай", trans: "бабочка", plural: "Butterflies", pronP: "ба́тэфлайз", transP: "бабочки" },
+    { icon: "🐝", word: "Bee", pron: "бии", trans: "пчела", plural: "Bees", pronP: "бииз", transP: "пчёлы" },
+    { icon: "🕷️", word: "Spider", pron: "спа́йдэ", trans: "паук", plural: "Spiders", pronP: "спа́йдэз", transP: "пауки" },
+    { icon: "🦉", word: "Owl", pron: "а́ул", trans: "сова", plural: "Owls", pronP: "а́улз", transP: "совы" },
+    { icon: "🐞", word: "Ladybug", pron: "лэ́йдибаг", trans: "божья коровка", plural: "Ladybugs", pronP: "лэ́йдибагз", transP: "божьи коровки" },
+    { icon: "🐟", word: "Fish", pron: "фиш", trans: "рыба", plural: "Fish", pronP: "фиш", transP: "рыбы" },
+
+    // --- ЧАСТИ ТЕЛА ---
+    { icon: "🦷", word: "Tooth", pron: "тус", trans: "зуб", plural: "Teeth", pronP: "тис", transP: "зубы" },
+    { icon: "🦶", word: "Foot", pron: "фут", trans: "нога", plural: "Feet", pronP: "фит", transP: "ноги" },
+    { icon: "👁️", word: "Eye", pron: "ай", trans: "глаз", plural: "Eyes", pronP: "айз", transP: "глаза" },
+    { icon: "👂", word: "Ear", pron: "и́э", trans: "ухо", plural: "Ears", pronP: "и́эз", transP: "уши" },
+    { icon: "👃", word: "Nose", pron: "ноуз", trans: "нос", plural: "Noses", pronP: "но́узиз", transP: "носы" },
+    { icon: "✋", word: "Hand", pron: "хэнд", trans: "рука", plural: "Hands", pronP: "хэндз", transP: "руки" },
+
+    // --- ДОМ И МЕБЕЛЬ ---
+    { icon: "🪵", word: "Table", pron: "тэ́йбл", trans: "стол", plural: "Tables", pronP: "тэ́йблз", transP: "столы" },
+    { icon: "🪑", word: "Chair", pron: "чэ́а", trans: "стул", plural: "Chairs", pronP: "чэ́аз", transP: "стулья" },
+    { icon: "🪑", word: "Stool", pron: "сту́ул", trans: "табуретка", plural: "Stools", pronP: "сту́улз", transP: "табуретки" },
+    { icon: "🛏️", word: "Bed", pron: "бэд", trans: "кровать", plural: "Beds", pronP: "бэдз", transP: "кровати" },
+    { icon: "🪟", word: "Window", pron: "уи́ндоу", trans: "окно", plural: "Windows", pronP: "уи́ндоуз", transP: "окна" },
+    { icon: "🚪", word: "Door", pron: "до́ор", trans: "дверь", plural: "Doors", pronP: "до́орз", transP: "двери" },
+    { icon: "🏠", word: "House", pron: "ха́ус", trans: "дом", plural: "Houses", pronP: "ха́узиз", transP: "дома" },
+
+    // --- ЕДА И ПОСУДА ---
+    { icon: "🥄", word: "Spoon", pron: "спун", trans: "ложка", plural: "Spoons", pronP: "спунз", transP: "ложки" },
+    { icon: "☕", word: "Cup", pron: "кап", trans: "чашка", plural: "Cups", pronP: "капс", transP: "чашки" },
+    { icon: "🍎", word: "Apple", pron: "э́пл", trans: "яблоко", plural: "Apples", pronP: "э́плз", transP: "яблоки" },
+    { icon: "🍌", word: "Banana", pron: "банэ́нэ", trans: "банан", plural: "Bananas", pronP: "банэ́нэз", transP: "бананы" },
+    { icon: "🍞", word: "Bread", pron: "брэд", trans: "хлеб", single: true },
+    { icon: "🥛", word: "Milk", pron: "милк", trans: "молоко", single: true },
+    { icon: "☕", word: "Coffee", pron: "ко́фи", trans: "кофе", single: true },
+    { icon: "🍵", word: "Tea", pron: "ти", trans: "чай", single: true },
+    { icon: "🧂", word: "Sugar", pron: "шу́га", trans: "сахар", single: true },
+    { icon: "💧", word: "Water", pron: "во́та", trans: "вода", single: true },
+
+    // --- ОДЕЖДА ---
+    { icon: "👕", word: "Shirt", pron: "шёт", trans: "рубашка", plural: "Shirts", pronP: "шётс", transP: "рубашки" },
+    { icon: "👗", word: "Dress", pron: "дрэс", trans: "платье", plural: "Dresses", pronP: "дрэ́сиз", transP: "платья" },
+    { icon: "👖", word: "Pants", pron: "пэнтс", trans: "штаны", single: true },
+    { icon: "👟", word: "Shoes", pron: "шуз", trans: "обувь", single: true },
+    { icon: "🧢", word: "Hat", pron: "хэт", trans: "шапка", plural: "Hats", pronP: "хэтс", transP: "шапки" },
+    { icon: "🧥", word: "Coat", pron: "коут", trans: "пальто", plural: "Coats", pronP: "коутс", transP: "пальто" },
+
+    // --- ПРИРОДА И ПОГОДА ---
+    { icon: "☀️", word: "Sun", pron: "сан", trans: "солнце", single: true },
+    { icon: "🌧️", word: "Rain", pron: "рэйн", trans: "дождь", single: true },
+    { icon: "❄️", word: "Snow", pron: "сноу", trans: "снег", single: true },
+    { icon: "🌬️", word: "Wind", pron: "уинд", trans: "ветер", single: true },
+    { icon: "🌳", word: "Tree", pron: "три", trans: "дерево", plural: "Trees", pronP: "триз", transP: "деревья" },
+    { icon: "🌸", word: "Flower", pron: "фла́уэ", trans: "цветок", plural: "Flowers", pronP: "фла́уэз", transP: "цветы" },
+
+    // --- ТРАНСПОРТ ---
+    { icon: "🚗", word: "Car", pron: "ка", trans: "машина", plural: "Cars", pronP: "каз", transP: "машины" },
+    { icon: "🚌", word: "Bus", pron: "бас", trans: "автобус", plural: "Buses", pronP: "ба́сиз", transP: "автобусы" },
+    { icon: "🚂", word: "Train", pron: "трэйн", trans: "поезд", plural: "Trains", pronP: "трэйнз", transP: "поезда" },
+    { icon: "✈️", word: "Plane", pron: "плэйн", trans: "самолет", plural: "Planes", pronP: "плэйнз", transP: "самолеты" },
+    { icon: "🚲", word: "Bicycle", pron: "ба́йсикл", trans: "велосипед", plural: "Bicycles", pronP: "ба́йсиклз", transP: "велосипеды" },
+    { icon: "🚢", word: "Ship", pron: "шип", trans: "корабль", plural: "Ships", pronP: "шипс", transP: "корабли" },
+
+    // --- ИГРУШКИ И ШКОЛА ---
+    { icon: "📖", word: "Book", pron: "бук", trans: "книга", plural: "Books", pronP: "букс", transP: "книги" },
+    { icon: "✏️", word: "Pencil", pron: "пэ́нсил", trans: "карандаш", plural: "Pencils", pronP: "пэ́нсилз", transP: "карандаши" },
+    { icon: "🖊️", word: "Pen", pron: "пэн", trans: "ручка", plural: "Pens", pronP: "пэнз", transP: "ручки" },
+    { icon: "⚽", word: "Ball", pron: "бол", trans: "мяч", plural: "Balls", pronP: "болз", transP: "мячи" },
+    { icon: "🪆", word: "Doll", pron: "дол", trans: "кукла", plural: "Dolls", pronP: "долз", transP: "куклы" },
+    { icon: "🤖", word: "Robot", pron: "ро́бот", trans: "робот", plural: "Robots", pronP: "ро́ботс", transP: "роботы" },
+
+    // --- ЦИФРЫ (одиночные) ---
+    { icon: "1️⃣", word: "One", pron: "уан", trans: "один", single: true },
+    { icon: "2️⃣", word: "Two", pron: "ту", trans: "два", single: true },
+    { icon: "3️⃣", word: "Three", pron: "сри", trans: "три", single: true },
+    { icon: "4️⃣", word: "Four", pron: "фо", trans: "четыре", single: true },
+    { icon: "5️⃣", word: "Five", pron: "файв", trans: "пять", single: true },
+    { icon: "6️⃣", word: "Six", pron: "сикс", trans: "шесть", single: true },
+    { icon: "7️⃣", word: "Seven", pron: "сэ́вэн", trans: "семь", single: true },
+    { icon: "8️⃣", word: "Eight", pron: "эйт", trans: "восемь", single: true },
+    { icon: "9️⃣", word: "Nine", pron: "найн", trans: "девять", single: true },
+    { icon: "🔟", word: "Ten", pron: "тэн", trans: "десять", single: true },
+
+    // --- ГЛАГОЛЫ (одиночные) ---
+    { icon: "🍽️", word: "Eat", pron: "иит", trans: "есть", single: true },
+    { icon: "🥤", word: "Drink", pron: "дринк", trans: "пить", single: true },
+    { icon: "🛌", word: "Sleep", pron: "слиип", trans: "спать", single: true },
+    { icon: "⚽", word: "Play", pron: "плэй", trans: "играть", single: true },
+    { icon: "📖", word: "Read", pron: "риид", trans: "читать", single: true },
+    { icon: "🏃", word: "Run", pron: "ран", trans: "бегать", single: true },
+    { icon: "🚶", word: "Walk", pron: "уо́к", trans: "ходить", single: true },
+    { icon: "🦘", word: "Jump", pron: "джамп", trans: "прыгать", single: true },
+    { icon: "📚", word: "Study", pron: "ста́ди", trans: "учиться", single: true },
+    { icon: "🛋️", word: "Rest", pron: "рэст", trans: "отдыхать", single: true },
+
+    // --- ЦВЕТА (одиночные с кружками) ---
+    { color: "#ff4d4d", word: "Red", pron: "рэд", trans: "красный", single: true },
+    { color: "#4d79ff", word: "Blue", pron: "блуу", trans: "синий", single: true },
+    { color: "#4dff4d", word: "Green", pron: "грииин", trans: "зелёный", single: true },
+    { color: "#ffea00", word: "Yellow", pron: "йэ́лоу", trans: "жёлтый", single: true },
+    { color: "#000000", word: "Black", pron: "блэк", trans: "чёрный", single: true },
+    { color: "#ffffff", word: "White", pron: "уа́йт", trans: "белый", single: true },
+    { color: "#ffa64d", word: "Orange", pron: "о́рэндж", trans: "оранжевый", single: true },
+    { color: "#9933ff", word: "Purple", pron: "пёрпл", trans: "фиолетовый", single: true },
+    { color: "#ff66b3", word: "Pink", pron: "пинк", trans: "розовый", single: true },
+    { color: "#8a5a44", word: "Brown", pron: "бра́ун", trans: "коричневый", single: true },
+    { color: "#a6a6a6", word: "Grey", pron: "грэй", trans: "серый", single: true },
+    { color: "linear-gradient(135deg, #ff4d4d 0%, #ffa64d 20%, #ffea00 40%, #4dff4d 60%, #4d79ff 80%, #9933ff 100%)", word: "Rainbow", pron: "рэ́йнбоу", trans: "радуга", single: true },
+
+    // --- РАЗМЕРЫ (одиночные) ---
+    { icon: "🐘", word: "Big", pron: "биг", trans: "большой", single: true },
+    { icon: "🐜", word: "Small", pron: "смоол", trans: "маленький", single: true },
+
+    // --- ФРАЗЫ (одиночные) ---
+    { icon: "👋", word: "Hello", pron: "хэлло́у", trans: "Здравствуйте", single: true },
+    { icon: "🚪", word: "Goodbye", pron: "гудба́й", trans: "До свидания", single: true },
+    { icon: "🤝", word: "Thank you", pron: "сэ́нк ю", trans: "Спасибо", single: true },
+    { icon: "🙏", word: "Please", pron: "плиз", trans: "Пожалуйста", single: true },
+    { icon: "👍", word: "Yes", pron: "йес", trans: "Да", single: true },
+    { icon: "👎", word: "No", pron: "ноу", trans: "Нет", single: true }
+  ];
+
+  // ================= ЛОГИКА ТРЕНАЖЕРА =================
+  let currentCardIndex = -1;
+
+  function showRandomCard() {
+    // Выбираем случайный индекс, отличный от текущего
+    let newIndex = Math.floor(Math.random() * cardsData.length);
+    while (newIndex === currentCardIndex && cardsData.length > 1) {
+      newIndex = Math.floor(Math.random() * cardsData.length);
+    }
+    currentCardIndex = newIndex;
+    const card = cardsData[currentCardIndex];
+
+    let html = '';
+
+    // Иконка или цветной круг
+    if (card.color) {
+      html += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
+    } else {
+      html += `<div class="trainer-icon">${card.icon}</div>`;
+    }
+
+    // Если карточка одиночная (глаголы, фразы, цвета)
+    if (card.single) {
+      html += `
+        <div class="trainer-entry">
+          <div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div>
+          <div class="trainer-trans">${card.trans}</div>
+          <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
+        </div>
+      `;
+    } else {
+      // Если есть единственное и множественное число
+      html += `
+        <div class="trainer-entry">
+          <div class="trainer-label">Единственное число</div>
+          <div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div>
+          <div class="trainer-trans">${card.trans}</div>
+          <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
+        </div>
+        <div class="divider"></div>
+        <div class="trainer-entry">
+          <div class="trainer-label">Множественное число</div>
+          <div class="trainer-word">${card.plural} <span class="trainer-pron">— ${card.pronP}</span></div>
+          <div class="trainer-trans">${card.transP}</div>
+          <button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button>
+        </div>
+      `;
+    }
+
+    document.getElementById('trainer-card-container').innerHTML = html;
+  }
+
+  // ================= ОЗВУЧКА (Text-to-Speech) =================
+  function speakWord(text) {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.6; // Чуть медленнее
+      
+      const voices = window.speechSynthesis.getVoices();
+      const enVoice = voices.find(v => v.lang.includes('en') && v.name.includes('Google')) || 
+                      voices.find(v => v.lang.includes('en'));
+      if (enVoice) utterance.voice = enVoice;
+
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert("Ваш браузер не поддерживает озвучку.");
+    }
+  }
+
+  // ================= ГЕНЕРАЦИЯ ПЕЧАТИ =================
+  function renderPrintView() {
+    const printView = document.getElementById('print-view');
+    let html = '';
+    let cardsInSheet = 0;
+
+    cardsData.forEach((card, index) => {
+      if (cardsInSheet === 0) {
+        html += `<div class="sheet">`;
+      }
+
+      html += `<div class="card ${card.single ? 'single-form' : ''}">`;
+
+      if (card.color) {
+        html += `<div class="print-color-circle" style="background: ${card.color};"></div>`;
+      } else {
+        html += `<div class="print-icon">${card.icon}</div>`;
+      }
+
+      if (card.single) {
+        html += `
+          <div class="print-entry">
+            <div class="print-word">${card.word} <span class="print-pron">— ${card.pron}</span></div>
+            <div class="print-trans">${card.trans}</div>
+          </div>
+        `;
+      } else {
+        html += `
+          <div class="print-entry">
+            <div class="form-label">Единственное число</div>
+            <div class="print-word">${card.word} <span class="print-pron">— ${card.pron}</span></div>
+            <div class="print-trans">${card.trans}</div>
+          </div>
+          <div class="divider"></div>
+          <div class="print-entry">
+            <div class="form-label">Множественное число</div>
+            <div class="print-word">${card.plural} <span class="print-pron">— ${card.pronP}</span></div>
+            <div class="print-trans">${card.transP}</div>
+          </div>
+        `;
+      }
+
+      html += `</div>`;
+      cardsInSheet++;
+
+      if (cardsInSheet === 6) {
+        html += `</div>`;
+        cardsInSheet = 0;
+      }
+    });
+
+    if (cardsInSheet > 0) {
+      html += `</div>`;
+    }
+
+    printView.innerHTML = html;
+  }
+
+  // ================= ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК =================
+  function switchView(viewName) {
+    const btnHome = document.getElementById('btn-home');
+    const btnPrint = document.getElementById('btn-print');
+    const homeView = document.getElementById('home-view');
+    const printView = document.getElementById('print-view');
+
+    if (viewName === 'home') {
+      btnHome.classList.add('active');
+      btnPrint.classList.remove('active');
+      homeView.style.display = 'flex';
+      printView.style.display = 'none';
+      document.body.style.overflow = 'hidden';
+    } else {
+      btnPrint.classList.add('active');
+      btnHome.classList.remove('active');
+      homeView.style.display = 'none';
+      printView.style.display = 'block';
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  // ================= ИНИЦИАЛИЗАЦИЯ =================
+  window.onload = () => {
+    showRandomCard();
+    renderPrintView();
+  };
+</script>
+
+</body>
+</html>
