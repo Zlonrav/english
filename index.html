@@ -2,17 +2,22 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>English Cards — Обучение</title>
+<!-- Добавляем мета-теги для приложения -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#1f4e9c">
+<link rel="manifest" href="manifest.json">
+<title>English Cards</title>
 <style>
   /* ================= ОБЩИЕ СТИЛИ ================= */
   :root {
     --main-color: #1f4e9c;
     --bg-color: #f0f4f8;
-    --nav-height: 64px;
+    --nav-height: 60px;
   }
 
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
   html, body {
     margin: 0;
@@ -21,6 +26,8 @@
     font-family: Arial, "Segoe UI", sans-serif;
     color: #000;
     height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none; /* Отключаем оттягивание страницы на телефонах */
   }
 
   /* Навигация */
@@ -30,18 +37,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
+    padding: 0 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+    position: relative;
     z-index: 1000;
   }
 
   .nav button {
-    padding: 10px 15px;
-    font-size: 15px;
+    padding: 8px 12px;
+    font-size: clamp(12px, 3vw, 15px);
     font-weight: bold;
     border: none;
     border-radius: 8px;
@@ -49,156 +54,112 @@
     background: #e0e7ff;
     color: var(--main-color);
     transition: 0.2s;
+    flex: 1;
+    max-width: 150px;
   }
 
-  .nav button:hover { background: #c7d2fe; }
   .nav button.active { background: var(--main-color); color: #fff; }
 
   /* Контентная часть */
   .content-wrapper {
-    padding-top: var(--nav-height);
-    height: 100vh;
+    height: calc(100dvh - var(--nav-height)); /* dvh - правильная высота для мобильных */
     overflow-y: auto;
+    position: relative;
   }
 
-  /* ================= ГЛАВНАЯ (ТРЕНАЖЕР) ================= */
+  /* ================= ТРЕНАЖЕР ================= */
   #home-view {
-    height: calc(100vh - var(--nav-height));
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 20px;
+    justify-content: space-between;
+    padding: 10px;
   }
 
-  /* ФИКСИРОВАННЫЙ РАЗМЕР КАРТОЧКИ */
   .trainer-card {
     background: #fff;
     border: 3px dashed #666;
     border-radius: 20px;
-    padding: 20px 20px;
     width: 100%;
     max-width: 450px;
-    height: 520px; /* Фиксированная высота для всех карточек на ПК */
+    flex: 1; /* Карточка занимает всё свободное место */
+    max-height: 550px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    position: relative;
-    transition: all 0.3s ease;
+    padding: 10px;
+    overflow-y: auto; /* Если текст огромный, внутри карточки появится скролл */
   }
 
-  .trainer-icon { font-size: 110px; line-height: 1; margin-bottom: 15px; }
-  .trainer-color-circle { width: 90px; height: 90px; border-radius: 50%; margin-bottom: 15px; border: 3px solid #333; }
+  .trainer-icon { font-size: clamp(60px, 15vh, 110px); line-height: 1; margin-bottom: 5px; }
+  .trainer-color-circle { width: clamp(60px, 15vh, 90px); height: clamp(60px, 15vh, 90px); border-radius: 50%; margin-bottom: 5px; border: 3px solid #333; }
   
   .trainer-entry { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 5px; }
-  .trainer-entry:last-child { margin-bottom: 0; }
-  .trainer-label { font-size: 14px; font-weight: 700; color: #666; margin-bottom: 5px; }
-  .trainer-word { font-size: 32px; font-weight: 800; white-space: nowrap; line-height: 1.1; }
-  .trainer-pron { font-weight: 400; }
-  .trainer-trans { font-size: 26px; color: #444; margin-top: 5px; }
+  .trainer-label { font-size: clamp(12px, 2.5vh, 16px); font-weight: 700; color: #666; margin-bottom: 2px; }
+  .trainer-word { font-size: clamp(22px, 5vh, 36px); font-weight: 800; line-height: 1.1; }
+  .trainer-pron { font-weight: 400; font-size: 0.8em; }
+  .trainer-trans { font-size: clamp(18px, 4vh, 28px); color: #444; margin-top: 2px; }
   
-  .divider { width: 80%; height: 2px; background: #eee; margin: 15px 0; }
+  .divider { width: 80%; height: 2px; background: #eee; margin: clamp(5px, 2vh, 15px) 0; }
 
   .speak-btn {
-    background: #ffdb4d; border: none; border-radius: 20px; padding: 8px 20px;
-    font-size: 16px; font-weight: bold; color: #333; cursor: pointer; margin-top: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 6px;
-    transition: transform 0.1s, background 0.2s;
+    background: #ffdb4d; border: none; border-radius: 20px; padding: 6px 15px;
+    font-size: clamp(14px, 2.5vh, 18px); font-weight: bold; color: #333; cursor: pointer; 
+    margin-top: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    display: flex; align-items: center; gap: 6px;
   }
-  .speak-btn:hover { background: #ffd633; }
   .speak-btn:active { transform: scale(0.95); }
 
   .next-btn {
-    margin-top: 20px; padding: 15px 40px; font-size: 20px; font-weight: bold;
+    margin-top: 10px;
+    padding: 12px 30px; 
+    font-size: clamp(16px, 3vh, 20px); 
+    font-weight: bold;
     background: var(--main-color); color: #fff; border: none; border-radius: 50px;
     cursor: pointer; box-shadow: 0 5px 15px rgba(31, 78, 156, 0.3);
-    transition: 0.2s;
+    width: 100%;
+    max-width: 450px;
+    flex-shrink: 0; /* Кнопка никогда не сжимается */
   }
-  .next-btn:hover { background: #173a75; }
 
-  /* ================= ЗАДАНИЯ (СПИСОК ТЕМ) ================= */
-  #tasks-view {
+  /* ================= ЗАДАНИЯ ================= */
+  #tasks-view, #category-detail-view {
     display: none;
-    padding: 20px;
+    padding: 15px;
     max-width: 800px;
     margin: 0 auto;
   }
 
-  .tasks-title { text-align: center; margin-bottom: 20px; color: var(--main-color); }
-
-  .category-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-  }
-
+  .tasks-title { text-align: center; margin: 10px 0 20px; color: var(--main-color); font-size: clamp(18px, 4vw, 24px); }
+  .category-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+  
   .category-btn {
-    background: #fff;
-    border: 2px solid #ccc;
-    border-radius: 12px;
-    padding: 20px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-    text-align: left;
-    transition: 0.2s;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    background: #fff; border: 2px solid #ccc; border-radius: 12px;
+    padding: 15px; font-size: clamp(14px, 3vw, 18px); font-weight: bold;
+    color: #333; cursor: pointer; text-align: center;
   }
-
-  .category-btn:hover {
-    border-color: var(--main-color);
-    background: #f0f4f8;
-    transform: translateY(-2px);
-  }
-
-  /* ================= ЗАДАНИЯ (КАРТОЧКИ КАТЕГОРИИ) ================= */
-  #category-detail-view {
-    display: none;
-    padding: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-  }
+  .category-btn:hover { border-color: var(--main-color); background: #f0f4f8; }
 
   .back-btn {
-    background: #e0e7ff; border: none; border-radius: 8px; padding: 10px 20px;
-    font-size: 16px; font-weight: bold; color: var(--main-color); cursor: pointer;
-    margin-bottom: 20px;
+    background: #e0e7ff; border: none; border-radius: 8px; padding: 8px 15px;
+    font-size: 14px; font-weight: bold; color: var(--main-color); cursor: pointer; margin-bottom: 15px;
   }
+  .category-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
 
-  .category-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
-  }
-
-  /* Карточка в заданиях использует стили тренера, но без фиксированной высоты */
   .task-card {
-    background: #fff;
-    border: 3px dashed #666; /* Одинаковая рамка */
-    border-radius: 20px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    background: #fff; border: 3px dashed #666; border-radius: 20px;
+    padding: 15px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
   }
 
-  /* ================= ПЕЧАТЬ ================= */
+  /* ================= ПЕЧАТЬ (Оставили как было) ================= */
   #print-view { display: none; padding: 20px; background: #fff; }
-  .sheet {
-    width: 185mm; height: 270mm; margin: 0 auto 20px auto;
-    display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 4mm;
-  }
-  .card {
-    border: 1.5px dashed #666; border-radius: 6mm; padding: 3mm;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
-  }
+  .sheet { width: 185mm; height: 270mm; margin: 0 auto 20px auto; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 4mm; }
+  .card { border: 1.5px dashed #666; border-radius: 6mm; padding: 3mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
   .print-icon { font-size: 76px; line-height: 1; margin-bottom: 2mm; }
   .print-color-circle { width: 70px; height: 70px; border-radius: 50%; margin-bottom: 3mm; border: 2px solid #333; }
   .print-entry { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 1.5mm; }
@@ -208,23 +169,6 @@
   .single-form .print-icon { font-size: 90px; margin-bottom: 4mm; }
   .single-form .print-word { font-size: 24pt; margin-bottom: 2mm; }
   .single-form .print-trans { font-size: 22pt; }
-
-  /* ================= МОБИЛЬНАЯ ВЕРСИЯ ================= */
-  @media (max-width: 768px) {
-    .nav { flex-wrap: wrap; height: auto; padding: 10px; gap: 5px; }
-    .nav button { padding: 8px 10px; font-size: 13px; flex: 1; }
-    .content-wrapper { padding-top: 60px; }
-    
-    #home-view { padding: 10px; }
-    .trainer-card { width: 100%; height: 100%; padding: 10px; border-radius: 15px; }
-    .trainer-icon { font-size: clamp(80px, 25vw, 120px); }
-    .trainer-word { font-size: clamp(24px, 7vw, 36px); white-space: normal; }
-    .trainer-trans { font-size: clamp(20px, 6vw, 30px); }
-    
-    .category-list { grid-template-columns: 1fr 1fr; }
-    .category-btn { padding: 15px; font-size: 14px; }
-    .category-cards-grid { grid-template-columns: 1fr; }
-  }
 
   @page { size: A4 portrait; margin: 10mm; }
   @media print {
@@ -238,52 +182,35 @@
 </head>
 <body>
 
-<!-- Навигация -->
 <div class="nav">
   <button id="btn-home" class="active" onclick="switchView('home')">🏠 Тренажер</button>
   <button id="btn-tasks" onclick="switchView('tasks')">📚 Задания</button>
   <button id="btn-print" onclick="switchView('print')">🖨️ Печать</button>
 </div>
 
-<!-- Обертка для контента -->
 <div class="content-wrapper">
-
-  <!-- 1. ТРЕНАЖЕР -->
   <div id="home-view">
-    <div class="trainer-card" id="trainer-card-container">
-      <!-- Сюда JS вставляет карточку -->
-    </div>
+    <div class="trainer-card" id="trainer-card-container"></div>
     <button class="next-btn" onclick="showRandomCard()">Следующее слово ➔</button>
   </div>
 
-  <!-- 2. ЗАДАНИЯ (СПИСОК) -->
   <div id="tasks-view">
     <h2 class="tasks-title">Выберите тему задания</h2>
-    <div class="category-list" id="category-list-container">
-      <!-- Сюда JS вставляет кнопки тем -->
-    </div>
+    <div class="category-list" id="category-list-container"></div>
   </div>
 
-  <!-- 2.1 ЗАДАНИЯ (КАРТОЧКИ ВЫБРАННОЙ ТЕМЫ) -->
   <div id="category-detail-view">
     <button class="back-btn" onclick="switchView('tasks')">← Назад к заданиям</button>
     <h2 class="tasks-title" id="category-title">Тема</h2>
-    <div class="category-cards-grid" id="category-cards-container">
-      <!-- Сюда JS вставляет карточки темы -->
-    </div>
+    <div class="category-cards-grid" id="category-cards-container"></div>
   </div>
 
-  <!-- 3. ПЕЧАТЬ -->
-  <div id="print-view">
-    <!-- Генерируется скриптом -->
-  </div>
-
+  <div id="print-view"></div>
 </div>
 
 <script>
-  // ================= БАЗА ДАННЫХ (126 карточек с темами) =================
+  // ================= БАЗА ДАННЫХ =================
   const cardsData = [
-    // 1. ЛЮДИ
     { cat: "1. Люди", icon: "👶", word: "Child", pron: "чайлд", trans: "ребёнок", plural: "Children", pronP: "чилдрен", transP: "дети" },
     { cat: "1. Люди", icon: "👨", word: "Man", pron: "мэн", trans: "мужчина", plural: "Men", pronP: "мен", transP: "мужчины" },
     { cat: "1. Люди", icon: "👩", word: "Woman", pron: "ву́мэн", trans: "женщина", plural: "Women", pronP: "уи́мин", transP: "женщины" },
@@ -293,8 +220,6 @@
     { cat: "1. Люди", icon: "👨‍🦰", word: "Father", pron: "фа́зэ", trans: "папа", plural: "Fathers", pronP: "фа́зэз", transP: "папы" },
     { cat: "1. Люди", icon: "👧", word: "Sister", pron: "си́стэ", trans: "сестра", plural: "Sisters", pronP: "си́стэз", transP: "сёстры" },
     { cat: "1. Люди", icon: "👦", word: "Brother", pron: "бра́зэ", trans: "брат", plural: "Brothers", pronP: "бра́зэз", transP: "братья" },
-
-    // 2. ЖИВОТНЫЕ
     { cat: "2. Животные", icon: "🐑", word: "Sheep", pron: "шип", trans: "овца", plural: "Sheep", pronP: "шип", transP: "овцы" },
     { cat: "2. Животные", icon: "🐂", word: "Ox", pron: "окс", trans: "бык", plural: "Oxen", pronP: "оксен", transP: "быки" },
     { cat: "2. Животные", icon: "🦢", word: "Goose", pron: "гус", trans: "гусь", plural: "Geese", pronP: "гис", transP: "гуси" },
@@ -325,16 +250,12 @@
     { cat: "2. Животные", icon: "🦉", word: "Owl", pron: "а́ул", trans: "сова", plural: "Owls", pronP: "а́улз", transP: "совы" },
     { cat: "2. Животные", icon: "🐞", word: "Ladybug", pron: "лэ́йдибаг", trans: "божья коровка", plural: "Ladybugs", pronP: "лэ́йдибагз", transP: "божьи коровки" },
     { cat: "2. Животные", icon: "🐟", word: "Fish", pron: "фиш", trans: "рыба", plural: "Fish", pronP: "фиш", transP: "рыбы" },
-
-    // 3. ЧАСТИ ТЕЛА
     { cat: "3. Части тела", icon: "🦷", word: "Tooth", pron: "тус", trans: "зуб", plural: "Teeth", pronP: "тис", transP: "зубы" },
     { cat: "3. Части тела", icon: "🦶", word: "Foot", pron: "фут", trans: "нога", plural: "Feet", pronP: "фит", transP: "ноги" },
     { cat: "3. Части тела", icon: "👁️", word: "Eye", pron: "ай", trans: "глаз", plural: "Eyes", pronP: "айз", transP: "глаза" },
     { cat: "3. Части тела", icon: "👂", word: "Ear", pron: "и́э", trans: "ухо", plural: "Ears", pronP: "и́эз", transP: "уши" },
     { cat: "3. Части тела", icon: "👃", word: "Nose", pron: "ноуз", trans: "нос", plural: "Noses", pronP: "но́узиз", transP: "носы" },
     { cat: "3. Части тела", icon: "✋", word: "Hand", pron: "хэнд", trans: "рука", plural: "Hands", pronP: "хэндз", transP: "руки" },
-
-    // 4. ДОМ И МЕБЕЛЬ
     { cat: "4. Дом и мебель", icon: "🪵", word: "Table", pron: "тэ́йбл", trans: "стол", plural: "Tables", pronP: "тэ́йблз", transP: "столы" },
     { cat: "4. Дом и мебель", icon: "🪑", word: "Chair", pron: "чэ́а", trans: "стул", plural: "Chairs", pronP: "чэ́аз", transP: "стулья" },
     { cat: "4. Дом и мебель", icon: "🪑", word: "Stool", pron: "сту́ул", trans: "табуретка", plural: "Stools", pronP: "сту́улз", transP: "табуретки" },
@@ -342,8 +263,6 @@
     { cat: "4. Дом и мебель", icon: "🪟", word: "Window", pron: "уи́ндоу", trans: "окно", plural: "Windows", pronP: "уи́ндоуз", transP: "окна" },
     { cat: "4. Дом и мебель", icon: "🚪", word: "Door", pron: "до́ор", trans: "дверь", plural: "Doors", pronP: "до́орз", transP: "двери" },
     { cat: "4. Дом и мебель", icon: "🏠", word: "House", pron: "ха́ус", trans: "дом", plural: "Houses", pronP: "ха́узиз", transP: "дома" },
-
-    // 5. ЕДА И ПОСУДА
     { cat: "5. Еда и посуда", icon: "🥄", word: "Spoon", pron: "спун", trans: "ложка", plural: "Spoons", pronP: "спунз", transP: "ложки" },
     { cat: "5. Еда и посуда", icon: "☕", word: "Cup", pron: "кап", trans: "чашка", plural: "Cups", pronP: "капс", transP: "чашки" },
     { cat: "5. Еда и посуда", icon: "🍎", word: "Apple", pron: "э́пл", trans: "яблоко", plural: "Apples", pronP: "э́плз", transP: "яблоки" },
@@ -354,40 +273,30 @@
     { cat: "5. Еда и посуда", icon: "🍵", word: "Tea", pron: "ти", trans: "чай", single: true },
     { cat: "5. Еда и посуда", icon: "🧂", word: "Sugar", pron: "шу́га", trans: "сахар", single: true },
     { cat: "5. Еда и посуда", icon: "💧", word: "Water", pron: "во́та", trans: "вода", single: true },
-
-    // 6. ОДЕЖДА
     { cat: "6. Одежда", icon: "👕", word: "Shirt", pron: "шёт", trans: "рубашка", plural: "Shirts", pronP: "шётс", transP: "рубашки" },
     { cat: "6. Одежда", icon: "👗", word: "Dress", pron: "дрэс", trans: "платье", plural: "Dresses", pronP: "дрэ́сиз", transP: "платья" },
     { cat: "6. Одежда", icon: "👖", word: "Pants", pron: "пэнтс", trans: "штаны", single: true },
     { cat: "6. Одежда", icon: "👟", word: "Shoes", pron: "шуз", trans: "обувь", single: true },
     { cat: "6. Одежда", icon: "🧢", word: "Hat", pron: "хэт", trans: "шапка", plural: "Hats", pronP: "хэтс", transP: "шапки" },
     { cat: "6. Одежда", icon: "🧥", word: "Coat", pron: "коут", trans: "пальто", plural: "Coats", pronP: "коутс", transP: "пальто" },
-
-    // 7. ПРИРОДА И ПОГОДА
     { cat: "7. Природа", icon: "☀️", word: "Sun", pron: "сан", trans: "солнце", single: true },
     { cat: "7. Природа", icon: "🌧️", word: "Rain", pron: "рэйн", trans: "дождь", single: true },
     { cat: "7. Природа", icon: "❄️", word: "Snow", pron: "сноу", trans: "снег", single: true },
     { cat: "7. Природа", icon: "🌬️", word: "Wind", pron: "уинд", trans: "ветер", single: true },
     { cat: "7. Природа", icon: "🌳", word: "Tree", pron: "три", trans: "дерево", plural: "Trees", pronP: "триз", transP: "деревья" },
     { cat: "7. Природа", icon: "🌸", word: "Flower", pron: "фла́уэ", trans: "цветок", plural: "Flowers", pronP: "фла́уэз", transP: "цветы" },
-
-    // 8. ТРАНСПОРТ
     { cat: "8. Транспорт", icon: "🚗", word: "Car", pron: "ка", trans: "машина", plural: "Cars", pronP: "каз", transP: "машины" },
     { cat: "8. Транспорт", icon: "🚌", word: "Bus", pron: "бас", trans: "автобус", plural: "Buses", pronP: "ба́сиз", transP: "автобусы" },
     { cat: "8. Транспорт", icon: "🚂", word: "Train", pron: "трэйн", trans: "поезд", plural: "Trains", pronP: "трэйнз", transP: "поезда" },
     { cat: "8. Транспорт", icon: "✈️", word: "Plane", pron: "плэйн", trans: "самолет", plural: "Planes", pronP: "плэйнз", transP: "самолеты" },
     { cat: "8. Транспорт", icon: "🚲", word: "Bicycle", pron: "ба́йсикл", trans: "велосипед", plural: "Bicycles", pronP: "ба́йсиклз", transP: "велосипеды" },
     { cat: "8. Транспорт", icon: "🚢", word: "Ship", pron: "шип", trans: "корабль", plural: "Ships", pronP: "шипс", transP: "корабли" },
-
-    // 9. ИГРУШКИ И ШКОЛА
     { cat: "9. Школа и игры", icon: "📖", word: "Book", pron: "бук", trans: "книга", plural: "Books", pronP: "букс", transP: "книги" },
     { cat: "9. Школа и игры", icon: "✏️", word: "Pencil", pron: "пэ́нсил", trans: "карандаш", plural: "Pencils", pronP: "пэ́нсилз", transP: "карандаши" },
     { cat: "9. Школа и игры", icon: "🖊️", word: "Pen", pron: "пэн", trans: "ручка", plural: "Pens", pronP: "пэнз", transP: "ручки" },
     { cat: "9. Школа и игры", icon: "⚽", word: "Ball", pron: "бол", trans: "мяч", plural: "Balls", pronP: "болз", transP: "мячи" },
     { cat: "9. Школа и игры", icon: "🪆", word: "Doll", pron: "дол", trans: "кукла", plural: "Dolls", pronP: "долз", transP: "куклы" },
     { cat: "9. Школа и игры", icon: "🤖", word: "Robot", pron: "ро́бот", trans: "робот", plural: "Robots", pronP: "ро́ботс", transP: "роботы" },
-
-    // 10. ЦИФРЫ
     { cat: "10. Цифры", icon: "1️⃣", word: "One", pron: "уан", trans: "один", single: true },
     { cat: "10. Цифры", icon: "2️⃣", word: "Two", pron: "ту", trans: "два", single: true },
     { cat: "10. Цифры", icon: "3️⃣", word: "Three", pron: "сри", trans: "три", single: true },
@@ -398,8 +307,6 @@
     { cat: "10. Цифры", icon: "8️⃣", word: "Eight", pron: "эйт", trans: "восемь", single: true },
     { cat: "10. Цифры", icon: "9️⃣", word: "Nine", pron: "найн", trans: "девять", single: true },
     { cat: "10. Цифры", icon: "🔟", word: "Ten", pron: "тэн", trans: "десять", single: true },
-
-    // 11. ГЛАГОЛЫ
     { cat: "11. Глаголы", icon: "🍽️", word: "Eat", pron: "иит", trans: "есть", single: true },
     { cat: "11. Глаголы", icon: "🥤", word: "Drink", pron: "дринк", trans: "пить", single: true },
     { cat: "11. Глаголы", icon: "🛌", word: "Sleep", pron: "слиип", trans: "спать", single: true },
@@ -410,8 +317,6 @@
     { cat: "11. Глаголы", icon: "🦘", word: "Jump", pron: "джамп", trans: "прыгать", single: true },
     { cat: "11. Глаголы", icon: "📚", word: "Study", pron: "ста́ди", trans: "учиться", single: true },
     { cat: "11. Глаголы", icon: "🛋️", word: "Rest", pron: "рэст", trans: "отдыхать", single: true },
-
-    // 12. ЦВЕТА
     { cat: "12. Цвета", color: "#ff4d4d", word: "Red", pron: "рэд", trans: "красный", single: true },
     { cat: "12. Цвета", color: "#4d79ff", word: "Blue", pron: "блуу", trans: "синий", single: true },
     { cat: "12. Цвета", color: "#4dff4d", word: "Green", pron: "грииин", trans: "зелёный", single: true },
@@ -424,12 +329,8 @@
     { cat: "12. Цвета", color: "#8a5a44", word: "Brown", pron: "бра́ун", trans: "коричневый", single: true },
     { cat: "12. Цвета", color: "#a6a6a6", word: "Grey", pron: "грэй", trans: "серый", single: true },
     { cat: "12. Цвета", color: "linear-gradient(135deg, #ff4d4d 0%, #ffa64d 20%, #ffea00 40%, #4dff4d 60%, #4d79ff 80%, #9933ff 100%)", word: "Rainbow", pron: "рэ́йнбоу", trans: "радуга", single: true },
-
-    // 13. РАЗМЕРЫ
     { cat: "13. Размеры", icon: "🐘", word: "Big", pron: "биг", trans: "большой", single: true },
     { cat: "13. Размеры", icon: "🐜", word: "Small", pron: "смоол", trans: "маленький", single: true },
-
-    // 14. ФРАЗЫ
     { cat: "14. Фразы", icon: "👋", word: "Hello", pron: "хэлло́у", trans: "Здравствуйте", single: true },
     { cat: "14. Фразы", icon: "🚪", word: "Goodbye", pron: "гудба́й", trans: "До свидания", single: true },
     { cat: "14. Фразы", icon: "🤝", word: "Thank you", pron: "сэ́нк ю", trans: "Спасибо", single: true },
@@ -438,7 +339,6 @@
     { cat: "14. Фразы", icon: "👎", word: "No", pron: "ноу", trans: "Нет", single: true }
   ];
 
-  // ================= ЛОГИКА ТРЕНАЖЕРА =================
   let currentCardIndex = -1;
 
   function showRandomCard() {
@@ -450,12 +350,8 @@
     const card = cardsData[currentCardIndex];
 
     let html = '';
-
-    if (card.color) {
-      html += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
-    } else {
-      html += `<div class="trainer-icon">${card.icon}</div>`;
-    }
+    if (card.color) html += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
+    else html += `<div class="trainer-icon">${card.icon}</div>`;
 
     if (card.single) {
       html += `
@@ -463,8 +359,7 @@
           <div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div>
           <div class="trainer-trans">${card.trans}</div>
           <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
-        </div>
-      `;
+        </div>`;
     } else {
       html += `
         <div class="trainer-entry">
@@ -479,118 +374,69 @@
           <div class="trainer-word">${card.plural} <span class="trainer-pron">— ${card.pronP}</span></div>
           <div class="trainer-trans">${card.transP}</div>
           <button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button>
-        </div>
-      `;
+        </div>`;
     }
     document.getElementById('trainer-card-container').innerHTML = html;
   }
 
-  // ================= ЗАДАНИЯ (ГЕНЕРАЦИЯ СПИСКА ТЕМ) =================
   function renderCategoryList() {
     const categories = [...new Set(cardsData.map(card => card.cat))];
     const container = document.getElementById('category-list-container');
-    let html = '';
-    
-    categories.forEach(cat => {
-      html += `<button class="category-btn" onclick="showCategory('${cat}')">${cat}</button>`;
-    });
-    
-    container.innerHTML = html;
+    container.innerHTML = categories.map(cat => `<button class="category-btn" onclick="showCategory('${cat}')">${cat}</button>`).join('');
   }
 
-  // ================= ЗАДАНИЯ (ГЕНЕРАЦИЯ КАРТОЧЕК ТЕМЫ) =================
   function showCategory(catName) {
     document.getElementById('category-title').innerText = catName;
-    
     const filteredCards = cardsData.filter(card => card.cat === catName);
     const container = document.getElementById('category-cards-container');
-    let html = '';
-
-    filteredCards.forEach(card => {
-      // Используем класс task-card для сетки, но внутри - ровно те же классы, что и в тренажере
-      html += `<div class="task-card">`;
-      
-      if (card.color) {
-        html += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
-      } else {
-        html += `<div class="trainer-icon">${card.icon}</div>`;
-      }
+    
+    container.innerHTML = filteredCards.map(card => {
+      let inner = `<div class="task-card">`;
+      if (card.color) inner += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
+      else inner += `<div class="trainer-icon">${card.icon}</div>`;
 
       if (card.single) {
-        html += `
-          <div class="trainer-entry">
-            <div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div>
-            <div class="trainer-trans">${card.trans}</div>
-            <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
-          </div>
-        `;
+        inner += `<div class="trainer-entry"><div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div><div class="trainer-trans">${card.trans}</div><button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button></div>`;
       } else {
-        html += `
-          <div class="trainer-entry">
-            <div class="trainer-label">Единственное число</div>
-            <div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div>
-            <div class="trainer-trans">${card.trans}</div>
-            <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
-          </div>
+        inner += `
+          <div class="trainer-entry"><div class="trainer-label">Единственное число</div><div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div><div class="trainer-trans">${card.trans}</div><button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button></div>
           <div class="divider"></div>
-          <div class="trainer-entry">
-            <div class="trainer-label">Множественное число</div>
-            <div class="trainer-word">${card.plural} <span class="trainer-pron">— ${card.pronP}</span></div>
-            <div class="trainer-trans">${card.transP}</div>
-            <button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button>
-          </div>
-        `;
+          <div class="trainer-entry"><div class="trainer-label">Множественное число</div><div class="trainer-word">${card.plural} <span class="trainer-pron">— ${card.pronP}</span></div><div class="trainer-trans">${card.transP}</div><button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button></div>`;
       }
-
-      html += `</div>`;
-    });
-
-    container.innerHTML = html;
+      inner += `</div>`;
+      return inner;
+    }).join('');
     
-    // Переключаем вьюху
     document.getElementById('tasks-view').style.display = 'none';
     document.getElementById('category-detail-view').style.display = 'block';
     document.querySelector('.content-wrapper').scrollTo(0, 0);
   }
 
-  // ================= ОЗВУЧКА =================
   function speakWord(text) {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
-      utterance.rate = 0.6; // Чуть медленнее
+      utterance.rate = 0.6;
       const voices = window.speechSynthesis.getVoices();
-      const enVoice = voices.find(v => v.lang.includes('en') && v.name.includes('Google')) || 
-                      voices.find(v => v.lang.includes('en'));
+      const enVoice = voices.find(v => v.lang.includes('en') && v.name.includes('Google')) || voices.find(v => v.lang.includes('en'));
       if (enVoice) utterance.voice = enVoice;
       window.speechSynthesis.speak(utterance);
-    } else {
-      alert("Ваш браузер не поддерживает озвучку.");
     }
   }
 
-  // ================= ГЕНЕРАЦИЯ ПЕЧАТИ =================
   function renderPrintView() {
     const printView = document.getElementById('print-view');
     let html = '';
     let cardsInSheet = 0;
-
     cardsData.forEach((card) => {
       if (cardsInSheet === 0) html += `<div class="sheet">`;
       html += `<div class="card ${card.single ? 'single-form' : ''}">`;
-
-      if (card.color) html += `<div class="print-color-circle" style="background: ${card.color};"></div>`;
-      else html += `<div class="print-icon">${card.icon}</div>`;
-
+      html += card.color ? `<div class="print-color-circle" style="background: ${card.color};"></div>` : `<div class="print-icon">${card.icon}</div>`;
       if (card.single) {
         html += `<div class="print-entry"><div class="print-word">${card.word} <span class="print-pron">— ${card.pron}</span></div><div class="print-trans">${card.trans}</div></div>`;
       } else {
-        html += `
-          <div class="print-entry"><div class="form-label">Единственное число</div><div class="print-word">${card.word} <span class="print-pron">— ${card.pron}</span></div><div class="print-trans">${card.trans}</div></div>
-          <div class="divider"></div>
-          <div class="print-entry"><div class="form-label">Множественное число</div><div class="print-word">${card.plural} <span class="print-pron">— ${card.pronP}</span></div><div class="print-trans">${card.transP}</div></div>
-        `;
+        html += `<div class="print-entry"><div class="form-label">Единственное число</div><div class="print-word">${card.word} <span class="print-pron">— ${card.pron}</span></div><div class="print-trans">${card.trans}</div></div><div class="divider"></div><div class="print-entry"><div class="form-label">Множественное число</div><div class="print-word">${card.plural} <span class="print-pron">— ${card.pronP}</span></div><div class="print-trans">${card.transP}</div></div>`;
       }
       html += `</div>`;
       cardsInSheet++;
@@ -600,36 +446,28 @@
     printView.innerHTML = html;
   }
 
-  // ================= ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК =================
   function switchView(viewName) {
-    document.getElementById('btn-home').classList.remove('active');
-    document.getElementById('btn-tasks').classList.remove('active');
-    document.getElementById('btn-print').classList.remove('active');
-
-    document.getElementById('home-view').style.display = 'none';
-    document.getElementById('tasks-view').style.display = 'none';
-    document.getElementById('category-detail-view').style.display = 'none';
-    document.getElementById('print-view').style.display = 'none';
-
-    if (viewName === 'home') {
-      document.getElementById('btn-home').classList.add('active');
-      document.getElementById('home-view').style.display = 'flex';
-    } else if (viewName === 'tasks') {
-      document.getElementById('btn-tasks').classList.add('active');
-      document.getElementById('tasks-view').style.display = 'block';
-    } else if (viewName === 'print') {
-      document.getElementById('btn-print').classList.add('active');
-      document.getElementById('print-view').style.display = 'block';
-    }
+    document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.content-wrapper > div').forEach(el => el.style.display = 'none');
+    
+    if (viewName === 'home') { document.getElementById('btn-home').classList.add('active'); document.getElementById('home-view').style.display = 'flex'; }
+    else if (viewName === 'tasks') { document.getElementById('btn-tasks').classList.add('active'); document.getElementById('tasks-view').style.display = 'block'; }
+    else if (viewName === 'print') { document.getElementById('btn-print').classList.add('active'); document.getElementById('print-view').style.display = 'block'; }
   }
 
-  // ================= ИНИЦИАЛИЗАЦИЯ =================
+  // Инициализация и регистрация Service Worker
   window.onload = () => {
     showRandomCard();
     renderCategoryList();
     renderPrintView();
+
+    // Регистрация Service Worker для PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log("Service Worker зарегистрирован"))
+        .catch((err) => console.log("Ошибка регистрации SW:", err));
+    }
   };
 </script>
-
 </body>
 </html>
