@@ -372,7 +372,7 @@
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
-      utterance.rate = 0.5;
+      utterance.rate = 0.6;
       const voices = window.speechSynthesis.getVoices();
       const enVoice = voices.find(v => v.lang.includes('en') && v.name.includes('Google')) || voices.find(v => v.lang.includes('en'));
       if (enVoice) utterance.voice = enVoice;
