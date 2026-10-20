@@ -213,17 +213,17 @@
 <script src="data.js"></script>
 <script>
   window.onload = () => {
+    // Ваши функции инициализации
     showRandomCard();
     renderCategoryList();
     renderPrintView();
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').then(reg => {
+        // Ждем, когда SW возьмет контроль
         if (navigator.serviceWorker.controller) {
-          // Если SW уже работает, просто выводим версию
           getCacheNameFromSW();
         } else {
-          // Если SW только что установился, ждем, когда он перехватит управление
           navigator.serviceWorker.addEventListener('controllerchange', () => {
             getCacheNameFromSW();
           });
@@ -233,7 +233,10 @@
   };
 
   function getCacheNameFromSW() {
-    if (!navigator.serviceWorker.controller) return;
+    if (!navigator.serviceWorker.controller) {
+      console.warn("SW еще не контролирует страницу.");
+      return;
+    }
 
     const messageChannel = new MessageChannel();
     
