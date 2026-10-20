@@ -83,7 +83,7 @@
     border-radius: 20px;
     width: 100%;
     max-width: 450px;
-    height: clamp(350px, 60vh, 500px); 
+    height: clamp(380px, 65vh, 520px); 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -95,8 +95,8 @@
     flex-shrink: 0;
   }
 
-  .trainer-icon { font-size: clamp(60px, 15vh, 110px); line-height: 1; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;}
-  .trainer-color-circle { width: clamp(60px, 15vh, 90px); height: clamp(60px, 15vh, 90px); border-radius: 50%; margin-bottom: 5px; border: 3px solid #333; }
+  .trainer-icon { font-size: clamp(60px, 15vh, 110px); line-height: 1; margin-bottom: 10px; display: flex; align-items: center; justify-content: center;}
+  .trainer-color-circle { width: clamp(60px, 15vh, 90px); height: clamp(60px, 15vh, 90px); border-radius: 50%; margin-bottom: 10px; border: 3px solid #333; }
   
   /* Квадраты с буквами/цифрами */
   .trainer-icon > div, .print-icon > div {
@@ -109,18 +109,19 @@
   }
 
   .trainer-entry { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 5px; }
-  .trainer-label { font-size: clamp(12px, 2.5vh, 16px); font-weight: 700; color: #666; margin-bottom: 2px; }
-  .trainer-word { font-size: clamp(22px, 5vh, 36px); font-weight: 800; line-height: 1.1; }
-  .trainer-pron { font-weight: 400; font-size: 0.8em; }
-  .trainer-trans { font-size: clamp(18px, 4vh, 28px); color: #444; margin-top: 2px; }
+  .trainer-label { font-size: clamp(12px, 2.5vh, 16px); font-weight: 700; color: #666; margin-bottom: 5px; text-transform: uppercase;}
+  
+  /* Обновленные стили для строк */
+  .trainer-word { font-size: clamp(24px, 5vh, 38px); font-weight: 800; line-height: 1.1; margin-bottom: 3px; }
+  .trainer-pron { font-size: clamp(16px, 3.5vh, 24px); color: #666; margin-bottom: 5px; }
+  .trainer-trans { font-size: clamp(18px, 4vh, 26px); color: #333; font-weight: 600; margin-bottom: 5px;}
   
   .divider { width: 80%; height: 2px; background: #eee; margin: clamp(5px, 2vh, 15px) 0; }
 
   .speak-btn {
     background: #ffdb4d; border: none; border-radius: 20px; padding: 6px 15px;
     font-size: clamp(14px, 2.5vh, 18px); font-weight: bold; color: #333; cursor: pointer; 
-    margin-top: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-    display: flex; align-items: center; gap: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 6px;
   }
   .speak-btn:active { transform: scale(0.95); }
 
@@ -182,7 +183,7 @@
 
   .task-card {
     background: #fff; border: 3px dashed #666; border-radius: 20px;
-    padding: 15px; display: flex; flex-direction: column;
+    padding: 20px 15px; display: flex; flex-direction: column;
     align-items: center; justify-content: center; text-align: center;
   }
 
@@ -190,12 +191,18 @@
   #print-view { display: none; padding: 20px; background: #fff; }
   .sheet { width: 185mm; height: 270mm; margin: 0 auto 20px auto; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 4mm; }
   .card { border: 1.5px dashed #666; border-radius: 6mm; padding: 3mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  
   .print-icon { font-size: 76px; line-height: 1; margin-bottom: 2mm; display: flex; align-items: center; justify-content: center;}
   .print-color-circle { width: 70px; height: 70px; border-radius: 50%; margin-bottom: 3mm; border: 2px solid #333; }
-  .print-entry { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 1.5mm; }
-  .form-label { font-size: 10pt; font-weight: 600; color: #555; margin-bottom: 0.5mm; }
-  .print-word { font-size: 18pt; font-weight: 700; white-space: nowrap; }
-  .print-trans { font-size: 18pt; color: #333; margin-top: 0.5mm; }
+  
+  .print-entry { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 2mm; }
+  .form-label { font-size: 10pt; font-weight: 600; color: #555; margin-bottom: 1mm; text-transform: uppercase;}
+  
+  /* Обновленные стили для печати */
+  .print-word { font-size: 18pt; font-weight: 700; line-height: 1.1; margin-bottom: 1mm; }
+  .print-pron { font-size: 14pt; color: #555; margin-bottom: 1mm; }
+  .print-trans { font-size: 18pt; font-weight: 600; color: #333; }
+  
   .single-form .print-icon { font-size: 90px; margin-bottom: 4mm; }
   .single-form .print-word { font-size: 24pt; margin-bottom: 2mm; }
   .single-form .print-trans { font-size: 22pt; }
@@ -241,10 +248,7 @@
   <div id="print-view"></div>
 </div>
 
-<!-- Подключаем базу данных -->
 <script src="data.js"></script>
-
-<!-- Основной скрипт -->
 <script>
   let currentCardIndex = -1;
 
@@ -263,7 +267,8 @@
     if (card.single) {
       html += `
         <div class="trainer-entry">
-          <div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div>
+          <div class="trainer-word">${card.word}</div>
+          <div class="trainer-pron">${card.pron}</div>
           <div class="trainer-trans">${card.trans}</div>
           <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
         </div>`;
@@ -271,14 +276,16 @@
       html += `
         <div class="trainer-entry">
           <div class="trainer-label">Единственное число</div>
-          <div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div>
+          <div class="trainer-word">${card.word}</div>
+          <div class="trainer-pron">${card.pron}</div>
           <div class="trainer-trans">${card.trans}</div>
           <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
         </div>
         <div class="divider"></div>
         <div class="trainer-entry">
           <div class="trainer-label">Множественное число</div>
-          <div class="trainer-word">${card.plural} <span class="trainer-pron">— ${card.pronP}</span></div>
+          <div class="trainer-word">${card.plural}</div>
+          <div class="trainer-pron">${card.pronP}</div>
           <div class="trainer-trans">${card.transP}</div>
           <button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button>
         </div>`;
@@ -315,12 +322,30 @@
       else inner += `<div class="trainer-icon">${card.icon}</div>`;
 
       if (card.single) {
-        inner += `<div class="trainer-entry"><div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div><div class="trainer-trans">${card.trans}</div><button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button></div>`;
+        inner += `
+          <div class="trainer-entry">
+            <div class="trainer-word">${card.word}</div>
+            <div class="trainer-pron">${card.pron}</div>
+            <div class="trainer-trans">${card.trans}</div>
+            <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
+          </div>`;
       } else {
         inner += `
-          <div class="trainer-entry"><div class="trainer-label">Единственное число</div><div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div><div class="trainer-trans">${card.trans}</div><button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button></div>
+          <div class="trainer-entry">
+            <div class="trainer-label">Единственное число</div>
+            <div class="trainer-word">${card.word}</div>
+            <div class="trainer-pron">${card.pron}</div>
+            <div class="trainer-trans">${card.trans}</div>
+            <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
+          </div>
           <div class="divider"></div>
-          <div class="trainer-entry"><div class="trainer-label">Множественное число</div><div class="trainer-word">${card.plural} <span class="trainer-pron">— ${card.pronP}</span></div><div class="trainer-trans">${card.transP}</div><button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button></div>`;
+          <div class="trainer-entry">
+            <div class="trainer-label">Множественное число</div>
+            <div class="trainer-word">${card.plural}</div>
+            <div class="trainer-pron">${card.pronP}</div>
+            <div class="trainer-trans">${card.transP}</div>
+            <button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button>
+          </div>`;
       }
       inner += `</div>`;
       return inner;
@@ -358,10 +383,29 @@
       if (cardsInSheet === 0) html += `<div class="sheet">`;
       html += `<div class="card ${card.single ? 'single-form' : ''}">`;
       html += card.color ? `<div class="print-color-circle" style="background: ${card.color};"></div>` : `<div class="print-icon">${card.icon}</div>`;
+      
       if (card.single) {
-        html += `<div class="print-entry"><div class="print-word">${card.word} <span class="print-pron">— ${card.pron}</span></div><div class="print-trans">${card.trans}</div></div>`;
+        html += `
+          <div class="print-entry">
+            <div class="print-word">${card.word}</div>
+            <div class="print-pron">${card.pron}</div>
+            <div class="print-trans">${card.trans}</div>
+          </div>`;
       } else {
-        html += `<div class="print-entry"><div class="form-label">Единственное число</div><div class="print-word">${card.word} <span class="print-pron">— ${card.pron}</span></div><div class="print-trans">${card.trans}</div></div><div class="divider"></div><div class="print-entry"><div class="form-label">Множественное число</div><div class="print-word">${card.plural} <span class="print-pron">— ${card.pronP}</span></div><div class="print-trans">${card.transP}</div></div>`;
+        html += `
+          <div class="print-entry">
+            <div class="form-label">Единственное число</div>
+            <div class="print-word">${card.word}</div>
+            <div class="print-pron">${card.pron}</div>
+            <div class="print-trans">${card.trans}</div>
+          </div>
+          <div class="divider"></div>
+          <div class="print-entry">
+            <div class="form-label">Множественное число</div>
+            <div class="print-word">${card.plural}</div>
+            <div class="print-pron">${card.pronP}</div>
+            <div class="print-trans">${card.transP}</div>
+          </div>`;
       }
       html += `</div>`;
       cardsInSheet++;
@@ -384,30 +428,6 @@
     showRandomCard();
     renderCategoryList();
     renderPrintView();
-
-    if ('caches' in window) {
-      caches.open('app-version').then(cache => {
-        cache.match('version').then(response => {
-          if (response) {
-            response.text().then(version => {
-              console.log(`%c 🐻 Английский ПШ | Активный кэш: ${version}`, "color: #1f4e9c; font-size: 16px; font-weight: bold;");
-              let badge = document.getElementById('version-badge');
-              if (!badge) {
-                badge = document.createElement('div');
-                badge.id = 'version-badge';
-                badge.style.cssText = 'position:fixed; bottom:5px; left:5px; font-size:10px; color:#888; z-index:9999; background:rgba(255,255,255,0.8); padding:2px 5px; border-radius:4px;';
-                document.body.appendChild(badge);
-              }
-              badge.innerText = `Cache: ${version}`;
-            });
-          }
-        });
-      });
-    }
-
-  // if ('serviceWorker' in navigator) {
-    //   navigator.serviceWorker.register('sw.js');
-    // }
   };
 </script>
 </body>
