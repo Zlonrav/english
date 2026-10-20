@@ -159,7 +159,6 @@ const cardsData = [
   { cat: "5. Люди", icon: "👩", word: "Woman", pron: "ву́мэн", trans: "женщина", plural: "Women", pronP: "уи́мин", transP: "женщины" },
   { cat: "5. Люди", icon: "👦", word: "Boy", pron: "бой", trans: "мальчик", plural: "Boys", pronP: "бойз", transP: "мальчики" },
   { cat: "5. Люди", icon: "👧", word: "Girl", pron: "гёл", trans: "девочка", plural: "Girls", pronP: "гёлз", transP: "девочки" },
-  { cat: "5. Люди", icon: "👨‍👩‍👧", word: "Family", pron: "фэ́мили", trans: "семья", plural: "Families", pronP: "фэ́милиз", transP: "семьи" },
   { cat: "5. Люди", icon: "👩‍🦰", word: "Mother", pron: "ма́зэ", trans: "мама", plural: "Mothers", pronP: "ма́зэз", transP: "мамы" },
   { cat: "5. Люди", icon: "👨‍🦰", word: "Father", pron: "фа́зэ", trans: "папа", plural: "Fathers", pronP: "фа́зэз", transP: "папы" },
   { cat: "5. Люди", icon: "👵", word: "Grandmother", pron: "грэ́ндмазэ", trans: "бабушка", plural: "Grandmothers", pronP: "грэ́ндмазэз", transP: "бабушки" },
@@ -174,6 +173,7 @@ const cardsData = [
   { cat: "5. Люди", icon: "🤵", word: "Husband", pron: "ха́збэнд", trans: "муж", plural: "Husbands", pronP: "ха́збэндз", transP: "мужья" },
   { cat: "5. Люди", icon: "👰", word: "Wife", pron: "уа́йф", trans: "жена", plural: "Wives", pronP: "уа́йвз", transP: "жёны" },
   { cat: "5. Люди", icon: "🧑", word: "Parent", pron: "пэ́рэнт", trans: "родитель", plural: "Parents", pronP: "пэ́рэнтс", transP: "родители" },
+  { cat: "5. Люди", icon: "👨‍👩‍👧", word: "Family", pron: "фэ́мили", trans: "семья", plural: "Families", pronP: "фэ́милиз", transP: "семьи" },
 
   // 6. ЖИВОТНЫЕ
   { cat: "6. Животные", icon: "🐑", word: "Sheep", pron: "шип", trans: "овца", plural: "Sheep", pronP: "шип", transP: "овцы" },
