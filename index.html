@@ -67,7 +67,7 @@
     position: relative;
   }
 
-  /* ================= ТРЕНАЖЕР ================= */
+    /* ================= ТРЕНАЖЕР ================= */
   #home-view {
     height: 100%;
     display: flex;
@@ -83,21 +83,20 @@
     border-radius: 20px;
     width: 100%;
     max-width: 450px;
-    /* Увеличили высоту до 75vh и убрали скролл внутри */
-    height: clamp(400px, 75vh, 600px); 
+    /* Используем min-height вместо жесткого height, чтобы карточка растягивалась, если контент не влезает */
+    min-height: 520px; 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    padding: 10px;
+    padding: 15px;
     flex-shrink: 0;
-    /* overflow-y: auto; <--- УБРАЛИ СКРОЛЛ */
   }
 
-  .trainer-icon { font-size: clamp(50px, 12vh, 90px); line-height: 1; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;}
-  .trainer-color-circle { width: clamp(50px, 12vh, 80px); height: clamp(50px, 12vh, 80px); border-radius: 50%; margin-bottom: 5px; border: 3px solid #333; }
+  .trainer-icon { font-size: clamp(60px, 14vh, 100px); line-height: 1; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;}
+  .trainer-color-circle { width: clamp(60px, 14vh, 90px); height: clamp(60px, 14vh, 90px); border-radius: 50%; margin-bottom: 5px; border: 3px solid #333; }
   
   /* Квадраты с буквами/цифрами */
   .trainer-icon > div, .print-icon > div {
@@ -110,20 +109,23 @@
   }
 
   .trainer-entry { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 2px; }
-  .trainer-label { font-size: 8pt !important; font-weight: 700; color: #888; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
   
-  /* Уменьшили размеры шрифтов и отступы, чтобы все влезло */
-  .trainer-word { font-size: clamp(20px, 4.5vh, 32px); font-weight: 800; line-height: 1.1; margin-bottom: 2px; }
-  .trainer-pron { font-size: clamp(14px, 3vh, 20px); color: #666; margin-bottom: 2px; }
-  .trainer-trans { font-size: clamp(16px, 3.5vh, 22px); color: #333; font-weight: 600; margin-bottom: 4px;}
+  /* Размер 8pt для заголовков */
+  .trainer-label { font-size: 8pt !important; font-weight: 700; color: #888; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px;}
   
-  .divider { width: 80%; height: 2px; background: #eee; margin: 5px 0; }
+  /* Вернули нормальный крупный шрифт */
+  .trainer-word { font-size: clamp(24px, 5vh, 36px); font-weight: 800; line-height: 1.1; margin-bottom: 2px; }
+  .trainer-pron { font-size: clamp(16px, 3.5vh, 22px); color: #666; margin-bottom: 2px; }
+  .trainer-trans { font-size: clamp(18px, 4vh, 26px); color: #333; font-weight: 600; margin-bottom: 4px;}
+  
+  /* Чуть уменьшили отступы между блоками, чтобы сэкономить место */
+  .divider { width: 80%; height: 2px; background: #eee; margin: 6px 0; }
 
   .speak-btn {
-    background: #ffdb4d; border: none; border-radius: 20px; padding: 4px 12px;
-    font-size: clamp(12px, 2vh, 16px); font-weight: bold; color: #333; cursor: pointer; 
+    background: #ffdb4d; border: none; border-radius: 20px; padding: 6px 15px;
+    font-size: clamp(14px, 2.5vh, 18px); font-weight: bold; color: #333; cursor: pointer; 
     box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 4px;
-    margin-top: 2px;
+    margin-top: 4px;
   }
   .speak-btn:active { transform: scale(0.95); }
 
