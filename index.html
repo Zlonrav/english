@@ -212,40 +212,43 @@
 </div>
 <script src="data.js"></script>
 <script>
+  // ================= ИНИЦИАЛИЗАЦИЯ =================
   window.onload = () => {
-    // Функции инициализации
     showRandomCard();
     renderCategoryList();
     renderPrintView();
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').then(reg => {
-        // Ждем, пока Service Worker полностью активируется
-        navigator.serviceWorker.ready.then(() => {
-          getCacheNameFromSW();
-        });
-      }).catch(err => console.log("Ошибка SW:", err));
+      navigator.serviceWorker.register('sw.js').then(() => {
+        // Ждем 500мс, чтобы SW гарантированно встал на ноги, и спрашиваем версию
+        setTimeout(askVersion, 500);
+      });
     }
   };
 
-  function getCacheNameFromSW() {
-    if (!navigator.serviceWorker.controller) {
-      console.warn("SW еще не контролирует страницу. Обновите страницу (F5).");
-      return;
+  function askVersion() {
+    if (navigator.serviceWorker.controller) {
+      const channel = new MessageChannel();
+      channel.port1.onmessage = (event) => {
+        const version = event.data;
+        
+        // Выводим в консоль
+        console.log(`%c 🐻 English Cards | Кэш: ${version}`, "color: #1f4e9c; font-size: 16px; font-weight: bold;");
+        
+        // Выводим на экран (в самый низ страницы)
+        let badge = document.getElementById('version-badge');
+        if (!badge) {
+          badge = document.createElement('div');
+          badge.id = 'version-badge';
+          badge.style.cssText = 'position:fixed; bottom:5px; left:5px; font-size:10px; color:#888; z-index:9999; background:rgba(255,255,255,0.8); padding:2px 5px; border-radius:4px;';
+          document.body.appendChild(badge);
+        }
+        badge.innerText = `Cache: ${version}`;
+      };
+      navigator.serviceWorker.controller.postMessage('GET_CACHE_NAME', [channel.port2]);
+    } else {
+      console.warn("SW еще не контролирует страницу (обновите страницу F5).");
     }
-
-    const messageChannel = new MessageChannel();
-    
-    messageChannel.port1.onmessage = (event) => {
-      const cacheName = event.data;
-      console.log(
-          `%c 🐻 Английский ПШ \n%c Активный кэш: ${cacheName} \n Статус: Запущено`,
-          "color: #1f4e9c; font-size: 18px; font-weight: bold; margin-bottom: 5px;",
-          "color: #333; font-size: 14px; line-height: 1.5;"
-      );
-    };
-    
-    navigator.serviceWorker.controller.postMessage('GET_CACHE_NAME', [messageChannel.port2]);
   }
 </script>
 </body>
