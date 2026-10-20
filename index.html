@@ -138,12 +138,21 @@
   }
 
   .tasks-title { text-align: center; margin: 10px 0 20px; color: var(--main-color); font-size: clamp(18px, 4vw, 24px); }
-  .category-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+  .category-list { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); 
+    gap: 10px; 
+  }
   
   .category-btn {
     background: #fff; border: 2px solid #ccc; border-radius: 12px;
-    padding: 15px; font-size: clamp(14px, 3vw, 18px); font-weight: bold;
-    color: #333; cursor: pointer; text-align: center;
+    padding: 15px 10px; 
+    font-size: clamp(14px, 3vw, 18px); 
+    font-weight: bold;
+    color: #333; 
+    cursor: pointer; 
+    text-align: center;
+    white-space: nowrap; /* Запрещаем перенос текста на новую строку */
   }
   .category-btn:hover { border-color: var(--main-color); background: #f0f4f8; }
 
