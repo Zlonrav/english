@@ -30,6 +30,7 @@ const cardsData = [
 
   
   // 2. ЦИФРЫ
+  { cat: "2. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">0</div>', word: "Zero", pron: "зи́роу", trans: "ноль", single: true },
   { cat: "2. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">1</div>', word: "One", pron: "уан", trans: "один", single: true },
   { cat: "2. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">2</div>', word: "Two", pron: "ту", trans: "два", single: true },
   { cat: "2. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">3</div>', word: "Three", pron: "сри", trans: "три", single: true },
