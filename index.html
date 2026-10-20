@@ -2,7 +2,6 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<!-- Добавляем мета-теги для приложения -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#1f4e9c">
@@ -74,7 +73,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* ЦЕНТРИРУЕМ ВСЁ ПО ВЕРТИКАЛИ */
+    justify-content: center;
     padding: 15px;
   }
 
@@ -84,7 +83,6 @@
     border-radius: 20px;
     width: 100%;
     max-width: 450px;
-    /* Высота карточки подстраивается под экран, но не больше 500px */
     height: clamp(350px, 60vh, 500px); 
     display: flex;
     flex-direction: column;
@@ -97,9 +95,17 @@
     flex-shrink: 0;
   }
 
-  .trainer-icon { font-size: clamp(60px, 15vh, 110px); line-height: 1; margin-bottom: 5px; }
+  .trainer-icon { font-size: clamp(60px, 15vh, 110px); line-height: 1; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;}
   .trainer-color-circle { width: clamp(60px, 15vh, 90px); height: clamp(60px, 15vh, 90px); border-radius: 50%; margin-bottom: 5px; border: 3px solid #333; }
   
+  .trainer-icon > div, .print-icon > div {
+    width: 1.2em !important;
+    height: 1.2em !important;
+    font-size: 0.9em !important;
+    border-radius: 15% !important;
+    box-shadow: 0 4px 10px rgba(31, 78, 156, 0.2);
+  }
+
   .trainer-entry { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 5px; }
   .trainer-label { font-size: clamp(12px, 2.5vh, 16px); font-weight: 700; color: #666; margin-bottom: 2px; }
   .trainer-word { font-size: clamp(22px, 5vh, 36px); font-weight: 800; line-height: 1.1; }
@@ -137,6 +143,7 @@
   }
 
   .tasks-title { text-align: center; margin: 10px 0 20px; color: var(--main-color); font-size: clamp(18px, 4vw, 24px); }
+  
   .category-list { 
     display: grid; 
     grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); 
@@ -145,20 +152,30 @@
   
   .category-btn {
     background: #fff; border: 2px solid #ccc; border-radius: 12px;
-    padding: 15px 10px; 
-    font-size: clamp(14px, 3vw, 18px); 
-    font-weight: bold;
-    color: #333; 
-    cursor: pointer; 
-    text-align: center;
-    white-space: nowrap; /* Запрещаем перенос текста на новую строку */
+    padding: 15px 10px; font-size: clamp(14px, 3vw, 18px); font-weight: bold;
+    color: #333; cursor: pointer; text-align: center; white-space: nowrap;
   }
   .category-btn:hover { border-color: var(--main-color); background: #f0f4f8; }
 
+  .category-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
   .back-btn {
     background: #e0e7ff; border: none; border-radius: 8px; padding: 8px 15px;
-    font-size: 14px; font-weight: bold; color: var(--main-color); cursor: pointer; margin-bottom: 15px;
+    font-size: 14px; font-weight: bold; color: var(--main-color); cursor: pointer;
   }
+
+  .shuffle-btn {
+    background: #ffdb4d; border: none; border-radius: 8px; padding: 8px 15px;
+    font-size: 14px; font-weight: bold; color: #333; cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.2s;
+  }
+  .shuffle-btn:active { transform: scale(0.95); }
+
   .category-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
 
   .task-card {
@@ -167,33 +184,11 @@
     align-items: center; justify-content: center; text-align: center;
   }
 
-    .category-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .back-btn {
-    background: #e0e7ff; border: none; border-radius: 8px; padding: 8px 15px;
-    font-size: 14px; font-weight: bold; color: var(--main-color); cursor: pointer;
-    /* Убрали margin-bottom, так как теперь они в одном контейнере */
-  }
-
-  .shuffle-btn {
-    background: #ffdb4d; border: none; border-radius: 8px; padding: 8px 15px;
-    font-size: 14px; font-weight: bold; color: #333; cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: 0.2s;
-  }
-  .shuffle-btn:hover { background: #ffd633; }
-  .shuffle-btn:active { transform: scale(0.95); }
-
   /* ================= ПЕЧАТЬ ================= */
   #print-view { display: none; padding: 20px; background: #fff; }
   .sheet { width: 185mm; height: 270mm; margin: 0 auto 20px auto; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 4mm; }
   .card { border: 1.5px dashed #666; border-radius: 6mm; padding: 3mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-  .print-icon { font-size: 76px; line-height: 1; margin-bottom: 2mm; }
+  .print-icon { font-size: 76px; line-height: 1; margin-bottom: 2mm; display: flex; align-items: center; justify-content: center;}
   .print-color-circle { width: 70px; height: 70px; border-radius: 50%; margin-bottom: 3mm; border: 2px solid #333; }
   .print-entry { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 1.5mm; }
   .form-label { font-size: 10pt; font-weight: 600; color: #555; margin-bottom: 0.5mm; }
@@ -243,23 +238,157 @@
 
   <div id="print-view"></div>
 </div>
+
+<!-- Подключаем базу данных -->
 <script src="data.js"></script>
+
+<!-- Основной скрипт -->
 <script>
+  let currentCardIndex = -1;
+
+  function showRandomCard() {
+    let newIndex = Math.floor(Math.random() * cardsData.length);
+    while (newIndex === currentCardIndex && cardsData.length > 1) {
+      newIndex = Math.floor(Math.random() * cardsData.length);
+    }
+    currentCardIndex = newIndex;
+    const card = cardsData[currentCardIndex];
+
+    let html = '';
+    if (card.color) html += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
+    else html += `<div class="trainer-icon">${card.icon}</div>`;
+
+    if (card.single) {
+      html += `
+        <div class="trainer-entry">
+          <div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div>
+          <div class="trainer-trans">${card.trans}</div>
+          <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
+        </div>`;
+    } else {
+      html += `
+        <div class="trainer-entry">
+          <div class="trainer-label">Единственное число</div>
+          <div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div>
+          <div class="trainer-trans">${card.trans}</div>
+          <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
+        </div>
+        <div class="divider"></div>
+        <div class="trainer-entry">
+          <div class="trainer-label">Множественное число</div>
+          <div class="trainer-word">${card.plural} <span class="trainer-pron">— ${card.pronP}</span></div>
+          <div class="trainer-trans">${card.transP}</div>
+          <button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button>
+        </div>`;
+    }
+    document.getElementById('trainer-card-container').innerHTML = html;
+  }
+
+  function renderCategoryList() {
+    const categories = [...new Set(cardsData.map(card => card.cat))];
+    const container = document.getElementById('category-list-container');
+    container.innerHTML = categories.map(cat => `<button class="category-btn" onclick="showCategory('${cat}')">${cat}</button>`).join('');
+  }
+
+  let currentCategoryName = "";
+
+  function showCategory(catName, isShuffle = false) {
+    currentCategoryName = catName;
+    document.getElementById('category-title').innerText = catName;
+    
+    let filteredCards = cardsData.filter(card => card.cat === catName);
+    
+    if (isShuffle) {
+      for (let i = filteredCards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [filteredCards[i], filteredCards[j]] = [filteredCards[j], filteredCards[i]];
+      }
+    }
+
+    const container = document.getElementById('category-cards-container');
+    
+    container.innerHTML = filteredCards.map(card => {
+      let inner = `<div class="task-card">`;
+      if (card.color) inner += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
+      else inner += `<div class="trainer-icon">${card.icon}</div>`;
+
+      if (card.single) {
+        inner += `<div class="trainer-entry"><div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div><div class="trainer-trans">${card.trans}</div><button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button></div>`;
+      } else {
+        inner += `
+          <div class="trainer-entry"><div class="trainer-label">Единственное число</div><div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div><div class="trainer-trans">${card.trans}</div><button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button></div>
+          <div class="divider"></div>
+          <div class="trainer-entry"><div class="trainer-label">Множественное число</div><div class="trainer-word">${card.plural} <span class="trainer-pron">— ${card.pronP}</span></div><div class="trainer-trans">${card.transP}</div><button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button></div>`;
+      }
+      inner += `</div>`;
+      return inner;
+    }).join('');
+    
+    document.getElementById('tasks-view').style.display = 'none';
+    document.getElementById('category-detail-view').style.display = 'block';
+    document.querySelector('.content-wrapper').scrollTo(0, 0);
+  }
+
+  function shuffleCurrentCategory() {
+    if (currentCategoryName) {
+      showCategory(currentCategoryName, true);
+    }
+  }
+
+  function speakWord(text) {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.6;
+      const voices = window.speechSynthesis.getVoices();
+      const enVoice = voices.find(v => v.lang.includes('en') && v.name.includes('Google')) || voices.find(v => v.lang.includes('en'));
+      if (enVoice) utterance.voice = enVoice;
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+
+  function renderPrintView() {
+    const printView = document.getElementById('print-view');
+    let html = '';
+    let cardsInSheet = 0;
+    cardsData.forEach((card) => {
+      if (cardsInSheet === 0) html += `<div class="sheet">`;
+      html += `<div class="card ${card.single ? 'single-form' : ''}">`;
+      html += card.color ? `<div class="print-color-circle" style="background: ${card.color};"></div>` : `<div class="print-icon">${card.icon}</div>`;
+      if (card.single) {
+        html += `<div class="print-entry"><div class="print-word">${card.word} <span class="print-pron">— ${card.pron}</span></div><div class="print-trans">${card.trans}</div></div>`;
+      } else {
+        html += `<div class="print-entry"><div class="form-label">Единственное число</div><div class="print-word">${card.word} <span class="print-pron">— ${card.pron}</span></div><div class="print-trans">${card.trans}</div></div><div class="divider"></div><div class="print-entry"><div class="form-label">Множественное число</div><div class="print-word">${card.plural} <span class="print-pron">— ${card.pronP}</span></div><div class="print-trans">${card.transP}</div></div>`;
+      }
+      html += `</div>`;
+      cardsInSheet++;
+      if (cardsInSheet === 6) { html += `</div>`; cardsInSheet = 0; }
+    });
+    if (cardsInSheet > 0) html += `</div>`;
+    printView.innerHTML = html;
+  }
+
+  function switchView(viewName) {
+    document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.content-wrapper > div').forEach(el => el.style.display = 'none');
+    
+    if (viewName === 'home') { document.getElementById('btn-home').classList.add('active'); document.getElementById('home-view').style.display = 'flex'; }
+    else if (viewName === 'tasks') { document.getElementById('btn-tasks').classList.add('active'); document.getElementById('tasks-view').style.display = 'block'; }
+    else if (viewName === 'print') { document.getElementById('btn-print').classList.add('active'); document.getElementById('print-view').style.display = 'block'; }
+  }
+
   window.onload = () => {
     showRandomCard();
     renderCategoryList();
     renderPrintView();
 
-    // Читаем версию из кэша (независимо от того, управляет SW страницей или нет)
     if ('caches' in window) {
       caches.open('app-version').then(cache => {
         cache.match('version').then(response => {
           if (response) {
             response.text().then(version => {
-              // Выводим в консоль
               console.log(`%c 🐻 Английский ПШ | Активный кэш: ${version}`, "color: #1f4e9c; font-size: 16px; font-weight: bold;");
-              
-              // Выводим плашку в левый нижний угол
               let badge = document.getElementById('version-badge');
               if (!badge) {
                 badge = document.createElement('div');
@@ -274,7 +403,6 @@
       });
     }
 
-    // Регистрируем SW (он обновит кэш и запишет новую версию при следующем обновлении)
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js');
     }
