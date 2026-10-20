@@ -213,28 +213,24 @@
 <script src="data.js"></script>
 <script>
   window.onload = () => {
-    // Ваши функции инициализации
+    // Функции инициализации
     showRandomCard();
     renderCategoryList();
     renderPrintView();
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').then(reg => {
-        // Ждем, когда SW возьмет контроль
-        if (navigator.serviceWorker.controller) {
+        // Ждем, пока Service Worker полностью активируется
+        navigator.serviceWorker.ready.then(() => {
           getCacheNameFromSW();
-        } else {
-          navigator.serviceWorker.addEventListener('controllerchange', () => {
-            getCacheNameFromSW();
-          });
-        }
+        });
       }).catch(err => console.log("Ошибка SW:", err));
     }
   };
 
   function getCacheNameFromSW() {
     if (!navigator.serviceWorker.controller) {
-      console.warn("SW еще не контролирует страницу.");
+      console.warn("SW еще не контролирует страницу. Обновите страницу (F5).");
       return;
     }
 
