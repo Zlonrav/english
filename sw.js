@@ -1,4 +1,4 @@
-const CACHE_NAME = 'english-cards-v13';
+const CACHE_NAME = 'english-cards-v14'; // Поднимаем версию
 const ASSETS = [
   './',
   './index.html',
@@ -9,7 +9,11 @@ const ASSETS = [
 self.addEventListener('install', (e) => {
   self.skipWaiting();
   e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then((cache) => {
+      // СОХРАНЯЕМ ВЕРСИЮ В КЭШ
+      caches.open('app-version').then(c => c.put('version', new Response(CACHE_NAME)));
+      return cache.addAll(ASSETS);
+    })
   );
 });
 
@@ -23,11 +27,4 @@ self.addEventListener('fetch', (e) => {
       return response || fetch(e.request);
     })
   );
-});
-
-// ОБЯЗАТЕЛЬНЫЙ БЛОК ДЛЯ ОТВЕТА НА ЗАПРОС ВЕРСИИ
-self.addEventListener('message', (event) => {
-  if (event.data === 'GET_CACHE_NAME') {
-    event.ports[0].postMessage(CACHE_NAME);
-  }
 });
