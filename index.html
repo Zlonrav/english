@@ -212,7 +212,6 @@
 </div>
 <script src="data.js"></script>
 <script>
-  // ================= ИНИЦИАЛИЗАЦИЯ И СВЯЗЬ С SW =================
   window.onload = () => {
     showRandomCard();
     renderCategoryList();
@@ -220,37 +219,33 @@
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').then(reg => {
-        if (navigator.serviceWorker.controller) {
+        // Ждем, пока Service Worker полностью активируется и будет готов
+        navigator.serviceWorker.ready.then(() => {
           getCacheNameFromSW();
-        } else {
-          navigator.serviceWorker.addEventListener('controllerchange', () => {
-            getCacheNameFromSW();
-          });
-        }
+        });
       }).catch(err => console.log("Ошибка SW:", err));
     }
   };
 
-  // Запрашиваем CACHE_NAME у Service Worker
   function getCacheNameFromSW() {
-    return new Promise((resolve, reject) => {
-      const messageChannel = new MessageChannel();
-      
-      messageChannel.port1.onmessage = (event) => {
-        const cacheName = event.data;
-        
-        // Красивый вывод в консоль
-        console.log(
-            `%c 🐻 English Cards \n%c Активный кэш: ${cacheName} \n Статус: Запущено`,
-            "color: #1f4e9c; font-size: 18px; font-weight: bold; margin-bottom: 5px;",
-            "color: #333; font-size: 14px; line-height: 1.5;"
-        );
-        resolve(cacheName);
-      };
-      
-      // Отправляем запрос
-      navigator.serviceWorker.controller.postMessage('GET_CACHE_NAME', [messageChannel.port2]);
-    });
+    // Если SW еще не взял контроль над страницей, просим обновить
+    if (!navigator.serviceWorker.controller) {
+      console.warn("Service Worker еще не контролирует страницу. Нажмите F5 (обновите страницу).");
+      return;
+    }
+
+    const messageChannel = new MessageChannel();
+    
+    messageChannel.port1.onmessage = (event) => {
+      const cacheName = event.data;
+      console.log(
+          `%c 🐻 Английский ПШ \n%c Активный кэш: ${cacheName} \n Статус: Запущено`,
+          "color: #1f4e9c; font-size: 18px; font-weight: bold; margin-bottom: 5px;",
+          "color: #333; font-size: 14px; line-height: 1.5;"
+      );
+    };
+    
+    navigator.serviceWorker.controller.postMessage('GET_CACHE_NAME', [messageChannel.port2]);
   }
 </script>
 </body>
