@@ -1,8 +1,9 @@
-const CACHE_NAME = 'english-cards-v7';
+const CACHE_NAME = 'english-cards-v8';
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './data.js'  // <-- Добавили новый файл в кэш
 ];
 
 self.addEventListener('install', (e) => {
