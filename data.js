@@ -189,8 +189,6 @@ const cardsData = [
   { cat: "15. Фразы", icon: "👎", word: "No", pron: "ноу", trans: "Нет", single: true }
 ];
 
-// ... (Остальной ваш код функций: showRandomCard, renderCategoryList, showCategory, speakWord, renderPrintView, switchView, window.onload) остается БЕЗ ИЗМЕНЕНИЙ. Скопируйте его из вашего текущего файла.
-
   let currentCardIndex = -1;
 
   function showRandomCard() {
@@ -237,9 +235,23 @@ const cardsData = [
     container.innerHTML = categories.map(cat => `<button class="category-btn" onclick="showCategory('${cat}')">${cat}</button>`).join('');
   }
 
-  function showCategory(catName) {
+  let currentCategoryName = ""; // Переменная для хранения текущей темы
+
+  function showCategory(catName, isShuffle = false) {
+    currentCategoryName = catName;
     document.getElementById('category-title').innerText = catName;
-    const filteredCards = cardsData.filter(card => card.cat === catName);
+    
+    // Получаем карточки нужной категории
+    let filteredCards = cardsData.filter(card => card.cat === catName);
+    
+    // Если нажали "Перемешать" - перемешиваем массив (алгоритм Фишера-Йетса)
+    if (isShuffle) {
+      for (let i = filteredCards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [filteredCards[i], filteredCards[j]] = [filteredCards[j], filteredCards[i]];
+      }
+    }
+
     const container = document.getElementById('category-cards-container');
     
     container.innerHTML = filteredCards.map(card => {
@@ -262,6 +274,13 @@ const cardsData = [
     document.getElementById('tasks-view').style.display = 'none';
     document.getElementById('category-detail-view').style.display = 'block';
     document.querySelector('.content-wrapper').scrollTo(0, 0);
+  }
+
+  // Новая функция для кнопки "Перемешать"
+  function shuffleCurrentCategory() {
+    if (currentCategoryName) {
+      showCategory(currentCategoryName, true);
+    }
   }
 
   function speakWord(text) {
