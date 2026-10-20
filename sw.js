@@ -1,4 +1,4 @@
-const CACHE_NAME = 'english-cards-v15'; // Поднимаем версию
+const CACHE_NAME = 'english-cards-v16'; // Поднимаем версию
 const ASSETS = [
   './',
   './index.html',
