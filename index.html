@@ -266,6 +266,7 @@
     let html = '';
     if (card.color) html += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
     else html += `<div class="trainer-icon">${card.icon}</div>`;
+    html += `<div class="divider"></div>`; // <-- ДОБАВИЛИ ЧЕРТУ
 
     if (card.single) {
       html += `
@@ -323,6 +324,7 @@
       let inner = `<div class="task-card">`;
       if (card.color) inner += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
       else inner += `<div class="trainer-icon">${card.icon}</div>`;
+      inner += `<div class="divider"></div>`; // <-- ДОБАВИЛИ ЧЕРТУ
 
       if (card.single) {
         inner += `
@@ -386,6 +388,7 @@
       if (cardsInSheet === 0) html += `<div class="sheet">`;
       html += `<div class="card ${card.single ? 'single-form' : ''}">`;
       html += card.color ? `<div class="print-color-circle" style="background: ${card.color};"></div>` : `<div class="print-icon">${card.icon}</div>`;
+      html += `<div class="divider"></div>`; // <-- ДОБАВИЛИ ЧЕРТУ ДЛЯ ПЕЧАТИ
       
       if (card.single) {
         html += `
