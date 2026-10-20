@@ -1,9 +1,9 @@
-const CACHE_NAME = 'english-cards-v9';
+const CACHE_NAME = 'english-cards-v9'; // Поднял до v9
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './data.js'  // <-- Добавили новый файл в кэш
+  './data.js'
 ];
 
 self.addEventListener('install', (e) => {
@@ -25,7 +25,7 @@ self.addEventListener('fetch', (e) => {
   );
 });
 
-// Этот блок нужен для связи с index.html
+// ОБЯЗАТЕЛЬНЫЙ БЛОК ДЛЯ ОТВЕТА НА ЗАПРОС ВЕРСИИ
 self.addEventListener('message', (event) => {
   if (event.data === 'GET_CACHE_NAME') {
     event.ports[0].postMessage(CACHE_NAME);
