@@ -219,20 +219,21 @@
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').then(reg => {
-        // Ждем, пока Service Worker полностью активируется и будет готов
-        navigator.serviceWorker.ready.then(() => {
+        if (navigator.serviceWorker.controller) {
+          // Если SW уже работает, просто выводим версию
           getCacheNameFromSW();
-        });
+        } else {
+          // Если SW только что установился, ждем, когда он перехватит управление
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            getCacheNameFromSW();
+          });
+        }
       }).catch(err => console.log("Ошибка SW:", err));
     }
   };
 
   function getCacheNameFromSW() {
-    // Если SW еще не взял контроль над страницей, просим обновить
-    if (!navigator.serviceWorker.controller) {
-      console.warn("Service Worker еще не контролирует страницу. Нажмите F5 (обновите страницу).");
-      return;
-    }
+    if (!navigator.serviceWorker.controller) return;
 
     const messageChannel = new MessageChannel();
     
