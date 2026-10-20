@@ -28,7 +28,7 @@
     color: #000;
     height: 100%;
     overflow: hidden;
-    overscroll-behavior: none; /* Отключаем оттягивание страницы на телефонах */
+    overscroll-behavior: none;
   }
 
   /* Навигация */
@@ -63,7 +63,7 @@
 
   /* Контентная часть */
   .content-wrapper {
-    height: calc(100dvh - var(--nav-height)); /* dvh - правильная высота для мобильных */
+    height: calc(100dvh - var(--nav-height));
     overflow-y: auto;
     position: relative;
   }
@@ -74,8 +74,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px;
+    justify-content: center; /* ЦЕНТРИРУЕМ ВСЁ ПО ВЕРТИКАЛИ */
+    padding: 15px;
   }
 
   .trainer-card {
@@ -84,16 +84,17 @@
     border-radius: 20px;
     width: 100%;
     max-width: 450px;
-    flex: 1; /* Карточка занимает всё свободное место */
-    max-height: 550px;
+    /* Высота карточки подстраивается под экран, но не больше 500px */
+    height: clamp(350px, 60vh, 500px); 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    padding: 10px;
-    overflow-y: auto; /* Если текст огромный, внутри карточки появится скролл */
+    padding: 15px;
+    overflow-y: auto;
+    flex-shrink: 0;
   }
 
   .trainer-icon { font-size: clamp(60px, 15vh, 110px); line-height: 1; margin-bottom: 5px; }
@@ -110,13 +111,13 @@
   .speak-btn {
     background: #ffdb4d; border: none; border-radius: 20px; padding: 6px 15px;
     font-size: clamp(14px, 2.5vh, 18px); font-weight: bold; color: #333; cursor: pointer; 
-    margin-top: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    margin-top: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
     display: flex; align-items: center; gap: 6px;
   }
   .speak-btn:active { transform: scale(0.95); }
 
   .next-btn {
-    margin-top: 10px;
+    margin-top: 15px;
     padding: 12px 30px; 
     font-size: clamp(16px, 3vh, 20px); 
     font-weight: bold;
@@ -124,7 +125,7 @@
     cursor: pointer; box-shadow: 0 5px 15px rgba(31, 78, 156, 0.3);
     width: 100%;
     max-width: 450px;
-    flex-shrink: 0; /* Кнопка никогда не сжимается */
+    flex-shrink: 0;
   }
 
   /* ================= ЗАДАНИЯ ================= */
@@ -157,7 +158,7 @@
     align-items: center; justify-content: center; text-align: center;
   }
 
-  /* ================= ПЕЧАТЬ (Оставили как было) ================= */
+  /* ================= ПЕЧАТЬ ================= */
   #print-view { display: none; padding: 20px; background: #fff; }
   .sheet { width: 185mm; height: 270mm; margin: 0 auto 20px auto; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 4mm; }
   .card { border: 1.5px dashed #666; border-radius: 6mm; padding: 3mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
