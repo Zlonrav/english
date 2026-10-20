@@ -98,12 +98,14 @@
   .trainer-icon { font-size: clamp(60px, 15vh, 110px); line-height: 1; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;}
   .trainer-color-circle { width: clamp(60px, 15vh, 90px); height: clamp(60px, 15vh, 90px); border-radius: 50%; margin-bottom: 5px; border: 3px solid #333; }
   
+  /* Квадраты с буквами/цифрами */
   .trainer-icon > div, .print-icon > div {
-    width: 1.2em !important;
+    min-width: 1.2em !important;
     height: 1.2em !important;
-    font-size: 0.9em !important;
+    padding: 0 0.2em !important;
     border-radius: 15% !important;
     box-shadow: 0 4px 10px rgba(31, 78, 156, 0.2);
+    box-sizing: border-box !important;
   }
 
   .trainer-entry { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 5px; }
