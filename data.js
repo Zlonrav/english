@@ -183,7 +183,7 @@ const cardsData = [
   // 15. ФРАЗЫ
   { cat: "15. Фразы", icon: "👋", word: "Hello", pron: "хэлло́у", trans: "Здравствуйте", single: true },
   { cat: "15. Фразы", icon: "🚪", word: "Goodbye", pron: "гудба́й", trans: "До свидания", single: true },
-  { cat: "15. Фразы", icon: "🤝", word: "Thank you", pron: "сэ́нк ю", trans: "Спасибо", single: true },
+  { cat: "15. Фразы", icon: "🤝", word: "Thank you", pron: "сэ́нк-ю", trans: "Спасибо", single: true },
   { cat: "15. Фразы", icon: "🙏", word: "Please", pron: "плиз", trans: "Пожалуйста", single: true },
   { cat: "15. Фразы", icon: "👍", word: "Yes", pron: "йес", trans: "Да", single: true },
   { cat: "15. Фразы", icon: "👎", word: "No", pron: "ноу", trans: "Нет", single: true }
