@@ -212,44 +212,40 @@
 </div>
 <script src="data.js"></script>
 <script>
-  // ================= ИНИЦИАЛИЗАЦИЯ =================
   window.onload = () => {
     showRandomCard();
     renderCategoryList();
     renderPrintView();
 
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').then(() => {
-        // Ждем 500мс, чтобы SW гарантированно встал на ноги, и спрашиваем версию
-        setTimeout(askVersion, 500);
+    // Читаем версию из кэша (независимо от того, управляет SW страницей или нет)
+    if ('caches' in window) {
+      caches.open('app-version').then(cache => {
+        cache.match('version').then(response => {
+          if (response) {
+            response.text().then(version => {
+              // Выводим в консоль
+              console.log(`%c 🐻 Английский ПШ | Активный кэш: ${version}`, "color: #1f4e9c; font-size: 16px; font-weight: bold;");
+              
+              // Выводим плашку в левый нижний угол
+              let badge = document.getElementById('version-badge');
+              if (!badge) {
+                badge = document.createElement('div');
+                badge.id = 'version-badge';
+                badge.style.cssText = 'position:fixed; bottom:5px; left:5px; font-size:10px; color:#888; z-index:9999; background:rgba(255,255,255,0.8); padding:2px 5px; border-radius:4px;';
+                document.body.appendChild(badge);
+              }
+              badge.innerText = `Cache: ${version}`;
+            });
+          }
+        });
       });
     }
-  };
 
-  function askVersion() {
-    if (navigator.serviceWorker.controller) {
-      const channel = new MessageChannel();
-      channel.port1.onmessage = (event) => {
-        const version = event.data;
-        
-        // Выводим в консоль
-        console.log(`%c 🐻 English Cards | Кэш: ${version}`, "color: #1f4e9c; font-size: 16px; font-weight: bold;");
-        
-        // Выводим на экран (в самый низ страницы)
-        let badge = document.getElementById('version-badge');
-        if (!badge) {
-          badge = document.createElement('div');
-          badge.id = 'version-badge';
-          badge.style.cssText = 'position:fixed; bottom:5px; left:5px; font-size:10px; color:#888; z-index:9999; background:rgba(255,255,255,0.8); padding:2px 5px; border-radius:4px;';
-          document.body.appendChild(badge);
-        }
-        badge.innerText = `Cache: ${version}`;
-      };
-      navigator.serviceWorker.controller.postMessage('GET_CACHE_NAME', [channel.port2]);
-    } else {
-      console.warn("SW еще не контролирует страницу (обновите страницу F5).");
+    // Регистрируем SW (он обновит кэш и запишет новую версию при следующем обновлении)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
     }
-  }
+  };
 </script>
 </body>
 </html>
