@@ -167,6 +167,28 @@
     align-items: center; justify-content: center; text-align: center;
   }
 
+    .category-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .back-btn {
+    background: #e0e7ff; border: none; border-radius: 8px; padding: 8px 15px;
+    font-size: 14px; font-weight: bold; color: var(--main-color); cursor: pointer;
+    /* Убрали margin-bottom, так как теперь они в одном контейнере */
+  }
+
+  .shuffle-btn {
+    background: #ffdb4d; border: none; border-radius: 8px; padding: 8px 15px;
+    font-size: 14px; font-weight: bold; color: #333; cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: 0.2s;
+  }
+  .shuffle-btn:hover { background: #ffd633; }
+  .shuffle-btn:active { transform: scale(0.95); }
+
   /* ================= ПЕЧАТЬ ================= */
   #print-view { display: none; padding: 20px; background: #fff; }
   .sheet { width: 185mm; height: 270mm; margin: 0 auto 20px auto; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 4mm; }
@@ -211,7 +233,10 @@
   </div>
 
   <div id="category-detail-view">
-    <button class="back-btn" onclick="switchView('tasks')">← Назад к заданиям</button>
+    <div class="category-nav">
+      <button class="back-btn" onclick="switchView('tasks')">← Назад к заданиям</button>
+      <button class="shuffle-btn" onclick="shuffleCurrentCategory()">🔀 Перемешать</button>
+    </div>
     <h2 class="tasks-title" id="category-title">Тема</h2>
     <div class="category-cards-grid" id="category-cards-container"></div>
   </div>
