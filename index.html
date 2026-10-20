@@ -537,7 +537,7 @@
       
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
-      utterance.rate = 0.6; // Чуть медленнее
+      utterance.rate = 0.6; // Чуть медленнее // Скорость чтения!
       
       const voices = window.speechSynthesis.getVoices();
       const enVoice = voices.find(v => v.lang.includes('en') && v.name.includes('Google')) || 
