@@ -1,16 +1,16 @@
 // ================= БАЗА ДАННЫХ =================
 const cardsData = [
   // 1. ЦИФРЫ
-  { cat: "1. Цифры", icon: "1️⃣", word: "One", pron: "уан", trans: "один", single: true },
-  { cat: "1. Цифры", icon: "2️⃣", word: "Two", pron: "ту", trans: "два", single: true },
-  { cat: "1. Цифры", icon: "3️⃣", word: "Three", pron: "сри", trans: "три", single: true },
-  { cat: "1. Цифры", icon: "4️⃣", word: "Four", pron: "фо", trans: "четыре", single: true },
-  { cat: "1. Цифры", icon: "5️⃣", word: "Five", pron: "файв", trans: "пять", single: true },
-  { cat: "1. Цифры", icon: "6️⃣", word: "Six", pron: "сикс", trans: "шесть", single: true },
-  { cat: "1. Цифры", icon: "7️⃣", word: "Seven", pron: "сэ́вэн", trans: "семь", single: true },
-  { cat: "1. Цифры", icon: "8️⃣", word: "Eight", pron: "эйт", trans: "восемь", single: true },
-  { cat: "1. Цифры", icon: "9️⃣", word: "Nine", pron: "найн", trans: "девять", single: true },
-  { cat: "1. Цифры", icon: "🔟", word: "Ten", pron: "тэн", trans: "десять", single: true },
+  { cat: "1. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">1</div>', word: "One", pron: "уан", trans: "один", single: true },
+  { cat: "1. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">2</div>', word: "Two", pron: "ту", trans: "два", single: true },
+  { cat: "1. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">3</div>', word: "Three", pron: "сри", trans: "три", single: true },
+  { cat: "1. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">4</div>', word: "Four", pron: "фо", trans: "четыре", single: true },
+  { cat: "1. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">5</div>', word: "Five", pron: "файв", trans: "пять", single: true },
+  { cat: "1. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">6</div>', word: "Six", pron: "сикс", trans: "шесть", single: true },
+  { cat: "1. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">7</div>', word: "Seven", pron: "сэ́вэн", trans: "семь", single: true },
+  { cat: "1. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">8</div>', word: "Eight", pron: "эйт", trans: "восемь", single: true },
+  { cat: "1. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">9</div>', word: "Nine", pron: "найн", trans: "девять", single: true },
+  { cat: "1. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">10</div>', word: "Ten", pron: "тэн", trans: "десять", single: true },
 
   // 2. БУКВЫ (АЛФАВИТ)
   { cat: "2. Буквы", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">A</div>', word: "A", pron: "эй", trans: "буква A", single: true },
