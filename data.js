@@ -141,7 +141,7 @@ const cardsData = [
   { cat: "3. Числа", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.6em; line-height: 1;">98</div>', word: "Ninety-eight", pron: "на́йнти эйт", trans: "девяносто восемь", single: true },
   { cat: "3. Числа", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.6em; line-height: 1;">99</div>', word: "Ninety-nine", pron: "на́йнти найн", trans: "девяносто девять", single: true },
   
-  { cat: "3. Числа", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.45em; line-height: 1;">100</div>', word: "One hundred", pron: "уан ха́ндрэд", trans: "сто", single: true },
+    { cat: "3. Числа", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.55em; line-height: 1;">100</div>', word: "One hundred", pron: "уан ха́ндрэд", trans: "сто", single: true },
 
   // 4. ЛЮДИ
   { cat: "4. Люди", icon: "👶", word: "Child", pron: "чайлд", trans: "ребёнок", plural: "Children", pronP: "чилдрен", transP: "дети" },
