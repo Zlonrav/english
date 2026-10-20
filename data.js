@@ -161,4 +161,132 @@ const cardsData = [
   { cat: "14. Фразы", icon: svg('<path d="M4 12h16M12 4v16M6 6l12 12M18 6L6 18"/>'), word: "No", pron: "ноу", trans: "Нет", single: true }
 ];
 
-// ... остальные функции (showRandomCard, renderCategoryList и т.д.) оставляем без изменений ...
+let currentCardIndex = -1;
+
+  function showRandomCard() {
+    let newIndex = Math.floor(Math.random() * cardsData.length);
+    while (newIndex === currentCardIndex && cardsData.length > 1) {
+      newIndex = Math.floor(Math.random() * cardsData.length);
+    }
+    currentCardIndex = newIndex;
+    const card = cardsData[currentCardIndex];
+
+    let html = '';
+    if (card.color) html += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
+    else html += `<div class="trainer-icon">${card.icon}</div>`;
+
+    if (card.single) {
+      html += `
+        <div class="trainer-entry">
+          <div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div>
+          <div class="trainer-trans">${card.trans}</div>
+          <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
+        </div>`;
+    } else {
+      html += `
+        <div class="trainer-entry">
+          <div class="trainer-label">Единственное число</div>
+          <div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div>
+          <div class="trainer-trans">${card.trans}</div>
+          <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
+        </div>
+        <div class="divider"></div>
+        <div class="trainer-entry">
+          <div class="trainer-label">Множественное число</div>
+          <div class="trainer-word">${card.plural} <span class="trainer-pron">— ${card.pronP}</span></div>
+          <div class="trainer-trans">${card.transP}</div>
+          <button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button>
+        </div>`;
+    }
+    document.getElementById('trainer-card-container').innerHTML = html;
+  }
+
+  function renderCategoryList() {
+    const categories = [...new Set(cardsData.map(card => card.cat))];
+    const container = document.getElementById('category-list-container');
+    container.innerHTML = categories.map(cat => `<button class="category-btn" onclick="showCategory('${cat}')">${cat}</button>`).join('');
+  }
+
+  function showCategory(catName) {
+    document.getElementById('category-title').innerText = catName;
+    const filteredCards = cardsData.filter(card => card.cat === catName);
+    const container = document.getElementById('category-cards-container');
+    
+    container.innerHTML = filteredCards.map(card => {
+      let inner = `<div class="task-card">`;
+      if (card.color) inner += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
+      else inner += `<div class="trainer-icon">${card.icon}</div>`;
+
+      if (card.single) {
+        inner += `<div class="trainer-entry"><div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div><div class="trainer-trans">${card.trans}</div><button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button></div>`;
+      } else {
+        inner += `
+          <div class="trainer-entry"><div class="trainer-label">Единственное число</div><div class="trainer-word">${card.word} <span class="trainer-pron">— ${card.pron}</span></div><div class="trainer-trans">${card.trans}</div><button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button></div>
+          <div class="divider"></div>
+          <div class="trainer-entry"><div class="trainer-label">Множественное число</div><div class="trainer-word">${card.plural} <span class="trainer-pron">— ${card.pronP}</span></div><div class="trainer-trans">${card.transP}</div><button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button></div>`;
+      }
+      inner += `</div>`;
+      return inner;
+    }).join('');
+    
+    document.getElementById('tasks-view').style.display = 'none';
+    document.getElementById('category-detail-view').style.display = 'block';
+    document.querySelector('.content-wrapper').scrollTo(0, 0);
+  }
+
+  function speakWord(text) {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.6;
+      const voices = window.speechSynthesis.getVoices();
+      const enVoice = voices.find(v => v.lang.includes('en') && v.name.includes('Google')) || voices.find(v => v.lang.includes('en'));
+      if (enVoice) utterance.voice = enVoice;
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+
+  function renderPrintView() {
+    const printView = document.getElementById('print-view');
+    let html = '';
+    let cardsInSheet = 0;
+    cardsData.forEach((card) => {
+      if (cardsInSheet === 0) html += `<div class="sheet">`;
+      html += `<div class="card ${card.single ? 'single-form' : ''}">`;
+      html += card.color ? `<div class="print-color-circle" style="background: ${card.color};"></div>` : `<div class="print-icon">${card.icon}</div>`;
+      if (card.single) {
+        html += `<div class="print-entry"><div class="print-word">${card.word} <span class="print-pron">— ${card.pron}</span></div><div class="print-trans">${card.trans}</div></div>`;
+      } else {
+        html += `<div class="print-entry"><div class="form-label">Единственное число</div><div class="print-word">${card.word} <span class="print-pron">— ${card.pron}</span></div><div class="print-trans">${card.trans}</div></div><div class="divider"></div><div class="print-entry"><div class="form-label">Множественное число</div><div class="print-word">${card.plural} <span class="print-pron">— ${card.pronP}</span></div><div class="print-trans">${card.transP}</div></div>`;
+      }
+      html += `</div>`;
+      cardsInSheet++;
+      if (cardsInSheet === 6) { html += `</div>`; cardsInSheet = 0; }
+    });
+    if (cardsInSheet > 0) html += `</div>`;
+    printView.innerHTML = html;
+  }
+
+  function switchView(viewName) {
+    document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.content-wrapper > div').forEach(el => el.style.display = 'none');
+    
+    if (viewName === 'home') { document.getElementById('btn-home').classList.add('active'); document.getElementById('home-view').style.display = 'flex'; }
+    else if (viewName === 'tasks') { document.getElementById('btn-tasks').classList.add('active'); document.getElementById('tasks-view').style.display = 'block'; }
+    else if (viewName === 'print') { document.getElementById('btn-print').classList.add('active'); document.getElementById('print-view').style.display = 'block'; }
+  }
+
+  // Инициализация и регистрация Service Worker
+  window.onload = () => {
+    showRandomCard();
+    renderCategoryList();
+    renderPrintView();
+
+    // Регистрация Service Worker для PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log("Service Worker зарегистрирован"))
+        .catch((err) => console.log("Ошибка регистрации SW:", err));
+    }
+  };
