@@ -39,7 +39,6 @@ const cardsData = [
   { cat: "2. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">7</div>', word: "Seven", pron: "сэ́вэн", trans: "семь", single: true },
   { cat: "2. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">8</div>', word: "Eight", pron: "эйт", trans: "восемь", single: true },
   { cat: "2. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">9</div>', word: "Nine", pron: "найн", trans: "девять", single: true },
-  { cat: "2. Цифры", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.75em; line-height: 1;">10</div>', word: "Ten", pron: "тэн", trans: "десять", single: true },
 
   // 3. ЧИСЛА (10-100)
   { cat: "3. Числа", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.6em; line-height: 1;">10</div>', word: "Ten", pron: "тэн", trans: "десять", single: true },
