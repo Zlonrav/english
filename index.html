@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#1f4e9c">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgcng9IjQwIiBmaWxsPSIjZmZkZDU3Ii8+PGNpcmNsZSBjeD0iNTUiIGN5PSI1NSIgcj0iMjUiIGZpbGw9IiNhODdiNWUiLz48Y2lyY2xlIGN4PSIxMzciIGN5PSI1NSIgcj0iMjUiIGZpbGw9IiNhODdiNWUiLz48Y2lyY2xlIGN4PSI5NiIgY3k9Ijk2IiByPSI1NSIgZmlsbD0iI2M0OWE2YyIvPjxjaXJjbGUgY3g9Ijc1IiBjeT0iODUiIHI9IjgiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIxMTciIGN5PSI4NSIgcj0iOCIgZmlsbD0iIzMzMyIvPjxlbGxpcHNlIGN4PSI5NiIgY3k9IjExNSIgcng9IjE4IiByeT0iMTIiIGZpbGw9IiNmNGQwYjUiLz48Y2lyY2xlIGN4PSI5NiIgY3k9IjEwNSIgcj0iNSIgZmlsbD0iIzMzMyIvPjxwYXRoIGQ9Ik0gOTYgMTEwIFEgOTYgMTI1IDc1IDEyMCIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0gOTYgMTEwIFEgOTYgMTI1IDExNyAxMjAiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=">
-<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgcng9IjQwIiBmaWxsPSIjZmZkZDU3Ii8+PGNpcmNsZSBjeD0iNTUiIGN5PSI1NSIgcj0iMjUiIGZpbGw9IiNhODdiNWUiLz48Y2lyY2xlIGN4PSIxMzciIGN5PSI1NSIgcj0iMjUiIGZpbGw9IiNhODdiNWUiLz48Y2lyY2xlIGN4PSI5NiIgY3k9Ijk2IiByPSI1NSIgZmlsbD0iI2M0OWE2YyIvPjxjaXJjbGUgY3g9Ijc1IiBjeT0iODUiIHI9IjgiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIxMTciIGN5PSI4NSIgcj0iOCIgZmlsbD0iIzMzMyIvPjxlbGxpcHNlIGN4PSI5NiIgY3k9IjExNSIgcng9IjE4IiByeT0iMTIiIGZpbGw9IiNmNGQwYjUiLz48Y2lyY2xlIGN4PSI5NiIgY3k9IjEwNSIgcj0iNSIgZmlsbD0iIzMzMyIvPjxwYXRoIGQ9Ik0gOTYgMTEwIFEgOTYgMTI1IDc1IDEyMCIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0gOTYgMTEwIFEgOTYgMTI1IDExNyAxMjAiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=">
-<link rel="manifest" href="manifest.json">
 <title>Английский ПШ</title>
 <style>
   /* ================= ОБЩИЕ СТИЛИ ================= */
@@ -15,250 +12,356 @@
     --main-color: #1f4e9c;
     --bg-color: #f0f4f8;
     --nav-height: 60px;
+    --gold: #ffc107;
+    --green: #28a745;
+    --red: #dc3545;
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
   html, body {
-    margin: 0;
-    padding: 0;
+    margin: 0; padding: 0;
     background-color: var(--bg-color);
     font-family: Arial, "Segoe UI", sans-serif;
-    color: #000;
-    height: 100%;
-    overflow: hidden;
-    overscroll-behavior: none;
+    color: #000; height: 100%; overflow: hidden;
   }
 
-  /* Навигация */
-  .nav {
-    background: #fff;
-    height: var(--nav-height);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    padding: 0 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    position: relative;
-    z-index: 1000;
+  /* Шапка (Звезды, Стрик) */
+  .top-bar {
+    background: #fff; height: var(--nav-height);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: relative; z-index: 1000;
   }
-
-  .nav button {
-    padding: 8px 12px;
-    font-size: clamp(12px, 3vw, 15px);
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background: #e0e7ff;
-    color: var(--main-color);
-    transition: 0.2s;
-    flex: 1;
-    max-width: 150px;
-  }
-
-  .nav button.active { background: var(--main-color); color: #fff; }
+  .top-stats { display: flex; gap: 15px; font-size: 18px; font-weight: bold; }
+  .stat-item { display: flex; align-items: center; gap: 5px; }
 
   /* Контентная часть */
-  .content-wrapper {
-    height: calc(100dvh - var(--nav-height));
-    overflow-y: auto;
-    position: relative;
-  }
+  .content-wrapper { height: calc(100dvh - var(--nav-height)); overflow-y: auto; position: relative; }
+  .view { display: none; height: 100%; padding: 15px; flex-direction: column; align-items: center; }
 
-    /* ================= ТРЕНАЖЕР ================= */
-  #home-view {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
+  /* ================= ДАШБОРД (Главная) ================= */
+  #dashboard-view { justify-content: flex-start; padding-top: 20px; }
+  
+  .pet-container {
+    text-align: center; background: #fff; padding: 20px;
+    border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    width: 100%; max-width: 400px; margin-bottom: 20px;
   }
+  .pet-avatar { font-size: 80px; line-height: 1; margin-bottom: 10px; animation: bounce 2s infinite; }
+  .pet-name { font-size: 20px; font-weight: bold; color: var(--main-color); margin-bottom: 5px; }
+  
+  .level-bar-container {
+    width: 100%; height: 15px; background: #e0e0e0;
+    border-radius: 10px; overflow: hidden; margin-top: 10px; position: relative;
+  }
+  .level-bar { height: 100%; background: var(--main-color); width: 0%; transition: width 0.5s ease; }
+  .level-text { font-size: 12px; color: #666; margin-top: 5px; font-weight: bold; }
 
+  .main-buttons { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; }
+  .big-btn {
+    background: #fff; border: 3px solid #ddd; border-radius: 20px;
+    padding: 20px; font-size: 22px; font-weight: bold; color: #333;
+    cursor: pointer; display: flex; align-items: center; gap: 15px;
+    box-shadow: 0 5px 0 #ddd; transition: 0.1s;
+  }
+  .big-btn:active { transform: translateY(5px); box-shadow: 0 0 0 #ddd; }
+  .big-btn i { font-size: 30px; font-style: normal; }
+  .btn-trainer { border-color: #1f4e9c; color: #1f4e9c; box-shadow: 0 5px 0 #1f4e9c; }
+  .btn-tasks { border-color: #1f7a3a; color: #1f7a3a; box-shadow: 0 5px 0 #1f7a3a; }
+  .btn-quiz { border-color: #d97706; color: #d97706; box-shadow: 0 5px 0 #d97706; }
+
+  /* ================= ТРЕНАЖЕР ================= */
+  #trainer-view { justify-content: center; }
   .trainer-card {
-    background: #fff;
-    border: 3px dashed #666;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 450px;
-    /* Используем min-height вместо жесткого height, чтобы карточка растягивалась, если контент не влезает */
-    min-height: 520px; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    padding: 15px;
-    flex-shrink: 0;
+    background: #fff; border: 3px dashed #666; border-radius: 20px;
+    width: 100%; max-width: 450px; min-height: 450px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; position: relative;
   }
-
-  .trainer-icon { font-size: clamp(60px, 14vh, 100px); line-height: 1; margin-bottom: 5px; display: flex; align-items: center; justify-content: center;}
-  .trainer-color-circle { width: clamp(60px, 14vh, 90px); height: clamp(60px, 14vh, 90px); border-radius: 50%; margin-bottom: 5px; border: 3px solid #333; }
-  .trainer-icon img, .print-icon img {
-    width: 1em;
-    height: 1em;
-    object-fit: contain; /* Сохраняет пропорции картинки */
-  }
-  
-  /* Квадраты с буквами/цифрами */
-  .trainer-icon > div, .print-icon > div {
-    min-width: 2em !important;
-    height: 1.5em !important;
-    padding: 0 0.2em !important;
-    border-radius: 15% !important;
-    box-shadow: 0 4px 10px rgba(31, 78, 156, 0.2);
-    box-sizing: border-box !important;
-  }
-
-  .trainer-entry { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 2px; }
-  
-  /* Размер 8pt для заголовков */
-  .trainer-label { font-size: 6pt !important; font-weight: 700; color: #888; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px;}
-  
-  /* Вернули нормальный крупный шрифт */
+  .trainer-icon { font-size: clamp(60px, 15vh, 100px); margin-bottom: 5px; display: flex; justify-content: center;}
+  .trainer-icon > div { min-width: 2em !important; height: 1.5em !important; padding: 0 0.2em !important; border-radius: 15% !important; display: flex; align-items: center; justify-content: center;}
   .trainer-word { font-size: clamp(24px, 5vh, 36px); font-weight: 800; line-height: 1.1; margin-bottom: 2px; }
   .trainer-pron { font-size: clamp(16px, 3.5vh, 22px); color: #666; margin-bottom: 2px; }
-  .trainer-trans { font-size: clamp(18px, 4vh, 26px); color: #333; font-weight: 600; margin-bottom: 4px;}
+  .trainer-trans { font-size: clamp(18px, 4vh, 26px); color: #333; font-weight: 600; margin-bottom: 10px; }
+  .divider { width: 80%; height: 2px; background: #eee; margin: 10px 0; }
   
-  /* Чуть уменьшили отступы между блоками, чтобы сэкономить место */
-  .divider { width: 80%; height: 2px; background: #eee; margin: 6px 0; }
-
-  .speak-btn {
-    background: #ffdb4d; border: none; border-radius: 20px; padding: 6px 15px;
-    font-size: clamp(14px, 2.5vh, 18px); font-weight: bold; color: #333; cursor: pointer; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 4px;
-    margin-top: 4px;
+  .action-btn {
+    padding: 12px 25px; font-size: 18px; font-weight: bold;
+    border: none; border-radius: 30px; cursor: pointer; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: 0.2s; width: 100%; max-width: 300px; margin-top: 10px;
   }
-  .speak-btn:active { transform: scale(0.95); }
-
-  .next-btn {
-    margin-top: 15px;
-    padding: 12px 30px; 
-    font-size: clamp(16px, 3vh, 20px); 
-    font-weight: bold;
-    background: var(--main-color); color: #fff; border: none; border-radius: 50px;
-    cursor: pointer; box-shadow: 0 5px 15px rgba(31, 78, 156, 0.3);
-    width: 100%;
-    max-width: 450px;
-    flex-shrink: 0;
+  .btn-listen { background: #ffdb4d; color: #333; }
+  .btn-next { background: var(--main-color); color: #fff; }
+  
+  /* Полоска перезарядки */
+  .cooldown-bar {
+    position: absolute; bottom: 0; left: 0; height: 6px; background: rgba(0,0,0,0.2);
+    width: 0%; transition: width 0.1s linear;
   }
+  .action-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
 
   /* ================= ЗАДАНИЯ ================= */
-  #tasks-view, #category-detail-view {
-    display: none;
-    padding: 15px;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .tasks-title { text-align: center; margin: 10px 0 20px; color: var(--main-color); font-size: clamp(18px, 4vw, 24px); }
-  
-  .category-list { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); 
-    gap: 10px; 
-  }
-  
+  #tasks-view, #category-view { display: none; padding: 15px; max-width: 800px; margin: 0 auto; }
+  .category-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
   .category-btn {
-    background: #fff; border: 2px solid #ccc; border-radius: 12px;
-    padding: 15px 10px; font-size: clamp(14px, 3vw, 18px); font-weight: bold;
-    color: #333; cursor: pointer; text-align: center; white-space: nowrap;
+    background: #fff; border: 2px solid #ccc; border-radius: 12px; padding: 15px 10px;
+    font-size: clamp(14px, 3vw, 18px); font-weight: bold; color: #333; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
   }
-  .category-btn:hover { border-color: var(--main-color); background: #f0f4f8; }
-
-  .category-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-
-  .back-btn {
-    background: #e0e7ff; border: none; border-radius: 8px; padding: 8px 15px;
-    font-size: 14px; font-weight: bold; color: var(--main-color); cursor: pointer;
-  }
-
-  .shuffle-btn {
-    background: #ffdb4d; border: none; border-radius: 8px; padding: 8px 15px;
-    font-size: 14px; font-weight: bold; color: #333; cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.2s;
-  }
-  .shuffle-btn:active { transform: scale(0.95); }
-
-  .category-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-
-  .task-card {
-    background: #fff; border: 3px dashed #666; border-radius: 20px;
-    padding: 20px 15px; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; text-align: center;
-  }
-
-  /* ================= ПЕЧАТЬ ================= */
-  #print-view { display: none; padding: 20px; background: #fff; }
-  .sheet { width: 185mm; height: 270mm; margin: 0 auto 20px auto; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 4mm; }
-  .card { border: 1.5px dashed #666; border-radius: 6mm; padding: 3mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .category-btn.done { background: #fff8e1; border-color: var(--gold); color: #b45309; box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3); }
+  .cat-progress { font-size: 12px; color: #666; }
   
-  .print-icon { font-size: 76px; line-height: 1; margin-bottom: 2mm; display: flex; align-items: center; justify-content: center;}
-  .print-color-circle { width: 70px; height: 70px; border-radius: 50%; margin-bottom: 3mm; border: 2px solid #333; }
-  
-  .print-entry { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 2mm; }
-  .form-label { font-size: 8pt !important; font-weight: 600; color: #555; margin-bottom: 1mm; text-transform: uppercase; }
-  
-  .print-word { font-size: 18pt; font-weight: 700; line-height: 1.1; margin-bottom: 1mm; }
-  .print-pron { font-size: 14pt; color: #555; margin-bottom: 1mm; }
-  .print-trans { font-size: 18pt; font-weight: 600; color: #333; }
-  
-  .single-form .print-icon { font-size: 90px; margin-bottom: 4mm; }
-  .single-form .print-word { font-size: 24pt; margin-bottom: 2mm; }
-  .single-form .print-trans { font-size: 22pt; }
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
+  .task-card { background: #fff; border: 3px dashed #ccc; border-radius: 20px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .task-card.learned { border-color: var(--gold); background: #fffdf5; }
 
-  @page { size: A4 portrait; margin: 10mm; }
-  @media print {
-    body { background: #fff; height: auto; overflow: visible; }
-    .nav, #home-view, #tasks-view, #category-detail-view { display: none !important; }
-    #print-view { display: block !important; padding: 0; }
-    .sheet { page-break-after: always; margin: 0 auto; }
-    .sheet:last-child { page-break-after: auto; }
+  /* ================= ИГРА (УГАДАЙКА) ================= */
+  #quiz-view { justify-content: center; }
+  .quiz-menu { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; }
+  .quiz-play { display: none; width: 100%; max-width: 500px; text-align: center; }
+  .quiz-question { font-size: 28px; font-weight: bold; margin-bottom: 20px; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+  .quiz-options { display: flex; flex-direction: column; gap: 10px; }
+  .quiz-opt-btn {
+    padding: 15px; font-size: 18px; border-radius: 12px; border: 2px solid var(--main-color);
+    background: #fff; color: var(--main-color); font-weight: bold; cursor: pointer; transition: 0.2s;
   }
+  .quiz-opt-btn.correct { background: var(--green); color: #fff; border-color: var(--green); }
+  .quiz-opt-btn.wrong { background: var(--red); color: #fff; border-color: var(--red); }
+
+  /* Всплывающие окна */
+  .toast {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: #000; padding: 15px 30px; border-radius: 30px;
+    font-weight: bold; font-size: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    z-index: 9999; animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+  }
+  @keyframes slideDown { from { top: -50px; opacity: 0; } to { top: 20px; opacity: 1; } }
+  @keyframes fadeOut { to { opacity: 0; } }
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 </style>
 </head>
 <body>
 
-<div class="nav">
-  <button id="btn-home" class="active" onclick="switchView('home')">🏠 Тренажер</button>
-  <button id="btn-tasks" onclick="switchView('tasks')">📚 Задания</button>
-  <!-- <button id="btn-print" onclick="switchView('print')">🖨️ Печать</button> -->
+<!-- Верхняя панель со статистикой -->
+<div class="top-bar">
+  <div class="top-stats">
+    <div class="stat-item">⭐ <span id="ui-stars">0</span></div>
+    <div class="stat-item">🔥 <span id="ui-streak">0</span></div>
+  </div>
+  <button onclick="goHome()" style="background:none; border:none; font-size:24px; cursor:pointer;">🏠</button>
 </div>
 
 <div class="content-wrapper">
-  <div id="home-view">
-    <div class="trainer-card" id="trainer-card-container"></div>
-    <button class="next-btn" onclick="showRandomCard()">Следующее слово ➔</button>
+  <!-- 1. ГЛАВНАЯ (ДАШБОРД) -->
+  <div id="dashboard-view" class="view" style="display:flex;">
+    <div class="pet-container" id="pet-box">
+      <!-- Генерируется JS -->
+    </div>
+    <div class="main-buttons">
+      <button class="big-btn btn-trainer" onclick="startTrainer()"><i>🏠</i> Тренажер</button>
+      <button class="big-btn btn-tasks" onclick="openTasks()"><i>📚</i> Задания</button>
+      <button class="big-btn btn-quiz" onclick="openQuiz()"><i>🏆</i> Проверка знаний</button>
+    </div>
   </div>
 
-  <div id="tasks-view">
-    <h2 class="tasks-title">Выберите тему задания</h2>
+  <!-- 2. ТРЕНАЖЕР -->
+  <div id="trainer-view" class="view">
+    <div class="trainer-card" id="trainer-card-container"></div>
+  </div>
+
+  <!-- 3. СПИСОК ЗАДАНИЙ -->
+  <div id="tasks-view" class="view" style="display:none;">
+    <h2 style="color:var(--main-color); margin-top:0;">Выберите тему</h2>
     <div class="category-list" id="category-list-container"></div>
   </div>
 
-  <div id="category-detail-view">
-    <div class="category-nav">
-      <button class="back-btn" onclick="switchView('tasks')">← Назад к заданиям</button>
-      <button class="shuffle-btn" onclick="shuffleCurrentCategory()">🔀 Перемешать</button>
+  <!-- 3.1 КАРТОЧКИ КАТЕГОРИИ -->
+  <div id="category-view" class="view" style="display:none; max-width: 1000px; margin: 0 auto; overflow-y: auto;">
+    <div style="display:flex; justify-content:space-between; width:100%; margin-bottom:10px;">
+      <button class="action-btn" style="width:auto; padding:8px 15px; font-size:14px; background:#e0e7ff; color:var(--main-color);" onclick="openTasks()">← Назад</button>
+      <button class="action-btn" style="width:auto; padding:8px 15px; font-size:14px; background:var(--gold); color:#000;" onclick="shuffleCategory()">🔀 Перемешать</button>
     </div>
-    <h2 class="tasks-title" id="category-title">Тема</h2>
-    <div class="category-cards-grid" id="category-cards-container"></div>
+    <h2 style="color:var(--main-color); margin-top:0;" id="category-title">Тема</h2>
+    <div class="cards-grid" id="category-cards-container"></div>
   </div>
 
-  <div id="print-view"></div>
+  <!-- 4. ИГРА (УГАДАЙКА) -->
+  <div id="quiz-view" class="view">
+    <div class="quiz-menu" id="quiz-menu">
+      <h2 style="text-align:center; color:var(--main-color); margin-bottom:20px;">Выберите режим</h2>
+      <button class="big-btn" style="justify-content:center;" onclick="startQuiz(1)">👁️ Вижу слово</button>
+      <button class="big-btn" style="justify-content:center;" onclick="startQuiz(2)">👂 Слышу слово</button>
+      <button class="big-btn" style="justify-content:center;" onclick="startQuiz(3)">🗣️ Вижу перевод</button>
+    </div>
+    <div class="quiz-play" id="quiz-play">
+      <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+        <button onclick="openQuiz()" style="background:none; border:none; font-size:16px; color:var(--main-color); cursor:pointer;">← Выйти</button>
+        <span id="quiz-score" style="font-weight:bold; color:var(--green);">Правильно: 0</span>
+      </div>
+      <div class="quiz-question" id="quiz-question">Вопрос</div>
+      <button id="quiz-sound-btn" style="display:none; font-size:40px; background:none; border:none; cursor:pointer; margin-bottom:20px;" onclick="speakWord(currentQuizCard.word)">🔊</button>
+      <div class="quiz-options" id="quiz-options"></div>
+    </div>
+  </div>
 </div>
 
 <script src="data.js"></script>
 <script>
+  // ================= СОСТОЯНИЕ (LocalStorage) =================
+  let state = {
+    stars: parseInt(localStorage.getItem('eng_stars') || '0'),
+    streak: parseInt(localStorage.getItem('eng_streak') || '0'),
+    lastDate: localStorage.getItem('eng_lastDate') || '',
+    dailyCount: parseInt(localStorage.getItem('eng_dailyCount') || '0'),
+    learned: JSON.parse(localStorage.getItem('eng_learned') || '[]'),
+    petName: localStorage.getItem('eng_petName') || ''
+  };
+
+  function saveState() {
+    localStorage.setItem('eng_stars', state.stars);
+    localStorage.setItem('eng_streak', state.streak);
+    localStorage.setItem('eng_lastDate', state.lastDate);
+    localStorage.setItem('eng_dailyCount', state.dailyCount);
+    localStorage.setItem('eng_learned', JSON.stringify(state.learned));
+    localStorage.setItem('eng_petName', state.petName);
+    updateUI();
+  }
+
+  // ================= УТИЛИТЫ И UI =================
+  function updateUI() {
+    document.getElementById('ui-stars').innerText = state.stars;
+    document.getElementById('ui-streak').innerText = state.streak;
+    updatePet();
+    updateLevel();
+  }
+
+  function addStars(amount) {
+    state.stars += amount;
+    checkDailyProgress();
+    saveState();
+    showToast(`+${amount} ⭐`);
+  }
+
+  function showToast(text) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerText = text;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+  }
+
+  // ================= ЛОГИКА ПИТОМЦА =================
+  function updatePet() {
+    const container = document.getElementById('pet-box');
+    if (!state.petName) {
+      container.innerHTML = `
+        <div style="font-size:16px; margin-bottom:10px;">Как зовут твоего питомца?</div>
+        <input type="text" id="pet-input" style="padding:10px; font-size:16px; border-radius:8px; border:2px solid #ccc; width:80%; text-align:center;" placeholder="Введи имя...">
+        <button onclick="createPet()" style="margin-top:10px; padding:10px 20px; background:var(--main-color); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">Создать</button>
+      `;
+      return;
+    }
+
+    // Генерация на лету (hash от имени)
+    const pets = ['🦊', '🐼', '🐨', '🦁', '🐸', '🐙', '🦖', '🐲', '🐧', '🦄', '🐺', '🐻'];
+    const acc = ['', '🎩', '👑', '🕶️', '🎀', '🧣', '🎧'];
+    let hash = 0;
+    for (let i = 0; i < state.petName.length; i++) hash += state.petName.charCodeAt(i);
+    
+    const petEmoji = pets[hash % pets.length];
+    const petAcc = acc[hash % acc.length];
+
+    container.innerHTML = `
+      <div class="pet-avatar">${petEmoji}</div>
+      <div class="pet-name">${state.petName} ${petAcc}</div>
+      <div id="level-container"></div>
+    `;
+    updateLevel();
+  }
+
+  function createPet() {
+    const val = document.getElementById('pet-input').value.trim();
+    if (val) {
+      state.petName = val;
+      saveState();
+    }
+  }
+
+  // ================= ЛОГИКА УРОВНЕЙ =================
+  function updateLevel() {
+    const lvlBox = document.getElementById('level-container');
+    if (!lvlBox) return;
+    
+    let lvlName = "Новичок";
+    let nextLvlStars = 50;
+    let currentLvlBase = 0;
+
+    if (state.stars > 50) { lvlName = "Ученик"; currentLvlBase = 50; nextLvlStars = 150; }
+    if (state.stars > 150) { lvlName = "Знаток"; currentLvlBase = 150; nextLvlStars = 300; }
+    if (state.stars > 300) { lvlName = "Мастер"; currentLvlBase = 300; nextLvlStars = 500; }
+
+    const progress = Math.min(100, ((state.stars - currentLvlBase) / (nextLvlStars - currentLvlBase)) * 100);
+    
+    lvlBox.innerHTML = `
+      <div style="font-size:14px; font-weight:bold; color:#555; margin-top:10px;">Звание: <span style="color:var(--main-color);">${lvlName}</span></div>
+      <div class="level-bar-container">
+        <div class="level-bar" style="width: ${progress}%;"></div>
+      </div>
+      <div class="level-text">До следующего звания: ${nextLvlStars - state.stars} ⭐</div>
+    `;
+  }
+
+  // ================= СТРИК (ДНИ ПОДРЯД) =================
+  function checkDailyProgress() {
+    const today = new Date().toDateString();
+    
+    // Если день сменился, сбрасываем счетчик
+    if (state.lastDate !== today) {
+      state.lastDate = today;
+      state.dailyCount = 0;
+    }
+    
+    state.dailyCount++;
+    
+    // Проверка на выполнение нормы (25 карточек)
+    if (state.dailyCount === 25) {
+      state.streak++;
+      showToast(`🔥 Огонь! Ты занимаешься ${state.streak} дней подряд!`);
+    }
+  }
+
+  // ================= НАВИГАЦИЯ =================
+  function hideAllViews() {
+    document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+  }
+  function goHome() {
+    hideAllViews();
+    document.getElementById('dashboard-view').style.display = 'flex';
+    updateUI();
+  }
+  function startTrainer() {
+    hideAllViews();
+    document.getElementById('trainer-view').style.display = 'flex';
+    showRandomCard();
+  }
+  function openTasks() {
+    hideAllViews();
+    document.getElementById('tasks-view').style.display = 'block';
+    renderCategoryList();
+  }
+  function openQuiz() {
+    hideAllViews();
+    document.getElementById('quiz-view').style.display = 'flex';
+    document.getElementById('quiz-menu').style.display = 'block';
+    document.getElementById('quiz-play').style.display = 'none';
+  }
+
+  // ================= ТРЕНАЖЕР =================
   let currentCardIndex = -1;
+  let listenCooldown = false;
+  let nextCooldown = false;
 
   function showRandomCard() {
     let newIndex = Math.floor(Math.random() * cardsData.length);
@@ -269,9 +372,9 @@
     const card = cardsData[currentCardIndex];
 
     let html = '';
-    if (card.color) html += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
+    if (card.color) html += `<div class="trainer-color-circle" style="width:80px; height:80px; border-radius:50%; background:${card.color}; margin-bottom:10px; border:3px solid #333;"></div>`;
     else html += `<div class="trainer-icon">${card.icon}</div>`;
-    html += `<div class="divider"></div>`; // <-- ДОБАВИЛИ ЧЕРТУ
+    html += `<div class="divider"></div>`;
 
     if (card.single) {
       html += `
@@ -279,99 +382,258 @@
           <div class="trainer-word">${card.word}</div>
           <div class="trainer-pron">${card.pron}</div>
           <div class="trainer-trans">${card.trans}</div>
-          <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
         </div>`;
     } else {
       html += `
-        <div class="trainer-entry">
-          <div class="trainer-label">Единственное число</div>
+        <div class="trainer-entry" style="margin-bottom:10px;">
+          <div style="font-size:10px; color:#888; font-weight:bold; text-transform:uppercase;">Единственное число</div>
           <div class="trainer-word">${card.word}</div>
           <div class="trainer-pron">${card.pron}</div>
           <div class="trainer-trans">${card.trans}</div>
-          <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
         </div>
-        <div class="divider"></div>
+        <div class="divider" style="margin:5px 0;"></div>
         <div class="trainer-entry">
-          <div class="trainer-label">Множественное число</div>
+          <div style="font-size:10px; color:#888; font-weight:bold; text-transform:uppercase;">Множественное число</div>
           <div class="trainer-word">${card.plural}</div>
           <div class="trainer-pron">${card.pronP}</div>
           <div class="trainer-trans">${card.transP}</div>
-          <button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button>
         </div>`;
     }
+
+    // Кнопки с таймерами
+    html += `
+      <button class="action-btn btn-listen" id="btn-listen" onclick="handleListen('${card.word}')">
+        🔊 Слушать <div class="cooldown-bar" id="bar-listen"></div>
+      </button>
+      <button class="action-btn btn-next" id="btn-next" onclick="handleNext()">
+        Дальше ➔ <div class="cooldown-bar" id="bar-next"></div>
+      </button>
+    `;
+
     document.getElementById('trainer-card-container').innerHTML = html;
+    listenCooldown = false;
+    nextCooldown = false;
+  }
+
+  function handleListen(word) {
+    if (listenCooldown) return;
+    speakWord(word);
+    addStars(1);
+    markAsLearned(word); // Засчитываем прогресс в категории
+
+    listenCooldown = true;
+    const btn = document.getElementById('btn-listen');
+    const bar = document.getElementById('bar-listen');
+    btn.disabled = true;
+    bar.style.width = '100%';
+    bar.style.transition = 'width 15s linear';
+    setTimeout(() => bar.style.width = '0%', 50); // запуск анимации
+    
+    setTimeout(() => {
+      btn.disabled = false;
+      listenCooldown = false;
+    }, 15000); // 15 секунд
+  }
+
+  function handleNext() {
+    if (nextCooldown) return;
+    nextCooldown = true;
+    const btn = document.getElementById('btn-next');
+    const bar = document.getElementById('bar-next');
+    btn.disabled = true;
+    bar.style.width = '100%';
+    bar.style.transition = 'width 5s linear';
+    setTimeout(() => bar.style.width = '0%', 50);
+
+    setTimeout(() => {
+      showRandomCard();
+    }, 5000); // 5 секунд
+  }
+
+  // ================= ЗАДАНИЯ И ПРОГРЕСС =================
+  function markAsLearned(word) {
+    if (!state.learned.includes(word)) {
+      state.learned.push(word);
+      saveState();
+    }
+  }
+
+  function isCategoryDone(catName) {
+    const catCards = cardsData.filter(c => c.cat === catName);
+    const learnedInCat = catCards.filter(c => state.learned.includes(c.word)).length;
+    return learnedInCat === catCards.length;
   }
 
   function renderCategoryList() {
-    const categories = [...new Set(cardsData.map(card => card.cat))];
+    const categories = [...new Set(cardsData.map(c => c.cat))];
     const container = document.getElementById('category-list-container');
-    container.innerHTML = categories.map(cat => `<button class="category-btn" onclick="showCategory('${cat}')">${cat}</button>`).join('');
+    container.innerHTML = '';
+
+    categories.forEach(cat => {
+      const total = cardsData.filter(c => c.cat === cat).length;
+      const learned = cardsData.filter(c => c.cat === cat && state.learned.includes(c.word)).length;
+      const done = learned === total;
+
+      const btn = document.createElement('button');
+      btn.className = `category-btn ${done ? 'done' : ''}`;
+      btn.innerHTML = `
+        <span>${cat}</span>
+        <span class="cat-progress">${learned} / ${total}</span>
+      `;
+      btn.onclick = () => showCategory(cat);
+      container.appendChild(btn);
+    });
   }
 
   let currentCategoryName = "";
 
   function showCategory(catName, isShuffle = false) {
     currentCategoryName = catName;
+    hideAllViews();
+    document.getElementById('category-view').style.display = 'block';
     document.getElementById('category-title').innerText = catName;
     
-    let filteredCards = cardsData.filter(card => card.cat === catName);
-    
+    let filtered = cardsData.filter(c => c.cat === catName);
     if (isShuffle) {
-      for (let i = filteredCards.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [filteredCards[i], filteredCards[j]] = [filteredCards[j], filteredCards[i]];
-      }
+      filtered.sort(() => Math.random() - 0.5);
     }
 
     const container = document.getElementById('category-cards-container');
-    
-    container.innerHTML = filteredCards.map(card => {
-      let inner = `<div class="task-card">`;
-      if (card.color) inner += `<div class="trainer-color-circle" style="background: ${card.color};"></div>`;
-      else inner += `<div class="trainer-icon">${card.icon}</div>`;
-      inner += `<div class="divider"></div>`; // <-- ДОБАВИЛИ ЧЕРТУ
-
-      if (card.single) {
-        inner += `
-          <div class="trainer-entry">
-            <div class="trainer-word">${card.word}</div>
-            <div class="trainer-pron">${card.pron}</div>
-            <div class="trainer-trans">${card.trans}</div>
-            <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
-          </div>`;
-      } else {
-        inner += `
-          <div class="trainer-entry">
-            <div class="trainer-label">Единственное число</div>
-            <div class="trainer-word">${card.word}</div>
-            <div class="trainer-pron">${card.pron}</div>
-            <div class="trainer-trans">${card.trans}</div>
-            <button class="speak-btn" onclick="speakWord('${card.word}')">🔊 Слушать</button>
-          </div>
-          <div class="divider"></div>
-          <div class="trainer-entry">
-            <div class="trainer-label">Множественное число</div>
-            <div class="trainer-word">${card.plural}</div>
-            <div class="trainer-pron">${card.pronP}</div>
-            <div class="trainer-trans">${card.transP}</div>
-            <button class="speak-btn" onclick="speakWord('${card.plural}')">🔊 Слушать</button>
-          </div>`;
-      }
-      inner += `</div>`;
-      return inner;
+    container.innerHTML = filtered.map(card => {
+      const learned = state.learned.includes(card.word);
+      let iconHtml = card.color ? `<div style="width:50px; height:50px; background:${card.color}; border-radius:50%; margin-bottom:10px; border:2px solid #333;"></div>` : `<div style="font-size:50px; margin-bottom:10px;">${card.icon}</div>`;
+      
+      return `
+        <div class="task-card ${learned ? 'learned' : ''}">
+          ${iconHtml}
+          <div style="font-size:20px; font-weight:bold; margin-bottom:5px;">${card.word}</div>
+          <div style="font-size:14px; color:#666; margin-bottom:5px;">${card.pron}</div>
+          <div style="font-size:18px; font-weight:600; margin-bottom:10px;">${card.trans}</div>
+          <button class="action-btn btn-listen" style="padding:8px 15px; font-size:14px;" onclick="handleListenCategory('${card.word}', event)">🔊 Слушать</button>
+        </div>
+      `;
     }).join('');
-    
-    document.getElementById('tasks-view').style.display = 'none';
-    document.getElementById('category-detail-view').style.display = 'block';
-    document.querySelector('.content-wrapper').scrollTo(0, 0);
+    window.scrollTo(0, 0);
   }
 
-  function shuffleCurrentCategory() {
-    if (currentCategoryName) {
-      showCategory(currentCategoryName, true);
+  function shuffleCategory() {
+    showCategory(currentCategoryName, true);
+  }
+
+  function handleListenCategory(word, event) {
+    speakWord(word);
+    addStars(1);
+    markAsLearned(word);
+    // Подсвечиваем карточку
+    const cardDiv = event.target.closest('.task-card');
+    if (cardDiv) cardDiv.classList.add('learned');
+  }
+
+  // ================= ИГРА (УГАДАЙКА) =================
+  let currentQuizCard = null;
+  let quizScore = 0;
+  let quizMode = 1;
+  let isQuizLocked = false;
+
+  function startQuiz(mode) {
+    quizMode = mode;
+    quizScore = 0;
+    document.getElementById('quiz-menu').style.display = 'none';
+    document.getElementById('quiz-play').style.display = 'block';
+    document.getElementById('quiz-score').innerText = 'Правильно: 0';
+    
+    // Выбираем случайную карточку
+    currentQuizCard = cardsData[Math.floor(Math.random() * cardsData.length)];
+    
+    // Ищем 2 неправильных варианта
+    let wrongOptions = [];
+    while (wrongOptions.length < 2) {
+      let rnd = cardsData[Math.floor(Math.random() * cardsData.length)];
+      if (rnd.word !== currentQuizCard.word && !wrongOptions.includes(rnd)) {
+        wrongOptions.push(rnd);
+      }
+    }
+    
+    let options = [currentQuizCard, ...wrongOptions];
+    options.sort(() => Math.random() - 0.5); // Перемешиваем
+
+    const qEl = document.getElementById('quiz-question');
+    const soundBtn = document.getElementById('quiz-sound-btn');
+    const optsEl = document.getElementById('quiz-options');
+    
+    soundBtn.style.display = 'none';
+    qEl.style.display = 'block';
+
+    // Настраиваем вопрос в зависимости от режима
+    if (mode === 1) {
+      qEl.innerText = currentQuizCard.word;
+    } else if (mode === 2) {
+      qEl.style.display = 'none';
+      soundBtn.style.display = 'inline-block';
+      speakWord(currentQuizCard.word); // Автоматически озвучиваем
+    } else if (mode === 3) {
+      qEl.innerText = currentQuizCard.trans;
+    }
+
+    optsEl.innerHTML = '';
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-opt-btn';
+      
+      // Что показываем в вариантах ответа
+      if (mode === 1) {
+        btn.innerText = opt.trans; 
+      } else if (mode === 2 || mode === 3) {
+        btn.innerText = `${opt.word} — ${opt.trans}`; 
+      }
+
+      btn.onclick = () => checkQuizAnswer(opt, currentQuizCard, btn);
+      optsEl.appendChild(btn);
+    });
+    
+    isQuizLocked = false;
+  }
+
+  function checkQuizAnswer(selected, correct, btnElement) {
+    if (isQuizLocked) return;
+    isQuizLocked = true;
+    
+    const allBtns = document.querySelectorAll('.quiz-opt-btn');
+    
+    if (selected.word === correct.word) {
+      // Правильно
+      btnElement.classList.add('correct');
+      quizScore++;
+      document.getElementById('quiz-score').innerText = `Правильно: ${quizScore}`;
+      addStars(2); // За правильный ответ даем 2 звезды
+      markAsLearned(correct.word);
+      
+      setTimeout(() => {
+        if (quizScore >= 5) {
+          showToast("🏆 Раунд пройден! Ты молодец!");
+          openQuiz(); // Возврат в меню
+        } else {
+          startQuiz(quizMode); // Следующий вопрос
+        }
+      }, 1000);
+      
+    } else {
+      // Неправильно
+      btnElement.classList.add('wrong');
+      // Подсвечиваем правильный
+      allBtns.forEach(b => {
+        if (b.innerText.includes(correct.word) || b.innerText === correct.trans) {
+          b.classList.add('correct');
+        }
+      });
+      
+      setTimeout(() => {
+        startQuiz(quizMode); // Следующий вопрос
+      }, 2000);
     }
   }
 
+  // ================= ОЗВУЧКА =================
   function speakWord(text) {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
@@ -385,60 +647,16 @@
     }
   }
 
-  function renderPrintView() {
-    const printView = document.getElementById('print-view');
-    let html = '';
-    let cardsInSheet = 0;
-    cardsData.forEach((card) => {
-      if (cardsInSheet === 0) html += `<div class="sheet">`;
-      html += `<div class="card ${card.single ? 'single-form' : ''}">`;
-      html += card.color ? `<div class="print-color-circle" style="background: ${card.color};"></div>` : `<div class="print-icon">${card.icon}</div>`;
-      html += `<div class="divider"></div>`; // <-- ДОБАВИЛИ ЧЕРТУ ДЛЯ ПЕЧАТИ
-      
-      if (card.single) {
-        html += `
-          <div class="print-entry">
-            <div class="print-word">${card.word}</div>
-            <div class="print-pron">${card.pron}</div>
-            <div class="print-trans">${card.trans}</div>
-          </div>`;
-      } else {
-        html += `
-          <div class="print-entry">
-            <div class="form-label">Единственное число</div>
-            <div class="print-word">${card.word}</div>
-            <div class="print-pron">${card.pron}</div>
-            <div class="print-trans">${card.trans}</div>
-          </div>
-          <div class="divider"></div>
-          <div class="print-entry">
-            <div class="form-label">Множественное число</div>
-            <div class="print-word">${card.plural}</div>
-            <div class="print-pron">${card.pronP}</div>
-            <div class="print-trans">${card.transP}</div>
-          </div>`;
-      }
-      html += `</div>`;
-      cardsInSheet++;
-      if (cardsInSheet === 6) { html += `</div>`; cardsInSheet = 0; }
-    });
-    if (cardsInSheet > 0) html += `</div>`;
-    printView.innerHTML = html;
-  }
-
-  function switchView(viewName) {
-    document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.content-wrapper > div').forEach(el => el.style.display = 'none');
-    
-    if (viewName === 'home') { document.getElementById('btn-home').classList.add('active'); document.getElementById('home-view').style.display = 'flex'; }
-    else if (viewName === 'tasks') { document.getElementById('btn-tasks').classList.add('active'); document.getElementById('tasks-view').style.display = 'block'; }
-    else if (viewName === 'print') { document.getElementById('btn-print').classList.add('active'); document.getElementById('print-view').style.display = 'block'; }
-  }
-
+  // ================= ИНИЦИАЛИЗАЦИЯ =================
   window.onload = () => {
-    showRandomCard();
-    renderCategoryList();
-    renderPrintView();
+    updateUI();
+    // Обновляем дату при запуске (чтобы сбросить ежедневный счетчик если день сменился)
+    const today = new Date().toDateString();
+    if (state.lastDate !== today) {
+        state.lastDate = today;
+        state.dailyCount = 0;
+        saveState();
+    }
   };
 </script>
 </body>
