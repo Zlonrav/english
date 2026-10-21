@@ -118,17 +118,77 @@
   .task-card.learned { border-color: var(--gold); background: #fffdf5; }
 
   /* ================= ИГРА (УГАДАЙКА) ================= */
-  #quiz-view { justify-content: center; }
-  .quiz-menu { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; }
-  .quiz-play { display: none; width: 100%; max-width: 500px; text-align: center; }
-  .quiz-question { font-size: 28px; font-weight: bold; margin-bottom: 20px; min-height: 60px; display: flex; align-items: center; justify-content: center; }
-  .quiz-options { display: flex; flex-direction: column; gap: 10px; }
-  .quiz-opt-btn {
-    padding: 15px; font-size: 18px; border-radius: 12px; border: 2px solid var(--main-color);
-    background: #fff; color: var(--main-color); font-weight: bold; cursor: pointer; transition: 0.2s;
+  #quiz-view { 
+    justify-content: center; /* Центрируем по вертикали */
+    align-items: center; 
   }
-  .quiz-opt-btn.correct { background: var(--green); color: #fff; border-color: var(--green); }
-  .quiz-opt-btn.wrong { background: var(--red); color: #fff; border-color: var(--red); }
+  
+  .quiz-menu { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px; 
+    width: 100%; 
+    max-width: 450px; 
+    padding: 20px;
+    background: #fff;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+
+  .quiz-menu h2 {
+    text-align: center; 
+    color: var(--main-color); 
+    font-size: 28px;
+    margin: 0 0 10px 0;
+  }
+
+  .menu-btn {
+    padding: 18px 20px; 
+    font-size: 22px; 
+    border-radius: 20px; 
+    border: none;
+    color: #fff; 
+    font-weight: 900; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-start;
+    gap: 15px;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .menu-btn .menu-icon { font-size: 32px; }
+
+  .menu-btn:active { 
+    transform: translateY(4px); 
+    box-shadow: 0 0 0 !important; 
+  }
+
+  /* Разные цвета для кнопок */
+  .menu-btn.btn-purple { background: #8b5cf6; box-shadow: 0 6px 0 #6d28d9; }
+  .menu-btn.btn-green { background: #10b981; box-shadow: 0 6px 0 #047857; }
+  .menu-btn.btn-orange { background: #f59e0b; box-shadow: 0 6px 0 #b45309; }
+
+  .quiz-play { display: none; width: 100%; max-width: 500px; text-align: center; }
+  .quiz-question { 
+    font-size: 32px; 
+    font-weight: 900; 
+    color: var(--main-color);
+    margin-bottom: 25px; 
+    min-height: 60px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: 15px; }
+  .quiz-opt-btn {
+    padding: 18px; font-size: 20px; border-radius: 15px; border: 3px solid var(--main-color);
+    background: #fff; color: var(--main-color); font-weight: bold; cursor: pointer; transition: 0.2s;
+    box-shadow: 0 4px 0 var(--main-color);
+  }
+  .quiz-opt-btn:active { transform: translateY(4px); box-shadow: 0 0 0; }
+  .quiz-opt-btn.correct { background: var(--green); color: #fff; border-color: var(--green); box-shadow: 0 4px 0 #1e7e34; }
+  .quiz-opt-btn.wrong { background: var(--red); color: #fff; border-color: var(--red); box-shadow: 0 4px 0 #bd2130; }
 
   /* Всплывающие окна */
   .toast {
@@ -190,18 +250,25 @@
   <!-- 4. ИГРА (УГАДАЙКА) -->
   <div id="quiz-view" class="view">
     <div class="quiz-menu" id="quiz-menu">
-      <h2 style="text-align:center; color:var(--main-color); margin-bottom:20px;">Выберите режим</h2>
-      <button class="big-btn" style="justify-content:center;" onclick="startQuiz(1)">👁️ Вижу слово</button>
-      <button class="big-btn" style="justify-content:center;" onclick="startQuiz(2)">👂 Слышу слово</button>
-      <button class="big-btn" style="justify-content:center;" onclick="startQuiz(3)">🗣️ Вижу перевод</button>
+      <h2>Выберите режим</h2>
+      <button class="menu-btn btn-purple" onclick="startQuiz(1)">
+        <span class="menu-icon">👁️</span> Вижу слово
+      </button>
+      <button class="menu-btn btn-green" onclick="startQuiz(2)">
+        <span class="menu-icon">👂</span> Слышу слово
+      </button>
+      <button class="menu-btn btn-orange" onclick="startQuiz(3)">
+        <span class="menu-icon">🗣️</span> Вижу перевод
+      </button>
     </div>
+
     <div class="quiz-play" id="quiz-play">
-      <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-        <button onclick="openQuiz()" style="background:none; border:none; font-size:16px; color:var(--main-color); cursor:pointer;">← Выйти</button>
-        <span id="quiz-score" style="font-weight:bold; color:var(--green);">Правильно: 0</span>
+      <div style="display:flex; justify-content:space-between; margin-bottom:20px; align-items:center;">
+        <button onclick="openQuiz()" style="background:none; border:none; font-size:16px; font-weight:bold; color:var(--main-color); cursor:pointer;">← Выйти</button>
+        <span id="quiz-score" style="font-weight:bold; font-size:18px; color:var(--green);">Правильно: 0</span>
       </div>
       <div class="quiz-question" id="quiz-question">Вопрос</div>
-      <button id="quiz-sound-btn" style="display:none; font-size:40px; background:none; border:none; cursor:pointer; margin-bottom:20px;" onclick="speakWord(currentQuizCard.word)">🔊</button>
+      <button id="quiz-sound-btn" style="display:none; font-size:60px; background:#fff; border:3px solid var(--main-color); border-radius:50%; width:100px; height:100px; cursor:pointer; margin: 0 auto 25px auto; box-shadow: 0 5px 0 var(--main-color);" onclick="speakWord(currentQuizCard.word)">🔊</button>
       <div class="quiz-options" id="quiz-options"></div>
     </div>
   </div>
