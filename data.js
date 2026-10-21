@@ -398,7 +398,7 @@ const cardsData = [
   { cat: "11. Одежда", icon: "👗", word: "Dress", pron: "дрэс", trans: "платье", plural: "Dresses", pronP: "дрэ́сиз", transP: "платья" },
   { cat: "11. Одежда", icon: "👚", word: "Blouse", pron: "бла́уз", trans: "блузка", plural: "Blouses", pronP: "бла́узиз", transP: "блузки" },
   { cat: "11. Одежда", icon: "🧥", word: "Coat", pron: "коут", trans: "пальто", plural: "Coats", pronP: "коутс", transP: "пальто" },
-  { cat: "11. Одежда", icon: "🧥", word: "Raincoat", pron: "рэ́йнкоут", trans: "дождевик", plural: "Raincoats", pronP: "рэ́йнкоутс", transP: "дождевики" },
+  { cat: "11. Одежда", icon: '<img src="img/raincoat.png" alt="raincoat">', word: "Raincoat", pron: "рэ́йнкоут", trans: "дождевик", plural: "Raincoats", pronP: "рэ́йнкоутс", transP: "дождевики" },
   { cat: "11. Одежда", icon: "🧢", word: "Hoodie", pron: "ху́ди", trans: "худи (толстовка с капюшоном)", plural: "Hoodies", pronP: "ху́диз", transP: "худи" },
   // --- Штаны и юбки ---
   { cat: "11. Одежда", icon: "👖", word: "Pants", pron: "пэнтс", trans: "штаны / брюки", single: true },
