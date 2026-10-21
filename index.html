@@ -1,10 +1,11 @@
-<!DOCTYPE html> <!-- 19 -->
+<!DOCTYPE html> <!-- 20 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#1f4e9c">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
 <title>Английский ПШ</title>
 <style>
   /* ================= ОБЩИЕ СТИЛИ ================= */
@@ -484,26 +485,71 @@
   }
 
   // ================= ЛОГИКА УРОВНЕЙ =================
+  // Список всех званий (от самого младшего к старшему)
+  const levelList = [
+    { name: "Малыш", stars: 0 },
+    { name: "Новичок", stars: 10 },
+    { name: "Ученик", stars: 25 },
+    { name: "Читатель", stars: 50 },
+    { name: "Искатель", stars: 80 },
+    { name: "Знаток", stars: 120 },
+    { name: "Эрудит", stars: 170 },
+    { name: "Умник", stars: 230 },
+    { name: "Мастер", stars: 300 },
+    { name: "Гений", stars: 400 },
+    { name: "Волшебник слова", stars: 550 },
+    { name: "Хранитель знаний", stars: 750 },
+    { name: "Полиглот", stars: 1000 },
+    { name: "Легенда", stars: 1300 },
+    { name: "Профессор", stars: 1700 },
+    { name: "Академик", stars: 2200 },
+    { name: "Гуру", stars: 2800 },
+    { name: "Оракул", stars: 3500 },
+    { name: "Бог английского", stars: 4500 },
+    { name: "Космос", stars: 6000 }
+  ];
+
   function updateLevel() {
     const lvlBox = document.getElementById('level-container');
     if (!lvlBox) return;
     
-    let lvlName = "Новичок";
-    let nextLvlStars = 50;
-    let currentLvlBase = 0;
+    let currentLevel = levelList[0];
+    let nextLevel = levelList[1];
 
-    if (state.stars > 50) { lvlName = "Ученик"; currentLvlBase = 50; nextLvlStars = 150; }
-    if (state.stars > 150) { lvlName = "Знаток"; currentLvlBase = 150; nextLvlStars = 300; }
-    if (state.stars > 300) { lvlName = "Мастер"; currentLvlBase = 300; nextLvlStars = 500; }
+    // Ищем текущий уровень
+    for (let i = 0; i < levelList.length; i++) {
+      if (state.stars >= levelList[i].stars) {
+        currentLevel = levelList[i];
+        // Если есть следующий уровень, берем его, иначе остаемся на последнем
+        nextLevel = levelList[i + 1] || levelList[i]; 
+      } else {
+        break; // Как только нашли следующий порог, останавливаемся
+      }
+    }
 
-    const progress = Math.min(100, ((state.stars - currentLvlBase) / (nextLvlStars - currentLvlBase)) * 100);
+    let progress = 100;
+    let starsLeft = 0;
+
+    // Если это не максимальный уровень, считаем прогресс
+    if (nextLevel.name !== currentLevel.name) {
+      const range = nextLevel.stars - currentLevel.stars;
+      const currentProgress = state.stars - currentLevel.stars;
+      progress = Math.min(100, (currentProgress / range) * 100);
+      starsLeft = nextLevel.stars - state.stars;
+    } else {
+      progress = 100; // Если достигнут максимум, полоска заполнена
+    }
     
     lvlBox.innerHTML = `
-      <div style="font-size:14px; font-weight:bold; color:#555; margin-top:10px;">Звание: <span style="color:var(--main-color);">${lvlName}</span></div>
-      <div class="level-bar-container">
+      <div style="font-size:14px; font-weight:bold; color:#555; margin-top:10px;">
+        Звание: <span style="color:var(--main-color); font-size:16px;">${currentLevel.name}</span>
+      </div>
+      <div class="level-bar-container" style="margin-top: 5px;">
         <div class="level-bar" style="width: ${progress}%;"></div>
       </div>
-      <div class="level-text">До следующего звания: ${nextLvlStars - state.stars} ⭐</div>
+      <div class="level-text">
+        ${nextLevel.name !== currentLevel.name ? `До звания "${nextLevel.name}": ${starsLeft} ⭐` : `Максимальное звание достигнуто!`}
+      </div>
     `;
   }
 
