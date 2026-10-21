@@ -410,7 +410,7 @@ const cardsData = [
   { cat: "11. Одежда", icon: "🥾", word: "Boots", pron: "буутс", trans: "ботинки / сапоги", single: true },
   { cat: "11. Одежда", icon: "👟", word: "Sneakers", pron: "сни́кэз", trans: "кроссовки", single: true },
   { cat: "11. Одежда", icon: "🩴", word: "Sandals", pron: "сэ́ндалз", trans: "сандалии", single: true },
-  { cat: "11. Одежда", icon: "🧦", word: "Socks", pron: "сокс", trans: "носки", single: true },
+  { cat: "11. Одежда", icon: "🧦", word: "Sock", pron: "сок", trans: "носок", plural: "Socks", pronP: "сокс", transP: "носки" },
   { cat: "11. Одежда", icon: "🧦", word: "Tights", pron: "тайтс", trans: "колготки", single: true },
   // --- Нижнее белье и пляжная одежда ---
   { cat: "11. Одежда", icon: "🩲", word: "Underwear", pron: "а́ндэуэа", trans: "нижнее белье", single: true },
