@@ -477,16 +477,39 @@ const cardsData = [
   { cat: "12. Природа", icon: "🌹", word: "Rose", pron: "роуз", trans: "роза", plural: "Roses", pronP: "ро́узиз", transP: "розы" },
 
   // 13. ТРАНСПОРТ
+  // --- Наземный транспорт ---
   { cat: "13. Транспорт", icon: "🚗", word: "Car", pron: "ка", trans: "машина", plural: "Cars", pronP: "каз", transP: "машины" },
+  { cat: "13. Транспорт", icon: "🚕", word: "Taxi", pron: "та́кси", trans: "такси", plural: "Taxis", pronP: "та́ксиз", transP: "такси" },
   { cat: "13. Транспорт", icon: "🚌", word: "Bus", pron: "бас", trans: "автобус", plural: "Buses", pronP: "ба́сиз", transP: "автобусы" },
-  { cat: "13. Транспорт", icon: "🚂", word: "Train", pron: "трэйн", trans: "поезд", plural: "Trains", pronP: "трэйнз", transP: "поезда" },
-  { cat: "13. Транспорт", icon: "✈️", word: "Plane", pron: "плэйн", trans: "самолет", plural: "Planes", pronP: "плэйнз", transP: "самолеты" },
+  { cat: "13. Транспорт", icon: "🚐", word: "Van", pron: "вэн", trans: "фургон / минивэн", plural: "Vans", pronP: "вэнз", transP: "фургоны" },
+  { cat: "13. Транспорт", icon: "🚚", word: "Truck", pron: "трак", trans: "грузовик", plural: "Trucks", pronP: "тракс", transP: "грузовики" },
+  { cat: "13. Транспорт", icon: "🚜", word: "Tractor", pron: "трэ́ктэ", trans: "трактор", plural: "Tractors", pronP: "трэ́ктэз", transP: "тракторы" },
   { cat: "13. Транспорт", icon: "🚲", word: "Bicycle", pron: "ба́йсикл", trans: "велосипед", plural: "Bicycles", pronP: "ба́йсиклз", transP: "велосипеды" },
-  { cat: "13. Транспорт", icon: "🚢", word: "Ship", pron: "шип", trans: "корабль", plural: "Ships", pronP: "шипс", transP: "корабли" },
-  { cat: "13. Транспорт", icon: "🚊", word: "Tram", pron: "трэм", trans: "трамвай", plural: "Trams", pronP: "трэмз", transP: "трамваи" },
-  { cat: "13. Транспорт", icon: "🚇", word: "Metro", pron: "мэ́троу", trans: "метро", single: true },
   { cat: "13. Транспорт", icon: "🛴", word: "Scooter", pron: "ску́тэ", trans: "самокат", plural: "Scooters", pronP: "ску́тэз", transP: "самокаты" },
   { cat: "13. Транспорт", icon: "🏍️", word: "Motorcycle", pron: "мо́утэсайкл", trans: "мотоцикл", plural: "Motorcycles", pronP: "мо́утэсайклз", transP: "мотоциклы" },
+
+  // --- Железнодорожный транспорт ---
+  { cat: "13. Транспорт", icon: "🚂", word: "Train", pron: "трэйн", trans: "поезд", plural: "Trains", pronP: "трэйнз", transP: "поезда" },
+  { cat: "13. Транспорт", icon: "🚊", word: "Tram", pron: "трэм", trans: "трамвай", plural: "Trams", pronP: "трэмз", transP: "трамваи" },
+  { cat: "13. Транспорт", icon: "🚇", word: "Metro", pron: "мэ́троу", trans: "метро", single: true },
+
+  // --- Спецтранспорт ---
+  { cat: "13. Транспорт", icon: "🚑", word: "Ambulance", pron: "э́мбьюлэнс", trans: "скорая помощь", plural: "Ambulances", pronP: "э́мбьюлэнсиз", transP: "скорые" },
+  { cat: "13. Транспорт", icon: "🚒", word: "Fire engine", pron: "фа́йэ энджин", trans: "пожарная машина", plural: "Fire engines", pronP: "фа́йэ энджинз", transP: "пожарные" },
+  { cat: "13. Транспорт", icon: "🚓", word: "Police car", pron: "поли́ис ка", trans: "полицейская машина", plural: "Police cars", pronP: "поли́ис каз", transP: "полицейские" },
+
+  // --- Воздушный транспорт ---
+  { cat: "13. Транспорт", icon: "✈️", word: "Plane", pron: "плэйн", trans: "самолет", plural: "Planes", pronP: "плэйнз", transP: "самолеты" },
+  { cat: "13. Транспорт", icon: "🚁", word: "Helicopter", pron: "хэ́ликоптэ", trans: "вертолет", plural: "Helicopters", pronP: "хэ́ликоптэз", transP: "вертолеты" },
+  { cat: "13. Транспорт", icon: "🚀", word: "Rocket", pron: "ро́кит", trans: "ракета", plural: "Rockets", pronP: "ро́китс", transP: "ракеты" },
+  { cat: "13. Транспорт", icon: "🎈", word: "Hot air balloon", pron: "хот э́а бэллу́ун", trans: "воздушный шар", plural: "Hot air balloons", pronP: "хот э́а бэллу́унз", transP: "воздушные шары" },
+
+  // --- Водный транспорт ---
+  { cat: "13. Транспорт", icon: "🚢", word: "Ship", pron: "шип", trans: "корабль", plural: "Ships", pronP: "шипс", transP: "корабли" },
+  { cat: "13. Транспорт", icon: "⛵", word: "Boat", pron: "бо́ут", trans: "лодка / яхта", plural: "Boats", pronP: "бо́утс", transP: "лодки" },
+  { cat: "13. Транспорт", icon: "🛳️", word: "Ferry", pron: "фэ́ри", trans: "паром", plural: "Ferries", pronP: "фэ́риз", transP: "паромы" },
+  { cat: "13. Транспорт", icon: "🚤", word: "Speedboat", pron: "спи́дбоут", trans: "катер", plural: "Speedboats", pronP: "спи́дбоутс", transP: "катера" },
+  { cat: "13. Транспорт", icon: "🛸", word: "Submarine", pron: "сабмари́ин", trans: "подводная лодка", plural: "Submarines", pronP: "сабмари́инз", transP: "подводные лодки" },
 
   // 14. ШКОЛА И ИГРЫ
   // --- Школьные принадлежности и творчество ---
