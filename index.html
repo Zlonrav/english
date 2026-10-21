@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 23 -->
+<!DOCTYPE html> <!-- 25 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -319,7 +319,13 @@
       <div class="stat-item">🔥 <span id="ui-streak">0</span></div>
     </div>
   </div>
-  <button onclick="openAchievements()" style="background:#e0e7ff; color:var(--main-color); border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor:pointer; font-size:16px;">🏆 Достижения</button>
+  
+  <div style="display: flex; gap: 10px;">
+    <!-- Кнопка смены игрока (только иконка) -->
+    <button onclick="logout()" style="background:#e0e7ff; color:var(--main-color); border:none; padding:8px 12px; border-radius:20px; font-weight:bold; cursor:pointer; font-size:16px;" title="Сменить игрока">👥</button>
+    <!-- Кнопка достижений -->
+    <button onclick="openAchievements()" style="background:#e0e7ff; color:var(--main-color); border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor:pointer; font-size:16px;">🏆 Достижения</button>
+  </div>
 </div>
 
 <div class="content-wrapper">
@@ -357,9 +363,6 @@
   </div>
   <!-- 1. ГЛАВНАЯ (ДАШБОРД) -->
   <div id="dashboard-view" class="view" style="display:flex;">
-    <div style="width: 100%; max-width: 400px; display: flex; justify-content: flex-end; margin-bottom: 10px;">
-      <button onclick="logout()" style="background: #e0e7ff; border: none; padding: 8px 15px; border-radius: 20px; color: var(--main-color); font-weight: bold; cursor: pointer;">👥 Сменить игрока</button>
-    </div>
     <div class="pet-container" id="pet-box">
       <!-- Генерируется JS -->
     </div>
