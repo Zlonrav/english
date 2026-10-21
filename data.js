@@ -407,7 +407,7 @@ const cardsData = [
   { cat: "11. Одежда", icon: "👖", word: "Jeans", pron: "джинз", trans: "джинсы", single: true },
   // --- Обувь ---
   { cat: "11. Одежда", icon: '<img src="img/shoes.png" alt="shoes">', word: "Shoes", pron: "шуз", trans: "обувь / туфли", single: true },
-  { cat: "11. Одежда", icon: "🥾", word: "Boot", pron: "буут", trans: "ботинок / сапог", plural: "Boots", pronP: "буутс", transP: "ботинки / сапоги" },
+  { cat: "11. Одежда", icon: '<img src="img/boots.png" alt="boots">', word: "Boot", pron: "буут", trans: "ботинок / сапог", plural: "Boots", pronP: "буутс", transP: "ботинки / сапоги" },
   { cat: "11. Одежда", icon: '<img src="img/sneakers.png" alt="sneakers">', word: "Sneakers", pron: "сни́кэз", trans: "кроссовки", single: true },
   { cat: "11. Одежда", icon: "🩴", word: "Sandals", pron: "сэ́ндалз", trans: "сандалии", single: true },
   { cat: "11. Одежда", icon: "🧦", word: "Sock", pron: "сок", trans: "носок", plural: "Socks", pronP: "сокс", transP: "носки" },
