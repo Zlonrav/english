@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 16 -->
+<!DOCTYPE html> <!-- 17 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -400,6 +400,7 @@
     learned: JSON.parse(localStorage.getItem('eng_learned') || '[]'),
     petName: localStorage.getItem('eng_petName') || '',
     listenCounts: JSON.parse(localStorage.getItem('eng_listenCounts') || '{}') 
+    achievements: JSON.parse(localStorage.getItem('eng_achievements') || '[]') 
   };
 
   function saveState() {
@@ -410,6 +411,7 @@
     localStorage.setItem('eng_learned', JSON.stringify(state.learned));
     localStorage.setItem('eng_petName', state.petName);
     localStorage.setItem('eng_listenCounts', JSON.stringify(state.listenCounts)); 
+    localStorage.setItem('eng_achievements', JSON.stringify(state.achievements)); 
     updateUI();
   }
 
@@ -426,6 +428,14 @@
     checkDailyProgress();
     saveState();
     showToast(`+${amount} ⭐`);
+  }
+
+  function addStars(amount) {
+    state.stars += amount;
+    checkDailyProgress();
+    saveState();
+    showToast(`+${amount} ⭐`);
+    checkNewAchievements(); // <-- ДОБАВИТЬ ВОТ ЭТУ СТРОКУ
   }
 
   function showToast(text) {
@@ -540,6 +550,53 @@
     document.getElementById('quiz-view').style.display = 'flex';
     document.getElementById('quiz-menu').style.display = 'block';
     document.getElementById('quiz-play').style.display = 'none';
+  }
+
+    // ================= ДОСТИЖЕНИЯ =================
+  const allAchievements = [
+    { id: 'stars_10', icon: '🥚', title: 'Первые шаги', desc: 'Заработай 10 звезд', check: (s) => s.stars >= 10 },
+    { id: 'stars_50', icon: '🐣', title: 'Новичок', desc: 'Заработай 50 звезд', check: (s) => s.stars >= 50 },
+    { id: 'stars_150', icon: '🐥', title: 'Ученик', desc: 'Заработай 150 звезд', check: (s) => s.stars >= 150 },
+    { id: 'stars_300', icon: '🦅', title: 'Знаток', desc: 'Заработай 300 звезд', check: (s) => s.stars >= 300 },
+    { id: 'stars_500', icon: '🦉', title: 'Мудрец', desc: 'Заработай 500 звезд', check: (s) => s.stars >= 500 },
+    { id: 'streak_3', icon: '🔥', title: 'Огонек', desc: 'Занимайся 3 дня подряд', check: (s) => s.streak >= 3 },
+    { id: 'streak_7', icon: '🌋', title: 'Настоящий вулкан', desc: 'Занимайся 7 дней подряд', check: (s) => s.streak >= 7 },
+    { id: 'gold_1', icon: '🥇', title: 'Золотая коллекция', desc: 'Изучи первую карточку на 100%', check: (s) => s.learned.length >= 1 },
+    { id: 'gold_10', icon: '🏆', title: 'Коллекционер', desc: 'Изучи 10 карточек на 100%', check: (s) => s.learned.length >= 10 },
+    { id: 'gold_50', icon: '👑', title: 'Мастер слова', desc: 'Изучи 50 карточек на 100%', check: (s) => s.learned.length >= 50 },
+  ];
+
+  function openAchievements() {
+    hideAllViews();
+    document.getElementById('achievements-view').style.display = 'flex';
+    renderAchievements();
+  }
+
+  function renderAchievements() {
+    const container = document.getElementById('achievements-list');
+    container.innerHTML = allAchievements.map(ach => {
+      const isUnlocked = state.achievements.includes(ach.id);
+      return `
+        <div class="ach-item ${isUnlocked ? 'unlocked' : 'locked'}">
+          <div class="ach-icon">${ach.icon}</div>
+          <div class="ach-info">
+            <h4>${ach.title}</h4>
+            <p>${ach.desc}</p>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Эта функция будет проверять, не открыл ли ребенок новое достижение
+  function checkNewAchievements() {
+    allAchievements.forEach(ach => {
+      if (!state.achievements.includes(ach.id) && ach.check(state)) {
+        state.achievements.push(ach.id);
+        saveState();
+        showToast(`🏆 Новое достижение: ${ach.title}!`);
+      }
+    });
   }
 
   // ================= ТРЕНАЖЕР =================
