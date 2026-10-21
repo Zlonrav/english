@@ -392,7 +392,7 @@ const cardsData = [
   // --- Верхняя одежда ---
   { cat: "11. Одежда", icon: "👕", word: "Shirt", pron: "шёт", trans: "рубашка", plural: "Shirts", pronP: "шётс", transP: "рубашки" },
   { cat: "11. Одежда", icon: "👚", word: "T-shirt", pron: "ти́-шёт", trans: "футболка", plural: "T-shirts", pronP: "ти́-шётс", transP: "футболки" },
-  { cat: "11. Одежда", icon: '<img src="sweater.png" alt="sweater">', word: "Sweater", pron: "суэ́тэ", trans: "свитер", plural: "Sweaters", pronP: "суэ́тэз", transP: "свитера" },
+  { cat: "11. Одежда", icon: '<img src="img/sweater.png" alt="sweater">', word: "Sweater", pron: "суэ́тэ", trans: "свитер", plural: "Sweaters", pronP: "суэ́тэз", transP: "свитера" },
   { cat: "11. Одежда", icon: "🧥", word: "Jacket", pron: "джэ́кит", trans: "куртка", plural: "Jackets", pronP: "джэ́китс", transP: "куртки" },
   { cat: "11. Одежда", icon: "👔", word: "Suit", pron: "сьют", trans: "костюм", plural: "Suits", pronP: "сьютс", transP: "костюмы" },
   { cat: "11. Одежда", icon: "👗", word: "Dress", pron: "дрэс", trans: "платье", plural: "Dresses", pronP: "дрэ́сиз", transP: "платья" },
