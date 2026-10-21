@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 4 -->
+<!DOCTYPE html> <!-- 5 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -287,7 +287,7 @@
     lastDate: localStorage.getItem('eng_lastDate') || '',
     dailyCount: parseInt(localStorage.getItem('eng_dailyCount') || '0'),
     learned: JSON.parse(localStorage.getItem('eng_learned') || '[]'),
-    petName: localStorage.getItem('eng_petName') || ''
+    petName: localStorage.getItem('eng_petName') || '',
     listenCounts: JSON.parse(localStorage.getItem('eng_listenCounts') || '{}') 
   };
 
@@ -298,7 +298,7 @@
     localStorage.setItem('eng_dailyCount', state.dailyCount);
     localStorage.setItem('eng_learned', JSON.stringify(state.learned));
     localStorage.setItem('eng_petName', state.petName);
-    localStorage.setItem('eng_listenCounts', JSON.stringify(state.listenCounts)); // НОВОЕ
+    localStorage.setItem('eng_listenCounts', JSON.stringify(state.listenCounts)); 
     updateUI();
   }
 
