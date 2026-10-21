@@ -630,26 +630,28 @@
 
   // 2. Добавляем остальные достижения (стрики, золотые карточки)
   allAchievements = allAchievements.concat([
-    // --- НЕДЕЛЬНЫЕ СТРИКИ ---
-    { id: 'streak_7', icon: '🌱', title: 'Первая неделя', desc: 'Занимайся 7 дней подряд', check: (s) => s.streak >= 7 },
-    { id: 'streak_14', icon: '🌿', title: 'Две недели', desc: 'Занимайся 14 дней подряд', check: (s) => s.streak >= 14 },
-    { id: 'streak_21', icon: '🌳', title: 'Три недели', desc: 'Занимайся 21 день подряд', check: (s) => s.streak >= 21 },
-    { id: 'streak_28', icon: '🌲', title: 'Месяц силы', desc: 'Занимайся 28 дней подряд', check: (s) => s.streak >= 28 },
-    { id: 'streak_35', icon: '🥉', title: 'Бронзовый герой', desc: 'Занимайся 35 дней подряд', check: (s) => s.streak >= 35 },
-    { id: 'streak_42', icon: '🥈', title: 'Серебряный герой', desc: 'Занимайся 42 дня подряд', check: (s) => s.streak >= 42 },
-    { id: 'streak_49', icon: '🥇', title: 'Золотой герой', desc: 'Занимайся 49 дней подряд', check: (s) => s.streak >= 49 },
-    { id: 'streak_56', icon: '🚀', title: 'Два месяца', desc: 'Занимайся 56 дней подряд', check: (s) => s.streak >= 56 },
+    // --- НЕДЕЛЬНЫЕ ПРИКЛЮЧЕНИЯ ---
+    { id: 'streak_7', icon: '🧭', title: 'Юный следопыт', desc: 'Занимайся 7 дней подряд', check: (s) => s.streak >= 7 },
+    { id: 'streak_14', icon: '🏹', title: 'Меткий стрелок', desc: 'Занимайся 14 дней подряд', check: (s) => s.streak >= 14 },
+    { id: 'streak_21', icon: '🗺️', title: 'Искатель сокровищ', desc: 'Занимайся 21 день подряд', check: (s) => s.streak >= 21 },
+    { id: 'streak_28', icon: '🌙', title: 'Лунный рыцарь', desc: 'Занимайся 28 дней подряд', check: (s) => s.streak >= 28 },
+    { id: 'streak_35', icon: '🥉', title: 'Бронзовый страж', desc: 'Занимайся 35 дней подряд', check: (s) => s.streak >= 35 },
+    { id: 'streak_42', icon: '🥈', title: 'Серебряный страж', desc: 'Занимайся 42 дня подряд', check: (s) => s.streak >= 42 },
+    { id: 'streak_49', icon: '🥇', title: 'Золотой страж', desc: 'Занимайся 49 дней подряд', check: (s) => s.streak >= 49 },
+    { id: 'streak_56', icon: '🔥', title: 'Огненный дракон', desc: 'Занимайся 56 дней подряд', check: (s) => s.streak >= 56 },
     
-    // --- ДАЛЬШЕ ИНТЕРВАЛЫ СТАНОВЯТСЯ ЧУТЬ БОЛЬШЕ, НО НАЗВАНИЯ КРУЧЕ ---
-    { id: 'streak_70', icon: '🛸', title: 'НЛО-пилот', desc: 'Занимайся 70 дней подряд', check: (s) => s.streak >= 70 },
-    { id: 'streak_84', icon: '🪐', title: 'Три месяца', desc: 'Занимайся 84 дня подряд', check: (s) => s.streak >= 84 },
-    { id: 'streak_105', icon: '⚡', title: 'Повелитель молний', desc: 'Занимайся 105 дней подряд', check: (s) => s.streak >= 105 },
-    { id: 'streak_126', icon: '🏆', title: 'Чемпион', desc: 'Занимайся 126 дней подряд', check: (s) => s.streak >= 126 },
+    // --- СЕРЬЕЗНЫЕ ВЫСОТЫ ---
+    { id: 'streak_70', icon: '🚀', title: 'Космический рейнджер', desc: 'Занимайся 70 дней подряд', check: (s) => s.streak >= 70 },
+    { id: 'streak_84', icon: '⏳', title: 'Повелитель времени', desc: 'Занимайся 84 дня подряд', check: (s) => s.streak >= 84 },
+    { id: 'streak_105', icon: '⚡', title: 'Громовержец', desc: 'Занимайся 105 дней подряд', check: (s) => s.streak >= 105 },
+    { id: 'streak_126', icon: '🏆', title: 'Гранд-мастер', desc: 'Занимайся 126 дней подряд', check: (s) => s.streak >= 126 },
     { id: 'streak_150', icon: '🎯', title: 'Снайпер знаний', desc: 'Занимайся 150 дней подряд', check: (s) => s.streak >= 150 },
-    { id: 'streak_182', icon: '🦸', title: 'Полгода! Супергерой', desc: 'Занимайся 182 дня подряд', check: (s) => s.streak >= 182 },
+    { id: 'streak_182', icon: '🦸', title: 'Супергерой', desc: 'Занимайся 182 дня подряд', check: (s) => s.streak >= 182 },
+    
+    // --- ЛЕГЕНДАРНЫЕ ЛИЧНОСТИ ---
     { id: 'streak_210', icon: '🐉', title: 'Укротитель драконов', desc: 'Занимайся 210 дней подряд', check: (s) => s.streak >= 210 },
-    { id: 'streak_240', icon: '🔮', title: 'Волшебник', desc: 'Занимайся 240 дней подряд', check: (s) => s.streak >= 240 },
-    { id: 'streak_270', icon: '🧙‍♂️', title: 'Верховный маг', desc: 'Занимайся 270 дней подряд', check: (s) => s.streak >= 270 },
+    { id: 'streak_240', icon: '🧙‍♂️', title: 'Архимаг', desc: 'Занимайся 240 дней подряд', check: (s) => s.streak >= 240 },
+    { id: 'streak_270', icon: '🔮', title: 'Верховный маг', desc: 'Занимайся 270 дней подряд', check: (s) => s.streak >= 270 },
     { id: 'streak_300', icon: '👑', title: 'Король знаний', desc: 'Занимайся 300 дней подряд', check: (s) => s.streak >= 300 },
     { id: 'streak_330', icon: '🌌', title: 'Космический император', desc: 'Занимайся 330 дней подряд', check: (s) => s.streak >= 330 },
     { id: 'streak_365', icon: '🎆', title: 'Легенда года', desc: 'Занимайся 365 дней подряд!', check: (s) => s.streak >= 365 },
