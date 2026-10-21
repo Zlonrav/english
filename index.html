@@ -125,6 +125,49 @@
     margin-bottom: 10px;
   }
 
+  /* Кнопка с заливкой */
+  .progress-btn {
+    position: relative;
+    overflow: hidden;
+    background-color: #ffdb4d; /* Базовый желтый */
+    color: #333;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    max-width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s;
+  }
+  
+  .progress-btn:active { transform: scale(0.95); }
+  .progress-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* Слой заливки (изначально 0%) */
+  .progress-btn-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #f5c000; /* Чуть более темный желтый/оранжевый для контраста */
+    z-index: 0;
+    transition: width 0.3s ease; /* Плавная анимация при клике */
+  }
+
+  /* Текст поверх заливки */
+  .progress-btn-text {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
   /* ================= ИГРА (УГАДАЙКА) ================= */
   #quiz-view { 
     justify-content: center; /* Центрируем по вертикали */
@@ -584,18 +627,25 @@
     container.innerHTML = filtered.map(card => {
       const count = state.listenCounts[card.word] || 0;
       const learned = count >= 25;
+      const percent = Math.min((count / 25) * 100, 100); // Считаем процент заполнения
       
-      let iconHtml = card.color ? `<div style="width:50px; height:50px; background:${card.color}; border-radius:50%; margin-bottom:10px; border:2px solid #333;"></div>` : `<div style="font-size:50px; margin-bottom:10px;">${card.icon}</div>`;
+      let iconHtml = card.color 
+        ? `<div style="width:50px; height:50px; background:${card.color}; border-radius:50%; margin-bottom:10px; border:2px solid #333;"></div>` 
+        : `<div style="font-size:50px; margin-bottom:10px; height: 60px; display: flex; align-items: center; justify-content: center;">${card.icon}</div>`;
       
       return `
         <div class="task-card ${learned ? 'learned' : ''}">
           ${iconHtml}
           <div style="font-size:20px; font-weight:bold; margin-bottom:5px;">${card.word}</div>
           <div style="font-size:14px; color:#666; margin-bottom:5px;">${card.pron}</div>
-          <div style="font-size:18px; font-weight:600; margin-bottom:10px;">${card.trans}</div>
-          <button class="action-btn btn-listen" style="padding:8px 15px; font-size:14px;" onclick="handleListenCategory('${card.word}', event)">
-            🔊 Слушать (${count}/25)
+          <div style="font-size:18px; font-weight:600; margin-bottom:15px;">${card.trans}</div>
+          
+          <!-- НОВАЯ КНОПКА С ЗАЛИВКОЙ -->
+          <button class="progress-btn" onclick="handleListenCategory('${card.word}', event, this)">
+            <div class="progress-btn-fill" style="width: ${percent}%;"></div>
+            <div class="progress-btn-text">🔊 Слушать</div>
           </button>
+          
         </div>
       `;
     }).join('');
@@ -604,46 +654,41 @@
 
   let isTasksCooldown = false; // Глобальный кулдаун для страницы заданий
 
-  function handleListenCategory(word, event) {
-    if (isTasksCooldown) return; // Если пауза, ничего не делаем
+  let isTasksCooldown = false;
+
+  function handleListenCategory(word, event, btnElement) {
+    if (isTasksCooldown) return;
 
     speakWord(word);
     addStars(1);
     
     // Увеличиваем счетчик
     state.listenCounts[word] = (state.listenCounts[word] || 0) + 1;
+    let count = state.listenCounts[word];
     
     // Если достигли 25, делаем карточку золотой
-    if (state.listenCounts[word] >= 25 && !state.learned.includes(word)) {
+    if (count >= 25 && !state.learned.includes(word)) {
         state.learned.push(word);
         showToast("🌟 Карточка изучена!");
+        // Красим рамку карточки
+        btnElement.closest('.task-card').classList.add('learned');
     }
     saveState();
 
-    // Обновляем кнопку и карточку визуально
-    const btn = event.target;
-    const count = state.listenCounts[word];
-    btn.innerHTML = `🔊 Слушать (${count}/25)`;
-    
-    if (count >= 25) {
-        btn.closest('.task-card').classList.add('learned');
-    }
+    // Обновляем заливку кнопки прямо на лету (без перезагрузки страницы)
+    const percent = Math.min((count / 25) * 100, 100);
+    const fill = btnElement.querySelector('.progress-btn-fill');
+    if (fill) fill.style.width = percent + '%';
 
-    // Запускаем 10-секундную паузу для ВСЕХ кнопок
+    // Блокируем все кнопки на 10 секунд
     isTasksCooldown = true;
-    const allBtns = document.querySelectorAll('.btn-listen');
-    allBtns.forEach(b => { 
-        b.disabled = true; 
-        b.style.opacity = '0.5'; 
-    });
+    const allBtns = document.querySelectorAll('.progress-btn');
+    allBtns.forEach(b => { b.disabled = true; });
 
     setTimeout(() => {
         isTasksCooldown = false;
-        allBtns.forEach(b => { 
-            b.disabled = false; 
-            b.style.opacity = '1'; 
-        });
-    }, 10000); // 10 секунд
+        allBtns.forEach(b => { b.disabled = false; });
+    }, 10000);
   }
 
   // ================= ИГРА (УГАДАЙКА) =================
