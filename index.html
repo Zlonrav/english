@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 14 -->
+<!DOCTYPE html> <!-- 15 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -266,13 +266,16 @@
 </head>
 <body>
 
-<!-- Верхняя панель со статистикой -->
+<!-- Верхняя панель -->
 <div class="top-bar">
-  <div class="top-stats">
-    <div class="stat-item">⭐ <span id="ui-stars">0</span></div>
-    <div class="stat-item">🔥 <span id="ui-streak">0</span></div>
+  <div style="display:flex; align-items:center; gap:15px;">
+    <button onclick="goHome()" style="background:none; border:none; font-size:24px; cursor:pointer;">🏠</button>
+    <div class="top-stats">
+      <div class="stat-item">⭐ <span id="ui-stars">0</span></div>
+      <div class="stat-item">🔥 <span id="ui-streak">0</span></div>
+    </div>
   </div>
-  <button onclick="goHome()" style="background:none; border:none; font-size:24px; cursor:pointer;">🏠</button>
+  <button onclick="openAchievements()" style="background:#e0e7ff; color:var(--main-color); border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor:pointer; font-size:16px;">🏆 Достижения</button>
 </div>
 
 <div class="content-wrapper">
@@ -281,12 +284,45 @@
     <div class="pet-container" id="pet-box">
       <!-- Генерируется JS -->
     </div>
-    <div class="main-buttons">
-      <button class="big-btn btn-trainer" onclick="startTrainer()"><i>🏠</i> Тренажер</button>
-      <button class="big-btn btn-tasks" onclick="openTasks()"><i>📚</i> Задания</button>
-      <button class="big-btn btn-quiz" onclick="openQuiz()"><i>🏆</i> Проверка знаний</button>
+    
+    <!-- Оборачиваем кнопки в контейнер, как в меню игры -->
+    <div class="quiz-menu" style="margin-top: 20px;">
+      <h2 style="margin-bottom: 10px;">Меню</h2>
+      <button class="menu-btn btn-trainer" onclick="startTrainer()">
+        <span class="menu-icon">🏠</span> Тренажер
+      </button>
+      <button class="menu-btn btn-tasks" onclick="openTasks()">
+        <span class="menu-icon">📚</span> Задания
+      </button>
+      <button class="menu-btn btn-quiz" onclick="openQuiz()">
+        <span class="menu-icon">🏆</span> Проверка знаний
+      </button>
     </div>
   </div>
+
+  <!-- НОВАЯ СТРАНИЦА: ДОСТИЖЕНИЯ -->
+  <div id="achievements-view" class="view">
+    <div class="quiz-menu" style="max-width: 600px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h2 style="margin:0;">Достижения</h2>
+        <button onclick="goHome()" style="background:none; border:none; font-size:16px; color:var(--main-color); font-weight:bold; cursor:pointer;">← Закрыть</button>
+      </div>
+      
+      <div style="background:#f8f9fa; padding:15px; border-radius:12px; margin-bottom:20px; border: 1px solid #ddd;">
+        <h3 style="margin-top:0; color:var(--gold);">📜 Как получить золотую карточку?</h3>
+        <p style="font-size:14px; line-height:1.4; margin:0; color:#444;">
+          Зайдите в <b>«Задания»</b>, выберите тему и нажмите на кнопку «Слушать» под карточкой. 
+          Каждое прослушивание заполняет желтую полоску. Как только вы прослушаете слово <b>25 раз</b>, карточка станет золотой! 
+          <br><i>(Или ответьте на нее правильно в «Проверке знаний»)</i>.
+        </p>
+      </div>
+
+      <div id="achievements-list" style="display:flex; flex-direction:column; gap:10px; max-height: 400px; overflow-y: auto;">
+        <!-- Список достижений генерируется в JS -->
+      </div>
+    </div>
+  </div>
+  
 
   <!-- 2. ТРЕНАЖЕР -->
   <div id="trainer-view" class="view">
