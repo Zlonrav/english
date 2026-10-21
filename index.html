@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 12 -->
+<!DOCTYPE html> <!-- 13 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -712,8 +712,13 @@
   }
 
   function loadQuestion() {
-    // Выбираем случайную карточку
-    currentQuizCard = cardsData[Math.floor(Math.random() * cardsData.length)];
+    // Исключаем из игры буквы и порядковые числа, где ответ очевиден
+    let quizPool = cardsData.filter(c => c.cat !== "1. Буквы" && c.cat !== "3. Порядковые");
+    
+    // Если вдруг пул опустеет (на всякий случай), берем всё
+    if (quizPool.length === 0) quizPool = cardsData; 
+
+    currentQuizCard = quizPool[Math.floor(Math.random() * quizPool.length)];
     
     // Берем только карточки из той же категории
     let sameCategoryCards = cardsData.filter(c => c.cat === currentQuizCard.cat && c.word !== currentQuizCard.word);
