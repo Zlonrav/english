@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 31 -->
+<!DOCTYPE html> <!-- 32 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -540,8 +540,7 @@
       return;
     }
 
-    // Генерация на лету (hash от имени)
-  // ================= АВАТАРЫ ПИТОМЦЕВ =================
+   // ================= АВАТАРЫ ПИТОМЦЕВ (Глобальные) =================
   const pets = [
     '🦊', '🐼', '🐨', '🦁', '🐸', '🐙', '🦖', '🐲', '🐧', '🦄', 
     '🐺', '🐻', '🐶', '🐱', '🐭', '🐹', '🐰', '🐯', '🐮', '🐷', 
@@ -554,6 +553,21 @@
     '', '🎩', '👑', '🕶️', '🎀', '🧣', '🎧', 
     '🧢', '🎓', '🎸', '⚽', '🎈', '🍦', '🚀', '💎'
   ];
+
+  // ================= ЛОГИКА ПИТОМЦА =================
+  function updatePet() {
+    const container = document.getElementById('pet-box');
+    
+    if (!state.petName) {
+      container.innerHTML = `
+        <div style="font-size:16px; margin-bottom:10px;">Как зовут твоего питомца?</div>
+        <input type="text" id="pet-input" style="padding:10px; font-size:16px; border-radius:8px; border:2px solid #ccc; width:80%; text-align:center;" placeholder="Введи имя...">
+        <button onclick="createPet()" style="margin-top:10px; padding:10px 20px; background:var(--main-color); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">Создать</button>
+      `;
+      return;
+    }
+
+    // Генерация на лету (hash от имени)
     let hash = 0;
     for (let i = 0; i < state.petName.length; i++) hash += state.petName.charCodeAt(i);
     
@@ -574,6 +588,127 @@
       state.petName = val;
       saveState();
     }
+  }
+
+  // ================= ЛОГИКА УРОВНЕЙ =================
+  const levelList = [
+    { name: "Малыш", stars: 0 },
+    { name: "Новичок", stars: 10 },
+    { name: "Ученик", stars: 25 },
+    { name: "Читатель", stars: 50 },
+    { name: "Искатель", stars: 80 },
+    { name: "Знаток", stars: 120 },
+    { name: "Эрудит", stars: 170 },
+    { name: "Умник", stars: 230 },
+    { name: "Мастер", stars: 300 },
+    { name: "Гений", stars: 400 },
+    { name: "Волшебник слова", stars: 550 },
+    { name: "Хранитель знаний", stars: 750 },
+    { name: "Полиглот", stars: 1000 },
+    { name: "Легенда", stars: 1300 },
+    { name: "Профессор", stars: 1700 },
+    { name: "Академик", stars: 2200 },
+    { name: "Гуру", stars: 2800 },
+    { name: "Оракул", stars: 3500 },
+    { name: "Бог английского", stars: 4500 },
+    { name: "Космос", stars: 6000 }
+  ];
+
+  function updateLevel() {
+    const lvlBox = document.getElementById('level-container');
+    if (!lvlBox) return;
+    
+    let currentLevel = levelList[0];
+    let nextLevel = levelList[1];
+
+    for (let i = 0; i < levelList.length; i++) {
+      if (state.stars >= levelList[i].stars) {
+        currentLevel = levelList[i];
+        nextLevel = levelList[i + 1] || levelList[i]; 
+      } else {
+        break; 
+      }
+    }
+
+    let progress = 100;
+    let starsLeft = 0;
+
+    if (nextLevel.name !== currentLevel.name) {
+      const range = nextLevel.stars - currentLevel.stars;
+      const currentProgress = state.stars - currentLevel.stars;
+      progress = Math.min(100, (currentProgress / range) * 100);
+      starsLeft = nextLevel.stars - state.stars;
+    } else {
+      progress = 100;
+    }
+    
+    lvlBox.innerHTML = `
+      <div style="font-size:14px; font-weight:bold; color:#555; margin-top:10px;">
+        Звание: <span style="color:var(--main-color); font-size:16px;">${currentLevel.name}</span>
+      </div>
+      <div class="level-bar-container" style="margin-top: 5px;">
+        <div class="level-bar" style="width: ${progress}%;"></div>
+      </div>
+      <div class="level-text">
+        ${nextLevel.name !== currentLevel.name ? `До звания "${nextLevel.name}": ${starsLeft} ⭐` : `Максимальное звание достигнуто!`}
+      </div>
+    `;
+  }
+
+  // ================= ДОСТИЖЕНИЯ (Автоматические) =================
+  // 1. Генерируем достижения для всех 20 званий
+  let allAchievements = levelList.slice(1).map((lvl, index) => ({
+    id: 'lvl_' + index,
+    icon: '⭐',
+    title: `Звание: ${lvl.name}`,
+    desc: `Достигни ${lvl.stars} звезд`,
+    check: (s) => s.stars >= lvl.stars
+  }));
+
+  // 2. Добавляем остальные достижения (стрики, золотые карточки)
+  allAchievements = allAchievements.concat([
+    { id: 'streak_3', icon: '🔥', title: 'Огонек', desc: 'Занимайся 3 дня подряд', check: (s) => s.streak >= 3 },
+    { id: 'streak_7', icon: '🌋', title: 'Настоящий вулкан', desc: 'Занимайся 7 дней подряд', check: (s) => s.streak >= 7 },
+    { id: 'gold_1', icon: '🥇', title: 'Золотая коллекция', desc: 'Изучи первую карточку на 100%', check: (s) => s.learned.length >= 1 },
+    { id: 'gold_10', icon: '🏆', title: 'Коллекционер', desc: 'Изучи 10 карточек на 100%', check: (s) => s.learned.length >= 10 },
+    { id: 'gold_50', icon: '👑', title: 'Мастер слова', desc: 'Изучи 50 карточек на 100%', check: (s) => s.learned.length >= 50 },
+    { id: 'gold_100', icon: '🌍', title: 'Покоритель слов', desc: 'Изучи 100 карточек на 100%', check: (s) => s.learned.length >= 100 },
+  ]);
+
+  function openAchievements() {
+    hideAllViews();
+    document.getElementById('achievements-view').style.display = 'flex';
+    renderAchievements();
+  }
+
+  function renderAchievements() {
+    const container = document.getElementById('achievements-list');
+    const userAchievements = state.achievements || []; 
+
+    container.innerHTML = allAchievements.map(ach => {
+      const isUnlocked = userAchievements.includes(ach.id);
+      return `
+        <div class="ach-item ${isUnlocked ? 'unlocked' : 'locked'}">
+          <div class="ach-icon">${ach.icon}</div>
+          <div class="ach-info">
+            <h4>${ach.title}</h4>
+            <p>${ach.desc}</p>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function checkNewAchievements() {
+    if (!state.achievements) state.achievements = []; 
+
+    allAchievements.forEach(ach => {
+      if (!state.achievements.includes(ach.id) && ach.check(state)) {
+        state.achievements.push(ach.id);
+        saveState();
+        showToast(`🏆 Новое достижение: ${ach.title}!`);
+      }
+    });
   }
 
   // ================= ЛОГИКА УРОВНЕЙ =================
