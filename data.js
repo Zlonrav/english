@@ -386,6 +386,7 @@ const cardsData = [
   { cat: "10. Фрукты и овощи", icon: "🎃", word: "Pumpkin", pron: "па́мпкин", trans: "тыква", plural: "Pumpkins", pronP: "па́мпкинз", transP: "тыквы" },
   { cat: "10. Фрукты и овощи", icon: "🫑", word: "Pepper", pron: "пэ́пэ", trans: "перец (болгарский)", plural: "Peppers", pronP: "пэ́пэз", transP: "перцы" },
   { cat: "10. Фрукты и овощи", icon: "🌽", word: "Corn", pron: "коон", trans: "кукуруза", single: true },
+  { cat: "10. Фрукты и овощи", icon: "🌿", word: "Horseradish", pron: "хо́осрэдиш", trans: "хрен", single: true },
 
   // 11. ОДЕЖДА
   // --- Верхняя одежда ---
