@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 13 -->
+<!DOCTYPE html> <!-- 14 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -174,32 +174,31 @@
     align-items: center; 
   }
   
-  /* Сама белая плитка */
-.quiz-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Was 25px, let's make it 15px to match the main menu */
-    width: calc(100% - 30px); /* Leave space on the sides */
-    max-width: 400px; /* Match the pet container max-width */
-    padding: 25px 20px; /* Balanced padding */
+  /* Белая плитка */
+  .quiz-menu { 
+    display: flex; 
+    flex-direction: column; 
+    width: calc(100% - 30px); 
+    max-width: 400px; 
+    padding: 25px 20px; 
     background: #fff;
-    border-radius: 30px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-    margin: 0 auto; /* Center it */
-}
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Тень как у карточки с питомцем */
+    margin: 0 auto; 
+  }
 
   .quiz-menu h2 {
     text-align: center; 
     color: var(--main-color); 
-    font-size: 28px;
-    margin: 0 0 10px 0;
+    font-size: 24px;
+    margin: 0 0 20px 0;
   }
 
   /* Кнопки */
   .menu-btn {
-    padding: 20px 25px; 
-    font-size: 22px; 
-    border-radius: 20px; 
+    padding: 15px 20px; 
+    font-size: 20px; 
+    border-radius: 15px; /* Скругление как у главных кнопок */
     border: none;
     color: #fff; 
     font-weight: 900; 
@@ -208,21 +207,29 @@
     align-items: center; 
     justify-content: flex-start;
     gap: 15px;
-    width: 100%; /* ГЛАВНОЕ: растягивает кнопку на всю ширину */
+    width: 100%; 
     transition: transform 0.1s, box-shadow 0.1s;
+    
+    /* ДОБАВЛЯЕМ ОТСТУП СНИЗУ */
+    margin-bottom: 15px; 
   }
 
-  .menu-btn .menu-icon { font-size: 32px; }
+  /* Убираем отступ у последней кнопки, чтобы не было лишнего пространства внизу */
+  .menu-btn:last-child {
+    margin-bottom: 0;
+  }
+
+  .menu-btn .menu-icon { font-size: 28px; }
 
   .menu-btn:active { 
-    transform: translateY(6px); /* При нажатии кнопка проваливается вниз */
+    transform: translateY(4px); /* Проваливание при нажатии */
     box-shadow: 0 0 0 !important; 
   }
 
-  /* Разные цвета для кнопок (тени сделали чуть темнее) */
-  .menu-btn.btn-purple { background: #8b5cf6; box-shadow: 0 6px 0 #6d28d9; }
-  .menu-btn.btn-green { background: #10b981; box-shadow: 0 6px 0 #047857; }
-  .menu-btn.btn-orange { background: #f59e0b; box-shadow: 0 6px 0 #b45309; }
+  /* Цвета кнопок */
+  .menu-btn.btn-purple { background: #8b5cf6; box-shadow: 0 5px 0 #6d28d9; }
+  .menu-btn.btn-green { background: #10b981; box-shadow: 0 5px 0 #047857; }
+  .menu-btn.btn-orange { background: #f59e0b; box-shadow: 0 5px 0 #b45309; }
 
   .quiz-play { display: none; width: 100%; max-width: 500px; text-align: center; }
   .quiz-question { 
