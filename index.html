@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 37 -->
+<!DOCTYPE html> <!-- 38 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -81,7 +81,18 @@
     text-align: center; padding: 15px; position: relative;
   }
   .trainer-icon { font-size: clamp(60px, 15vh, 100px); margin-bottom: 5px; display: flex; justify-content: center;}
-  .trainer-icon > div { min-width: 2em !important; height: 1.5em !important; padding: 0 0.2em !important; border-radius: 15% !important; display: flex; align-items: center; justify-content: center;}
+  /* Квадраты с буквами/цифрами (для тренажера, печати и заданий) */
+  .trainer-icon > div, .print-icon > div, .task-card-icon > div {
+    min-width: 2em !important;
+    height: 1.5em !important; 
+    padding: 0 0.2em !important;
+    border-radius: 15% !important;
+    box-shadow: 0 4px 10px rgba(31, 78, 156, 0.2);
+    box-sizing: border-box !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .trainer-word { font-size: clamp(24px, 5vh, 36px); font-weight: 800; line-height: 1.1; margin-bottom: 2px; }
   .trainer-pron { font-size: clamp(16px, 3.5vh, 22px); color: #666; margin-bottom: 2px; }
   .trainer-trans { font-size: clamp(18px, 4vh, 26px); color: #333; font-weight: 600; margin-bottom: 10px; }
@@ -309,7 +320,7 @@
   }
   .task-card-icon {
     font-size: 60px; 
-    height: 65px; 
+    min-height: 65px; 
     display: flex; 
     align-items: center; 
     justify-content: center;
