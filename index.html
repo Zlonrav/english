@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 5 -->
+<!DOCTYPE html> <!-- 6 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -116,6 +116,14 @@
   .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
   .task-card { background: #fff; border: 3px dashed #ccc; border-radius: 20px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; }
   .task-card.learned { border-color: var(--gold); background: #fffdf5; }
+
+  /* Ограничиваем размеры картинок на странице "Задания" */
+  .task-card img {
+    width: 60px !important;
+    height: 60px !important;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
 
   /* ================= ИГРА (УГАДАЙКА) ================= */
   #quiz-view { 
