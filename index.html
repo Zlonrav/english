@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 48 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 49 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -283,10 +283,10 @@
   
   /* Всплывающие окна */
   .toast {
-    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); /* Теперь bottom вместо top */
     background: var(--gold); color: #000; padding: 15px 30px; border-radius: 30px;
     font-weight: bold; font-size: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    z-index: 9999; animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+    z-index: 9999; animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
   }
 
     /* Экран входа */
@@ -368,7 +368,10 @@
     margin: 8px 0;
   }
   
-  @keyframes slideDown { from { top: -50px; opacity: 0; } to { top: 20px; opacity: 1; } }
+  @keyframes slideUp { 
+    from { bottom: -50px; opacity: 0; } 
+    to { bottom: 20px; opacity: 1; } 
+  }
   @keyframes fadeOut { to { opacity: 0; } }
   @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 </style>
