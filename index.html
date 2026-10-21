@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 27 -->
+<!DOCTYPE html> <!-- 28 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -1264,9 +1264,15 @@
   }
 
   function loginSuccess(name) {
-    state = db.profiles[name]; // Загружаем профиль в текущее состояние
+    state = db.profiles[name]; 
+    
+    // ЗАЩИТА: Если в старом профиле не было этих массивов, создаем их
+    if (!state.achievements) state.achievements = [];
+    if (!state.learned) state.learned = [];
+    if (!state.listenCounts) state.listenCounts = {};
+
     saveDb();
-    goHome(); // Переходим на главную
+    goHome(); 
   }
 
   function logout() {
