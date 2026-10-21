@@ -265,7 +265,7 @@ const cardsData = [
   { cat: "7. Части тела", icon: "🧠", word: "Brain", pron: "брэйн", trans: "мозг", plural: "Brains", pronP: "брэйнз", transP: "мозги" },
   { cat: "7. Части тела", icon: "🦴", word: "Bone", pron: "боун", trans: "кость", plural: "Bones", pronP: "боунз", transP: "кости" },
   { cat: "7. Части тела", icon: "🩸", word: "Blood", pron: "блад", trans: "кровь", single: true },
-  { cat: "7. Части тела", icon: "🧴", word: "Skin", pron: "скин", trans: "кожа", single: true }
+  { cat: "7. Части тела", icon: "🧴", word: "Skin", pron: "скин", trans: "кожа", single: true },
 
   // 8. ДОМ И МЕБЕЛЬ
   { cat: "8. Дом и мебель", icon: "🪵", word: "Table", pron: "тэ́йбл", trans: "стол", plural: "Tables", pronP: "тэ́йблз", transP: "столы" },
