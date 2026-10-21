@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 15 -->
+<!DOCTYPE html> <!-- 16 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -252,6 +252,23 @@
   .quiz-opt-btn.correct { background: var(--green); color: #fff; border-color: var(--green); box-shadow: 0 4px 0 #1e7e34; }
   .quiz-opt-btn.wrong { background: var(--red); color: #fff; border-color: var(--red); box-shadow: 0 4px 0 #bd2130; }
 
+    /* Красивые цвета для кнопок главного меню */
+  .btn-trainer { background: #1f4e9c; box-shadow: 0 5px 0 #153870; }
+  .btn-tasks { background: #1f7a3a; box-shadow: 0 5px 0 #135225; }
+  .btn-quiz { background: #d97706; box-shadow: 0 5px 0 #92400e; }
+  
+  /* Карточки достижений */
+  .ach-item {
+    display: flex; align-items: center; gap: 15px;
+    padding: 12px; border-radius: 12px; border: 2px solid #eee;
+    background: #fff; transition: 0.3s;
+  }
+  .ach-item.unlocked { border-color: var(--gold); background: #fffdf5; }
+  .ach-item.locked { opacity: 0.5; filter: grayscale(1); }
+  .ach-icon { font-size: 32px; }
+  .ach-info h4 { margin: 0 0 3px 0; font-size: 16px; color: #333; }
+  .ach-info p { margin: 0; font-size: 12px; color: #666; }
+  
   /* Всплывающие окна */
   .toast {
     position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
