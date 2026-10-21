@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 7 -->
+<!DOCTYPE html> <!-- 8 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -178,14 +178,14 @@
   .quiz-menu { 
     display: flex; 
     flex-direction: column; 
-    gap: 25px; /* Увеличили отступ между кнопками */
-    width: 100%; 
-    max-width: 450px; 
-    padding: 30px 25px; /* Сделали немного больше отступы внутри плитки */
+    gap: 15px; /* Сделали отступ между кнопками как на главной */
+    width: calc(100% - 30px); /* Оставляем по 15px с каждой стороны от края экрана */
+    max-width: 400px; /* Ограничиваем ширину, как у карточки с питомцем */
+    padding: 30px 20px; /* Увеличили внутренние отступы */
     background: #fff;
     border-radius: 30px;
-    /* Добавили глубокую и мягкую тень для объема */
     box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
+    margin: 0 auto; /* Центрируем */
   }
 
   .quiz-menu h2 {
