@@ -692,9 +692,9 @@
       markAsLearned(correct.word);
       
       setTimeout(() => {
-        if (quizScore >= 5) {
+        if (quizScore >= 10) {
           showToast("🏆 Раунд пройден! Ты молодец!");
-          openQuiz(); // Возврат в меню после 5 правильных ответов
+          openQuiz(); // Возврат в меню после 10 правильных ответов
         } else {
           loadQuestion(); // ВАЖНО: Загружаем следующий вопрос БЕЗ сброса счета
         }
