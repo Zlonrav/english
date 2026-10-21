@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 49 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 50 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -696,7 +696,7 @@
       if (!state.achievements.includes(ach.id) && ach.check(state)) {
         state.achievements.push(ach.id);
         saveState();
-        showToast(`🏆 Новое достижение: ${ach.title}!`);
+        showToast(`🏆 Новое достижение: ${ach.title}!`, 'top');
       }
     });
   }
@@ -744,13 +744,13 @@
     state.stars = (state.stars || 0) + amount;
     checkDailyProgress();
     saveState();
-    showToast(`+${amount} ⭐`);
+    showToast(`+${amount} ⭐`, 'bottom');
     checkNewAchievements();
   }
 
-  function showToast(text) {
+  function showToast(text, position = 'top') {
     const t = document.createElement('div');
-    t.className = 'toast';
+    t.className = position === 'bottom' ? 'toast-bottom' : 'toast-top';
     t.innerText = text;
     document.body.appendChild(t);
     setTimeout(() => t.remove(), 3000);
@@ -765,7 +765,7 @@
     state.dailyCount = (state.dailyCount || 0) + 1;
     if (state.dailyCount === 25) {
       state.streak = (state.streak || 0) + 1;
-      showToast(`🔥 Огонь! Ты занимаешься ${state.streak} дней подряд!`);
+      showToast(`🔥 Огонь! Ты занимаешься ${state.streak} дней подряд!`, 'top');
     }
   }
 
@@ -1010,7 +1010,7 @@
     
     if (count >= 25 && !state.learned.includes(baseWord)) {
         state.learned.push(baseWord);
-        showToast("🌟 Карточка изучена!");
+        showToast("🌟 Карточка изучена!", 'top');
         btnElement.closest('.task-card').classList.add('learned');
     }
     saveState();
