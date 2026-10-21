@@ -1,11 +1,11 @@
-<!DOCTYPE html> <!-- 20 -->
+<!DOCTYPE html> <!-- 22 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#1f4e9c">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <title>Английский ПШ</title>
 <style>
   /* ================= ОБЩИЕ СТИЛИ ================= */
@@ -277,6 +277,32 @@
     font-weight: bold; font-size: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     z-index: 9999; animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
   }
+
+    /* Экран входа */
+  .profile-btn {
+    display: flex; flex-direction: column; align-items: center;
+    background: #fff; border: 3px solid #ddd; border-radius: 15px;
+    padding: 15px 10px; cursor: pointer; transition: 0.2s;
+    position: relative;
+  }
+  .profile-btn:hover { border-color: var(--main-color); background: #f0f4f8; }
+  .profile-avatar { font-size: 40px; margin-bottom: 5px; }
+  .profile-name { font-size: 16px; font-weight: bold; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; text-align: center; }
+  .profile-del {
+    position: absolute; top: -10px; right: -10px; background: var(--red); color: #fff;
+    border: none; border-radius: 50%; width: 25px; height: 25px; font-size: 14px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold;
+  }
+
+  /* Цифровая клавиатура */
+  .pin-btn {
+    padding: 15px; font-size: 24px; font-weight: bold; color: var(--main-color);
+    background: #fff; border: 2px solid var(--main-color); border-radius: 12px;
+    cursor: pointer; transition: 0.1s; box-shadow: 0 4px 0 var(--main-color);
+  }
+  .pin-btn:active { transform: translateY(4px); box-shadow: 0 0 0; }
+  .pin-btn.btn-zero { grid-column: span 2; }
+  
   @keyframes slideDown { from { top: -50px; opacity: 0; } to { top: 20px; opacity: 1; } }
   @keyframes fadeOut { to { opacity: 0; } }
   @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -297,8 +323,43 @@
 </div>
 
 <div class="content-wrapper">
+    <!-- ЭКРАН ВХОДА (АВТОРИЗАЦИЯ) -->
+  <div id="auth-view" class="view" style="display: flex; align-items: center; justify-content: center;">
+    <div class="quiz-menu" style="max-width: 400px;">
+      <h2 style="text-align: center; color: var(--main-color); margin-top: 0;" id="auth-title">Кто играет?</h2>
+      
+      <!-- Список профилей -->
+      <div id="profiles-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;"></div>
+      
+      <!-- Форма ввода ПИН-кода -->
+      <div id="pin-pad-container" style="display: none; text-align: center;">
+        <div style="font-size: 20px; font-weight: bold; margin-bottom: 10px;" id="pin-pet-name">Имя</div>
+        <div id="pin-dots" style="font-size: 30px; letter-spacing: 10px; margin-bottom: 15px; color: var(--main-color);">⚪⚪⚪⚪</div>
+        
+        <div id="pin-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+          <!-- Кнопки будут сгенерированы JS -->
+        </div>
+        <button class="menu-btn" style="background: #ccc; box-shadow: 0 5px 0 #999; color: #333; padding: 10px; font-size: 16px;" onclick="cancelPin()">Отмена</button>
+      </div>
+
+      <!-- Создание нового профиля -->
+      <div id="create-profile-container" style="display: none; flex-direction: column; gap: 15px;">
+        <div style="text-align: center;">
+          <div id="new-pet-preview" style="font-size: 60px; margin-bottom: 10px;">❓</div>
+          <input type="text" id="new-profile-name" placeholder="Введи имя" oninput="previewNewPet()" style="width: 100%; padding: 12px; font-size: 18px; border: 2px solid var(--main-color); border-radius: 12px; text-align: center;">
+        </div>
+        <button class="menu-btn btn-purple" onclick="startPinCreation()">Придумать ПИН-код</button>
+        <button class="menu-btn" style="background: #ccc; box-shadow: 0 5px 0 #999; color: #333; padding: 10px; font-size: 16px;" onclick="cancelCreate()">Отмена</button>
+      </div>
+
+      <button id="btn-add-profile" class="menu-btn btn-green" style="justify-content: center; margin-top: 15px;" onclick="showCreateProfile()">➕ Новый игрок</button>
+    </div>
+  </div>
   <!-- 1. ГЛАВНАЯ (ДАШБОРД) -->
   <div id="dashboard-view" class="view" style="display:flex;">
+    <div style="width: 100%; max-width: 400px; display: flex; justify-content: flex-end; margin-bottom: 10px;">
+      <button onclick="logout()" style="background: #e0e7ff; border: none; padding: 8px 15px; border-radius: 20px; color: var(--main-color); font-weight: bold; cursor: pointer;">👥 Сменить игрока</button>
+    </div>
     <div class="pet-container" id="pet-box">
       <!-- Генерируется JS -->
     </div>
@@ -392,28 +453,44 @@
 
 <script src="data.js"></script>
 <script>
-  // ================= СОСТОЯНИЕ (LocalStorage) =================
-  let state = {
-    stars: parseInt(localStorage.getItem('eng_stars') || '0'),
-    streak: parseInt(localStorage.getItem('eng_streak') || '0'),
-    lastDate: localStorage.getItem('eng_lastDate') || '',
-    dailyCount: parseInt(localStorage.getItem('eng_dailyCount') || '0'),
-    learned: JSON.parse(localStorage.getItem('eng_learned') || '[]'),
-    petName: localStorage.getItem('eng_petName') || '',
-    listenCounts: JSON.parse(localStorage.getItem('eng_listenCounts') || '{}') ,
-    achievements: JSON.parse(localStorage.getItem('eng_achievements') || '[]'), 
-  };
+  // ================= БАЗА ДАННЫХ ПРОФИЛЕЙ =================
+  // Загружаем базу всех профилей. Если её нет - создаем пустую.
+  let db = JSON.parse(localStorage.getItem('eng_db')) || { profiles: {}, lastActive: null };
+  
+  // Текущее активное состояние (данные текущего игрока)
+  let state = {};
+
+  function saveDb() {
+    localStorage.setItem('eng_db', JSON.stringify(db));
+  }
 
   function saveState() {
-    localStorage.setItem('eng_stars', state.stars);
-    localStorage.setItem('eng_streak', state.streak);
-    localStorage.setItem('eng_lastDate', state.lastDate);
-    localStorage.setItem('eng_dailyCount', state.dailyCount);
-    localStorage.setItem('eng_learned', JSON.stringify(state.learned));
-    localStorage.setItem('eng_petName', state.petName);
-    localStorage.setItem('eng_listenCounts', JSON.stringify(state.listenCounts)); 
-    localStorage.setItem('eng_achievements', JSON.stringify(state.achievements)); 
+    if (state.petName) {
+      db.profiles[state.petName] = state; // Сохраняем текущее состояние в базу
+      db.lastActive = state.petName;
+      saveDb();
+    }
     updateUI();
+  }
+
+  // Миграция старых данных (чтобы не потерять текущего питомца)
+  function migrateOldData() {
+    if (Object.keys(db.profiles).length === 0 && localStorage.getItem('eng_petName')) {
+      let oldProfile = {
+        petName: localStorage.getItem('eng_petName') || 'Игрок',
+        pin: '0000', // Дефолтный пин
+        stars: parseInt(localStorage.getItem('eng_stars') || '0'),
+        streak: parseInt(localStorage.getItem('eng_streak') || '0'),
+        lastDate: localStorage.getItem('eng_lastDate') || '',
+        dailyCount: parseInt(localStorage.getItem('eng_dailyCount') || '0'),
+        learned: JSON.parse(localStorage.getItem('eng_learned') || '[]'),
+        listenCounts: JSON.parse(localStorage.getItem('eng_listenCounts') || '{}'),
+        achievements: JSON.parse(localStorage.getItem('eng_achievements') || '[]')
+      };
+      db.profiles[oldProfile.petName] = oldProfile;
+      db.lastActive = oldProfile.petName;
+      saveDb();
+    }
   }
 
   // ================= УТИЛИТЫ И UI =================
@@ -993,17 +1070,204 @@
     }
   }
 
-  // ================= ИНИЦИАЛИЗАЦИЯ =================
+  // ================= ИНИЦИАЛИЗАЦИЯ И АВТОРИЗАЦИЯ =================
   window.onload = () => {
-    updateUI();
-    // Обновляем дату при запуске (чтобы сбросить ежедневный счетчик если день сменился)
-    const today = new Date().toDateString();
-    if (state.lastDate !== today) {
-        state.lastDate = today;
-        state.dailyCount = 0;
-        saveState();
-    }
+    migrateOldData();
+    renderAuthScreen();
   };
+
+  let tempPin = "";
+  let tempProfileName = "";
+  let isCreating = false;
+
+  function renderAuthScreen() {
+    hideAllViews();
+    document.getElementById('auth-view').style.display = 'flex';
+    document.getElementById('pin-pad-container').style.display = 'none';
+    document.getElementById('create-profile-container').style.display = 'none';
+    document.getElementById('btn-add-profile').style.display = 'block';
+    document.getElementById('auth-title').innerText = "Кто играет?";
+
+    const list = document.getElementById('profiles-list');
+    list.innerHTML = '';
+    
+    const profileNames = Object.keys(db.profiles);
+    
+    if (profileNames.length === 0) {
+      list.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #666;">Пока нет игроков.<br>Создай первого!</div>';
+      return;
+    }
+
+    profileNames.forEach(name => {
+      const p = db.profiles[name];
+      const pets = ['🦊', '🐼', '🐨', '🦁', '🐸', '🐙', '🦖', '🐲', '🐧', '🦄', '🐺', '🐻'];
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) hash += name.charCodeAt(i);
+      const petEmoji = pets[hash % pets.length];
+
+      const div = document.createElement('div');
+      div.className = 'profile-btn';
+      div.onclick = () => selectProfile(name);
+      div.innerHTML = `
+        <div class="profile-del" onclick="event.stopPropagation(); deleteProfile('${name}')">×</div>
+        <div class="profile-avatar">${petEmoji}</div>
+        <div class="profile-name">${name}</div>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function deleteProfile(name) {
+    if(confirm(`Удалить профиль "${name}"? Весь прогресс сгорит!`)) {
+      delete db.profiles[name];
+      saveDb();
+      renderAuthScreen();
+    }
+  }
+
+  function showCreateProfile() {
+    isCreating = true;
+    document.getElementById('auth-title').innerText = "Новый игрок";
+    document.getElementById('profiles-list').style.display = 'none';
+    document.getElementById('btn-add-profile').style.display = 'none';
+    document.getElementById('create-profile-container').style.display = 'flex';
+    document.getElementById('new-profile-name').value = '';
+    document.getElementById('new-pet-preview').innerText = '❓';
+  }
+
+  function previewNewPet() {
+    const name = document.getElementById('new-profile-name').value.trim();
+    if (!name) { document.getElementById('new-pet-preview').innerText = '❓'; return; }
+    const pets = ['🦊', '🐼', '🐨', '🦁', '🐸', '🐙', '🦖', '🐲', '🐧', '🦄', '🐺', '🐻'];
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) hash += name.charCodeAt(i);
+    document.getElementById('new-pet-preview').innerText = pets[hash % pets.length];
+  }
+
+  function cancelCreate() {
+    isCreating = false;
+    document.getElementById('profiles-list').style.display = 'grid';
+    document.getElementById('btn-add-profile').style.display = 'block';
+    document.getElementById('create-profile-container').style.display = 'none';
+    document.getElementById('auth-title').innerText = "Кто играет?";
+  }
+
+  function startPinCreation() {
+    tempProfileName = document.getElementById('new-profile-name').value.trim();
+    if (!tempProfileName) { alert("Введи имя!"); return; }
+    if (db.profiles[tempProfileName]) { alert("Такое имя уже занято!"); return; }
+    
+    isCreating = true;
+    tempPin = "";
+    setupPinPad();
+    document.getElementById('create-profile-container').style.display = 'none';
+    document.getElementById('pin-pad-container').style.display = 'block';
+    document.getElementById('pin-pet-name').innerText = `Придумай ПИН для ${tempProfileName}`;
+  }
+
+  function selectProfile(name) {
+    isCreating = false;
+    tempProfileName = name;
+    tempPin = "";
+    setupPinPad();
+    document.getElementById('profiles-list').style.display = 'none';
+    document.getElementById('btn-add-profile').style.display = 'none';
+    document.getElementById('pin-pad-container').style.display = 'block';
+    document.getElementById('pin-pet-name').innerText = `Введи ПИН для ${name}`;
+    document.getElementById('auth-title').innerText = "Вход";
+  }
+
+  function setupPinPad() {
+    const grid = document.getElementById('pin-grid');
+    grid.innerHTML = '';
+    for (let i = 1; i <= 9; i++) {
+      let btn = document.createElement('button');
+      btn.className = 'pin-btn';
+      btn.innerText = i;
+      btn.onclick = () => enterPin(i);
+      grid.appendChild(btn);
+    }
+    let btn0 = document.createElement('button');
+    btn0.className = 'pin-btn btn-zero';
+    btn0.innerText = '0';
+    btn0.onclick = () => enterPin(0);
+    grid.appendChild(btn0);
+
+    let btnDel = document.createElement('button');
+    btnDel.className = 'pin-btn';
+    btnDel.innerText = '⌫';
+    btnDel.onclick = () => deletePin();
+    grid.appendChild(btnDel);
+
+    updatePinDots();
+  }
+
+  function enterPin(num) {
+    if (tempPin.length < 4) {
+      tempPin += num;
+      updatePinDots();
+      if (tempPin.length === 4) setTimeout(checkPin, 200); // Небольшая задержка для красоты
+    }
+  }
+
+  function deletePin() {
+    if (tempPin.length > 0) {
+      tempPin = tempPin.slice(0, -1);
+      updatePinDots();
+    }
+  }
+
+  function updatePinDots() {
+    let dots = '';
+    for (let i = 0; i < 4; i++) {
+      dots += i < tempPin.length ? '🔵' : '⚪';
+    }
+    document.getElementById('pin-dots').innerText = dots;
+  }
+
+  function checkPin() {
+    if (isCreating) {
+      // Создаем новый профиль
+      db.profiles[tempProfileName] = {
+        petName: tempProfileName,
+        pin: tempPin,
+        stars: 0, streak: 0, dailyCount: 0, lastDate: '',
+        learned: [], listenCounts: {}, achievements: []
+      };
+      saveDb();
+      loginSuccess(tempProfileName);
+    } else {
+      // Проверяем существующий
+      if (db.profiles[tempProfileName].pin === tempPin) {
+        loginSuccess(tempProfileName);
+      } else {
+        alert("Неверный ПИН-код!");
+        tempPin = "";
+        updatePinDots();
+      }
+    }
+  }
+
+  function cancelPin() {
+    tempPin = "";
+    document.getElementById('pin-pad-container').style.display = 'none';
+    if (isCreating) {
+      showCreateProfile();
+    } else {
+      renderAuthScreen();
+    }
+  }
+
+  function loginSuccess(name) {
+    state = db.profiles[name]; // Загружаем профиль в текущее состояние
+    saveDb();
+    goHome(); // Переходим на главную
+  }
+
+  function logout() {
+    state = {}; // Очищаем текущее состояние
+    renderAuthScreen();
+  }
 </script>
 </body>
 </html>
