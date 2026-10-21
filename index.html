@@ -175,18 +175,18 @@
   }
   
   /* Сама белая плитка */
-  .quiz-menu { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 15px; /* Сделали отступ между кнопками как на главной */
-    width: calc(100% - 30px); /* Оставляем по 15px с каждой стороны от края экрана */
-    max-width: 400px; /* Ограничиваем ширину, как у карточки с питомцем */
-    padding: 30px 20px; /* Увеличили внутренние отступы */
+.quiz-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Was 25px, let's make it 15px to match the main menu */
+    width: calc(100% - 30px); /* Leave space on the sides */
+    max-width: 400px; /* Match the pet container max-width */
+    padding: 25px 20px; /* Balanced padding */
     background: #fff;
     border-radius: 30px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
-    margin: 0 auto; /* Центрируем */
-  }
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    margin: 0 auto; /* Center it */
+}
 
   .quiz-menu h2 {
     text-align: center; 
