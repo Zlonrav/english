@@ -654,6 +654,12 @@
 
   let isTasksCooldown = false;
 
+  function shuffleCategory() {
+    if (currentCategoryName) {
+      showCategory(currentCategoryName, true);
+    }
+  }
+
   function handleListenCategory(word, event, btnElement) {
     if (isTasksCooldown) return;
 
