@@ -606,6 +606,7 @@
   let quizMode = 1;
   let isQuizLocked = false;
 
+  // Эта функция теперь только запускает игру и сбрасывает счет
   function startQuiz(mode) {
     quizMode = mode;
     quizScore = 0;
@@ -613,20 +614,21 @@
     document.getElementById('quiz-play').style.display = 'block';
     document.getElementById('quiz-score').innerText = 'Правильно: 0';
     
+    loadQuestion(); // Загружаем первый вопрос
+  }
+
+  // Эта функция загружает сам вопрос (она не сбрасывает счет!)
+  function loadQuestion() {
     // Выбираем случайную карточку
     currentQuizCard = cardsData[Math.floor(Math.random() * cardsData.length)];
     
-    // --- НОВАЯ ЛОГИКА ВЫБОРА НЕПРАВИЛЬНЫХ ОТВЕТОВ ---
-    // Берем только карточки из той же категории (например, только цвета, только числа и т.д.)
+    // Берем только карточки из той же категории
     let sameCategoryCards = cardsData.filter(c => c.cat === currentQuizCard.cat && c.word !== currentQuizCard.word);
-    
-    // Перемешиваем их
     sameCategoryCards.sort(() => Math.random() - 0.5);
     
-    // Берем первые 2 варианта
     let wrongOptions = sameCategoryCards.slice(0, 2);
     
-    // Защита на случай, если в категории вдруг меньше 3 карточек (чтобы игра не сломалась)
+    // Защита, если в категории мало карточек
     if (wrongOptions.length < 2) {
         let fallbackPool = cardsData.filter(c => c.word !== currentQuizCard.word && !wrongOptions.includes(c));
         fallbackPool.sort(() => Math.random() - 0.5);
@@ -634,7 +636,6 @@
             wrongOptions.push(fallbackPool.pop());
         }
     }
-    // ------------------------------------------------
 
     let options = [currentQuizCard, ...wrongOptions];
     options.sort(() => Math.random() - 0.5); // Перемешиваем финальный список
@@ -646,15 +647,15 @@
     soundBtn.style.display = 'none';
     qEl.style.display = 'block';
 
-    // Настраиваем вопрос в зависимости от режима
-    if (mode === 1) {
+    // Настраиваем вопрос
+    if (quizMode === 1) {
       qEl.innerText = currentQuizCard.word;
-    } else if (mode === 2) {
+    } else if (quizMode === 2) {
       qEl.style.display = 'none';
       soundBtn.style.display = 'inline-block';
       speakWord(currentQuizCard.word); // Автоматически озвучиваем
-    } else if (mode === 3) {
-      qEl.innerText = currentQuizCard.trans;
+    } else if (quizMode === 3) {
+      qEl.innerText = currentQuizCard.trans; // Показываем только РУССКИЙ перевод
     }
 
     optsEl.innerHTML = '';
@@ -662,11 +663,13 @@
       const btn = document.createElement('button');
       btn.className = 'quiz-opt-btn';
       
-      // Что показываем в вариантах ответа
-      if (mode === 1) {
-        btn.innerText = opt.trans; 
-      } else if (mode === 2 || mode === 3) {
-        btn.innerText = `${opt.word} — ${opt.trans}`; 
+      // ИСПРАВЛЕНИЕ: Что показываем в вариантах ответа
+      if (quizMode === 1) {
+        btn.innerText = opt.trans; // Вижу слово -> варианты на русском
+      } else if (quizMode === 2) {
+        btn.innerText = `${opt.word} — ${opt.trans}`; // Слышу слово -> варианты слово+перевод
+      } else if (quizMode === 3) {
+        btn.innerText = `${opt.word} — ${opt.pron}`; // Вижу перевод -> варианты слово+ПРОИЗНОШЕНИЕ (убрали перевод!)
       }
 
       btn.onclick = () => checkQuizAnswer(opt, currentQuizCard, btn);
@@ -674,6 +677,46 @@
     });
     
     isQuizLocked = false;
+  }
+
+  function checkQuizAnswer(selected, correct, btnElement) {
+    if (isQuizLocked) return;
+    isQuizLocked = true;
+    
+    const allBtns = document.querySelectorAll('.quiz-opt-btn');
+    
+    if (selected.word === correct.word) {
+      // Правильно
+      btnElement.classList.add('correct');
+      quizScore++;
+      document.getElementById('quiz-score').innerText = `Правильно: ${quizScore}`;
+      addStars(2); 
+      markAsLearned(correct.word);
+      
+      setTimeout(() => {
+        if (quizScore >= 5) {
+          showToast("🏆 Раунд пройден! Ты молодец!");
+          openQuiz(); // Возврат в меню (счет сбросится при следующем запуске)
+        } else {
+          loadQuestion(); // ИСПРАВЛЕНИЕ: Загружаем следующий вопрос БЕЗ сброса счета
+        }
+      }, 1000);
+      
+    } else {
+      // Неправильно
+      btnElement.classList.add('wrong');
+      // Подсвечиваем правильный ответ
+      allBtns.forEach(b => {
+        // Проверяем по вхождению правильного слова в текст кнопки
+        if (b.innerText.includes(correct.word) || b.innerText === correct.trans) {
+          b.classList.add('correct');
+        }
+      });
+      
+      setTimeout(() => {
+        loadQuestion(); // Следующий вопрос без сброса счета
+      }, 2000);
+    }
   }
 
   function checkQuizAnswer(selected, correct, btnElement) {
