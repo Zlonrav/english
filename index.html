@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 42 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 43 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -850,9 +850,22 @@
   }
 
   // ================= ЗАДАНИЯ =================
+  // Функция для добавления прогресса при правильном ответе в квизе
   function markAsLearned(word) {
-    if (!state.learned.includes(word)) state.learned.push(word);
-    state.listenCounts[word] = 25; 
+    // Если карточки еще нет в прогрессе, создаем ей 0
+    if (!state.listenCounts[word]) state.listenCounts[word] = 0;
+    
+    // Если она уже выучена (100%), ничего не делаем
+    if (state.listenCounts[word] >= 25) return;
+
+    // Даем +5 баллов за правильный ответ в игре (вместо +25)
+    state.listenCounts[word] += 5;
+    
+    // Если после ответа набралось 25 или больше, добавляем в список изученных
+    if (state.listenCounts[word] >= 25 && !state.learned.includes(word)) {
+        state.learned.push(word);
+    }
+    
     saveState();
   }
 
