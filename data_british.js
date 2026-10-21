@@ -1,4 +1,4 @@
-// ================= БАЗА ДАННЫХ =================
+// ================= БАЗА ДАННЫХ С БРИТАНСКИМ ПРОИЗНОШЕНИЕМ БЕЗ Р =================
 const cardsData = [
   // 1. БУКВЫ (АЛФАВИТ)
   { cat: "1. Буквы", icon: '<div style="width: 1em; height: 1em; background: #1f4e9c; color: #fff; border-radius: 10%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.55em; line-height: 1; white-space: nowrap;">A&nbsp;a</div>', word: "A", pron: "эй", trans: "буква A", single: true },
