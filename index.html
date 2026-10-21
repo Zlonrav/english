@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 28 -->
+<!DOCTYPE html> <!-- 29 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -701,8 +701,12 @@
 
   function renderAchievements() {
     const container = document.getElementById('achievements-list');
+    
+    // ЗАЩИТА: Берем массив достижений или пустой массив, если его нет
+    const userAchievements = state.achievements || []; 
+
     container.innerHTML = allAchievements.map(ach => {
-      const isUnlocked = state.achievements.includes(ach.id);
+      const isUnlocked = userAchievements.includes(ach.id);
       return `
         <div class="ach-item ${isUnlocked ? 'unlocked' : 'locked'}">
           <div class="ach-icon">${ach.icon}</div>
@@ -717,6 +721,8 @@
 
   // Эта функция будет проверять, не открыл ли ребенок новое достижение
   function checkNewAchievements() {
+    if (!state.achievements) state.achievements = []; // ЗАЩИТА
+
     allAchievements.forEach(ach => {
       if (!state.achievements.includes(ach.id) && ach.check(state)) {
         state.achievements.push(ach.id);
