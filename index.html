@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 43 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 44 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -455,8 +455,18 @@
         <h2 style="margin:0;">Достижения</h2>
         <button onclick="goHome()" style="background:none; border:none; font-size:16px; color:var(--main-color); font-weight:bold; cursor:pointer;">← Закрыть</button>
       </div>
+      
+      <!-- Блок с инструкцией и кнопкой сброса -->
+      <div style="background:#f8f9fa; padding:15px; border-radius:12px; margin-bottom:20px; border: 1px solid #ddd;">
+        <h3 style="margin-top:0; color:var(--gold);">📜 Как получить золотую карточку?</h3>
+        <p style="font-size:14px; line-height:1.4; margin:0 0 10px 0; color:#444;">
+          Заполняйте полоску: 1 прослушивание = +1 балл, 1 правильный ответ в игре = +5 баллов. Наберите 25 баллов, чтобы сделать карточку золотой!
+        </p>
+        <button onclick="resetLearned()" style="background:var(--red); color:#fff; border:none; padding:8px 12px; border-radius:8px; font-weight:bold; cursor:pointer;">🧹 Сбросить прогресс карточек</button>
+      </div>
 
-      <div id="achievements-list" style="display:flex; flex-direction:column; gap:10px; max-height: 400px; overflow-y: auto;">
+      <!-- Список достижений (без внутреннего скролла) -->
+      <div id="achievements-list" style="display:flex; flex-direction:column; gap:10px;">
         <!-- Список достижений генерируется в JS -->
       </div>
     </div>
@@ -618,9 +628,33 @@
     check: (s) => s.stars >= lvl.stars
   }));
 
+  // 2. Добавляем остальные достижения (стрики, золотые карточки)
   allAchievements = allAchievements.concat([
-    { id: 'streak_3', icon: '🔥', title: 'Огонек', desc: 'Занимайся 3 дня подряд', check: (s) => s.streak >= 3 },
-    { id: 'streak_7', icon: '🌋', title: 'Настоящий вулкан', desc: 'Занимайся 7 дней подряд', check: (s) => s.streak >= 7 },
+    // --- НЕДЕЛЬНЫЕ СТРИКИ ---
+    { id: 'streak_7', icon: '🌱', title: 'Первая неделя', desc: 'Занимайся 7 дней подряд', check: (s) => s.streak >= 7 },
+    { id: 'streak_14', icon: '🌿', title: 'Две недели', desc: 'Занимайся 14 дней подряд', check: (s) => s.streak >= 14 },
+    { id: 'streak_21', icon: '🌳', title: 'Три недели', desc: 'Занимайся 21 день подряд', check: (s) => s.streak >= 21 },
+    { id: 'streak_28', icon: '🌲', title: 'Месяц силы', desc: 'Занимайся 28 дней подряд', check: (s) => s.streak >= 28 },
+    { id: 'streak_35', icon: '🥉', title: 'Бронзовый герой', desc: 'Занимайся 35 дней подряд', check: (s) => s.streak >= 35 },
+    { id: 'streak_42', icon: '🥈', title: 'Серебряный герой', desc: 'Занимайся 42 дня подряд', check: (s) => s.streak >= 42 },
+    { id: 'streak_49', icon: '🥇', title: 'Золотой герой', desc: 'Занимайся 49 дней подряд', check: (s) => s.streak >= 49 },
+    { id: 'streak_56', icon: '🚀', title: 'Два месяца', desc: 'Занимайся 56 дней подряд', check: (s) => s.streak >= 56 },
+    
+    // --- ДАЛЬШЕ ИНТЕРВАЛЫ СТАНОВЯТСЯ ЧУТЬ БОЛЬШЕ, НО НАЗВАНИЯ КРУЧЕ ---
+    { id: 'streak_70', icon: '🛸', title: 'НЛО-пилот', desc: 'Занимайся 70 дней подряд', check: (s) => s.streak >= 70 },
+    { id: 'streak_84', icon: '🪐', title: 'Три месяца', desc: 'Занимайся 84 дня подряд', check: (s) => s.streak >= 84 },
+    { id: 'streak_105', icon: '⚡', title: 'Повелитель молний', desc: 'Занимайся 105 дней подряд', check: (s) => s.streak >= 105 },
+    { id: 'streak_126', icon: '🏆', title: 'Чемпион', desc: 'Занимайся 126 дней подряд', check: (s) => s.streak >= 126 },
+    { id: 'streak_150', icon: '🎯', title: 'Снайпер знаний', desc: 'Занимайся 150 дней подряд', check: (s) => s.streak >= 150 },
+    { id: 'streak_182', icon: '🦸', title: 'Полгода! Супергерой', desc: 'Занимайся 182 дня подряд', check: (s) => s.streak >= 182 },
+    { id: 'streak_210', icon: '🐉', title: 'Укротитель драконов', desc: 'Занимайся 210 дней подряд', check: (s) => s.streak >= 210 },
+    { id: 'streak_240', icon: '🔮', title: 'Волшебник', desc: 'Занимайся 240 дней подряд', check: (s) => s.streak >= 240 },
+    { id: 'streak_270', icon: '🧙‍♂️', title: 'Верховный маг', desc: 'Занимайся 270 дней подряд', check: (s) => s.streak >= 270 },
+    { id: 'streak_300', icon: '👑', title: 'Король знаний', desc: 'Занимайся 300 дней подряд', check: (s) => s.streak >= 300 },
+    { id: 'streak_330', icon: '🌌', title: 'Космический император', desc: 'Занимайся 330 дней подряд', check: (s) => s.streak >= 330 },
+    { id: 'streak_365', icon: '🎆', title: 'Легенда года', desc: 'Занимайся 365 дней подряд!', check: (s) => s.streak >= 365 },
+
+    // --- ЗОЛОТЫЕ КАРТОЧКИ ---
     { id: 'gold_1', icon: '🥇', title: 'Золотая коллекция', desc: 'Изучи первую карточку на 100%', check: (s) => s.learned.length >= 1 },
     { id: 'gold_10', icon: '🏆', title: 'Коллекционер', desc: 'Изучи 10 карточек на 100%', check: (s) => s.learned.length >= 10 },
     { id: 'gold_50', icon: '👑', title: 'Мастер слова', desc: 'Изучи 50 карточек на 100%', check: (s) => s.learned.length >= 50 },
@@ -1291,8 +1325,43 @@
   // ================= ИНИЦИАЛИЗАЦИЯ =================
   window.onload = () => {
     migrateOldData();
+    checkStreakReset();
     renderAuthScreen();
   };
+
+  // Сброс прогресса карточек (вызывается кнопкой)
+  function resetLearned() {
+    if(confirm("Сбросить прогресс изучения ВСЕХ карточек? Звезды и ачивки за уровни останутся, но золотые карточки и награды за них исчезнут.")) {
+      state.learned = [];
+      state.listenCounts = {};
+      if (state.achievements) {
+        // Удаляем ачивки, связанные с золотыми карточками
+        state.achievements = state.achievements.filter(a => !['gold_1', 'gold_10', 'gold_50', 'gold_100'].includes(a));
+      }
+      saveState();
+      renderAchievements();
+      alert("Прогресс карточек сброшен!");
+    }
+  }
+
+  // Проверка: если ребенок пропустил день, стрик сгорает
+  function checkStreakReset() {
+    if (!state.lastDate) return;
+    const today = new Date().toDateString();
+    
+    if (state.lastDate !== today) {
+      const lastDate = new Date(state.lastDate);
+      const todayDate = new Date(today);
+      const diffTime = Math.abs(todayDate - lastDate);
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      
+      // Если прошло больше 1 дня (т.е. пропущен целый день), сбрасываем стрик
+      if (diffDays > 1) {
+        state.streak = 0;
+        saveState();
+      }
+    }
+  }
 </script>
 </body>
 </html>
