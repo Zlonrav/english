@@ -268,41 +268,227 @@ const cardsData = [
   { cat: "7. Части тела", icon: "🧴", word: "Skin", pron: "скин", trans: "кожа", single: true },
 
   // 8. ДОМ И МЕБЕЛЬ
+  // 8. ДОМ И МЕБЕЛЬ
+  { cat: "8. Дом и мебель", icon: "🏠", word: "House", pron: "ха́ус", trans: "дом", plural: "Houses", pronP: "ха́узиз", transP: "дома" },
+  { cat: "8. Дом и мебель", icon: "🚪", word: "Door", pron: "до́ор", trans: "дверь", plural: "Doors", pronP: "до́орз", transP: "двери" },
+  { cat: "8. Дом и мебель", icon: "🪟", word: "Window", pron: "уи́ндоу", trans: "окно", plural: "Windows", pronP: "уи́ндоуз", transP: "окна" },
+  { cat: "8. Дом и мебель", icon: "🧱", word: "Wall", pron: "уо́ол", trans: "стена", plural: "Walls", pronP: "уо́олз", transP: "стены" },
+  { cat: "8. Дом и мебель", icon: "🪜", word: "Floor", pron: "фло́о", trans: "пол / этаж", plural: "Floors", pronP: "фло́оз", transP: "полы / этажи" },
+  { cat: "8. Дом и мебель", icon: "🔝", word: "Ceiling", pron: "си́илин", trans: "потолок", plural: "Ceilings", pronP: "си́илинз", transP: "потолки" },
+  { cat: "8. Дом и мебель", icon: "🏠", word: "Roof", pron: "рууф", trans: "крыша", plural: "Roofs", pronP: "рууфс", transP: "крыши" },
+  { cat: "8. Дом и мебель", icon: "🪜", word: "Stairs", pron: "стэ́аз", trans: "лестница", single: true },
+  { cat: "8. Дом и мебель", icon: "🛗", word: "Elevator", pron: "э́левэйтэ", trans: "лифт", plural: "Elevators", pronP: "э́левэйтэз", transP: "лифты" },
+  { cat: "8. Дом и мебель", icon: "🏡", word: "Garden", pron: "га́адн", trans: "сад", plural: "Gardens", pronP: "га́аднз", transP: "сады" },
+  { cat: "8. Дом и мебель", icon: "🚗", word: "Garage", pron: "гэ́рааж", trans: "гараж", plural: "Garages", pronP: "гэ́раажиз", transP: "гаражи" },
+  { cat: "8. Дом и мебель", icon: "🛋️", word: "Living room", pron: "ли́вин руум", trans: "гостиная", plural: "Living rooms", pronP: "ли́вин руумз", transP: "гостиные" },
+  { cat: "8. Дом и мебель", icon: "🍳", word: "Kitchen", pron: "ки́тчин", trans: "кухня", plural: "Kitchens", pronP: "ки́тчинз", transP: "кухни" },
+  { cat: "8. Дом и мебель", icon: "🛏️", word: "Bedroom", pron: "бэ́друум", trans: "спальня", plural: "Bedrooms", pronP: "бэ́друумз", transP: "спальни" },
+  { cat: "8. Дом и мебель", icon: "🛁", word: "Bathroom", pron: "ба́асруум", trans: "ванная", plural: "Bathrooms", pronP: "ба́асруумз", transP: "ванные" },
+  { cat: "8. Дом и мебель", icon: "🚽", word: "Toilet", pron: "то́йлет", trans: "туалет", plural: "Toilets", pronP: "то́йлетс", transP: "туалеты" },
+  { cat: "8. Дом и мебель", icon: "🚪", word: "Hallway", pron: "хо́олуэй", trans: "коридор", plural: "Hallways", pronP: "хо́олуэйз", transP: "коридоры" },
+  { cat: "8. Дом и мебель", icon: "🌅", word: "Balcony", pron: "бэ́лкони", trans: "балкон", plural: "Balconies", pronP: "бэ́лкониз", transP: "балконы" },
+  
   { cat: "8. Дом и мебель", icon: "🪵", word: "Table", pron: "тэ́йбл", trans: "стол", plural: "Tables", pronP: "тэ́йблз", transP: "столы" },
   { cat: "8. Дом и мебель", icon: "🪑", word: "Chair", pron: "чэ́а", trans: "стул", plural: "Chairs", pronP: "чэ́аз", transP: "стулья" },
-  { cat: "8. Дом и мебель", icon: "🪑", word: "Stool", pron: "сту́ул", trans: "табуретка", plural: "Stools", pronP: "сту́улз", transP: "табуретки" },
+  { cat: "8. Дом и мебель", icon: "🛋️", word: "Sofa", pron: "со́уфа", trans: "диван", plural: "Sofas", pronP: "со́уфаз", transP: "диваны" },
+  { cat: "8. Дом и мебель", icon: "💺", word: "Armchair", pron: "а́амчэа", trans: "кресло", plural: "Armchairs", pronP: "а́амчэаз", transP: "кресла" },
   { cat: "8. Дом и мебель", icon: "🛏️", word: "Bed", pron: "бэд", trans: "кровать", plural: "Beds", pronP: "бэдз", transP: "кровати" },
-  { cat: "8. Дом и мебель", icon: "🪟", word: "Window", pron: "уи́ндоу", trans: "окно", plural: "Windows", pronP: "уи́ндоуз", transP: "окна" },
-  { cat: "8. Дом и мебель", icon: "🚪", word: "Door", pron: "до́ор", trans: "дверь", plural: "Doors", pronP: "до́орз", transP: "двери" },
-  { cat: "8. Дом и мебель", icon: "🏠", word: "House", pron: "ха́ус", trans: "дом", plural: "Houses", pronP: "ха́узиз", transP: "дома" },
+  { cat: "8. Дом и мебель", icon: "🚪", word: "Wardrobe", pron: "уо́дроуб", trans: "шкаф для одежды", plural: "Wardrobes", pronP: "уо́дроубз", transP: "шкафы" },
+  { cat: "8. Дом и мебель", icon: "🗄️", word: "Cupboard", pron: "ка́бэд", trans: "кухонный шкаф / буфет", plural: "Cupboards", pronP: "ка́бэдз", transP: "кухонные шкафы" },
+  { cat: "8. Дом и мебель", icon: "🗄️", word: "Drawer", pron: "дро́оэ", trans: "выдвижной ящик", plural: "Drawers", pronP: "дро́оэз", transP: "ящики" },
+  { cat: "8. Дом и мебель", icon: "📚", word: "Shelf", pron: "шэлф", trans: "полка", plural: "Shelves", pronP: "шэлвз", transP: "полки" },
+  { cat: "8. Дом и мебель", icon: "🪑", word: "Bench", pron: "бэнч", trans: "скамейка", plural: "Benches", pronP: "бэ́нчиз", transP: "скамейки" },
+  { cat: "8. Дом и мебель", icon: "💻", word: "Desk", pron: "дэск", trans: "письменный стол", plural: "Desks", pronP: "дэскс", transP: "письменные столы" },
+  { cat: "8. Дом и мебель", icon: "🪞", word: "Mirror", pron: "ми́рэ", trans: "зеркало", plural: "Mirrors", pronP: "ми́рэз", transP: "зеркала" },
+  
+  { cat: "8. Дом и мебель", icon: "🛁", word: "Bath", pron: "баас", trans: "ванна", plural: "Baths", pronP: "баасз", transP: "ванны" },
+  { cat: "8. Дом и мебель", icon: "🚿", word: "Shower", pron: "ша́уэ", trans: "душ", plural: "Showers", pronP: "ша́уэз", transP: "души" },
+  { cat: "8. Дом и мебель", icon: "🚽", word: "Toilet", pron: "то́йлет", trans: "унитаз", plural: "Toilets", pronP: "то́йлетс", transP: "унитазы" },
+  { cat: "8. Дом и мебель", icon: "🚰", word: "Sink", pron: "синк", trans: "раковина", plural: "Sinks", pronP: "синкс", transP: "раковины" },
+  { cat: "8. Дом и мебель", icon: "🧻", word: "Towel", pron: "та́уэл", trans: "полотенце", plural: "Towels", pronP: "та́уэлз", transP: "полотенца" },
+  { cat: "8. Дом и мебель", icon: "🧼", word: "Soap", pron: "со́уп", trans: "мыло", single: true },
+  
+  { cat: "8. Дом и мебель", icon: "🧊", word: "Fridge", pron: "фридж", trans: "холодильник", plural: "Fridges", pronP: "фри́джиз", transP: "холодильники" },
+  { cat: "8. Дом и мебель", icon: "🔥", word: "Stove", pron: "сто́ув", trans: "плита", plural: "Stoves", pronP: "сто́увз", transP: "плиты" },
+  { cat: "8. Дом и мебель", icon: "📺", word: "TV", pron: "ти-ви́и", trans: "телевизор", plural: "TVs", pronP: "ти-ви́из", transP: "телевизоры" },
+  { cat: "8. Дом и мебель", icon: "🧺", word: "Washing machine", pron: "уо́шин маши́ин", trans: "стиральная машина", plural: "Washing machines", pronP: "уо́шин маши́инз", transP: "стиральные машины" },
+  
+  { cat: "8. Дом и мебель", icon: "💡", word: "Lamp", pron: "лэмп", trans: "лампа", plural: "Lamps", pronP: "лэмпс", transP: "лампы" },
+  { cat: "8. Дом и мебель", icon: "🕰️", word: "Clock", pron: "клок", trans: "часы (настенные)", plural: "Clocks", pronP: "клокс", transP: "часы" },
+  { cat: "8. Дом и мебель", icon: "🖼️", word: "Picture", pron: "пи́кчэ", trans: "картина", plural: "Pictures", pronP: "пи́кчэз", transP: "картины" },
+  { cat: "8. Дом и мебель", icon: "🛏️", word: "Pillow", pron: "пи́лоу", trans: "подушка", plural: "Pillows", pronP: "пи́лоуз", transP: "подушки" },
+  { cat: "8. Дом и мебель", icon: "🛌", word: "Blanket", pron: "блэ́нкит", trans: "одеяло", plural: "Blankets", pronP: "блэ́нкитс", transP: "одеяла" },
+  { cat: "8. Дом и мебель", icon: "🔑", word: "Key", pron: "кии", trans: "ключ", plural: "Keys", pronP: "кииз", transP: "ключи" },
 
   // 9. ЕДА И ПОСУДА
+  // 9. ЕДА И ПОСУДА
+  // --- Посуда и приборы ---
+  { cat: "9. Еда и посуда", icon: "🍽️", word: "Plate", pron: "плэйт", trans: "тарелка", plural: "Plates", pronP: "плэйтс", transP: "тарелки" },
   { cat: "9. Еда и посуда", icon: "🥄", word: "Spoon", pron: "спун", trans: "ложка", plural: "Spoons", pronP: "спунз", transP: "ложки" },
+  { cat: "9. Еда и посуда", icon: "🍴", word: "Fork", pron: "фоок", trans: "вилка", plural: "Forks", pronP: "фоокс", transP: "вилки" },
+  { cat: "9. Еда и посуда", icon: "🔪", word: "Knife", pron: "найф", trans: "нож", plural: "Knives", pronP: "найвз", transP: "ножи" },
   { cat: "9. Еда и посуда", icon: "☕", word: "Cup", pron: "кап", trans: "чашка", plural: "Cups", pronP: "капс", transP: "чашки" },
+  { cat: "9. Еда и посуда", icon: "🥃", word: "Glass", pron: "глаас", trans: "стакан", plural: "Glasses", pronP: "гла́асиз", transP: "стаканы" },
+  { cat: "9. Еда и посуда", icon: "🥣", word: "Bowl", pron: "боул", trans: "миска", plural: "Bowls", pronP: "боулз", transP: "миски" },
+  { cat: "9. Еда и посуда", icon: "🍼", word: "Bottle", pron: "бо́тл", trans: "бутылка", plural: "Bottles", pronP: "бо́тлз", transP: "бутылки" },
+  { cat: "9. Еда и посуда", icon: "🫖", word: "Teapot", pron: "ти́пот", trans: "чайник", plural: "Teapots", pronP: "ти́потс", transP: "чайники" },
+  { cat: "9. Еда и посуда", icon: "🍳", word: "Pan", pron: "пэн", trans: "сковорода", plural: "Pans", pronP: "пэнз", transP: "сковороды" },
+  { cat: "9. Еда и посуда", icon: "🍲", word: "Pot", pron: "пот", trans: "кастрюля", plural: "Pots", pronP: "потс", transP: "кастрюли" },
+
+  // --- Фрукты и ягоды ---
   { cat: "9. Еда и посуда", icon: "🍎", word: "Apple", pron: "э́пл", trans: "яблоко", plural: "Apples", pronP: "э́плз", transP: "яблоки" },
   { cat: "9. Еда и посуда", icon: "🍌", word: "Banana", pron: "банэ́нэ", trans: "банан", plural: "Bananas", pronP: "банэ́нэз", transP: "бананы" },
+  { cat: "9. Еда и посуда", icon: "🍊", word: "Orange", pron: "о́рэндж", trans: "апельсин", plural: "Oranges", pronP: "о́рэнджиз", transP: "апельсины" },
+  { cat: "9. Еда и посуда", icon: "🍋", word: "Lemon", pron: "лэ́мэн", trans: "лимон", plural: "Lemons", pronP: "лэ́мэнз", transP: "лимоны" },
+  { cat: "9. Еда и посуда", icon: "🍐", word: "Pear", pron: "пэ́э", trans: "груша", plural: "Pears", pronP: "пэ́эз", transP: "груши" },
+  { cat: "9. Еда и посуда", icon: "🍑", word: "Peach", pron: "пиич", trans: "персик", plural: "Peaches", pronP: "пи́ичиз", transP: "персики" },
+  { cat: "9. Еда и посуда", icon: "🍒", word: "Cherry", pron: "чэ́ри", trans: "черешня / вишня", plural: "Cherries", pronP: "чэ́риз", transP: "черешни" },
+  { cat: "9. Еда и посуда", icon: "🍇", word: "Grape", pron: "грэйп", trans: "виноград", plural: "Grapes", pronP: "грэйпс", transP: "виноградины" },
+  { cat: "9. Еда и посуда", icon: "🍉", word: "Watermelon", pron: "уо́тэмэлэн", trans: "арбуз", plural: "Watermelons", pronP: "уо́тэмэлэнз", transP: "арбузы" },
+  { cat: "9. Еда и посуда", icon: "🍈", word: "Melon", pron: "мэ́лэн", trans: "дыня", plural: "Melons", pronP: "мэ́лэнз", transP: "дыни" },
+  { cat: "9. Еда и посуда", icon: "🍍", word: "Pineapple", pron: "па́йнэпл", trans: "ананас", plural: "Pineapples", pronP: "па́йнэплз", transP: "ананасы" },
+  { cat: "9. Еда и посуда", icon: "🥝", word: "Kiwi", pron: "ки́ви", trans: "киви", plural: "Kiwis", pronP: "ки́виз", transP: "киви" },
+  { cat: "9. Еда и посуда", icon: "🥭", word: "Mango", pron: "мэ́нгэу", trans: "манго", plural: "Mangoes", pronP: "мэ́нгэуз", transP: "манго" },
+  { cat: "9. Еда и посуда", icon: "🥥", word: "Coconut", pron: "ко́укэнат", trans: "кокос", plural: "Coconuts", pronP: "ко́укэнатс", transP: "кокосы" },
+  { cat: "9. Еда и посуда", icon: "🍓", word: "Strawberry", pron: "стро́убэри", trans: "клубника", plural: "Strawberries", pronP: "стро́убэриз", transP: "клубники" },
+  { cat: "9. Еда и посуда", icon: "🫐", word: "Blueberry", pron: "блу́убэри", trans: "голубика", plural: "Blueberries", pronP: "блу́убэриз", transP: "голубика" },
+
+  // --- Овощи ---
+  { cat: "9. Еда и посуда", icon: "🥔", word: "Potato", pron: "потэ́йтоу", trans: "картофель", plural: "Potatoes", pronP: "потэ́йтоуз", transP: "картофелины" },
+  { cat: "9. Еда и посуда", icon: "🍅", word: "Tomato", pron: "тома́тоу", trans: "помидор", plural: "Tomatoes", pronP: "тома́тоуз", transP: "помидоры" },
+  { cat: "9. Еда и посуда", icon: "🥒", word: "Cucumber", pron: "кью́камбэ", trans: "огурец", plural: "Cucumbers", pronP: "кью́камбэз", transP: "огурцы" },
+  { cat: "9. Еда и посуда", icon: "🥕", word: "Carrot", pron: "кэ́рэт", trans: "морковь", plural: "Carrots", pronP: "кэ́рэтс", transP: "морковки" },
+  { cat: "9. Еда и посуда", icon: "🧅", word: "Onion", pron: "а́ньэн", trans: "лук", plural: "Onions", pronP: "а́ньэнз", transP: "луковицы" },
+  { cat: "9. Еда и посуда", icon: "🧄", word: "Garlic", pron: "га́алик", trans: "чеснок", single: true },
+  { cat: "9. Еда и посуда", icon: "🥬", word: "Cabbage", pron: "кэ́бидж", trans: "капуста", plural: "Cabbages", pronP: "кэ́биджиз", transP: "капусты" },
+  { cat: "9. Еда и посуда", icon: "🥦", word: "Broccoli", pron: "бро́кэли", trans: "брокколи", single: true },
+  { cat: "9. Еда и посуда", icon: "🎃", word: "Pumpkin", pron: "па́мпкин", trans: "тыква", plural: "Pumpkins", pronP: "па́мпкинз", transP: "тыквы" },
+  { cat: "9. Еда и посуда", icon: "🫑", word: "Pepper", pron: "пэ́пэ", trans: "перец (болгарский)", plural: "Peppers", pronP: "пэ́пэз", transP: "перцы" },
+  { cat: "9. Еда и посуда", icon: "🌽", word: "Corn", pron: "коон", trans: "кукуруза", single: true },
+
+  // --- Продукты и блюда ---
   { cat: "9. Еда и посуда", icon: "🍞", word: "Bread", pron: "брэд", trans: "хлеб", single: true },
+  { cat: "9. Еда и посуда", icon: "🧀", word: "Cheese", pron: "чииз", trans: "сыр", single: true },
+  { cat: "9. Еда и посуда", icon: "🧈", word: "Butter", pron: "ба́тэ", trans: "масло сливочное", single: true },
+  { cat: "9. Еда и посуда", icon: "🥚", word: "Egg", pron: "эг", trans: "яйцо", plural: "Eggs", pronP: "эгз", transP: "яйца" },
+  { cat: "9. Еда и посуда", icon: "🥩", word: "Meat", pron: "миит", trans: "мясо", single: true },
+  { cat: "9. Еда и посуда", icon: "🍗", word: "Chicken (meat)", pron: "чи́кен", trans: "курица (мясо)", single: true },
+  { cat: "9. Еда и посуда", icon: "🍚", word: "Rice", pron: "райс", trans: "рис", single: true },
+  { cat: "9. Еда и посуда", icon: "🍝", word: "Pasta", pron: "па́ста", trans: "макароны", single: true },
+  { cat: "9. Еда и посуда", icon: "🥣", word: "Soup", pron: "сууп", trans: "суп", plural: "Soups", pronP: "суупс", transP: "супы" },
+  { cat: "9. Еда и посуда", icon: "🥗", word: "Salad", pron: "сэ́лэд", trans: "салат", plural: "Salads", pronP: "сэ́лэдз", transP: "салаты" },
+  { cat: "9. Еда и посуда", icon: "🥪", word: "Sandwich", pron: "сэ́ндвич", trans: "бутерброд", plural: "Sandwiches", pronP: "сэ́ндвичиз", transP: "бутерброды" },
+  { cat: "9. Еда и посуда", icon: "🍕", word: "Pizza", pron: "пи́цца", trans: "пицца", plural: "Pizzas", pronP: "пи́ццаз", transP: "пиццы" },
+  { cat: "9. Еда и посуда", icon: "🍰", word: "Cake", pron: "кэйк", trans: "торт / пирожное", plural: "Cakes", pronP: "кэйкс", transP: "торты" },
+  { cat: "9. Еда и посуда", icon: "🍫", word: "Chocolate", pron: "чо́клэт", trans: "шоколад", single: true },
+  { cat: "9. Еда и посуда", icon: "🍦", word: "Ice cream", pron: "айс кри́им", trans: "мороженое", single: true },
+  { cat: "9. Еда и посуда", icon: "🍯", word: "Honey", pron: "ха́ни", trans: "мёд", single: true },
+  { cat: "9. Еда и посуда", icon: "🧂", word: "Sugar", pron: "шу́га", trans: "сахар", single: true },
+  { cat: "9. Еда и посуда", icon: "🧂", word: "Salt", pron: "соолт", trans: "соль", single: true },
+
+  // --- Напитки ---
+  { cat: "9. Еда и посуда", icon: "💧", word: "Water", pron: "уо́та", trans: "вода", single: true },
   { cat: "9. Еда и посуда", icon: "🥛", word: "Milk", pron: "милк", trans: "молоко", single: true },
   { cat: "9. Еда и посуда", icon: "☕", word: "Coffee", pron: "ко́фи", trans: "кофе", single: true },
-  { cat: "9. Еда и посуда", icon: "🍵", word: "Tea", pron: "ти", trans: "чай", single: true },
-  { cat: "9. Еда и посуда", icon: "🧂", word: "Sugar", pron: "шу́га", trans: "сахар", single: true },
-  { cat: "9. Еда и посуда", icon: "💧", word: "Water", pron: "во́та", trans: "вода", single: true },
+  { cat: "9. Еда и посуда", icon: "🍵", word: "Tea", pron: "тии", trans: "чай", single: true },
+  { cat: "9. Еда и посуда", icon: "🧃", word: "Juice", pron: "джус", trans: "сок", plural: "Juices", pronP: "джу́сиз", transP: "соки" },
+  { cat: "9. Еда и посуда", icon: "🍋", word: "Lemonade", pron: "лэмонэ́йд", trans: "лимонад", single: true },
+  { cat: "9. Еда и посуда", icon: "🥤", word: "Soda", pron: "со́уда", trans: "газировка", single: true },
 
   // 10. ОДЕЖДА
+  // --- Верхняя одежда ---
   { cat: "10. Одежда", icon: "👕", word: "Shirt", pron: "шёт", trans: "рубашка", plural: "Shirts", pronP: "шётс", transP: "рубашки" },
+  { cat: "10. Одежда", icon: "👚", word: "T-shirt", pron: "ти́-шёт", trans: "футболка", plural: "T-shirts", pronP: "ти́-шётс", transP: "футболки" },
+  { cat: "10. Одежда", icon: "🧥", word: "Sweater", pron: "суэ́тэ", trans: "свитер", plural: "Sweaters", pronP: "суэ́тэз", transP: "свитера" },
+  { cat: "10. Одежда", icon: "🧥", word: "Jacket", pron: "джэ́кит", trans: "куртка", plural: "Jackets", pronP: "джэ́китс", transP: "куртки" },
+  { cat: "10. Одежда", icon: "👔", word: "Suit", pron: "сьют", trans: "костюм", plural: "Suits", pronP: "сьютс", transP: "костюмы" },
   { cat: "10. Одежда", icon: "👗", word: "Dress", pron: "дрэс", trans: "платье", plural: "Dresses", pronP: "дрэ́сиз", transP: "платья" },
-  { cat: "10. Одежда", icon: "👖", word: "Pants", pron: "пэнтс", trans: "штаны", single: true },
-  { cat: "10. Одежда", icon: "👟", word: "Shoes", pron: "шуз", trans: "обувь", single: true },
-  { cat: "10. Одежда", icon: "🧢", word: "Hat", pron: "хэт", trans: "шапка", plural: "Hats", pronP: "хэтс", transP: "шапки" },
+  { cat: "10. Одежда", icon: "👚", word: "Blouse", pron: "бла́уз", trans: "блузка", plural: "Blouses", pronP: "бла́узиз", transP: "блузки" },
   { cat: "10. Одежда", icon: "🧥", word: "Coat", pron: "коут", trans: "пальто", plural: "Coats", pronP: "коутс", transP: "пальто" },
+  { cat: "10. Одежда", icon: "🧥", word: "Raincoat", pron: "рэ́йнкоут", trans: "дождевик", plural: "Raincoats", pronP: "рэ́йнкоутс", transP: "дождевики" },
+  { cat: "10. Одежда", icon: "🧢", word: "Hoodie", pron: "ху́ди", trans: "худи (толстовка с капюшоном)", plural: "Hoodies", pronP: "ху́диз", transP: "худи" },
+
+  // --- Штаны и юбки ---
+  { cat: "10. Одежда", icon: "👖", word: "Pants", pron: "пэнтс", trans: "штаны / брюки", single: true },
+  { cat: "10. Одежда", icon: "🩳", word: "Shorts", pron: "шоотс", trans: "шорты", single: true },
+  { cat: "10. Одежда", icon: "👗", word: "Skirt", pron: "скёт", trans: "юбка", plural: "Skirts", pronP: "скётс", transP: "юбки" },
+  { cat: "10. Одежда", icon: "👖", word: "Jeans", pron: "джинз", trans: "джинсы", single: true },
+
+  // --- Обувь ---
+  { cat: "10. Одежда", icon: "👟", word: "Shoes", pron: "шуз", trans: "обувь / туфли", single: true },
+  { cat: "10. Одежда", icon: "🥾", word: "Boots", pron: "буутс", trans: "ботинки / сапоги", single: true },
+  { cat: "10. Одежда", icon: "👟", word: "Sneakers", pron: "сни́кэз", trans: "кроссовки", single: true },
+  { cat: "10. Одежда", icon: "🩴", word: "Sandals", pron: "сэ́ндалз", trans: "сандалии", single: true },
+  { cat: "10. Одежда", icon: "🧦", word: "Socks", pron: "сокс", trans: "носки", single: true },
+  { cat: "10. Одежда", icon: "🧦", word: "Tights", pron: "тайтс", trans: "колготки", single: true },
+
+  // --- Нижнее белье и пляжная одежда ---
+  { cat: "10. Одежда", icon: "🩲", word: "Underwear", pron: "а́ндэуэа", trans: "нижнее белье", single: true },
+  { cat: "10. Одежда", icon: "🩱", word: "Swimsuit", pron: "суи́мсьют", trans: "купальник", plural: "Swimsuits", pronP: "суи́мсьютс", transP: "купальники" },
+  { cat: "10. Одежда", icon: "👘", word: "Pajamas", pron: "пэджэ́маз", trans: "пижама", single: true },
+
+  // --- Аксессуары ---
+  { cat: "10. Одежда", icon: "🧣", word: "Scarf", pron: "скааф", trans: "шарф", plural: "Scarves", pronP: "скаавз", transP: "шарфы" },
+  { cat: "10. Одежда", icon: "🧤", word: "Gloves", pron: "главз", trans: "перчатки", single: true },
+  { cat: "10. Одежда", icon: "🧤", word: "Mittens", pron: "ми́тнз", trans: "варежки", single: true },
+  { cat: "10. Одежда", icon: "🧢", word: "Hat", pron: "хэт", trans: "шапка", plural: "Hats", pronP: "хэтс", transP: "шапки" },
+  { cat: "10. Одежда", icon: "🧢", word: "Cap", pron: "кэп", trans: "кепка", plural: "Caps", pronP: "кэпс", transP: "кепки" },
+  { cat: "10. Одежда", icon: "👔", word: "Tie", pron: "тай", trans: "галстук", plural: "Ties", pronP: "тайз", transP: "галстуки" },
+  { cat: "10. Одежда", icon: "👖", word: "Belt", pron: "бэлт", trans: "ремень", plural: "Belts", pronP: "бэлтс", transP: "ремни" },
+  { cat: "10. Одежда", icon: "👓", word: "Glasses", pron: "гла́асиз", trans: "очки", single: true },
+  { cat: "10. Одежда", icon: "🕶️", word: "Sunglasses", pron: "са́нгласиз", trans: "солнечные очки", single: true },
+  { cat: "10. Одежда", icon: "☂️", word: "Umbrella", pron: "амбрэ́ла", trans: "зонт", plural: "Umbrellas", pronP: "амбрэ́лаз", transP: "зонты" },
+  { cat: "10. Одежда", icon: "💍", word: "Ring", pron: "рин", trans: "кольцо", plural: "Rings", pronP: "ринз", transP: "кольца" },
+  { cat: "10. Одежда", icon: "👜", word: "Bag", pron: "бэг", trans: "сумка", plural: "Bags", pronP: "бэгз", transP: "сумки" },
+  { cat: "10. Одежда", icon: "🎒", word: "Backpack", pron: "бэ́кпэк", trans: "рюкзак", plural: "Backpacks", pronP: "бэ́кпэкс", transP: "рюкзаки" },
 
   // 11. ПРИРОДА
+  // --- Погода и небо ---
   { cat: "11. Природа", icon: "☀️", word: "Sun", pron: "сан", trans: "солнце", single: true },
   { cat: "11. Природа", icon: "🌧️", word: "Rain", pron: "рэйн", trans: "дождь", single: true },
   { cat: "11. Природа", icon: "❄️", word: "Snow", pron: "сноу", trans: "снег", single: true },
   { cat: "11. Природа", icon: "🌬️", word: "Wind", pron: "уинд", trans: "ветер", single: true },
+  { cat: "11. Природа", icon: "☁️", word: "Cloud", pron: "кла́уд", trans: "облако", plural: "Clouds", pronP: "кла́удз", transP: "облака" },
+  { cat: "11. Природа", icon: "🌌", word: "Sky", pron: "скай", trans: "небо", single: true },
+  { cat: "11. Природа", icon: "⭐", word: "Star", pron: "стаа", trans: "звезда", plural: "Stars", pronP: "стааз", transP: "звёзды" },
+  { cat: "11. Природа", icon: "🌙", word: "Moon", pron: "муун", trans: "луна", plural: "Moons", pronP: "муунз", transP: "луны" },
+  { cat: "11. Природа", icon: "⛈️", word: "Storm", pron: "стоом", trans: "буря / гроза", plural: "Storms", pronP: "стоомз", transP: "бури" },
+  { cat: "11. Природа", icon: "🌩️", word: "Thunder", pron: "са́ндэ", trans: "гром", single: true },
+  { cat: "11. Природа", icon: "⚡", word: "Lightning", pron: "ла́йтнин", trans: "молния", single: true },
+  { cat: "11. Природа", icon: "🌫️", word: "Fog", pron: "фог", trans: "туман", single: true },
+  { cat: "11. Природа", icon: "🌈", word: "Rainbow", pron: "рэ́йнбоу", trans: "радуга", plural: "Rainbows", pronP: "рэ́йнбоуз", transP: "радуги" },
+  { cat: "11. Природа", icon: "🧊", word: "Ice", pron: "айс", trans: "лёд", single: true },
+
+  // --- Ландшафт и география ---
+  { cat: "11. Природа", icon: "🏔️", word: "Mountain", pron: "ма́унтин", trans: "гора", plural: "Mountains", pronP: "ма́унтинз", transP: "горы" },
+  { cat: "11. Природа", icon: "🏞️", word: "River", pron: "ри́вэ", trans: "река", plural: "Rivers", pronP: "ри́вэз", transP: "реки" },
+  { cat: "11. Природа", icon: "🌊", word: "Sea", pron: "сии", trans: "море", plural: "Seas", pronP: "сииз", transP: "моря" },
+  { cat: "11. Природа", icon: "🌊", word: "Ocean", pron: "о́ушэн", trans: "океан", plural: "Oceans", pronP: "о́ушэнз", transP: "океаны" },
+  { cat: "11. Природа", icon: "💧", word: "Lake", pron: "лэйк", trans: "озеро", plural: "Lakes", pronP: "лэйкс", transP: "озёра" },
+  { cat: "11. Природа", icon: "🌲", word: "Forest", pron: "фо́рэст", trans: "лес", plural: "Forests", pronP: "фо́рэстс", transP: "леса" },
+  { cat: "11. Природа", icon: "🌾", word: "Field", pron: "фиилд", trans: "поле", plural: "Fields", pronP: "фиилдз", transP: "поля" },
+  { cat: "11. Природа", icon: "🏜️", word: "Desert", pron: "дэ́зэт", trans: "пустыня", plural: "Deserts", pronP: "дэ́зэтс", transP: "пустыни" },
+  { cat: "11. Природа", icon: "🏖️", word: "Beach", pron: "биич", trans: "пляж", plural: "Beaches", pronP: "би́ичиз", transP: "пляжи" },
+  { cat: "11. Природа", icon: "🏝️", word: "Island", pron: "а́йлэнд", trans: "остров", plural: "Islands", pronP: "а́йлэндз", transP: "острова" },
+  { cat: "11. Природа", icon: "⛰️", word: "Hill", pron: "хил", trans: "холм", plural: "Hills", pronP: "хилз", transP: "холмы" },
+  { cat: "11. Природа", icon: "🕳️", word: "Cave", pron: "кэйв", trans: "пещера", plural: "Caves", pronP: "кэйвз", transP: "пещеры" },
+  { cat: "11. Природа", icon: "🌋", word: "Volcano", pron: "волкэ́йноу", trans: "вулкан", plural: "Volcanoes", pronP: "волкэ́йноуз", transP: "вулканы" },
+  { cat: "11. Природа", icon: "🏞️", word: "Waterfall", pron: "уо́тэфоол", trans: "водопад", plural: "Waterfalls", pronP: "уо́тэфоолз", transP: "водопады" },
+  { cat: "11. Природа", icon: "🪨", word: "Rock", pron: "рок", trans: "камень / скала", plural: "Rocks", pronP: "рокс", transP: "камни" },
+  { cat: "11. Природа", icon: "🏖️", word: "Sand", pron: "сэнд", trans: "песок", single: true },
+  { cat: "11. Природа", icon: "🌍", word: "Ground", pron: "гра́унд", trans: "земля (почва)", single: true },
+
+  // --- Растения ---
   { cat: "11. Природа", icon: "🌳", word: "Tree", pron: "три", trans: "дерево", plural: "Trees", pronP: "триз", transP: "деревья" },
   { cat: "11. Природа", icon: "🌸", word: "Flower", pron: "фла́уэ", trans: "цветок", plural: "Flowers", pronP: "фла́уэз", transP: "цветы" },
+  { cat: "11. Природа", icon: "🌿", word: "Grass", pron: "граас", trans: "трава", single: true },
+  { cat: "11. Природа", icon: "🍃", word: "Leaf", pron: "лииф", trans: "лист", plural: "Leaves", pronP: "лиивз", transP: "листья" },
+  { cat: "11. Природа", icon: "🌳", word: "Branch", pron: "браанч", trans: "ветка", plural: "Branches", pronP: "бра́анчиз", transP: "ветки" },
+  { cat: "11. Природа", icon: "🌱", word: "Root", pron: "руут", trans: "корень", plural: "Roots", pronP: "руутс", transP: "корни" },
+  { cat: "11. Природа", icon: "🌰", word: "Seed", pron: "сиид", trans: "семя", plural: "Seeds", pronP: "сиидз", transP: "семена" },
+  { cat: "11. Природа", icon: "🌵", word: "Cactus", pron: "кэ́ктэс", trans: "кактус", plural: "Cacti", pronP: "кэ́ктай", transP: "кактусы" },
+  { cat: "11. Природа", icon: "🍄", word: "Mushroom", pron: "ма́шруум", trans: "гриб", plural: "Mushrooms", pronP: "ма́шруумз", transP: "грибы" },
+  { cat: "11. Природа", icon: "🌹", word: "Rose", pron: "роуз", trans: "роза", plural: "Roses", pronP: "ро́узиз", transP: "розы" },
 
   // 12. ТРАНСПОРТ
   { cat: "12. Транспорт", icon: "🚗", word: "Car", pron: "ка", trans: "машина", plural: "Cars", pronP: "каз", transP: "машины" },
@@ -317,14 +503,84 @@ const cardsData = [
   { cat: "12. Транспорт", icon: "🏍️", word: "Motorcycle", pron: "мо́утэсайкл", trans: "мотоцикл", plural: "Motorcycles", pronP: "мо́утэсайклз", transP: "мотоциклы" },
 
   // 13. ШКОЛА И ИГРЫ
+  // --- Школьные принадлежности и творчество ---
   { cat: "13. Школа и игры", icon: "📖", word: "Book", pron: "бук", trans: "книга", plural: "Books", pronP: "букс", transP: "книги" },
+  { cat: "13. Школа и игры", icon: "📓", word: "Notebook", pron: "но́утбук", trans: "тетрадь / блокнот", plural: "Notebooks", pronP: "но́утбукс", transP: "тетради" },
   { cat: "13. Школа и игры", icon: "✏️", word: "Pencil", pron: "пэ́нсил", trans: "карандаш", plural: "Pencils", pronP: "пэ́нсилз", transP: "карандаши" },
   { cat: "13. Школа и игры", icon: "🖊️", word: "Pen", pron: "пэн", trans: "ручка", plural: "Pens", pronP: "пэнз", transP: "ручки" },
-  { cat: "13. Школа и игры", icon: "⚽", word: "Ball", pron: "бол", trans: "мяч", plural: "Balls", pronP: "болз", transP: "мячи" },
+  { cat: "13. Школа и игры", icon: "🖍️", word: "Marker", pron: "ма́ркер", trans: "маркер / фломастер", plural: "Markers", pronP: "ма́ркерз", transP: "маркеры" },
+  { cat: "13. Школа и игры", icon: "🧽", word: "Eraser", pron: "эре́йзер", trans: "ластик", plural: "Erasers", pronP: "эре́йзерз", transP: "ластики" },
+  { cat: "13. Школа и игры", icon: "📏", word: "Ruler", pron: "ру́улер", trans: "линейка", plural: "Rulers", pronP: "ру́улерз", transP: "линейки" },
+  { cat: "13. Школа и игры", icon: "✂️", word: "Scissors", pron: "си́зорз", trans: "ножницы", single: true },
+  { cat: "13. Школа и игры", icon: "🧴", word: "Glue", pron: "глу", trans: "клей", single: true },
+  { cat: "13. Школа и игры", icon: "🎒", word: "Schoolbag", pron: "ску́улбэг", trans: "школьная сумка / рюкзак", plural: "Schoolbags", pronP: "ску́улбэгз", transP: "рюкзаки" },
+  { cat: "13. Школа и игры", icon: "🎨", word: "Paint", pron: "пэйнт", trans: "краска", plural: "Paints", pronP: "пэйнтс", transP: "краски" },
+  { cat: "13. Школа и игры", icon: "🖌️", word: "Brush", pron: "браш", trans: "кисточка", plural: "Brushes", pronP: "бра́шиз", transP: "кисточки" },
+  { cat: "13. Школа и игры", icon: "📄", word: "Paper", pron: "пэ́йпэ", trans: "бумага", single: true },
+  { cat: "13. Школа и игры", icon: "🗺️", word: "Map", pron: "мэп", trans: "карта", plural: "Maps", pronP: "мэпс", transP: "карты" },
+  { cat: "13. Школа и игры", icon: "🌍", word: "Globe", pron: "глоуб", trans: "глобус", plural: "Globes", pronP: "глоубз", transP: "глобусы" },
+  { cat: "13. Школа и игры", icon: "📋", word: "Blackboard", pron: "блэ́кбоод", trans: "классная доска", plural: "Blackboards", pronP: "блэ́кбоодз", transP: "доски" },
+
+  // --- Игрушки и настольные игры ---
+  { cat: "13. Школа и игры", icon: "🧸", word: "Toy", pron: "той", trans: "игрушка", plural: "Toys", pronP: "тойз", transP: "игрушки" },
+  { cat: "13. Школа и игры", icon: "🧸", word: "Teddy bear", pron: "тэ́ди бэ́а", trans: "плюшевый мишка", plural: "Teddy bears", pronP: "тэ́ди бэ́аз", transP: "плюшевые мишки" },
   { cat: "13. Школа и игры", icon: "🪆", word: "Doll", pron: "дол", trans: "кукла", plural: "Dolls", pronP: "долз", transP: "куклы" },
   { cat: "13. Школа и игры", icon: "🤖", word: "Robot", pron: "ро́бот", trans: "робот", plural: "Robots", pronP: "ро́ботс", transP: "роботы" },
+  { cat: "13. Школа и игры", icon: "🧩", word: "Puzzle", pron: "па́зл", trans: "пазл / головоломка", plural: "Puzzles", pronP: "па́злз", transP: "пазлы" },
+  { cat: "13. Школа и игры", icon: "🧱", word: "Blocks", pron: "блокс", trans: "кубики (конструктор)", single: true },
+  { cat: "13. Школа и игры", icon: "🪁", word: "Kite", pron: "кайт", trans: "воздушный змей", plural: "Kites", pronP: "кайтс", transP: "воздушные змеи" },
+  { cat: "13. Школа и игры", icon: "🎈", word: "Balloon", pron: "бэллу́ун", trans: "воздушный шарик", plural: "Balloons", pronP: "бэллу́унз", transP: "шарики" },
+  { cat: "13. Школа и игры", icon: "🎲", word: "Dice", pron: "дайс", trans: "игральный кубик", plural: "Dice", pronP: "дайс", transP: "кубики" },
+  { cat: "13. Школа и игры", icon: "♟️", word: "Chess", pron: "чес", trans: "шахматы", single: true },
+  { cat: "13. Школа и игры", icon: "🚀", word: "Rocket", pron: "ро́кит", trans: "ракета (игрушка)", plural: "Rockets", pronP: "ро́китс", transP: "ракеты" },
+  { cat: "13. Школа и игры", icon: "🛹", word: "Skateboard", pron: "скэ́йтбоод", trans: "скейтборд", plural: "Skateboards", pronP: "скэ́йтбоодз", transP: "скейтборды" },
+  { cat: "13. Школа и игры", icon: "🎮", word: "Video game", pron: "ви́диоу гэйм", trans: "видеоигра", plural: "Video games", pronP: "ви́диоу гэймз", transP: "видеоигры" },
+
+  // --- Спорт и активные игры ---
+  { cat: "13. Школа и игры", icon: "⚽", word: "Ball", pron: "бол", trans: "мяч", plural: "Balls", pronP: "болз", transP: "мячи" },
+  { cat: "13. Школа и игры", icon: "🏀", word: "Basketball", pron: "ба́скетбоол", trans: "баскетбольный мяч", plural: "Basketballs", pronP: "ба́скетбоолз", transP: "баскетбольные мячи" },
+  { cat: "13. Школа и игры", icon: "🎾", word: "Racket", pron: "рэ́кит", trans: "ракетка", plural: "Rackets", pronP: "рэ́китс", transP: "ракетки" },
+  { cat: "13. Школа и игры", icon: "⛑️", word: "Helmet", pron: "хэ́лмит", trans: "шлем", plural: "Helmets", pronP: "хэ́лмитс", transP: "шлемы" },
+  { cat: "13. Школа и игры", icon: "⛸️", word: "Skates", pron: "скэйтс", trans: "коньки", single: true },
 
   // 14. ГЛАГОЛЫ
+  // --- Движение и действия ---
+  { cat: "14. Глаголы", icon: "🚶‍♂️", word: "Go", pron: "гоу", trans: "идти / ехать", single: true },
+  { cat: "14. Глаголы", icon: "🏃‍♂️", word: "Come", pron: "кам", trans: "приходить", single: true },
+  { cat: "14. Глаголы", icon: "🪑", word: "Sit", pron: "сит", trans: "сидеть", single: true },
+  { cat: "14. Глаголы", icon: "🧍", word: "Stand", pron: "стэнд", trans: "стоять", single: true },
+  { cat: "14. Глаголы", icon: "🛫", word: "Fly", pron: "флай", trans: "летать", single: true },
+  { cat: "14. Глаголы", icon: "🏊", word: "Swim", pron: "суи́м", trans: "плавать", single: true },
+  { cat: "14. Глаголы", icon: "🚴", word: "Ride", pron: "райд", trans: "кататься (верхом/на велосипеде)", single: true },
+  { cat: "14. Глаголы", icon: "🚗", word: "Drive", pron: "драйв", trans: "водить машину", single: true },
+  { cat: "14. Глаголы", icon: "🎤", word: "Sing", pron: "син", trans: "петь", single: true },
+  { cat: "14. Глаголы", icon: "💃", word: "Dance", pron: "данс", trans: "танцевать", single: true },
+
+  // --- Общение и чувства ---
+  { cat: "14. Глаголы", icon: "🗣️", word: "Speak", pron: "спиик", trans: "говорить", single: true },
+  { cat: "14. Глаголы", icon: "👂", word: "Listen", pron: "ли́сн", trans: "слушать", single: true },
+  { cat: "14. Глаголы", icon: "👀", word: "See", pron: "сии", trans: "видеть", single: true },
+  { cat: "14. Глаголы", icon: "👁️", word: "Look", pron: "лук", trans: "смотреть", single: true },
+  { cat: "14. Глаголы", icon: "✍️", word: "Write", pron: "райт", trans: "писать", single: true },
+  { cat: "14. Глаголы", icon: "🎨", word: "Draw", pron: "дроо", trans: "рисовать", single: true },
+  { cat: "14. Глаголы", icon: "😊", word: "Smile", pron: "смайл", trans: "улыбаться", single: true },
+  { cat: "14. Глаголы", icon: "😭", word: "Cry", pron: "край", trans: "плакать", single: true },
+  { cat: "14. Глаголы", icon: "😂", word: "Laugh", pron: "лааф", trans: "смеяться", single: true },
+  { cat: "14. Глаголы", icon: "🤔", word: "Think", pron: "синк", trans: "думать", single: true },
+  { cat: "14. Глаголы", icon: "🧠", word: "Know", pron: "ноу", trans: "знать", single: true },
+  { cat: "14. Глаголы", icon: "❤️", word: "Love", pron: "лав", trans: "любить", single: true },
+  { cat: "14. Глаголы", icon: "🤲", word: "Want", pron: "уонт", trans: "хотеть", single: true },
+
+  // --- Повседневные действия ---
+  { cat: "14. Глаголы", icon: "🧼", word: "Wash", pron: "уош", trans: "мыть", single: true },
+  { cat: "14. Глаголы", icon: "🍳", word: "Cook", pron: "кук", trans: "готовить", single: true },
+  { cat: "14. Глаголы", icon: "🤝", word: "Help", pron: "хэлп", trans: "помогать", single: true },
+  { cat: "14. Глаголы", icon: "🎁", word: "Give", pron: "гив", trans: "давать", single: true },
+  { cat: "14. Глаголы", icon: "✋", word: "Take", pron: "тэйк", trans: "брать", single: true },
+  { cat: "14. Глаголы", icon: "🚪", word: "Open", pron: "о́упэн", trans: "открывать", single: true },
+  { cat: "14. Глаголы", icon: "🚪", word: "Close", pron: "кло́уз", trans: "закрывать", single: true },
+
+  // --- Базовые, которые уже были (оставляем) ---
   { cat: "14. Глаголы", icon: "🍽️", word: "Eat", pron: "иит", trans: "есть", single: true },
   { cat: "14. Глаголы", icon: "🥤", word: "Drink", pron: "дринк", trans: "пить", single: true },
   { cat: "14. Глаголы", icon: "🛌", word: "Sleep", pron: "слиип", trans: "спать", single: true },
@@ -350,15 +606,76 @@ const cardsData = [
   { cat: "15. Цвета", color: "#a6a6a6", word: "Grey", pron: "грэй", trans: "серый", single: true },
   { cat: "15. Цвета", color: "linear-gradient(135deg, #ff4d4d 0%, #ffa64d 20%, #ffea00 40%, #4dff4d 60%, #4d79ff 80%, #9933ff 100%)", word: "Rainbow", pron: "рэ́йнбоу", trans: "радуга", single: true },
 
-  // 16. РАЗМЕРЫ
+  // 16. РАЗМЕРЫ И ХАРАКТЕРИСТИКИ
+  // --- Общие размеры ---
   { cat: "16. Размеры", icon: "🐘", word: "Big", pron: "биг", trans: "большой", single: true },
   { cat: "16. Размеры", icon: "🐜", word: "Small", pron: "смоол", trans: "маленький", single: true },
+  { cat: "16. Размеры", icon: "🐳", word: "Huge", pron: "хьюдж", trans: "огромный", single: true },
+  { cat: "16. Размеры", icon: "🐞", word: "Tiny", pron: "та́йни", trans: "крошечный", single: true },
 
+  // --- Высота и длина ---
+  { cat: "16. Размеры", icon: "🦒", word: "Tall", pron: "тоол", trans: "высокий", single: true },
+  { cat: "16. Размеры", icon: "🐢", word: "Short", pron: "шоот", trans: "низкий", single: true },
+  { cat: "16. Размеры", icon: "🐍", word: "Long", pron: "лонг", trans: "длинный", single: true },
+  { cat: "16. Размеры", icon: "🐛", word: "Short", pron: "шоот", trans: "короткий", single: true },
+  { cat: "16. Размеры", icon: "⛰️", word: "High", pron: "хай", trans: "высоко", single: true },
+  { cat: "16. Размеры", icon: "⬇️", word: "Low", pron: "лоу", trans: "низко", single: true },
+
+  // --- Ширина и толщина ---
+  { cat: "16. Размеры", icon: "🛣️", word: "Wide", pron: "уайд", trans: "широкий", single: true },
+  { cat: "16. Размеры", icon: "🚪", word: "Narrow", pron: "нэ́роу", trans: "узкий", single: true },
+  { cat: "16. Размеры", icon: "🧱", word: "Thick", pron: "сик", trans: "толстый", single: true },
+  { cat: "16. Размеры", icon: "📄", word: "Thin", pron: "син", trans: "тонкий", single: true },
+  { cat: "16. Размеры", icon: "🌊", word: "Deep", pron: "диип", trans: "глубокий", single: true },
+  { cat: "16. Размеры", icon: "🥣", word: "Shallow", pron: "шэ́лоу", trans: "мелкий", single: true },
+
+  // --- Вес и объем ---
+  { cat: "16. Размеры", icon: "🏋️", word: "Heavy", pron: "хэ́ви", trans: "тяжёлый", single: true },
+  { cat: "16. Размеры", icon: "🪶", word: "Light", pron: "лайт", trans: "лёгкий", single: true },
+  { cat: "16. Размеры", icon: "🥛", word: "Full", pron: "фул", trans: "полный", single: true },
+  { cat: "16. Размеры", icon: "🕳️", word: "Empty", pron: "э́мпти", trans: "пустой", single: true },
+
+  // --- Скорость (часто изучается вместе с размерами) ---
+  { cat: "16. Размеры", icon: "🏎️", word: "Fast", pron: "фааст", trans: "быстрый", single: true },
+  { cat: "16. Размеры", icon: "🐌", word: "Slow", pron: "слоу", trans: "медленный", single: true },
   // 17. ФРАЗЫ
+  // --- Приветствия и прощания ---
   { cat: "17. Фразы", icon: "👋", word: "Hello", pron: "хэлло́у", trans: "Здравствуйте", single: true },
+  { cat: "17. Фразы", icon: "✌️", word: "Hi", pron: "хай", trans: "Привет", single: true },
+  { cat: "17. Фразы", icon: "🌅", word: "Good morning", pron: "гуд мо́онин", trans: "Доброе утро", single: true },
+  { cat: "17. Фразы", icon: "🌇", word: "Good evening", pron: "гуд и́ивнин", trans: "Добрый вечер", single: true },
+  { cat: "17. Фразы", icon: "🌃", word: "Good night", pron: "гуд найт", trans: "Спокойной ночи", single: true },
   { cat: "17. Фразы", icon: "🚪", word: "Goodbye", pron: "гудба́й", trans: "До свидания", single: true },
+  { cat: "17. Фразы", icon: "👋", word: "Bye", pron: "бай", trans: "Пока", single: true },
+  { cat: "17. Фразы", icon: "🤝", word: "See you later", pron: "сии ю лэ́йтэ", trans: "Увидимся позже", single: true },
+
+  // --- Вежливость ---
   { cat: "17. Фразы", icon: "🤝", word: "Thank you", pron: "сэ́нк-ю", trans: "Спасибо", single: true },
-  { cat: "17. Фразы", icon: "🙏", word: "Please", pron: "плиз", trans: "Пожалуйста", single: true },
+  { cat: "17. Фразы", icon: "😊", word: "You are welcome", pron: "ю аа уэ́лком", trans: "Пожалуйста (в ответ на спасибо)", single: true },
+  { cat: "17. Фразы", icon: "🙏", word: "Please", pron: "плиз", trans: "Пожалуйста (просьба)", single: true },
+  { cat: "17. Фразы", icon: "✋", word: "Excuse me", pron: "икскью́з ми", trans: "Извините", single: true },
+  { cat: "17. Фразы", icon: "😔", word: "Sorry", pron: "со́ри", trans: "Прости", single: true },
+
+  // --- Знакомство и вопросы ---
+  { cat: "17. Фразы", icon: "❓", word: "What is your name?", pron: "уот из ё нэйм", trans: "Как тебя зовут?", single: true },
+  { cat: "17. Фразы", icon: "🙋‍♂️", word: "My name is...", pron: "май нэйм из...", trans: "Меня зовут...", single: true },
+  { cat: "17. Фразы", icon: "🤔", word: "How are you?", pron: "хау аа ю", trans: "Как дела?", single: true },
+  { cat: "17. Фразы", icon: "👌", word: "I am fine", pron: "ай эм файн", trans: "У меня всё хорошо", single: true },
+  { cat: "17. Фразы", icon: "🎂", word: "How old are you?", pron: "хау оулд аа ю", trans: "Сколько тебе лет?", single: true },
+  { cat: "17. Фразы", icon: "🤷‍♂️", word: "I don't know", pron: "ай до́унт ноу", trans: "Я не знаю", single: true },
+  { cat: "17. Фразы", icon: "🙅‍♂️", word: "I don't understand", pron: "ай до́унт андэстэ́нд", trans: "Я не понимаю", single: true },
+  { cat: "17. Фразы", icon: "❓", word: "What is this?", pron: "уот из зис", trans: "Что это?", single: true },
+  { cat: "17. Фразы", icon: "🗺️", word: "Where is...?", pron: "уэ́а из...", trans: "Где находится...?", single: true },
+
+  // --- Повседневные нужды ---
   { cat: "17. Фразы", icon: "👍", word: "Yes", pron: "йес", trans: "Да", single: true },
-  { cat: "17. Фразы", icon: "👎", word: "No", pron: "ноу", trans: "Нет", single: true }
+  { cat: "17. Фразы", icon: "👎", word: "No", pron: "ноу", trans: "Нет", single: true },
+  { cat: "17. Фразы", icon: "🆘", word: "Help me", pron: "хэлп ми", trans: "Помоги мне", single: true },
+  { cat: "17. Фразы", icon: "🍽️", word: "I am hungry", pron: "ай эм ха́нгри", trans: "Я голоден", single: true },
+  { cat: "17. Фразы", icon: "🥤", word: "I am thirsty", pron: "ай эм сё́сти", trans: "Я хочу пить", single: true },
+  { cat: "17. Фразы", icon: "🥱", word: "I am tired", pron: "ай эм та́йэд", trans: "Я устал", single: true },
+  { cat: "17. Фразы", icon: "❤️", word: "I love you", pron: "ай лав ю", trans: "Я тебя люблю", single: true },
+  { cat: "17. Фразы", icon: "🏃‍♂️", word: "Let's go", pron: "лец го́у", trans: "Пойдём", single: true },
+  { cat: "17. Фразы", icon: "🥺", word: "Can I have...?", pron: "кэн ай хэв...", trans: "Можно мне...?", single: true },
+  { cat: "17. Фразы", icon: "🤫", word: "Be quiet", pron: "би куа́йэт", trans: "Тихо / Помолчи", single: true },
 ];
