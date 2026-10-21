@@ -123,16 +123,18 @@
     align-items: center; 
   }
   
+  /* Сама белая плитка */
   .quiz-menu { 
     display: flex; 
     flex-direction: column; 
-    gap: 20px; 
+    gap: 25px; /* Увеличили отступ между кнопками */
     width: 100%; 
     max-width: 450px; 
-    padding: 20px;
+    padding: 30px 25px; /* Сделали немного больше отступы внутри плитки */
     background: #fff;
     border-radius: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    /* Добавили глубокую и мягкую тень для объема */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
   }
 
   .quiz-menu h2 {
@@ -142,8 +144,9 @@
     margin: 0 0 10px 0;
   }
 
+  /* Кнопки */
   .menu-btn {
-    padding: 18px 20px; 
+    padding: 20px 25px; 
     font-size: 22px; 
     border-radius: 20px; 
     border: none;
@@ -154,17 +157,18 @@
     align-items: center; 
     justify-content: flex-start;
     gap: 15px;
+    width: 100%; /* ГЛАВНОЕ: растягивает кнопку на всю ширину */
     transition: transform 0.1s, box-shadow 0.1s;
   }
 
   .menu-btn .menu-icon { font-size: 32px; }
 
   .menu-btn:active { 
-    transform: translateY(4px); 
+    transform: translateY(6px); /* При нажатии кнопка проваливается вниз */
     box-shadow: 0 0 0 !important; 
   }
 
-  /* Разные цвета для кнопок */
+  /* Разные цвета для кнопок (тени сделали чуть темнее) */
   .menu-btn.btn-purple { background: #8b5cf6; box-shadow: 0 6px 0 #6d28d9; }
   .menu-btn.btn-green { background: #10b981; box-shadow: 0 6px 0 #047857; }
   .menu-btn.btn-orange { background: #f59e0b; box-shadow: 0 6px 0 #b45309; }
