@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 2 -->
+<!DOCTYPE html> <!-- 4 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -242,7 +242,7 @@
   </div>
 
   <!-- 3.1 КАРТОЧКИ КАТЕГОРИИ -->
-  <div id="category-view" class="view" style="display:none; max-width: 1000px; margin: 0 auto; overflow-y: auto;">
+  <div id="category-view" class="view" style="display:none; max-width: 1000px; margin: 0 auto;">
     <div style="display:flex; justify-content:space-between; width:100%; margin-bottom:10px;">
       <button class="action-btn" style="width:auto; padding:8px 15px; font-size:14px; background:#e0e7ff; color:var(--main-color);" onclick="openTasks()">← Назад</button>
       <button class="action-btn" style="width:auto; padding:8px 15px; font-size:14px; background:var(--gold); color:#000;" onclick="shuffleCategory()">🔀 Перемешать</button>
@@ -288,6 +288,7 @@
     dailyCount: parseInt(localStorage.getItem('eng_dailyCount') || '0'),
     learned: JSON.parse(localStorage.getItem('eng_learned') || '[]'),
     petName: localStorage.getItem('eng_petName') || ''
+    listenCounts: JSON.parse(localStorage.getItem('eng_listenCounts') || '{}') 
   };
 
   function saveState() {
@@ -297,6 +298,7 @@
     localStorage.setItem('eng_dailyCount', state.dailyCount);
     localStorage.setItem('eng_learned', JSON.stringify(state.learned));
     localStorage.setItem('eng_petName', state.petName);
+    localStorage.setItem('eng_listenCounts', JSON.stringify(state.listenCounts)); // НОВОЕ
     updateUI();
   }
 
@@ -525,13 +527,14 @@
   function markAsLearned(word) {
     if (!state.learned.includes(word)) {
       state.learned.push(word);
-      saveState();
     }
+    state.listenCounts[word] = 25; 
+    saveState();
   }
 
   function isCategoryDone(catName) {
     const catCards = cardsData.filter(c => c.cat === catName);
-    const learnedInCat = catCards.filter(c => state.learned.includes(c.word)).length;
+    const learnedInCat = catCards.filter(c => (state.listenCounts[c.word] || 0) >= 25).length;
     return learnedInCat === catCards.length;
   }
 
@@ -542,7 +545,7 @@
 
     categories.forEach(cat => {
       const total = cardsData.filter(c => c.cat === cat).length;
-      const learned = cardsData.filter(c => c.cat === cat && state.learned.includes(c.word)).length;
+      const learned = cardsData.filter(c => c.cat === cat && (state.listenCounts[c.word] || 0) >= 25).length;
       const done = learned === total;
 
       const btn = document.createElement('button');
@@ -571,7 +574,9 @@
 
     const container = document.getElementById('category-cards-container');
     container.innerHTML = filtered.map(card => {
-      const learned = state.learned.includes(card.word);
+      const count = state.listenCounts[card.word] || 0;
+      const learned = count >= 25;
+      
       let iconHtml = card.color ? `<div style="width:50px; height:50px; background:${card.color}; border-radius:50%; margin-bottom:10px; border:2px solid #333;"></div>` : `<div style="font-size:50px; margin-bottom:10px;">${card.icon}</div>`;
       
       return `
@@ -580,24 +585,57 @@
           <div style="font-size:20px; font-weight:bold; margin-bottom:5px;">${card.word}</div>
           <div style="font-size:14px; color:#666; margin-bottom:5px;">${card.pron}</div>
           <div style="font-size:18px; font-weight:600; margin-bottom:10px;">${card.trans}</div>
-          <button class="action-btn btn-listen" style="padding:8px 15px; font-size:14px;" onclick="handleListenCategory('${card.word}', event)">🔊 Слушать</button>
+          <button class="action-btn btn-listen" style="padding:8px 15px; font-size:14px;" onclick="handleListenCategory('${card.word}', event)">
+            🔊 Слушать (${count}/25)
+          </button>
         </div>
       `;
     }).join('');
     window.scrollTo(0, 0);
   }
 
-  function shuffleCategory() {
-    showCategory(currentCategoryName, true);
-  }
+  let isTasksCooldown = false; // Глобальный кулдаун для страницы заданий
 
   function handleListenCategory(word, event) {
+    if (isTasksCooldown) return; // Если пауза, ничего не делаем
+
     speakWord(word);
     addStars(1);
-    markAsLearned(word);
-    // Подсвечиваем карточку
-    const cardDiv = event.target.closest('.task-card');
-    if (cardDiv) cardDiv.classList.add('learned');
+    
+    // Увеличиваем счетчик
+    state.listenCounts[word] = (state.listenCounts[word] || 0) + 1;
+    
+    // Если достигли 25, делаем карточку золотой
+    if (state.listenCounts[word] >= 25 && !state.learned.includes(word)) {
+        state.learned.push(word);
+        showToast("🌟 Карточка изучена!");
+    }
+    saveState();
+
+    // Обновляем кнопку и карточку визуально
+    const btn = event.target;
+    const count = state.listenCounts[word];
+    btn.innerHTML = `🔊 Слушать (${count}/25)`;
+    
+    if (count >= 25) {
+        btn.closest('.task-card').classList.add('learned');
+    }
+
+    // Запускаем 10-секундную паузу для ВСЕХ кнопок
+    isTasksCooldown = true;
+    const allBtns = document.querySelectorAll('.btn-listen');
+    allBtns.forEach(b => { 
+        b.disabled = true; 
+        b.style.opacity = '0.5'; 
+    });
+
+    setTimeout(() => {
+        isTasksCooldown = false;
+        allBtns.forEach(b => { 
+            b.disabled = false; 
+            b.style.opacity = '1'; 
+        });
+    }, 10000); // 10 секунд
   }
 
   // ================= ИГРА (УГАДАЙКА) =================
