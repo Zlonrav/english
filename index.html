@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 36 -->
+<!DOCTYPE html> <!-- 37 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -390,7 +390,7 @@
       
       <!-- Форма ввода ПИН-кода -->
       <div id="pin-pad-container" style="display: none; text-align: center;">
-        <div style="font-size: 20px; font-weight: bold; margin-bottom: 10px;" id="pin-pet-name">Имя</div>
+        <div style="font-size: 20px; font-weight: bold; margin-bottom: 10px;" id="pin-pet-name">Введи ПИН-код</div>
         <div id="pin-dots" style="font-size: 30px; letter-spacing: 10px; margin-bottom: 15px; color: var(--main-color);">⚪⚪⚪⚪</div>
         
         <div id="pin-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
@@ -565,7 +565,7 @@
   ];
 
   function updateLevel() {
-    const lvlBox = document.getElementById('level-container');
+    const lvlBox = ('level-container');
     if (!lvlBox) return;
     
     let currentLevel = levelList[0];
@@ -1161,7 +1161,7 @@
     document.getElementById('profiles-list').style.display = 'none';
     document.getElementById('btn-add-profile').style.display = 'none';
     document.getElementById('pin-pad-container').style.display = 'block';
-    document.getElementById('pet-pin-name').innerText = `Введи ПИН для ${name}`; // Исправлена опечатка
+    document.getElementById('pin-pet-name').innerText = `Введи ПИН для ${name}`;
     document.getElementById('auth-title').innerText = "Вход";
   }
 
