@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 35 -->
+<!DOCTYPE html> <!-- 36 -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -819,7 +819,7 @@
     bar.style.width = '100%';
     bar.style.transition = 'width 15s linear';
     setTimeout(() => bar.style.width = '0%', 50); 
-    setTimeout(() => { btn.disabled = false; listenCooldown = false; }, 10000);
+    setTimeout(() => { btn.disabled = false; listenCooldown = false; }, 5000);
   }
 
   function handleNext() {
@@ -956,7 +956,7 @@
     setTimeout(() => {
         isTasksCooldown = false;
         document.querySelectorAll('.progress-btn').forEach(b => { b.disabled = false; });
-    }, 10000);
+    }, 5000);
   }
 
   // ================= ИГРА =================
