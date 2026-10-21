@@ -612,17 +612,28 @@
     // Выбираем случайную карточку
     currentQuizCard = cardsData[Math.floor(Math.random() * cardsData.length)];
     
-    // Ищем 2 неправильных варианта
-    let wrongOptions = [];
-    while (wrongOptions.length < 2) {
-      let rnd = cardsData[Math.floor(Math.random() * cardsData.length)];
-      if (rnd.word !== currentQuizCard.word && !wrongOptions.includes(rnd)) {
-        wrongOptions.push(rnd);
-      }
-    }
+    // --- НОВАЯ ЛОГИКА ВЫБОРА НЕПРАВИЛЬНЫХ ОТВЕТОВ ---
+    // Берем только карточки из той же категории (например, только цвета, только числа и т.д.)
+    let sameCategoryCards = cardsData.filter(c => c.cat === currentQuizCard.cat && c.word !== currentQuizCard.word);
     
+    // Перемешиваем их
+    sameCategoryCards.sort(() => Math.random() - 0.5);
+    
+    // Берем первые 2 варианта
+    let wrongOptions = sameCategoryCards.slice(0, 2);
+    
+    // Защита на случай, если в категории вдруг меньше 3 карточек (чтобы игра не сломалась)
+    if (wrongOptions.length < 2) {
+        let fallbackPool = cardsData.filter(c => c.word !== currentQuizCard.word && !wrongOptions.includes(c));
+        fallbackPool.sort(() => Math.random() - 0.5);
+        while (wrongOptions.length < 2) {
+            wrongOptions.push(fallbackPool.pop());
+        }
+    }
+    // ------------------------------------------------
+
     let options = [currentQuizCard, ...wrongOptions];
-    options.sort(() => Math.random() - 0.5); // Перемешиваем
+    options.sort(() => Math.random() - 0.5); // Перемешиваем финальный список
 
     const qEl = document.getElementById('quiz-question');
     const soundBtn = document.getElementById('quiz-sound-btn');
