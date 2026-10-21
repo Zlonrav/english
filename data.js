@@ -403,7 +403,7 @@ const cardsData = [
   // --- Штаны и юбки ---
   { cat: "11. Одежда", icon: "👖", word: "Pants", pron: "пэнтс", trans: "штаны / брюки", single: true },
   { cat: "11. Одежда", icon: "🩳", word: "Shorts", pron: "шоотс", trans: "шорты", single: true },
-  { cat: "11. Одежда", icon: "👗", word: "Skirt", pron: "скёт", trans: "юбка", plural: "Skirts", pronP: "скётс", transP: "юбки" },
+  { cat: "11. Одежда", icon: '<img src="img/skirt.png" alt="skirt">', word: "Skirt", pron: "скёт", trans: "юбка", plural: "Skirts", pronP: "скётс", transP: "юбки" },
   { cat: "11. Одежда", icon: "👖", word: "Jeans", pron: "джинз", trans: "джинсы", single: true },
   // --- Обувь ---
   { cat: "11. Одежда", icon: "👟", word: "Shoes", pron: "шуз", trans: "обувь / туфли", single: true },
