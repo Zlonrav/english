@@ -56,8 +56,11 @@ function isLastSundayOfCycle() {
   return today.getTime() === lastSun.getTime();
 }
 
-function ow() {
+function canExchangeNow() {
   if (!state.cycleStartDate) return false;
+  // ЧИТ: Если в URL есть debug, разрешаем обмен в любой день
+  if (window.location.search.includes('debug=')) return true; 
+  
   const now = new Date();
   if (now.getDay() !== 0) return false;        // только воскресенье
   if (now.getHours() < 10) return false;       // с 10:00
@@ -115,7 +118,7 @@ function renderCoinsBlock() {
   if (coinsEl) coinsEl.innerText = state.coins || 0;
   const btn = document.getElementById('exchange-btn');
   if (btn) {
-    const allowed = ow() && (state.stars || 0) >= 100;
+    const allowed = canExchangeNow() && (state.stars || 0) >= 100;
     btn.style.display = allowed ? 'block' : 'none';
   }
 }
