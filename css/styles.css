@@ -127,6 +127,16 @@ html, body {
   margin-bottom: 10px;
 }
 
+/* Ограничиваем размеры картинок в тренажере */
+.trainer-icon img {
+    max-width: 120px;
+    max-height: 120px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
 /* Кнопка с заливкой */
 .progress-btn {
   position: relative;
