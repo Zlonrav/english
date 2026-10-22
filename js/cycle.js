@@ -3,7 +3,7 @@
 (function debugFakeDate() {
   if (!location.search.includes('debug=sunday')) return;
   const RealDate = Date;
-  const FAKE = new RealDate('2026-10-25T15:00:00');
+  const FAKE = new RealDate('2026-10-25T15:12:00');
   class FakeDate extends RealDate {
     constructor(...args) {
       if (args.length === 0) super(FAKE.getTime());
