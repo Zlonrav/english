@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 71 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 73 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -1480,13 +1480,12 @@
     openPetSelector();
   }
 
- // ================= ИГРА (ПРАВОПИСАНИЕ) =================
+  // ================= ИГРА (ПРАВОПИСАНИЕ) =================
   let currentSpellingCard = null;
   let spellingAttempts = 0;
   let spellingMode = 'easy';
   let spellingCooldown = false;
-
-  let spellingRoundScore = 0; // Счетчик правильных слов за раунд
+  let spellingRoundScore = 0; // Счетчик раундов
 
   function openSpelling() {
     hideAllViews();
@@ -1541,7 +1540,7 @@
     }
     currentSpellingCard = newCard;
 
-    document.getElementById('spelling-hint').innerText = "";
+    document.getElementById('spelling-hint').innerHTML = "";
     
     const enInput = document.getElementById('spelling-en-input');
     enInput.value = "";
@@ -1559,7 +1558,6 @@
     
     const btn = document.getElementById('spelling-submit-btn');
     
-    // Если мы ждем окончания таймера, не разблокируем кнопку
     if (!spellingCooldown) {
       btn.disabled = false;
       btn.style.opacity = '1';
@@ -1573,7 +1571,7 @@
     const enInput = document.getElementById('spelling-en-input');
     const ruInput = document.getElementById('spelling-ru-input');
     
-    // Меняем дефисы на пробелы, убираем знаки препинания, схлопываем пробелы
+    // Очистка текста: нижний регистр, удаление знаков препинания
     const cleanString = (str) => {
       return str.toLowerCase()
                 .replace(/[.,?!]/g, '')     // убираем точки и вопросы
@@ -1609,7 +1607,6 @@
       addStars(starsEarned);
       markAsLearned(currentSpellingCard.word);
       
-      // УВЕЛИЧИВАЕМ СЧЕТЧИК РАУНДА
       spellingRoundScore++;
       document.getElementById('spelling-score').innerText = `Правильно: ${spellingRoundScore}/10`;
       showToast("✅ Правильно! Молодец!", 'top');
@@ -1617,12 +1614,11 @@
       startSpellingCooldown(); 
       
       setTimeout(() => { 
-        // ПРОВЕРКА НА КОНЕЦ РАУНДА
         if (spellingRoundScore >= 10) {
           showToast("🏆 Раунд пройден! Ты молодец!", 'top');
-          setTimeout(() => { openQuiz(); }, 1500); // Возврат в меню игры
+          setTimeout(() => { openQuiz(); }, 1500);
         } else {
-          startSpellingRound(); // Иначе даем следующее слово
+          startSpellingRound();
         }
       }, 1500);
 
@@ -1659,7 +1655,6 @@
     if (spellingAttempts === 7) percentToReveal = 0.75;
     if (spellingAttempts >= 8) percentToReveal = 1.00;
 
-    // Считаем только БУКВЫ и ЦИФРЫ (пробелы и дефисы не считаются)
     let lettersOnly = word.replace(/[^a-zA-Z0-9]/g, '');
     let charsToShow = Math.floor(lettersOnly.length * percentToReveal);
     if (percentToReveal === 1) charsToShow = lettersOnly.length;
@@ -1671,7 +1666,6 @@
       let char = word[i];
       
       if (char.match(/[a-zA-Z0-9]/)) {
-        // Если это буква или цифра
         if (revealedCount < charsToShow) {
           hintHTML += `<span style="color:#d97706; font-weight:900;">${char}</span> `; 
           revealedCount++;
@@ -1681,11 +1675,9 @@
       } else if (char === ' ') {
         hintHTML += `<span style="color:#999; font-size:20px;">␣</span> `; 
       } else {
-        // Пунктуация и дефисы
         hintHTML += `<span style="color:#666;">${char}</span> `;
       }
     }
-    
     hintEl.innerHTML = hintHTML;
   }
 
@@ -1708,7 +1700,6 @@
       btn.disabled = false;
       btn.style.opacity = '1';
       
-      // СБРОС ПОЛЕЙ В ИСХОДНОЕ СОСТОЯНИЕ ПОСЛЕ ТАЙМЕРА (возвращаем белый фон)
       const enInput = document.getElementById('spelling-en-input');
       const ruInput = document.getElementById('spelling-ru-input');
       enInput.style.borderColor = "#ccc";
