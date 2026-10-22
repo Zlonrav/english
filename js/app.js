@@ -261,27 +261,52 @@ function checkDailyProgress() {
 function hideAllViews() {
   document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
 }
+
+// Проверка авторизации
+function checkAuth() {
+  if (!state || !state.petName) {
+    renderAuthScreen();
+    return false;
+  }
+  return true;
+}
+
 function goHome() {
+  if (!checkAuth()) return;
   hideAllViews();
   document.getElementById('dashboard-view').style.display = 'flex';
   checkForcedReset();
   updateUI();
 }
+
 function startTrainer() {
+  if (!checkAuth()) return;
   hideAllViews();
   document.getElementById('trainer-view').style.display = 'flex';
   showRandomCard();
 }
+
 function openTasks() {
+  if (!checkAuth()) return;
   hideAllViews();
   document.getElementById('tasks-view').style.display = 'block';
   renderCategoryList();
 }
+
 function openQuiz() {
+  if (!checkAuth()) return;
   hideAllViews();
   document.getElementById('quiz-view').style.display = 'flex';
   document.getElementById('quiz-menu').style.display = 'block';
   document.getElementById('quiz-play').style.display = 'none';
+}
+
+function openAchievements() {
+  if (!checkAuth()) return;
+  hideAllViews();
+  document.getElementById('achievements-view').style.display = 'flex';
+  renderAchievements();
+  renderCoinsBlock();
 }
 
 // ================= ОЗВУЧКА =================
