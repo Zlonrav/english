@@ -1,4 +1,5 @@
 // ================= ИГРА (ПРАВОПИСАНИЕ) =================
+let currentRevealedIndices = []; 
 let currentSpellingCard = null;
 let spellingAttempts = 0;
 let spellingMode = 'easy';
