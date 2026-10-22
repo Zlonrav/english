@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 70 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 71 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -514,9 +514,6 @@
       <button class="menu-btn btn-quiz" onclick="openQuiz()">
         <span class="menu-icon">🏆</span> Проверка знаний
       </button>
-      <button class="menu-btn" onclick="openSpelling()" style="background: #0ea5e9; box-shadow: 0 5px 0 #0369a1; justify-content: flex-start;">
-        <span class="menu-icon">✍️</span> Правописание
-      </button>
     </div>
   </div>
 
@@ -579,6 +576,9 @@
       <button class="menu-btn btn-orange" onclick="startQuiz(3)">
         <span class="menu-icon">🗣️</span> Вижу перевод
       </button>
+      <button class="menu-btn" onclick="openSpelling()" style="background: #0ea5e9; box-shadow: 0 5px 0 #0369a1;">
+        <span class="menu-icon">✍️</span> Правописание
+      </button>
     </div>
 
     <div class="quiz-play" id="quiz-play">
@@ -600,6 +600,7 @@
         <button id="mode-easy-btn" style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; background: #fff; color: var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1);" onclick="setSpellingMode('easy')">Легкий</button>
         <button id="mode-hard-btn" style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; background: transparent; color: #666;" onclick="setSpellingMode('hard')">Сложный</button>
       </div>
+      <div style="text-align: center; font-weight: bold; color: var(--green); margin-bottom: 10px;" id="spelling-score">Правильно: 0/10</div>
 
       <button id="spelling-sound-btn" style="font-size: 60px; background: #fff; border: 3px solid var(--main-color); border-radius: 50%; width: 100px; height: 100px; cursor: pointer; margin: 0 auto 15px auto; box-shadow: 0 5px 0 var(--main-color); display: block;" onclick="speakWord(currentSpellingCard.word)">🔊</button>
 
@@ -615,7 +616,7 @@
         <div class="cooldown-bar" id="spelling-cooldown"></div>
       </button>
       
-      <button class="menu-btn" style="background: #ccc; box-shadow: 0 5px 0 #999; color: #333; padding: 10px; font-size: 16px; justify-content: center;" onclick="goHome()">← Выйти</button>
+      <button class="menu-btn" style="background: #ccc; box-shadow: 0 5px 0 #999; color: #333; padding: 10px; font-size: 16px; margin-top: 15px; justify-content: center;" onclick="openQuiz()">← Выйти</button>
     </div>
   </div>
 </div>
@@ -1485,9 +1486,15 @@
   let spellingMode = 'easy';
   let spellingCooldown = false;
 
+  let spellingRoundScore = 0; // Счетчик правильных слов за раунд
+
   function openSpelling() {
     hideAllViews();
     document.getElementById('spelling-view').style.display = 'flex';
+    
+    spellingRoundScore = 0; // Сброс при входе
+    document.getElementById('spelling-score').innerText = `Правильно: 0/10`;
+    
     setSpellingMode('easy');
     startSpellingRound();
   }
@@ -1601,11 +1608,23 @@
       
       addStars(starsEarned);
       markAsLearned(currentSpellingCard.word);
+      
+      // УВЕЛИЧИВАЕМ СЧЕТЧИК РАУНДА
+      spellingRoundScore++;
+      document.getElementById('spelling-score').innerText = `Правильно: ${spellingRoundScore}/10`;
       showToast("✅ Правильно! Молодец!", 'top');
       
       startSpellingCooldown(); 
       
-      setTimeout(() => { startSpellingRound(); }, 1500);
+      setTimeout(() => { 
+        // ПРОВЕРКА НА КОНЕЦ РАУНДА
+        if (spellingRoundScore >= 10) {
+          showToast("🏆 Раунд пройден! Ты молодец!", 'top');
+          setTimeout(() => { openQuiz(); }, 1500); // Возврат в меню игры
+        } else {
+          startSpellingRound(); // Иначе даем следующее слово
+        }
+      }, 1500);
 
     } else {
       enInput.style.borderColor = "var(--red)";
