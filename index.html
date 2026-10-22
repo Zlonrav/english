@@ -1457,7 +1457,7 @@
     openPetSelector();
   }
 
-  // ================= ИГРА (ПРАВОПИСАНИЕ) =================
+ // ================= ИГРА (ПРАВОПИСАНИЕ) =================
   let currentSpellingCard = null;
   let spellingAttempts = 0;
   let spellingMode = 'easy';
@@ -1472,7 +1472,8 @@
 
   function setSpellingMode(mode) {
     spellingMode = mode;
-    spellingCooldown = false;
+    spellingCooldown = false; 
+    
     const easyBtn = document.getElementById('mode-easy-btn');
     const hardBtn = document.getElementById('mode-hard-btn');
     
@@ -1497,12 +1498,11 @@
       document.getElementById('spelling-ru-text').style.display = 'none';
       document.getElementById('spelling-ru-input').style.display = 'block';
     }
-    startSpellingRound(); // Сброс слова при смене режима
+    startSpellingRound(); 
   }
 
   function startSpellingRound() {
     spellingAttempts = 0;
-    spellingCooldown = false;
     
     let pool = cardsData.filter(c => c.cat !== "1. Буквы");
     let newCard = pool[Math.floor(Math.random() * pool.length)];
@@ -1514,7 +1514,6 @@
 
     document.getElementById('spelling-hint').innerText = "";
     
-    // Сброс полей и фона
     const enInput = document.getElementById('spelling-en-input');
     enInput.value = "";
     enInput.style.borderColor = "#ccc";
@@ -1529,16 +1528,34 @@
     
     speakWord(currentSpellingCard.word);
     
-    // В самом конце функции startSpellingRound
     const btn = document.getElementById('spelling-submit-btn');
     
-    // Если мы ждем окончания таймера, не разблокируем кнопку раньше времени
+    // Если мы ждем окончания таймера, не разблокируем кнопку
     if (!spellingCooldown) {
       btn.disabled = false;
       btn.style.opacity = '1';
       document.getElementById('spelling-cooldown').style.width = '0%';
     }
   }
+
+  function checkSpelling() {
+    if (spellingCooldown) return;
+
+    const enInput = document.getElementById('spelling-en-input');
+    const ruInput = document.getElementById('spelling-ru-input');
+    const userEn = enInput.value.trim().toLowerCase();
+    const userRu = ruInput.value.trim().toLowerCase();
+    
+    const correctEn = currentSpellingCard.word.toLowerCase();
+    const correctRu = currentSpellingCard.trans.toLowerCase();
+
+    let isCorrect = false;
+
+    if (spellingMode === 'easy') {
+      isCorrect = (userEn === correctEn);
+    } else {
+      isCorrect = (userEn === correctEn && userRu === correctRu);
+    }
 
     if (isCorrect) {
       enInput.style.borderColor = "var(--green)";
@@ -1554,11 +1571,25 @@
       markAsLearned(currentSpellingCard.word);
       showToast("✅ Правильно! Молодец!", 'top');
       
-      startSpellingCooldown(); // <--- ДОБАВИТЬ ВОТ ЭТУ СТРОЧКУ
+      startSpellingCooldown(); 
       
       setTimeout(() => { startSpellingRound(); }, 1500);
+
     } else {
-      // ... (код для неправильного ответа остается как был) ...
+      enInput.style.borderColor = "var(--red)";
+      enInput.style.backgroundColor = "#f8d7da";
+      if (spellingMode === 'hard') {
+        ruInput.style.borderColor = "var(--red)";
+        ruInput.style.backgroundColor = "#f8d7da";
+      }
+      
+      spellingAttempts++;
+      showToast(`❌ Ошибка! Попытка ${spellingAttempts}/9`, 'top');
+      
+      updateSpellingHint();
+      startSpellingCooldown();
+    }
+  }
 
   function updateSpellingHint() {
     const word = currentSpellingCard.word;
@@ -1605,7 +1636,7 @@
       btn.disabled = false;
       btn.style.opacity = '1';
       
-      // СБРОС ПОЛЕЙ В ИСХОДНОЕ СОСТОЯНИЕ ПОСЛЕ ТАЙМЕРА
+      // СБРОС ПОЛЕЙ В ИСХОДНОЕ СОСТОЯНИЕ (возвращаем белый фон)
       const enInput = document.getElementById('spelling-en-input');
       const ruInput = document.getElementById('spelling-ru-input');
       enInput.style.borderColor = "#ccc";
