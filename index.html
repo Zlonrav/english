@@ -828,19 +828,6 @@
     updateLevel();
   }
 
-    let hash = 0;
-    for (let i = 0; i < state.petName.length; i++) hash += state.petName.charCodeAt(i);
-    
-    const petEmoji = pets[hash % pets.length];
-    const petAcc = acc[hash % acc.length];
-
-    container.innerHTML = `
-      <div class="pet-avatar">${petEmoji}</div>
-      <div class="pet-name">${state.petName} ${petAcc}</div>
-      <div id="level-container"></div>`;
-    updateLevel();
-  }
-
   function createPet() {
     const val = document.getElementById('pet-input').value.trim();
     if (val) { state.petName = val; saveState(); }
