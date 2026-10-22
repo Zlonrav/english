@@ -90,7 +90,7 @@ function doExchange(amount) {
   state.cycleStartDate = getNextMonday(new Date()).toISOString();
   state.pendingNewCycleToast = true;
   saveState();
-  showToast(`🪙 +${coins} англокоинов!`, 'top');
+  showToast(`🪙 +${coins} пульсаров!`, 'top');
 }
 
 function updateCycleBanner() {
@@ -107,7 +107,7 @@ function checkPendingNewCycleToast() {
     state.pendingNewCycleToast = false;
     saveState();
     setTimeout(() => {
-      showToast("🔄 Новый цикл! Звёзды обнулились, но звание осталось. Вперёд за новыми англокоинами!", 'top');
+      showToast("🔄 Новый цикл! Звёзды обнулились, но звание осталось.", 'top');
     }, 500);
   }
 }
