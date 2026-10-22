@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 52 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 53 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -367,6 +367,32 @@
     background: #eee;
     margin: 8px 0;
   }
+
+  /* Модальное окно выбора питомца */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center;
+    z-index: 10000; padding: 15px;
+  }
+  .modal-content {
+    background: #fff; border-radius: 20px; padding: 20px; width: 100%; max-width: 500px;
+    max-height: 80vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .modal-title { text-align: center; color: var(--main-color); margin-top: 0; }
+  .grid-selector { display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 10px; margin-bottom: 20px; }
+  .grid-item {
+    font-size: 30px; padding: 10px; text-align: center; cursor: pointer;
+    border: 2px solid #eee; border-radius: 12px; transition: 0.2s; background: #f9f9f9;
+  }
+  .grid-item:hover { border-color: var(--main-color); transform: scale(1.1); }
+  .grid-item.selected { border-color: var(--gold); background: #fffdf5; box-shadow: 0 0 10px rgba(255,193,7,0.5); }
+  
+  /* Стили для игры Правописание */
+  .spelling-input {
+    padding: 15px; font-size: 20px; border: 3px solid #ccc; border-radius: 12px;
+    text-align: center; text-transform: lowercase; outline: none; width: 100%; margin-bottom: 15px;
+  }
+  .spelling-input:focus { border-color: var(--main-color); }
   
   @keyframes slideUp { 
     from { bottom: -50px; opacity: 0; } 
@@ -397,6 +423,21 @@
   
 </div>
 
+<!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ПИТОМЦА -->
+<div id="pet-selector-modal" class="modal-overlay">
+  <div class="modal-content">
+    <h2 class="modal-title">Выбери своего питомца</h2>
+    
+    <h4 style="margin: 10px 0;">Животные:</h4>
+    <div class="grid-selector" id="pet-grid"></div>
+    
+    <h4 style="margin: 10px 0;">Аксессуары:</h4>
+    <div class="grid-selector" id="acc-grid"></div>
+    
+    <button class="menu-btn btn-green" style="justify-content: center;" onclick="closePetSelector()">Готово</button>
+  </div>
+</div>
+  
 <div class="content-wrapper">
     <!-- ЭКРАН ВХОДА (АВТОРИЗАЦИЯ) -->
   <div id="auth-view" class="view" style="display: flex; align-items: center; justify-content: center;">
@@ -447,6 +488,9 @@
       </button>
       <button class="menu-btn btn-quiz" onclick="openQuiz()">
         <span class="menu-icon">🏆</span> Проверка знаний
+      </button>
+      <button class="menu-btn" onclick="openSpelling()" style="background: #0ea5e9; box-shadow: 0 5px 0 #0369a1; justify-content: flex-start;">
+        <span class="menu-icon">✍️</span> Правописание
       </button>
     </div>
   </div>
@@ -520,6 +564,33 @@
       <div class="quiz-question" id="quiz-question">Вопрос</div>
       <button id="quiz-sound-btn" style="display:none; font-size:60px; background:#fff; border:3px solid var(--main-color); border-radius:50%; width:100px; height:100px; cursor:pointer; margin: 0 auto 25px auto; box-shadow: 0 5px 0 var(--main-color);" onclick="speakWord(currentQuizCard.word)">🔊</button>
       <div class="quiz-options" id="quiz-options"></div>
+    </div>
+  </div>
+    <!-- ИГРА (ПРАВОПИСАНИЕ) -->
+  <div id="spelling-view" class="view">
+    <div class="quiz-menu" style="max-width: 500px;">
+      
+      <!-- Переключатель сложности -->
+      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button id="mode-easy-btn" class="menu-btn" style="padding: 10px; font-size: 14px; background: var(--main-color); color: #fff; box-shadow: none;" onclick="setSpellingMode('easy')">Легкий</button>
+        <button id="mode-hard-btn" class="menu-btn" style="padding: 10px; font-size: 14px; background: #ccc; color: #333; box-shadow: none;" onclick="setSpellingMode('hard')">Сложный</button>
+      </div>
+
+      <button id="spelling-sound-btn" style="font-size: 60px; background: #fff; border: 3px solid var(--main-color); border-radius: 50%; width: 100px; height: 100px; cursor: pointer; margin: 0 auto 15px auto; box-shadow: 0 5px 0 var(--main-color); display: block;" onclick="speakWord(currentSpellingCard.word)">🔊</button>
+
+      <div id="spelling-hint" style="text-align: center; font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #d97706; margin-bottom: 15px; min-height: 30px;"></div>
+
+      <input type="text" id="spelling-en-input" class="spelling-input" placeholder="Напиши на английском...">
+      
+      <div id="spelling-ru-text" style="font-size: 20px; font-weight: bold; color: #444; text-align: center; padding: 10px; background: #f0f4f8; border-radius: 12px; margin-bottom: 15px;"></div>
+      <input type="text" id="spelling-ru-input" class="spelling-input" placeholder="Напиши перевод..." style="display: none;">
+
+      <button id="spelling-submit-btn" class="menu-btn" style="justify-content: center; background: #8b5cf6; box-shadow: 0 5px 0 #6d28d9; position: relative; overflow: hidden;" onclick="checkSpelling()">
+        Проверить
+        <div class="cooldown-bar" id="spelling-cooldown"></div>
+      </button>
+      
+      <button class="menu-btn" style="background: #ccc; box-shadow: 0 5px 0 #999; color: #333; padding: 10px; font-size: 16px; margin-top: 15px; justify-content: center;" onclick="goHome()">← Выйти</button>
     </div>
   </div>
 </div>
@@ -1335,6 +1406,188 @@
     renderAuthScreen();
   }
 
+  // ================= ВЫБОР ПИТОМЦА =================
+  function openPetSelector() {
+    const modal = document.getElementById('pet-selector-modal');
+    modal.style.display = 'flex';
+    
+    const petGrid = document.getElementById('pet-grid');
+    petGrid.innerHTML = pets.map(p => `<div class="grid-item ${state.pet === p ? 'selected' : ''}" onclick="selectPet('${p}')">${p}</div>`).join('');
+    
+    const accGrid = document.getElementById('acc-grid');
+    accGrid.innerHTML = acc.map(a => `<div class="grid-item ${state.acc === a ? 'selected' : ''}" onclick="selectAcc('${a}')">${a === '' ? '❌' : a}</div>`).join('');
+  }
+
+  function closePetSelector() {
+    document.getElementById('pet-selector-modal').style.display = 'none';
+    updatePet(); // Обновляем аватар на главной
+  }
+
+  function selectPet(pet) {
+    state.pet = pet;
+    saveState();
+    openPetSelector(); // Перерисовываем, чтобы обновить рамку
+  }
+
+  function selectAcc(accItem) {
+    state.acc = accItem;
+    saveState();
+    openPetSelector();
+  }
+
+    // ================= ИГРА (ПРАВОПИСАНИЕ) =================
+  let currentSpellingCard = null;
+  let spellingAttempts = 0;
+  let spellingMode = 'easy';
+  let spellingCooldown = false;
+
+  function openSpelling() {
+    hideAllViews();
+    document.getElementById('spelling-view').style.display = 'flex';
+    setSpellingMode('easy');
+    startSpellingRound();
+  }
+
+  function setSpellingMode(mode) {
+    spellingMode = mode;
+    const easyBtn = document.getElementById('mode-easy-btn');
+    const hardBtn = document.getElementById('mode-hard-btn');
+    
+    if (mode === 'easy') {
+      easyBtn.style.background = 'var(--main-color)'; easyBtn.style.color = '#fff'; easyBtn.style.boxShadow = 'none';
+      hardBtn.style.background = '#ccc'; hardBtn.style.color = '#333'; hardBtn.style.boxShadow = 'none';
+      document.getElementById('spelling-ru-text').style.display = 'block';
+      document.getElementById('spelling-ru-input').style.display = 'none';
+    } else {
+      easyBtn.style.background = '#ccc'; easyBtn.style.color = '#333'; easyBtn.style.boxShadow = 'none';
+      hardBtn.style.background = 'var(--main-color)'; hardBtn.style.color = '#fff'; hardBtn.style.boxShadow = 'none';
+      document.getElementById('spelling-ru-text').style.display = 'none';
+      document.getElementById('spelling-ru-input').style.display = 'block';
+    }
+    startSpellingRound(); // При смене режима слово сбрасывается!
+  }
+
+  function startSpellingRound() {
+    spellingAttempts = 0;
+    spellingCooldown = false;
+    
+    let pool = cardsData.filter(c => c.cat !== "1. Буквы");
+    let newCard = pool[Math.floor(Math.random() * pool.length)];
+
+    // Защита от выпадения того же слова
+    while (pool.length > 1 && newCard === currentSpellingCard) {
+      newCard = pool[Math.floor(Math.random() * pool.length)];
+    }
+    currentSpellingCard = newCard;
+
+    document.getElementById('spelling-hint').innerText = "";
+    document.getElementById('spelling-en-input').value = "";
+    document.getElementById('spelling-en-input').style.borderColor = "#ccc";
+    document.getElementById('spelling-ru-input').value = "";
+    document.getElementById('spelling-ru-input').style.borderColor = "#ccc";
+    document.getElementById('spelling-ru-text').innerText = "Перевод: " + currentSpellingCard.trans;
+    
+    speakWord(currentSpellingCard.word);
+    
+    const btn = document.getElementById('spelling-submit-btn');
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    document.getElementById('spelling-cooldown').style.width = '0%';
+  }
+
+  function checkSpelling() {
+    if (spellingCooldown) return;
+
+    const enInput = document.getElementById('spelling-en-input');
+    const ruInput = document.getElementById('spelling-ru-input');
+    const userEn = enInput.value.trim().toLowerCase();
+    const userRu = ruInput.value.trim().toLowerCase();
+    
+    const correctEn = currentSpellingCard.word.toLowerCase();
+    const correctRu = currentSpellingCard.trans.toLowerCase();
+
+    let isCorrect = false;
+
+    if (spellingMode === 'easy') {
+      isCorrect = (userEn === correctEn);
+    } else {
+      isCorrect = (userEn === correctEn && userRu === correctRu);
+    }
+
+    if (isCorrect) {
+      enInput.style.borderColor = "var(--green)";
+      ruInput.style.borderColor = "var(--green)";
+      
+      let starsEarned = 5;
+      if (spellingAttempts >= 5) starsEarned = 3;
+      if (spellingAttempts >= 8) starsEarned = 1;
+      
+      addStars(starsEarned);
+      markAsLearned(currentSpellingCard.word);
+      showToast("✅ Правильно! Молодец!", 'top');
+      
+      setTimeout(() => { startSpellingRound(); }, 1500);
+
+    } else {
+      enInput.style.borderColor = "var(--red)";
+      if (spellingMode === 'hard') ruInput.style.borderColor = "var(--red)";
+      
+      spellingAttempts++;
+      showToast(`❌ Ошибка! Попытка ${spellingAttempts}/9`, 'top');
+      
+      updateSpellingHint();
+      startSpellingCooldown();
+    }
+  }
+
+  function updateSpellingHint() {
+    const word = currentSpellingCard.word;
+    const hintEl = document.getElementById('spelling-hint');
+    
+    if (spellingAttempts < 5) {
+      hintEl.innerText = "";
+      return;
+    }
+
+    let percentToReveal = 0;
+    if (spellingAttempts === 5) percentToReveal = 0.25;
+    if (spellingAttempts === 6) percentToReveal = 0.50;
+    if (spellingAttempts === 7) percentToReveal = 0.75;
+    if (spellingAttempts >= 8) percentToReveal = 1.00;
+
+    let charsToShow = Math.floor(word.length * percentToReveal);
+    if (percentToReveal === 1) charsToShow = word.length;
+
+    let hintString = "";
+    for (let i = 0; i < word.length; i++) {
+      if (i < charsToShow) hintString += word[i] + " ";
+      else hintString += "_ ";
+    }
+    hintEl.innerText = hintString;
+  }
+
+  function startSpellingCooldown() {
+    spellingCooldown = true;
+    const btn = document.getElementById('spelling-submit-btn');
+    const bar = document.getElementById('spelling-cooldown');
+    
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    
+    // 5 сек для легкого, 10 сек для сложного
+    const seconds = spellingMode === 'easy' ? 5 : 10;
+    
+    bar.style.width = '100%';
+    bar.style.transition = `width ${seconds}s linear`;
+    setTimeout(() => bar.style.width = '0%', 50);
+
+    setTimeout(() => {
+      spellingCooldown = false;
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }, seconds * 1000);
+  }
+  
   // ================= ИНИЦИАЛИЗАЦИЯ =================
   window.onload = () => {
     migrateOldData();
