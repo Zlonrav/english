@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 53 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 54 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -393,12 +393,27 @@
     text-align: center; text-transform: lowercase; outline: none; width: 100%; margin-bottom: 15px;
   }
   .spelling-input:focus { border-color: var(--main-color); }
-  
-  @keyframes slideUp { 
-    from { bottom: -50px; opacity: 0; } 
-    to { bottom: 20px; opacity: 1; } 
+
+    /* Уведомления СНИЗУ (Звезды) */
+  .toast-bottom {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: #000; padding: 12px 25px; border-radius: 30px;
+    font-weight: bold; font-size: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    z-index: 9999; animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
   }
+
+  /* Уведомления СВЕРХУ (Достижения, Стрики) */
+  .toast-top {
+    position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: #000; padding: 15px 30px; border-radius: 30px;
+    font-weight: bold; font-size: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    z-index: 9999; animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+  }
+
+  @keyframes slideUp { from { bottom: -50px; opacity: 0; } to { bottom: 20px; opacity: 1; } }
+  @keyframes slideDown { from { top: 0px; opacity: 0; } to { top: 80px; opacity: 1; } }
   @keyframes fadeOut { to { opacity: 0; } }
+  
   @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 </style>
 </head>
@@ -571,9 +586,9 @@
     <div class="quiz-menu" style="max-width: 500px;">
       
       <!-- Переключатель сложности -->
-      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-        <button id="mode-easy-btn" class="menu-btn" style="padding: 10px; font-size: 14px; background: var(--main-color); color: #fff; box-shadow: none;" onclick="setSpellingMode('easy')">Легкий</button>
-        <button id="mode-hard-btn" class="menu-btn" style="padding: 10px; font-size: 14px; background: #ccc; color: #333; box-shadow: none;" onclick="setSpellingMode('hard')">Сложный</button>
+      <div style="display: flex; background: #e0e7ff; border-radius: 12px; padding: 5px; margin-bottom: 20px;">
+        <button id="mode-easy-btn" style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; background: #fff; color: var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1);" onclick="setSpellingMode('easy')">Легкий</button>
+        <button id="mode-hard-btn" style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; background: transparent; color: #666;" onclick="setSpellingMode('hard')">Сложный</button>
       </div>
 
       <button id="spelling-sound-btn" style="font-size: 60px; background: #fff; border: 3px solid var(--main-color); border-radius: 50%; width: 100px; height: 100px; cursor: pointer; margin: 0 auto 15px auto; box-shadow: 0 5px 0 var(--main-color); display: block;" onclick="speakWord(currentSpellingCard.word)">🔊</button>
@@ -791,6 +806,27 @@
       `;
       return;
     }
+
+    // Генерация на лету (hash от имени), если питомец еще не выбран
+    let hash = 0;
+    for (let i = 0; i < state.petName.length; i++) hash += state.petName.charCodeAt(i);
+    
+    // Если в профиле еще нет сохраненного питомца, генерируем по имени
+    if (!state.pet) {
+        state.pet = pets[hash % pets.length];
+        state.acc = acc[hash % acc.length];
+        saveState();
+    }
+
+    // Отрисовываем карточку с кнопкой выбора питомца
+    container.innerHTML = `
+      <div class="pet-avatar" id="pet-avatar-img">${state.pet}</div>
+      <div class="pet-name">${state.petName} ${state.acc}</div>
+      <div id="level-container"></div>
+      <button onclick="openPetSelector()" style="margin-top: 10px; background: #e0e7ff; border: none; padding: 8px 15px; border-radius: 20px; color: var(--main-color); font-weight: bold; cursor: pointer; font-size: 14px;">🎨 Выбрать питомца</button>
+    `;
+    updateLevel();
+  }
 
     let hash = 0;
     for (let i = 0; i < state.petName.length; i++) hash += state.petName.charCodeAt(i);
@@ -1454,17 +1490,17 @@
     const hardBtn = document.getElementById('mode-hard-btn');
     
     if (mode === 'easy') {
-      easyBtn.style.background = 'var(--main-color)'; easyBtn.style.color = '#fff'; easyBtn.style.boxShadow = 'none';
-      hardBtn.style.background = '#ccc'; hardBtn.style.color = '#333'; hardBtn.style.boxShadow = 'none';
+      easyBtn.style.background = '#fff'; easyBtn.style.color = 'var(--main-color)'; easyBtn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+      hardBtn.style.background = 'transparent'; hardBtn.style.color = '#666'; hardBtn.style.boxShadow = 'none';
       document.getElementById('spelling-ru-text').style.display = 'block';
       document.getElementById('spelling-ru-input').style.display = 'none';
     } else {
-      easyBtn.style.background = '#ccc'; easyBtn.style.color = '#333'; easyBtn.style.boxShadow = 'none';
-      hardBtn.style.background = 'var(--main-color)'; hardBtn.style.color = '#fff'; hardBtn.style.boxShadow = 'none';
+      easyBtn.style.background = 'transparent'; easyBtn.style.color = '#666'; easyBtn.style.boxShadow = 'none';
+      hardBtn.style.background = '#fff'; hardBtn.style.color = 'var(--main-color)'; hardBtn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
       document.getElementById('spelling-ru-text').style.display = 'none';
       document.getElementById('spelling-ru-input').style.display = 'block';
     }
-    startSpellingRound(); // При смене режима слово сбрасывается!
+    startSpellingRound();
   }
 
   function startSpellingRound() {
@@ -1486,6 +1522,8 @@
     document.getElementById('spelling-ru-input').value = "";
     document.getElementById('spelling-ru-input').style.borderColor = "#ccc";
     document.getElementById('spelling-ru-text').innerText = "Перевод: " + currentSpellingCard.trans;
+    document.getElementById('spelling-en-input').style.backgroundColor = "";
+    document.getElementById('spelling-ru-input').style.backgroundColor = "";
     
     speakWord(currentSpellingCard.word);
     
@@ -1515,8 +1553,11 @@
     }
 
     if (isCorrect) {
+      // ПРАВИЛЬНО (красим фон в светло-зеленый)
       enInput.style.borderColor = "var(--green)";
+      enInput.style.backgroundColor = "#d4edda"; 
       ruInput.style.borderColor = "var(--green)";
+      ruInput.style.backgroundColor = "#d4edda";
       
       let starsEarned = 5;
       if (spellingAttempts >= 5) starsEarned = 3;
@@ -1529,8 +1570,20 @@
       setTimeout(() => { startSpellingRound(); }, 1500);
 
     } else {
+      // НЕПРАВИЛЬНО (красим фон в светло-красный)
       enInput.style.borderColor = "var(--red)";
-      if (spellingMode === 'hard') ruInput.style.borderColor = "var(--red)";
+      enInput.style.backgroundColor = "#f8d7da"; 
+      if (spellingMode === 'hard') {
+        ruInput.style.borderColor = "var(--red)";
+        ruInput.style.backgroundColor = "#f8d7da";
+      }
+      
+      spellingAttempts++;
+      showToast(`❌ Ошибка! Попытка ${spellingAttempts}/9`, 'top');
+      
+      updateSpellingHint();
+      startSpellingCooldown();
+    }
       
       spellingAttempts++;
       showToast(`❌ Ошибка! Попытка ${spellingAttempts}/9`, 'top');
