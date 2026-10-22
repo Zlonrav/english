@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Читы разработчика</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #1a1a1a; color: #fff; padding: 20px; max-width: 600px; margin: 0 auto; }
+  h1 { color: #ff4444; text-align: center; }
+  .card { background: #2a2a2a; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+  input, button { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px; border: none; box-sizing: border-box; }
+  button { background: #ff4444; color: #fff; font-weight: bold; cursor: pointer; }
+  button:hover { background: #cc0000; }
+</style>
+</head>
+<body>
+  <h1>🛠 Читы разработчика</h1>
+  <p style="text-align:center; color:#aaa;">Сюда нельзя заходить детям!</p>
+
+  <div class="card">
+    <h3>Дать звёзды</h3>
+    <input type="number" id="stars-amount" placeholder="Сколько звёзд?" value="1000">
+    <button onclick="addCheatStars()">Начислить</button>
+  </div>
+
+  <div class="card">
+    <h3>Эмуляция воскресенья (для обмена)</h3>
+    <p style="font-size:12px; color:#aaa;">Скрипт подменит дату на воскресенье. Действует до перезагрузки.</p>
+    <button onclick="fakeSunday()">Включить воскресенье</button>
+  </div>
+
+  <div class="card">
+    <h3>Сбросить баланс</h3>
+    <button onclick="resetStats()" style="background:#444;">Очистить звёзды и коины</button>
+  </div>
+
+  <button onclick="location.href='index.html'" style="background:#28a745; margin-top:20px;">Вернуться в игру</button>
+
+<script>
+  function getState() {
+    const db = JSON.parse(localStorage.getItem('eng_db'));
+    if (!db || !db.lastActive) { alert("Сначала зайди в профиль!"); return null; }
+    return db.profiles[db.lastActive];
+  }
+
+  function saveState(s) {
+    const db = JSON.parse(localStorage.getItem('eng_db'));
+    db.profiles[db.lastActive] = s;
+    localStorage.setItem('eng_db', JSON.stringify(db));
+    alert("Готово! Можешь возвращаться в игру.");
+  }
+
+  function addCheatStars() {
+    const s = getState();
+    if (!s) return;
+    const amount = parseInt(document.getElementById('stars-amount').value);
+    s.stars = (s.stars || 0) + amount;
+    s.totalStarsEarned = (s.totalStarsEarned || 0) + amount;
+    saveState(s);
+  }
+
+  function resetStats() {
+    const s = getState();
+    if (!s) return;
+    s.stars = 0;
+    s.coins = 0;
+    s.dailyEarned = 0;
+    s.lastExchangeDate = null;
+    saveState(s);
+  }
+
+  function fakeSunday() {
+    sessionStorage.setItem('fake_sunday', 'true');
+    alert("Режим воскресенья включен. Перезагрузите страницу (F5).");
+  }
+</script>
+</body>
+</html>
