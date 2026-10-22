@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 75 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 76 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -591,7 +591,7 @@
       <div class="quiz-options" id="quiz-options"></div>
     </div>
   </div>
-    <!-- ИГРА (ПРАВОПИСАНИЕ) -->
+     <!-- ИГРА (ПРАВОПИСАНИЕ) -->
   <div id="spelling-view" class="view">
     <div class="quiz-menu" style="max-width: 500px;">
       
@@ -600,26 +600,31 @@
         <button id="mode-easy-btn" style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; background: #fff; color: var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1);" onclick="setSpellingMode('easy')">Легкий</button>
         <button id="mode-hard-btn" style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; background: transparent; color: #666;" onclick="setSpellingMode('hard')">Сложный</button>
       </div>
+
+      <!-- Счетчик раунда -->
       <div style="text-align: center; font-weight: bold; color: var(--green); margin-bottom: 10px;" id="spelling-score">Правильно: 0/10</div>
 
+      <!-- Кнопка звука -->
       <button id="spelling-sound-btn" style="font-size: 60px; background: #fff; border: 3px solid var(--main-color); border-radius: 50%; width: 100px; height: 100px; cursor: pointer; margin: 0 auto 15px auto; box-shadow: 0 5px 0 var(--main-color); display: block;" onclick="speakWord(currentSpellingCard.word)">🔊</button>
 
+      <!-- Подсказка -->
       <div id="spelling-hint" style="text-align: center; font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #d97706; margin-bottom: 15px; min-height: 30px;"></div>
 
+      <!-- Поля ввода -->
       <input type="text" id="spelling-en-input" class="spelling-input" placeholder="Напиши на английском...">
-      
       <div id="spelling-ru-text" style="font-size: 20px; font-weight: bold; color: #444; text-align: center; padding: 10px; background: #f0f4f8; border-radius: 12px; margin-bottom: 15px;"></div>
       <input type="text" id="spelling-ru-input" class="spelling-input" placeholder="Напиши перевод..." style="display: none;">
 
-      <button id="spelling-submit-btn" class="menu-btn" style="justify-content: center; background: #8b5cf6; box-shadow: 0 5px 0 #6d28d9; position: relative; overflow: hidden;" onclick="()">
+      <!-- Кнопка Проверить -->
+      <button id="spelling-submit-btn" class="menu-btn" style="justify-content: center; background: #8b5cf6; box-shadow: 0 5px 0 #6d28d9; position: relative; overflow: hidden;" onclick="checkSpelling()">
         Проверить
         <div class="cooldown-bar" id="spelling-cooldown"></div>
       </button>
       
+      <!-- Кнопка Выйти -->
       <button class="menu-btn" style="background: #ccc; box-shadow: 0 5px 0 #999; color: #333; padding: 10px; font-size: 16px; margin-top: 15px; justify-content: center;" onclick="openQuiz()">← Выйти</button>
     </div>
   </div>
-</div>
 
 <script src="data.js"></script>
 <script>
@@ -1565,13 +1570,12 @@
     }
   }
 
-   function checkSpelling() {
+  function checkSpelling() {
     if (spellingCooldown) return;
 
     const enInput = document.getElementById('spelling-en-input');
     const ruInput = document.getElementById('spelling-ru-input');
     
-    // Очистка текста: нижний регистр, удаление знаков препинания
     const cleanString = (str) => {
       return str.toLowerCase()
                 .replace(/[.,?!]/g, '')     // убираем точки и вопросы
