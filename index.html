@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 56 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 57 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -1470,7 +1470,7 @@
     openPetSelector();
   }
 
-    // ================= ИГРА (ПРАВОПИСАНИЕ) =================
+  // ================= ИГРА (ПРАВОПИСАНИЕ) =================
   let currentSpellingCard = null;
   let spellingAttempts = 0;
   let spellingMode = 'easy';
@@ -1489,17 +1489,27 @@
     const hardBtn = document.getElementById('mode-hard-btn');
     
     if (mode === 'easy') {
-      easyBtn.style.background = '#fff'; easyBtn.style.color = 'var(--main-color)'; easyBtn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-      hardBtn.style.background = 'transparent'; hardBtn.style.color = '#666'; hardBtn.style.boxShadow = 'none';
+      easyBtn.style.background = '#fff'; 
+      easyBtn.style.color = 'var(--main-color)'; 
+      easyBtn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+      hardBtn.style.background = 'transparent'; 
+      hardBtn.style.color = '#666'; 
+      hardBtn.style.boxShadow = 'none';
+      
       document.getElementById('spelling-ru-text').style.display = 'block';
       document.getElementById('spelling-ru-input').style.display = 'none';
     } else {
-      easyBtn.style.background = 'transparent'; easyBtn.style.color = '#666'; easyBtn.style.boxShadow = 'none';
-      hardBtn.style.background = '#fff'; hardBtn.style.color = 'var(--main-color)'; hardBtn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+      easyBtn.style.background = 'transparent'; 
+      easyBtn.style.color = '#666'; 
+      easyBtn.style.boxShadow = 'none';
+      hardBtn.style.background = '#fff'; 
+      hardBtn.style.color = 'var(--main-color)'; 
+      hardBtn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+      
       document.getElementById('spelling-ru-text').style.display = 'none';
       document.getElementById('spelling-ru-input').style.display = 'block';
     }
-    startSpellingRound();
+    startSpellingRound(); // Сброс слова при смене режима
   }
 
   function startSpellingRound() {
@@ -1509,20 +1519,25 @@
     let pool = cardsData.filter(c => c.cat !== "1. Буквы");
     let newCard = pool[Math.floor(Math.random() * pool.length)];
 
-    // Защита от выпадения того же слова
     while (pool.length > 1 && newCard === currentSpellingCard) {
       newCard = pool[Math.floor(Math.random() * pool.length)];
     }
     currentSpellingCard = newCard;
 
     document.getElementById('spelling-hint').innerText = "";
-    document.getElementById('spelling-en-input').value = "";
-    document.getElementById('spelling-en-input').style.borderColor = "#ccc";
-    document.getElementById('spelling-ru-input').value = "";
-    document.getElementById('spelling-ru-input').style.borderColor = "#ccc";
+    
+    // Сброс полей и фона
+    const enInput = document.getElementById('spelling-en-input');
+    enInput.value = "";
+    enInput.style.borderColor = "#ccc";
+    enInput.style.backgroundColor = "";
+    
+    const ruInput = document.getElementById('spelling-ru-input');
+    ruInput.value = "";
+    ruInput.style.borderColor = "#ccc";
+    ruInput.style.backgroundColor = "";
+    
     document.getElementById('spelling-ru-text').innerText = "Перевод: " + currentSpellingCard.trans;
-    document.getElementById('spelling-en-input').style.backgroundColor = "";
-    document.getElementById('spelling-ru-input').style.backgroundColor = "";
     
     speakWord(currentSpellingCard.word);
     
@@ -1552,7 +1567,6 @@
     }
 
     if (isCorrect) {
-      // ПРАВИЛЬНО (красим фон в светло-зеленый)
       enInput.style.borderColor = "var(--green)";
       enInput.style.backgroundColor = "#d4edda"; 
       ruInput.style.borderColor = "var(--green)";
@@ -1569,20 +1583,12 @@
       setTimeout(() => { startSpellingRound(); }, 1500);
 
     } else {
-      // НЕПРАВИЛЬНО (красим фон в светло-красный)
       enInput.style.borderColor = "var(--red)";
-      enInput.style.backgroundColor = "#f8d7da"; 
+      enInput.style.backgroundColor = "#f8d7da";
       if (spellingMode === 'hard') {
         ruInput.style.borderColor = "var(--red)";
         ruInput.style.backgroundColor = "#f8d7da";
       }
-      
-      spellingAttempts++;
-      showToast(`❌ Ошибка! Попытка ${spellingAttempts}/9`, 'top');
-      
-      updateSpellingHint();
-      startSpellingCooldown();
-    }
       
       spellingAttempts++;
       showToast(`❌ Ошибка! Попытка ${spellingAttempts}/9`, 'top');
@@ -1626,7 +1632,6 @@
     btn.disabled = true;
     btn.style.opacity = '0.6';
     
-    // 5 сек для легкого, 10 сек для сложного
     const seconds = spellingMode === 'easy' ? 5 : 10;
     
     bar.style.width = '100%';
