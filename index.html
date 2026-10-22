@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 66 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 67 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -1644,6 +1644,35 @@
     }
     
     hintEl.innerHTML = hintHTML;
+  }
+
+  function startSpellingCooldown() {
+    spellingCooldown = true;
+    const btn = document.getElementById('spelling-submit-btn');
+    const bar = document.getElementById('spelling-cooldown');
+    
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    
+    const seconds = spellingMode === 'easy' ? 5 : 10;
+    
+    bar.style.width = '100%';
+    bar.style.transition = `width ${seconds}s linear`;
+    setTimeout(() => bar.style.width = '0%', 50);
+
+    setTimeout(() => {
+      spellingCooldown = false;
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      
+      // СБРОС ПОЛЕЙ В ИСХОДНОЕ СОСТОЯНИЕ ПОСЛЕ ТАЙМЕРА (возвращаем белый фон)
+      const enInput = document.getElementById('spelling-en-input');
+      const ruInput = document.getElementById('spelling-ru-input');
+      enInput.style.borderColor = "#ccc";
+      enInput.style.backgroundColor = "";
+      ruInput.style.borderColor = "#ccc";
+      ruInput.style.backgroundColor = "";
+    }, seconds * 1000);
   }
   
   // ================= ИНИЦИАЛИЗАЦИЯ =================
