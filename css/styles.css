@@ -402,13 +402,27 @@ html, body {
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+/* ================= БАННЕР ПОСЛЕДНЕГО ВОСКРЕСЕНЬЯ ================= */
+#cycle-warning-banner {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  background: #dc3545;
+  color: #fff;
+  text-align: center;
+  padding: 10px 15px;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 999;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
 @keyframes popIn {
   from { transform: scale(0.8); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
-
 @keyframes slideUp { from { bottom: -50px; opacity: 0; } to { bottom: 20px; opacity: 1; } }
 @keyframes slideDown { from { top: 0px; opacity: 0; } to { top: 80px; opacity: 1; } }
 @keyframes fadeOut { to { opacity: 0; } }
-
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
