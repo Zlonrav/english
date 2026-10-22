@@ -180,38 +180,33 @@ function updateExchangeTimer() {
   const el = document.getElementById('exchange-timer');
   if (!el) return;
 
-  // Если чит включен или сейчас реально время обмена
   if (canExchangeNow()) {
     el.innerHTML = "🟢 <b>Обмен открыт!</b>";
-    el.style.color = "#28a745"; // Зеленый
+    el.style.color = "#28a745"; 
     return;
   }
 
-  el.style.color = "#d97706"; // Оранжевый
+  el.style.color = "#d97706"; 
   const now = new Date();
   
-  // Вычисляем время следующего воскресенья 10:00
+  // Создаем дату "Сегодня 10:00"
   let target = new Date(now);
-  target.setHours(10, 0, 0, 0); // 10:00
+  target.setHours(10, 0, 0, 0); 
 
-  const day = now.getDay(); // 0 = Воскресенье
+  const day = now.getDay(); // 0=Вс, 1=Пн, ... 4=Чт
   
-  if (day !== 0) {
-    // Если сегодня не воскресенье, ищем ближайшее воскресенье
-    target.setDate(target.getDate() + (7 - day));
+  if (day === 0) {
+      // Если сегодня воскресенье, но время уже больше 10 утра (обмен прошел)
+      if (now.getTime() > target.getTime()) {
+          target.setDate(target.getDate() + 7); // Ждем следующее воскресенье
+      }
   } else {
-    // Если сегодня воскресенье, но время еще не наступило (например, 9 утра)
-    if (now.getHours() < 10) {
-        // Оставляем target на сегодня 10:00
-    } else {
-        // Если время уже прошло (значит, мы не попали в окно или уже обменяли),
-        // переносим на следующее воскресенье
-        target.setDate(target.getDate() + 7);
-    }
+      // Если сегодня не воскресенье (например, четверг), прибавляем дни до воскресенья
+      target.setDate(target.getDate() + (7 - day));
   }
 
-  // Считаем разницу
-  let diff = target - now;
+  // Считаем разницу во времени
+  let diff = target.getTime() - now.getTime();
   if (diff < 0) diff = 0;
 
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
