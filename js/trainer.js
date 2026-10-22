@@ -43,7 +43,7 @@ function showRandomCard() {
         <div class="trainer-pron">${card.pron}</div>
         <div class="trainer-trans">${card.trans}</div>
       </div>
-      ${listenBtnHTML('btn-listen-single', '(ед. ч.)', card.word)}
+      ${listenBtnHTML('btn-listen-single', '', card.word)}
 
       <div class="divider" style="margin:5px 0;"></div>
 
@@ -53,7 +53,7 @@ function showRandomCard() {
         <div class="trainer-pron">${card.pronP}</div>
         <div class="trainer-trans">${card.transP}</div>
       </div>
-      ${listenBtnHTML('btn-listen-plural', '(мн. ч.)', card.plural)}
+      ${listenBtnHTML('btn-listen-plural', '', card.plural)}
     `;
   }
 
