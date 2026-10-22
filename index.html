@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 67 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 69 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -600,7 +600,7 @@
       <div id="spelling-ru-text" style="font-size: 20px; font-weight: bold; color: #444; text-align: center; padding: 10px; background: #f0f4f8; border-radius: 12px; margin-bottom: 15px;"></div>
       <input type="text" id="spelling-ru-input" class="spelling-input" placeholder="Напиши перевод..." style="display: none;">
 
-      <button id="spelling-submit-btn" class="menu-btn" style="justify-content: center; background: #8b5cf6; box-shadow: 0 5px 0 #6d28d9; position: relative; overflow: hidden;" onclick="checkSpelling()">
+      <button id="spelling-submit-btn" class="menu-btn" style="justify-content: center; background: #8b5cf6; box-shadow: 0 5px 0 #6d28d9; position: relative; overflow: hidden;" onclick="()">
         Проверить
         <div class="cooldown-bar" id="spelling-cooldown"></div>
       </button>
@@ -1544,12 +1544,13 @@
     const enInput = document.getElementById('spelling-en-input');
     const ruInput = document.getElementById('spelling-ru-input');
     
-    // Функция очистки: убираем пунктуацию, но оставляем пробелы
+    // Меняем дефисы на пробелы, убираем знаки препинания, схлопываем пробелы
     const cleanString = (str) => {
       return str.toLowerCase()
-                .replace(/[.,?!/\\-]/g, '') // удаляем точки, запятые, вопросы, дефисы
-                .replace(/\s+/g, ' ')       // несколько пробелов меняем на один
-                .trim();                    // убираем пробелы по краям
+                .replace(/[.,?!]/g, '')     // убираем точки и вопросы
+                .replace(/-/g, ' ')         // дефисы меняем на пробел
+                .replace(/\s+/g, ' ')       // убираем двойные пробелы
+                .trim();
     };
 
     const userEn = cleanString(enInput.value);
@@ -1592,7 +1593,9 @@
         ruInput.style.backgroundColor = "#f8d7da";
       }
       
-      spellingAttempts++;
+      if (spellingAttempts < 9) {
+        spellingAttempts++;
+      }
       showToast(`❌ Ошибка! Попытка ${spellingAttempts}/9`, 'top');
       
       updateSpellingHint();
@@ -1615,7 +1618,7 @@
     if (spellingAttempts === 7) percentToReveal = 0.75;
     if (spellingAttempts >= 8) percentToReveal = 1.00;
 
-    // Считаем только БУКВЫ и ЦИФРЫ (пробелы и знаки не считаются)
+    // Считаем только БУКВЫ и ЦИФРЫ (пробелы и дефисы не считаются)
     let lettersOnly = word.replace(/[^a-zA-Z0-9]/g, '');
     let charsToShow = Math.floor(lettersOnly.length * percentToReveal);
     if (percentToReveal === 1) charsToShow = lettersOnly.length;
@@ -1629,16 +1632,15 @@
       if (char.match(/[a-zA-Z0-9]/)) {
         // Если это буква или цифра
         if (revealedCount < charsToShow) {
-          hintHTML += `<span style="color:#d97706; font-weight:900;">${char}</span> `; // Открытая буква
+          hintHTML += `<span style="color:#d97706; font-weight:900;">${char}</span> `; 
           revealedCount++;
         } else {
-          hintHTML += `_ `; // Скрытая буква
+          hintHTML += `_ `;
         }
       } else if (char === ' ') {
-        // Явно показываем пробел как квадратик
         hintHTML += `<span style="color:#999; font-size:20px;">␣</span> `; 
       } else {
-        // Пунктуация (не тратит проценты)
+        // Пунктуация и дефисы
         hintHTML += `<span style="color:#666;">${char}</span> `;
       }
     }
