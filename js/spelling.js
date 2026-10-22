@@ -6,8 +6,12 @@ let spellingCooldown = false;
 let spellingRoundScore = 0; // Счетчик раундов
 
 function openSpelling() {
+  if (!checkAuth()) return; 
   hideAllViews();
   document.getElementById('spelling-view').style.display = 'flex';
+  
+  spellingRoundScore = 0; 
+  // ... и так далее
   
   spellingRoundScore = 0; // Сброс при входе
   document.getElementById('spelling-score').innerText = `Правильно: 0/10`;
