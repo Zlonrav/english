@@ -1,0 +1,414 @@
+/* ================= ОБЩИЕ СТИЛИ ================= */
+:root {
+  --main-color: #1f4e9c;
+  --bg-color: #f0f4f8;
+  --nav-height: 60px;
+  --gold: #ffc107;
+  --green: #28a745;
+  --red: #dc3545;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0; padding: 0;
+  background-color: var(--bg-color);
+  font-family: Arial, "Segoe UI", sans-serif;
+  color: #000; height: 100%; overflow: hidden;
+}
+
+/* Шапка (Звезды, Стрик) */
+.top-bar {
+  background: #fff; height: var(--nav-height);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: relative; z-index: 1000;
+}
+.top-stats { display: flex; gap: 15px; font-size: 18px; font-weight: bold; }
+.stat-item { display: flex; align-items: center; gap: 5px; }
+
+/* Контентная часть */
+.content-wrapper { height: calc(100dvh - var(--nav-height)); overflow-y: auto; position: relative; }
+.view { display: none; height: 100%; padding: 15px; flex-direction: column; align-items: center; }
+
+/* ================= ДАШБОРД (Главная) ================= */
+#dashboard-view { justify-content: flex-start; padding-top: 20px; }
+
+.pet-container {
+  text-align: center; background: #fff; padding: 20px;
+  border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  width: 100%; max-width: 400px; margin-bottom: 20px;
+}
+.pet-avatar { font-size: 80px; line-height: 1; margin-bottom: 10px; animation: bounce 2s infinite; }
+.pet-name { font-size: 20px; font-weight: bold; color: var(--main-color); margin-bottom: 5px; }
+
+.level-bar-container {
+  width: 100%; height: 15px; background: #e0e0e0;
+  border-radius: 10px; overflow: hidden; margin-top: 10px; position: relative;
+}
+.level-bar { height: 100%; background: var(--main-color); width: 0%; transition: width 0.5s ease; }
+.level-text { font-size: 12px; color: #666; margin-top: 5px; font-weight: bold; }
+
+.main-buttons { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; }
+.big-btn {
+  background: #fff; border: 3px solid #ddd; border-radius: 20px;
+  padding: 20px; font-size: 22px; font-weight: bold; color: #333;
+  cursor: pointer; display: flex; align-items: center; gap: 15px;
+  box-shadow: 0 5px 0 #ddd; transition: 0.1s;
+}
+.big-btn:active { transform: translateY(5px); box-shadow: 0 0 0 #ddd; }
+.big-btn i { font-size: 30px; font-style: normal; }
+.btn-trainer { border-color: #1f4e9c; color: #1f4e9c; box-shadow: 0 5px 0 #1f4e9c; }
+.btn-tasks { border-color: #1f7a3a; color: #1f7a3a; box-shadow: 0 5px 0 #1f7a3a; }
+.btn-quiz { border-color: #d97706; color: #d97706; box-shadow: 0 5px 0 #d97706; }
+
+/* ================= ТРЕНАЖЕР ================= */
+#trainer-view { justify-content: center; }
+.trainer-card {
+  background: #fff; border: 3px dashed #666; border-radius: 20px;
+  width: 100%; max-width: 450px; min-height: 450px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 15px; position: relative;
+}
+.trainer-icon { font-size: clamp(60px, 15vh, 100px); margin-bottom: 5px; display: flex; justify-content: center;}
+/* Квадраты с буквами/цифрами (для тренажера, печати и заданий) */
+.trainer-icon > div, .print-icon > div, .task-card-icon > div {
+  min-width: 3em !important;
+  height: 1.5em !important; 
+  padding: 0 0.2em !important;
+  border-radius: 15% !important;
+  box-shadow: 0 4px 10px rgba(31, 78, 156, 0.2);
+  box-sizing: border-box !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.trainer-word { font-size: clamp(24px, 5vh, 36px); font-weight: 800; line-height: 1.1; margin-bottom: 2px; }
+.trainer-pron { font-size: clamp(16px, 3.5vh, 22px); color: #666; margin-bottom: 2px; }
+.trainer-trans { font-size: clamp(18px, 4vh, 26px); color: #333; font-weight: 600; margin-bottom: 10px; }
+.divider { width: 80%; height: 2px; background: #eee; margin: 10px 0; }
+
+.action-btn {
+  padding: 12px 25px; font-size: 18px; font-weight: bold;
+  border: none; border-radius: 30px; cursor: pointer; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: 0.2s; width: 100%; max-width: 300px; margin-top: 10px;
+}
+.btn-listen { background: #ffdb4d; color: #333; }
+.btn-next { background: var(--main-color); color: #fff; }
+
+/* Полоска перезарядки */
+.cooldown-bar {
+  position: absolute; bottom: 0; left: 0; height: 6px; background: rgba(0,0,0,0.2);
+  width: 0%; transition: width 0.1s linear;
+}
+.action-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+
+/* ================= ЗАДАНИЯ ================= */
+#tasks-view, #category-view { display: none; padding: 15px; max-width: 800px; margin: 0 auto; }
+.category-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+.category-btn {
+  background: #fff; border: 2px solid #ccc; border-radius: 12px; padding: 15px 10px;
+  font-size: clamp(14px, 3vw, 18px); font-weight: bold; color: #333; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+}
+.category-btn.done { background: #fff8e1; border-color: var(--gold); color: #b45309; box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3); }
+.cat-progress { font-size: 12px; color: #666; }
+
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
+.task-card { background: #fff; border: 3px dashed #ccc; border-radius: 20px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.task-card.learned { border-color: var(--gold); background: #fffdf5; }
+
+/* Ограничиваем размеры картинок на странице "Задания" */
+.task-card img {
+  width: 60px !important;
+  height: 60px !important;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+/* Кнопка с заливкой */
+.progress-btn {
+  position: relative;
+  overflow: hidden;
+  background-color: #ffdb4d; /* Базовый желтый */
+  color: #333;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  max-width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.1s;
+}
+
+.progress-btn:active { transform: scale(0.95); }
+.progress-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* Слой заливки (изначально 0%) */
+.progress-btn-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #f5c000; /* Чуть более темный желтый/оранжевый для контраста */
+  z-index: 0;
+  transition: width 0.3s ease; /* Плавная анимация при клике */
+}
+
+/* Текст поверх заливки */
+.progress-btn-text {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ================= ИГРА (УГАДАЙКА) ================= */
+#quiz-view { 
+  justify-content: center; /* Центрируем по вертикали */
+  align-items: center; 
+}
+
+/* Белая плитка */
+.quiz-menu { 
+  display: flex; 
+  flex-direction: column; 
+  width: calc(100% - 30px); 
+  max-width: 400px; 
+  padding: 25px 20px; 
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Тень как у карточки с питомцем */
+  margin: 0 auto; 
+}
+
+.quiz-menu h2 {
+  text-align: center; 
+  color: var(--main-color); 
+  font-size: 24px;
+  margin: 0 0 20px 0;
+}
+
+/* Кнопки */
+.menu-btn {
+  padding: 15px 20px; 
+  font-size: 20px; 
+  border-radius: 15px; /* Скругление как у главных кнопок */
+  border: none;
+  color: #fff; 
+  font-weight: 900; 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+ /* justify-content: center;*/
+  gap: 15px;
+  width: 100%; 
+  transition: transform 0.1s, box-shadow 0.1s;
+  
+  /* ДОБАВЛЯЕМ ОТСТУП СНИЗУ */
+  margin-bottom: 15px; 
+}
+
+/* Убираем отступ у последней кнопки, чтобы не было лишнего пространства внизу */
+.menu-btn:last-child {
+  margin-bottom: 0;
+}
+
+.menu-btn .menu-icon { font-size: 28px; }
+
+.menu-btn:active { 
+  transform: translateY(4px); /* Проваливание при нажатии */
+  box-shadow: 0 0 0 !important; 
+}
+
+/* Цвета кнопок */
+.menu-btn.btn-purple { background: #8b5cf6; box-shadow: 0 5px 0 #6d28d9; }
+.menu-btn.btn-green { background: #10b981; box-shadow: 0 5px 0 #047857; }
+.menu-btn.btn-orange { background: #f59e0b; box-shadow: 0 5px 0 #b45309; }
+
+.quiz-play { display: none; width: 100%; max-width: 500px; text-align: center; }
+.quiz-question { 
+  font-size: 32px; 
+  font-weight: 900; 
+  color: var(--main-color);
+  margin-bottom: 25px; 
+  min-height: 60px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+.quiz-options { display: flex; flex-direction: column; gap: 15px; }
+.quiz-opt-btn {
+  padding: 18px; font-size: 20px; border-radius: 15px; border: 3px solid var(--main-color);
+  background: #fff; color: var(--main-color); font-weight: bold; cursor: pointer; transition: 0.2s;
+  box-shadow: 0 4px 0 var(--main-color);
+}
+.quiz-opt-btn:active { transform: translateY(4px); box-shadow: 0 0 0; }
+.quiz-opt-btn.correct { background: var(--green); color: #fff; border-color: var(--green); box-shadow: 0 4px 0 #1e7e34; }
+.quiz-opt-btn.wrong { background: var(--red); color: #fff; border-color: var(--red); box-shadow: 0 4px 0 #bd2130; }
+
+  /* Красивые цвета для кнопок главного меню */
+.btn-trainer { background: #1f4e9c; box-shadow: 0 5px 0 #153870; }
+.btn-tasks { background: #1f7a3a; box-shadow: 0 5px 0 #135225; }
+.btn-quiz { background: #d97706; box-shadow: 0 5px 0 #92400e; }
+
+/* Карточки достижений */
+.ach-item {
+  display: flex; align-items: center; gap: 15px;
+  padding: 12px; border-radius: 12px; border: 2px solid #eee;
+  background: #fff; transition: 0.3s;
+}
+.ach-item.unlocked { border-color: var(--gold); background: #fffdf5; }
+.ach-item.locked { opacity: 0.5; filter: grayscale(1); }
+.ach-icon { font-size: 32px; }
+.ach-info h4 { margin: 0 0 3px 0; font-size: 16px; color: #333; }
+.ach-info p { margin: 0; font-size: 12px; color: #666; }
+
+/* Всплывающие окна */
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); /* Теперь bottom вместо top */
+  background: var(--gold); color: #000; padding: 15px 30px; border-radius: 30px;
+  font-weight: bold; font-size: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  z-index: 9999; animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+}
+
+  /* Экран входа */
+.profile-btn {
+  display: flex; flex-direction: column; align-items: center;
+  background: #fff; border: 3px solid #ddd; border-radius: 15px;
+  padding: 15px 10px; cursor: pointer; transition: 0.2s;
+  position: relative;
+}
+.profile-btn:hover { border-color: var(--main-color); background: #f0f4f8; }
+.profile-avatar { font-size: 40px; margin-bottom: 5px; }
+.profile-name { font-size: 16px; font-weight: bold; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; text-align: center; }
+.profile-del {
+  position: absolute; top: -10px; right: -10px; background: var(--red); color: #fff;
+  border: none; border-radius: 50%; width: 25px; height: 25px; font-size: 14px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold;
+}
+
+/* Цифровая клавиатура */
+.pin-btn {
+  padding: 15px; font-size: 24px; font-weight: bold; color: var(--main-color);
+  background: #fff; border: 2px solid var(--main-color); border-radius: 12px;
+  cursor: pointer; transition: 0.1s; box-shadow: 0 4px 0 var(--main-color);
+}
+.pin-btn:active { transform: translateY(4px); box-shadow: 0 0 0; }
+.pin-btn.btn-zero { grid-column: span 2; }
+
+  /* Стили для карточек в сетке Заданий */
+.task-card {
+  padding: 20px 15px; /* Чуть больше места внутри */
+}
+.task-card-icon {
+  font-size: 60px; 
+  min-height: 65px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.task-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+}
+.task-label {
+  font-size: 8px;
+  color: #888;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.task-word {
+  font-size: 28px; /* Увеличили с 26px */
+  font-weight: 800;
+  line-height: 1.1;
+  color: #000;
+  margin-bottom: 2px;
+}
+.task-pron {
+  font-size: 22px; /* Увеличили с 18px */
+  color: #555;
+  margin-bottom: 4px;
+}
+.task-trans {
+  font-size: 24px; /* Увеличили с 22px */
+  font-weight: 600;
+  color: var(--main-color);
+}
+.progress-btn {
+  margin-top: 10px;
+  max-width: 220px; /* Сделали кнопку чуть уже, чтобы было аккуратнее */
+}
+.task-divider {
+  width: 80%;
+  height: 2px;
+  background: #eee;
+  margin: 8px 0;
+}
+
+/* Модальное окно выбора питомца */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center;
+  z-index: 10000; padding: 15px;
+}
+.modal-content {
+  background: #fff; border-radius: 20px; padding: 20px; width: 100%; max-width: 500px;
+  max-height: 80vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.modal-title { text-align: center; color: var(--main-color); margin-top: 0; }
+.grid-selector { display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.grid-item {
+  font-size: 30px; padding: 10px; text-align: center; cursor: pointer;
+  border: 2px solid #eee; border-radius: 12px; transition: 0.2s; background: #f9f9f9;
+}
+.grid-item:hover { border-color: var(--main-color); transform: scale(1.1); }
+.grid-item.selected { border-color: var(--gold); background: #fffdf5; box-shadow: 0 0 10px rgba(255,193,7,0.5); }
+
+/* Стили для игры Правописание */
+.spelling-input {
+  padding: 15px; font-size: 20px; border: 3px solid #ccc; border-radius: 12px;
+  text-align: center; text-transform: lowercase; outline: none; width: 100%; margin-bottom: 15px;
+}
+.spelling-input:focus { border-color: var(--main-color); }
+
+/* Контейнеры для уведомлений */
+.toast-container {
+  position: fixed; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  z-index: 9999; pointer-events: none; width: 90%; max-width: 400px;
+}
+#toast-top-container { top: 80px; }
+#toast-bottom-container { bottom: 20px; flex-direction: column-reverse; }
+
+/* Само уведомление */
+.toast-item {
+  background: var(--gold); color: #000; padding: 12px 20px; border-radius: 30px;
+  font-weight: bold; font-size: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  text-align: center; width: 100%;
+  animation: popIn 0.3s ease forwards;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideUp { from { bottom: -50px; opacity: 0; } to { bottom: 20px; opacity: 1; } }
+@keyframes slideDown { from { top: 0px; opacity: 0; } to { top: 80px; opacity: 1; } }
+@keyframes fadeOut { to { opacity: 0; } }
+
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
