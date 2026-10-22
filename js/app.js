@@ -323,6 +323,7 @@ let tempProfileName = "";
 let isCreating = false;
 
 function renderAuthScreen() {
+  document.querySelector('.top-bar').style.display = 'none'; 
   hideAllViews();
   document.getElementById('auth-view').style.display = 'flex';
   document.getElementById('pin-pad-container').style.display = 'none';
@@ -499,6 +500,7 @@ function cancelPin() {
 
 function loginSuccess(name) {
   state = db.profiles[name];
+  document.querySelector('.top-bar').style.display = 'flex';
   ensureStateDefaults();
   resetDailyIfNeeded();
   checkForcedReset();
