@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 63 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 64 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -1543,11 +1543,13 @@
 
     const enInput = document.getElementById('spelling-en-input');
     const ruInput = document.getElementById('spelling-ru-input');
-    const userEn = enInput.value.trim().toLowerCase();
-    const userRu = ruInput.value.trim().toLowerCase();
     
-    const correctEn = currentSpellingCard.word.toLowerCase();
-    const correctRu = currentSpellingCard.trans.toLowerCase();
+    // МАГИЯ ЗДЕСЬ: удаляем все пробелы и дефисы перед сравнением
+    const userEn = enInput.value.trim().toLowerCase().replace(/[\s-]/g, '');
+    const userRu = ruInput.value.trim().toLowerCase().replace(/[\s-]/g, '');
+    
+    const correctEn = currentSpellingCard.word.toLowerCase().replace(/[\s-]/g, '');
+    const correctRu = currentSpellingCard.trans.toLowerCase().replace(/[\s-]/g, '');
 
     let isCorrect = false;
 
