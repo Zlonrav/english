@@ -166,3 +166,62 @@ function confirmExchange() {
   renderAchievements();
   updateUI();
 }
+
+// ================= ТАЙМЕР ДО ОБМЕНА =================
+let exchangeTimerInterval = null;
+
+function startExchangeTimer() {
+  if (exchangeTimerInterval) clearInterval(exchangeTimerInterval);
+  updateExchangeTimer(); // Сразу показываем время без задержки в 1 сек
+  exchangeTimerInterval = setInterval(updateExchangeTimer, 1000);
+}
+
+function updateExchangeTimer() {
+  const el = document.getElementById('exchange-timer');
+  if (!el) return;
+
+  // Если чит включен или сейчас реально время обмена
+  if (canExchangeNow()) {
+    el.innerHTML = "🟢 <b>Обмен открыт!</b>";
+    el.style.color = "#28a745"; // Зеленый
+    return;
+  }
+
+  el.style.color = "#d97706"; // Оранжевый
+  const now = new Date();
+  
+  // Вычисляем время следующего воскресенья 10:00
+  let target = new Date(now);
+  target.setHours(10, 0, 0, 0); // 10:00
+
+  const day = now.getDay(); // 0 = Воскресенье
+  
+  if (day !== 0) {
+    // Если сегодня не воскресенье, ищем ближайшее воскресенье
+    target.setDate(target.getDate() + (7 - day));
+  } else {
+    // Если сегодня воскресенье, но время еще не наступило (например, 9 утра)
+    if (now.getHours() < 10) {
+        // Оставляем target на сегодня 10:00
+    } else {
+        // Если время уже прошло (значит, мы не попали в окно или уже обменяли),
+        // переносим на следующее воскресенье
+        target.setDate(target.getDate() + 7);
+    }
+  }
+
+  // Считаем разницу
+  let diff = target - now;
+  if (diff < 0) diff = 0;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  let timeStr = "";
+  if (days > 0) timeStr += `${days} д `;
+  timeStr += `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+  el.innerHTML = `⏳ До обмена: <b>${timeStr}</b>`;
+}
