@@ -1,4 +1,20 @@
 // ================= ЛОГИКА ЦИКЛА (4 недели) =================
+// DEBUG: если в URL есть ?debug=sunday — притворяемся воскресеньем
+(function debugFakeDate() {
+  if (!location.search.includes('debug=sunday')) return;
+  const RealDate = Date;
+  const FAKE = new RealDate('2026-10-25T15:00:00');
+  class FakeDate extends RealDate {
+    constructor(...args) {
+      if (args.length === 0) super(FAKE.getTime());
+      else super(...args);
+    }
+    static now() { return FAKE.getTime(); }
+  }
+  window.Date = FakeDate;
+  console.log('🛠 DEBUG: fake Sunday 15:00');
+})();
+
 const CYCLE_DAYS = 28;
 
 function getMondayOfWeek(date) {
