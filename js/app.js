@@ -34,6 +34,31 @@ function migrateOldData() {
   }
 }
 
+function ensureStateDefaults() {
+  if (state.totalStarsEarned === undefined) state.totalStarsEarned = state.stars || 0;
+  if (state.coins === undefined) state.coins = 0;
+  if (state.totalPaidRubles === undefined) state.totalPaidRubles = 0;
+  if (state.dailyEarned === undefined) state.dailyEarned = 0;
+  if (!state.dailyEarnedDate) state.dailyEarnedDate = new Date().toDateString();
+  if (!state.cycleStartDate) state.cycleStartDate = getMondayOfWeek(new Date()).toISOString();
+  if (state.lastExchangeDate === undefined) state.lastExchangeDate = null;
+  if (!state.streakCountedDate && state.lastDate) state.streakCountedDate = state.lastDate;
+  if (!state.achievements) state.achievements = [];
+  if (!state.learned) state.learned = [];
+  if (!state.listenCounts) state.listenCounts = {};
+  saveState();
+}
+
+function resetDailyIfNeeded() {
+  const today = new Date().toDateString();
+  if (state.dailyEarnedDate !== today) {
+    state.dailyEarnedDate = today;
+    state.dailyEarned = 0;
+    state.capBannerShownDate = null;
+    saveState();
+  }
+}
+
 // ================= ЛОГИКА УРОВНЕЙ =================
 const levelList = [
   { name: "Малыш", stars: 0 }, { name: "Новичок", stars: 10 }, { name: "Ученик", stars: 25 },
@@ -49,11 +74,12 @@ function updateLevel() {
   const lvlBox = document.getElementById('level-container');
   if (!lvlBox) return;
   
+  const total = state.totalStarsEarned || 0;
   let currentLevel = levelList[0];
   let nextLevel = levelList[1];
 
   for (let i = 0; i < levelList.length; i++) {
-    if (state.stars >= levelList[i].stars) {
+    if (total >= levelList[i].stars) {
       currentLevel = levelList[i];
       nextLevel = levelList[i + 1] || levelList[i]; 
     } else {
@@ -66,9 +92,9 @@ function updateLevel() {
 
   if (nextLevel.name !== currentLevel.name) {
     const range = nextLevel.stars - currentLevel.stars;
-    const currentProgress = state.stars - currentLevel.stars;
+    const currentProgress = total - currentLevel.stars;
     progress = Math.min(100, (currentProgress / range) * 100);
-    starsLeft = nextLevel.stars - state.stars;
+    starsLeft = nextLevel.stars - total;
   }
   
   lvlBox.innerHTML = `
@@ -90,11 +116,10 @@ let allAchievements = levelList.slice(1).map((lvl, index) => ({
   icon: '⭐',
   title: `Звание: ${lvl.name}`,
   desc: `Достигни ${lvl.stars} звезд`,
-  check: (s) => s.stars >= lvl.stars
+  check: (s) => (s.totalStarsEarned || 0) >= lvl.stars
 }));
 
 allAchievements = allAchievements.concat([
-  // --- НЕДЕЛЬНЫЕ ПРИКЛЮЧЕНИЯ ---
   { id: 'streak_7', icon: '🧭', title: 'Юный следопыт', desc: 'Занимайся 7 дней подряд', check: (s) => s.streak >= 7 },
   { id: 'streak_14', icon: '🏹', title: 'Меткий стрелок', desc: 'Занимайся 14 дней подряд', check: (s) => s.streak >= 14 },
   { id: 'streak_21', icon: '🗺️', title: 'Искатель сокровищ', desc: 'Занимайся 21 день подряд', check: (s) => s.streak >= 21 },
@@ -103,24 +128,18 @@ allAchievements = allAchievements.concat([
   { id: 'streak_42', icon: '🥈', title: 'Серебряный страж', desc: 'Занимайся 42 дня подряд', check: (s) => s.streak >= 42 },
   { id: 'streak_49', icon: '🥇', title: 'Золотой страж', desc: 'Занимайся 49 дней подряд', check: (s) => s.streak >= 49 },
   { id: 'streak_56', icon: '🔥', title: 'Огненный дракон', desc: 'Занимайся 56 дней подряд', check: (s) => s.streak >= 56 },
-  
-  // --- СЕРЬЕЗНЫЕ ВЫСОТЫ ---
   { id: 'streak_70', icon: '🚀', title: 'Космический рейнджер', desc: 'Занимайся 70 дней подряд', check: (s) => s.streak >= 70 },
   { id: 'streak_84', icon: '⏳', title: 'Повелитель времени', desc: 'Занимайся 84 дня подряд', check: (s) => s.streak >= 84 },
   { id: 'streak_105', icon: '⚡', title: 'Громовержец', desc: 'Занимайся 105 дней подряд', check: (s) => s.streak >= 105 },
   { id: 'streak_126', icon: '🏆', title: 'Гранд-мастер', desc: 'Занимайся 126 дней подряд', check: (s) => s.streak >= 126 },
   { id: 'streak_150', icon: '🎯', title: 'Снайпер знаний', desc: 'Занимайся 150 дней подряд', check: (s) => s.streak >= 150 },
   { id: 'streak_182', icon: '🦸', title: 'Супергерой', desc: 'Занимайся 182 дня подряд', check: (s) => s.streak >= 182 },
-  
-  // --- ЛЕГЕНДАРНЫЕ ЛИЧНОСТИ ---
   { id: 'streak_210', icon: '🐉', title: 'Укротитель драконов', desc: 'Занимайся 210 дней подряд', check: (s) => s.streak >= 210 },
   { id: 'streak_240', icon: '🧙‍♂️', title: 'Архимаг', desc: 'Занимайся 240 дней подряд', check: (s) => s.streak >= 240 },
   { id: 'streak_270', icon: '🔮', title: 'Верховный маг', desc: 'Занимайся 270 дней подряд', check: (s) => s.streak >= 270 },
   { id: 'streak_300', icon: '👑', title: 'Король знаний', desc: 'Занимайся 300 дней подряд', check: (s) => s.streak >= 300 },
   { id: 'streak_330', icon: '🌌', title: 'Космический император', desc: 'Занимайся 330 дней подряд', check: (s) => s.streak >= 330 },
   { id: 'streak_365', icon: '🎆', title: 'Легенда года', desc: 'Занимайся 365 дней подряд!', check: (s) => s.streak >= 365 },
-
-  // --- ЗОЛОТЫЕ КАРТОЧКИ ---
   { id: 'gold_1', icon: '🥇', title: 'Золотая коллекция', desc: 'Изучи первую карточку на 100%', check: (s) => s.learned.length >= 1 },
   { id: 'gold_10', icon: '🏆', title: 'Коллекционер', desc: 'Изучи 10 карточек на 100%', check: (s) => s.learned.length >= 10 },
   { id: 'gold_50', icon: '👑', title: 'Мастер слова', desc: 'Изучи 50 карточек на 100%', check: (s) => s.learned.length >= 50 },
@@ -131,6 +150,7 @@ function openAchievements() {
   hideAllViews();
   document.getElementById('achievements-view').style.display = 'flex';
   renderAchievements();
+  renderCoinsBlock();
 }
 
 function renderAchievements() {
@@ -162,22 +182,14 @@ function checkNewAchievements() {
   });
 }
 
-// ================= ПРОГРЕСС КАРТОЧЕК (общий для всех игр) =================
+// ================= ПРОГРЕСС КАРТОЧЕК =================
 function markAsLearned(word) {
-  // Если карточки еще нет в прогрессе, создаем ей 0
   if (!state.listenCounts[word]) state.listenCounts[word] = 0;
-  
-  // Если она уже выучена (100%), ничего не делаем
   if (state.listenCounts[word] >= 25) return;
-
-  // Даем +5 баллов за правильный ответ в игре (вместо +25)
   state.listenCounts[word] += 5;
-  
-  // Если после ответа набралось 25 или больше, добавляем в список изученных
   if (state.listenCounts[word] >= 25 && !state.learned.includes(word)) {
       state.learned.push(word);
   }
-  
   saveState();
 }
 
@@ -187,25 +199,48 @@ function updateUI() {
   document.getElementById('ui-streak').innerText = state.streak || 0;
   updatePet();
   updateLevel();
+  updateCycleBanner();
 }
 
 function addStars(amount) {
-  state.stars = (state.stars || 0) + amount;
+  resetDailyIfNeeded();
+
+  const dailyCap = 250;
+  const today = new Date().toDateString();
+  const dailyEarned = state.dailyEarned || 0;
+
+  if (dailyEarned >= dailyCap) {
+    if (state.capBannerShownDate !== today) {
+      state.capBannerShownDate = today;
+      saveState();
+      showToast("🌟 Дневной лимит звёзд достигнут, молодец! Можешь продолжать обучаться.", 'top');
+    }
+    return;
+  }
+
+  const actualAmount = Math.min(amount, dailyCap - dailyEarned);
+  state.dailyEarned = dailyEarned + actualAmount;
+  state.totalStarsEarned = (state.totalStarsEarned || 0) + actualAmount;
+  state.stars = Math.min(6000, (state.stars || 0) + actualAmount);
+
   checkDailyProgress();
   saveState();
-  showToast(`+${amount} ⭐`, 'bottom');
+  showToast(`+${actualAmount} ⭐`, 'bottom');
   checkNewAchievements();
+
+  if (state.dailyEarned >= dailyCap && state.capBannerShownDate !== today) {
+    state.capBannerShownDate = today;
+    saveState();
+    showToast("🌟 Дневной лимит звёзд достигнут, молодец! Можешь продолжать обучаться.", 'top');
+  }
 }
 
 function showToast(text, position = 'top') {
   const container = document.getElementById(position === 'bottom' ? 'toast-bottom-container' : 'toast-top-container');
-  
   const t = document.createElement('div');
   t.className = 'toast-item';
   t.innerText = text;
-  
   container.appendChild(t);
-  
   setTimeout(() => {
     t.style.opacity = '0';
     t.style.transform = 'scale(0.8)';
@@ -215,12 +250,8 @@ function showToast(text, position = 'top') {
 
 function checkDailyProgress() {
   const today = new Date().toDateString();
-  if (state.lastDate !== today) {
-    state.lastDate = today;
-    state.dailyCount = 0;
-  }
-  state.dailyCount = (state.dailyCount || 0) + 1;
-  if (state.dailyCount === 25) {
+  if ((state.dailyEarned || 0) >= 50 && state.streakCountedDate !== today) {
+    state.streakCountedDate = today;
     state.streak = (state.streak || 0) + 1;
     showToast(`🔥 Огонь! Ты занимаешься ${state.streak} дней подряд!`, 'top');
   }
@@ -233,6 +264,7 @@ function hideAllViews() {
 function goHome() {
   hideAllViews();
   document.getElementById('dashboard-view').style.display = 'flex';
+  checkForcedReset();
   updateUI();
 }
 function startTrainer() {
@@ -379,117 +411,3 @@ function setupPinPad() {
   btn0.className = 'pin-btn btn-zero';
   btn0.innerText = '0';
   btn0.onclick = () => enterPin(0);
-  grid.appendChild(btn0);
-
-  let btnDel = document.createElement('button');
-  btnDel.className = 'pin-btn';
-  btnDel.innerText = '⌫';
-  btnDel.onclick = () => deletePin();
-  grid.appendChild(btnDel);
-  updatePinDots();
-}
-
-function enterPin(num) {
-  if (tempPin.length < 4) {
-    tempPin += num;
-    updatePinDots();
-    if (tempPin.length === 4) setTimeout(checkPin, 200);
-  }
-}
-
-function deletePin() {
-  if (tempPin.length > 0) {
-    tempPin = tempPin.slice(0, -1);
-    updatePinDots();
-  }
-}
-
-function updatePinDots() {
-  let dots = '';
-  for (let i = 0; i < 4; i++) {
-    dots += i < tempPin.length ? '🔵' : '⚪';
-  }
-  document.getElementById('pin-dots').innerText = dots;
-}
-
-function checkPin() {
-  if (isCreating) {
-    db.profiles[tempProfileName] = {
-      petName: tempProfileName, pin: tempPin, stars: 0, streak: 0, dailyCount: 0, lastDate: '',
-      learned: [], listenCounts: {}, achievements: []
-    };
-    saveDb();
-    loginSuccess(tempProfileName);
-  } else {
-    if (db.profiles[tempProfileName].pin === tempPin) {
-      loginSuccess(tempProfileName);
-    } else {
-      alert("Неверный ПИН-код!");
-      tempPin = "";
-      updatePinDots();
-    }
-  }
-}
-
-function cancelPin() {
-  tempPin = "";
-  document.getElementById('pin-pad-container').style.display = 'none';
-  if (isCreating) {
-    showCreateProfile();
-  } else {
-    renderAuthScreen();
-  }
-}
-
-function loginSuccess(name) {
-  state = db.profiles[name]; 
-  if (!state.achievements) state.achievements = [];
-  if (!state.learned) state.learned = [];
-  if (!state.listenCounts) state.listenCounts = {};
-  saveDb();
-  goHome(); 
-}
-
-function logout() {
-  state = {}; 
-  renderAuthScreen();
-}
-
-// ================= ИНИЦИАЛИЗАЦИЯ =================
-window.onload = () => {
-  migrateOldData();
-  checkStreakReset();
-  renderAuthScreen();
-};
-
-// Сброс прогресса карточек (вызывается кнопкой)
-function resetLearned() {
-  if(confirm("Сбросить прогресс изучения ВСЕХ карточек? Звезды и ачивки за уровни останутся, но золотые карточки и награды за них исчезнут.")) {
-    state.learned = [];
-    state.listenCounts = {};
-    if (state.achievements) {
-      state.achievements = state.achievements.filter(a => !['gold_1', 'gold_10', 'gold_50', 'gold_100'].includes(a));
-    }
-    saveState();
-    renderAchievements();
-    alert("Прогресс карточек сброшен!");
-  }
-}
-
-// Проверка: если ребенок пропустил день, стрик сгорает
-function checkStreakReset() {
-  if (!state.lastDate) return;
-  const today = new Date().toDateString();
-  
-  if (state.lastDate !== today) {
-    const lastDate = new Date(state.lastDate);
-    const todayDate = new Date(today);
-    const diffTime = Math.abs(todayDate - lastDate);
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays > 1) {
-      state.streak = 0;
-      saveState();
-    }
-  }
-}
