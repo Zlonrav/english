@@ -1,20 +1,4 @@
 // ================= ЛОГИКА ЦИКЛА (4 недели) =================
-// DEBUG: если в URL есть ?debug=sunday — притворяемся воскресеньем
-(function debugFakeDate() {
-  if (!location.search.includes('debug=sunday')) return;
-  const RealDate = Date;
-  const FAKE = new RealDate('2026-10-25T15:12:00');
-  class FakeDate extends RealDate {
-    constructor(...args) {
-      if (args.length === 0) super(FAKE.getTime());
-      else super(...args);
-    }
-    static now() { return FAKE.getTime(); }
-  }
-  window.Date = FakeDate;
-  console.log('🛠 DEBUG: fake Sunday 15:00');
-})();
-
 const CYCLE_DAYS = 28;
 
 function getMondayOfWeek(date) {
@@ -72,7 +56,7 @@ function isLastSundayOfCycle() {
   return today.getTime() === lastSun.getTime();
 }
 
-function canExchangeNow() {
+function ow() {
   if (!state.cycleStartDate) return false;
   const now = new Date();
   if (now.getDay() !== 0) return false;        // только воскресенье
@@ -131,7 +115,7 @@ function renderCoinsBlock() {
   if (coinsEl) coinsEl.innerText = state.coins || 0;
   const btn = document.getElementById('exchange-btn');
   if (btn) {
-    const allowed = canExchangeNow() && (state.stars || 0) >= 100;
+    const allowed = ow() && (state.stars || 0) >= 100;
     btn.style.display = allowed ? 'block' : 'none';
   }
 }
