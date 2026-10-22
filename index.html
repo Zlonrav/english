@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 65 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 66 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -1544,12 +1544,19 @@
     const enInput = document.getElementById('spelling-en-input');
     const ruInput = document.getElementById('spelling-ru-input');
     
-    // Удаляем ВСЁ, кроме букв и цифр, перед сравнением
-    const userEn = enInput.value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-    const userRu = ruInput.value.trim().toLowerCase().replace(/[^a-zа-я0-9]/g, '');
+    // Функция очистки: убираем пунктуацию, но оставляем пробелы
+    const cleanString = (str) => {
+      return str.toLowerCase()
+                .replace(/[.,?!/\\-]/g, '') // удаляем точки, запятые, вопросы, дефисы
+                .replace(/\s+/g, ' ')       // несколько пробелов меняем на один
+                .trim();                    // убираем пробелы по краям
+    };
+
+    const userEn = cleanString(enInput.value);
+    const userRu = cleanString(ruInput.value);
     
-    const correctEn = currentSpellingCard.word.toLowerCase().replace(/[^a-z0-9]/g, '');
-    const correctRu = currentSpellingCard.trans.toLowerCase().replace(/[^a-zа-я0-9]/g, '');
+    const correctEn = cleanString(currentSpellingCard.word);
+    const correctRu = cleanString(currentSpellingCard.trans);
 
     let isCorrect = false;
 
@@ -1598,7 +1605,7 @@
     const hintEl = document.getElementById('spelling-hint');
     
     if (spellingAttempts < 5) {
-      hintEl.innerHTML = ""; // Очищаем
+      hintEl.innerHTML = ""; 
       return;
     }
 
@@ -1608,12 +1615,12 @@
     if (spellingAttempts === 7) percentToReveal = 0.75;
     if (spellingAttempts >= 8) percentToReveal = 1.00;
 
-    // Считаем количество именно БУКВ и ЦИФР в слове (без пробелов и точек)
+    // Считаем только БУКВЫ и ЦИФРЫ (пробелы и знаки не считаются)
     let lettersOnly = word.replace(/[^a-zA-Z0-9]/g, '');
     let charsToShow = Math.floor(lettersOnly.length * percentToReveal);
     if (percentToReveal === 1) charsToShow = lettersOnly.length;
 
-    let hintString = "";
+    let hintHTML = "";
     let revealedCount = 0;
 
     for (let i = 0; i < word.length; i++) {
@@ -1622,21 +1629,21 @@
       if (char.match(/[a-zA-Z0-9]/)) {
         // Если это буква или цифра
         if (revealedCount < charsToShow) {
-          hintString += char + " ";
+          hintHTML += `<span style="color:#d97706; font-weight:900;">${char}</span> `; // Открытая буква
           revealedCount++;
         } else {
-          hintString += "_ ";
+          hintHTML += `_ `; // Скрытая буква
         }
       } else if (char === ' ') {
-        // Если это пробел, добавляем заметный отступ (чтобы слова не слипались)
-        hintString += "&nbsp;&nbsp;&nbsp;&nbsp;"; 
+        // Явно показываем пробел как квадратик
+        hintHTML += `<span style="color:#999; font-size:20px;">␣</span> `; 
       } else {
-        // Если это точка, запятая или вопрос
-        hintString += char + " ";
+        // Пунктуация (не тратит проценты)
+        hintHTML += `<span style="color:#666;">${char}</span> `;
       }
     }
     
-    hintEl.innerHTML = hintString;
+    hintEl.innerHTML = hintHTML;
   }
   
   // ================= ИНИЦИАЛИЗАЦИЯ =================
