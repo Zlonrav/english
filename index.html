@@ -1544,12 +1544,12 @@
     const enInput = document.getElementById('spelling-en-input');
     const ruInput = document.getElementById('spelling-ru-input');
     
-    // МАГИЯ ЗДЕСЬ: удаляем все пробелы и дефисы перед сравнением
-    const userEn = enInput.value.trim().toLowerCase().replace(/[\s-]/g, '');
-    const userRu = ruInput.value.trim().toLowerCase().replace(/[\s-]/g, '');
+    // Удаляем ВСЁ, кроме букв и цифр, перед сравнением
+    const userEn = enInput.value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    const userRu = ruInput.value.trim().toLowerCase().replace(/[^a-zа-я0-9]/g, '');
     
-    const correctEn = currentSpellingCard.word.toLowerCase().replace(/[\s-]/g, '');
-    const correctRu = currentSpellingCard.trans.toLowerCase().replace(/[\s-]/g, '');
+    const correctEn = currentSpellingCard.word.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const correctRu = currentSpellingCard.trans.toLowerCase().replace(/[^a-zа-я0-9]/g, '');
 
     let isCorrect = false;
 
@@ -1598,7 +1598,7 @@
     const hintEl = document.getElementById('spelling-hint');
     
     if (spellingAttempts < 5) {
-      hintEl.innerText = "";
+      hintEl.innerHTML = ""; // Очищаем
       return;
     }
 
@@ -1608,44 +1608,35 @@
     if (spellingAttempts === 7) percentToReveal = 0.75;
     if (spellingAttempts >= 8) percentToReveal = 1.00;
 
-    let charsToShow = Math.floor(word.length * percentToReveal);
-    if (percentToReveal === 1) charsToShow = word.length;
+    // Считаем количество именно БУКВ и ЦИФР в слове (без пробелов и точек)
+    let lettersOnly = word.replace(/[^a-zA-Z0-9]/g, '');
+    let charsToShow = Math.floor(lettersOnly.length * percentToReveal);
+    if (percentToReveal === 1) charsToShow = lettersOnly.length;
 
     let hintString = "";
+    let revealedCount = 0;
+
     for (let i = 0; i < word.length; i++) {
-      if (i < charsToShow) hintString += word[i] + " ";
-      else hintString += "_ ";
-    }
-    hintEl.innerText = hintString;
-  }
-
-  function startSpellingCooldown() {
-    spellingCooldown = true;
-    const btn = document.getElementById('spelling-submit-btn');
-    const bar = document.getElementById('spelling-cooldown');
-    
-    btn.disabled = true;
-    btn.style.opacity = '0.6';
-    
-    const seconds = spellingMode === 'easy' ? 5 : 10;
-    
-    bar.style.width = '100%';
-    bar.style.transition = `width ${seconds}s linear`;
-    setTimeout(() => bar.style.width = '0%', 50);
-
-    setTimeout(() => {
-      spellingCooldown = false;
-      btn.disabled = false;
-      btn.style.opacity = '1';
+      let char = word[i];
       
-      // СБРОС ПОЛЕЙ В ИСХОДНОЕ СОСТОЯНИЕ (возвращаем белый фон)
-      const enInput = document.getElementById('spelling-en-input');
-      const ruInput = document.getElementById('spelling-ru-input');
-      enInput.style.borderColor = "#ccc";
-      enInput.style.backgroundColor = "";
-      ruInput.style.borderColor = "#ccc";
-      ruInput.style.backgroundColor = "";
-    }, seconds * 1000);
+      if (char.match(/[a-zA-Z0-9]/)) {
+        // Если это буква или цифра
+        if (revealedCount < charsToShow) {
+          hintString += char + " ";
+          revealedCount++;
+        } else {
+          hintString += "_ ";
+        }
+      } else if (char === ' ') {
+        // Если это пробел, добавляем заметный отступ (чтобы слова не слипались)
+        hintString += "&nbsp;&nbsp;&nbsp;&nbsp;"; 
+      } else {
+        // Если это точка, запятая или вопрос
+        hintString += char + " ";
+      }
+    }
+    
+    hintEl.innerHTML = hintString;
   }
   
   // ================= ИНИЦИАЛИЗАЦИЯ =================
