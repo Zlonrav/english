@@ -22,7 +22,10 @@ function showRandomCard() {
         <div class="trainer-word">${card.word}</div>
         <div class="trainer-pron">${card.pron}</div>
         <div class="trainer-trans">${card.trans}</div>
-      </div>`;
+      </div>
+      <button class="action-btn btn-listen" id="btn-listen" onclick="handleListen('${card.word}', '${card.word}')">
+        🔊 Слушать <div class="cooldown-bar" id="bar-listen"></div>
+      </button>`;
   } else {
     html += `
       <div class="trainer-entry" style="margin-bottom:10px;">
@@ -31,20 +34,25 @@ function showRandomCard() {
         <div class="trainer-pron">${card.pron}</div>
         <div class="trainer-trans">${card.trans}</div>
       </div>
+      <button class="action-btn btn-listen" id="btn-listen-single" onclick="handleListen('${card.word}', '${card.word}')" style="margin-bottom: 8px;">
+        🔊 Слушать (ед. ч.) <div class="cooldown-bar" id="bar-listen-single"></div>
+      </button>
+
       <div class="divider" style="margin:5px 0;"></div>
+
       <div class="trainer-entry">
         <div style="font-size:10px; color:#888; font-weight:bold; text-transform:uppercase;">Множественное число</div>
         <div class="trainer-word">${card.plural}</div>
         <div class="trainer-pron">${card.pronP}</div>
         <div class="trainer-trans">${card.transP}</div>
-      </div>`;
+      </div>
+      <button class="action-btn btn-listen" id="btn-listen-plural" onclick="handleListen('${card.word}', '${card.plural}')">
+        🔊 Слушать (мн. ч.) <div class="cooldown-bar" id="bar-listen-plural"></div>
+      </button>`;
   }
 
   html += `
-    <button class="action-btn btn-listen" id="btn-listen" onclick="handleListen('${card.word}')">
-      🔊 Слушать <div class="cooldown-bar" id="bar-listen"></div>
-    </button>
-    <button class="action-btn btn-next" id="btn-next" onclick="handleNext()">
+    <button class="action-btn btn-next" id="btn-next" onclick="handleNext()" style="margin-top: 15px;">
       Дальше ➔ <div class="cooldown-bar" id="bar-next"></div>
     </button>
   `;
@@ -54,20 +62,29 @@ function showRandomCard() {
   nextCooldown = false;
 }
 
-function handleListen(word) {
+function handleListen(baseWord, textToSpeak) {
   if (listenCooldown) return;
-  speakWord(word);
+  speakWord(textToSpeak);
   addStars(1);
-  markAsLearned(word); 
+  markAsLearned(baseWord); 
 
   listenCooldown = true;
-  const btn = document.getElementById('btn-listen');
-  const bar = document.getElementById('bar-listen');
-  btn.disabled = true;
-  bar.style.width = '100%';
-  bar.style.transition = 'width 15s linear';
-  setTimeout(() => bar.style.width = '0%', 50); 
-  setTimeout(() => { btn.disabled = false; listenCooldown = false; }, 5000);
+
+  // Блокируем обе кнопки (для ед. и мн. числа) одновременно
+  const btns = document.querySelectorAll('.btn-listen');
+  const bars = document.querySelectorAll('.cooldown-bar[id^="bar-listen"]');
+
+  btns.forEach(btn => btn.disabled = true);
+  bars.forEach(bar => {
+    bar.style.width = '100%';
+    bar.style.transition = 'width 5s linear';
+    setTimeout(() => bar.style.width = '0%', 50);
+  });
+
+  setTimeout(() => { 
+    btns.forEach(btn => btn.disabled = false); 
+    listenCooldown = false; 
+  }, 5000);
 }
 
 function handleNext() {
