@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 77 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 78 --> <!-- Американский английский --> <!-- англокоины --> 
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -32,6 +32,8 @@
   </div>
   
 </div>
+
+<div id="cycle-warning-banner" style="display:none;">⚠️ Последнее воскресенье цикла! Обменяй звёзды до 23:59, иначе они сгорят!</div>
 
 <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ПИТОМЦА -->
 <div id="pet-selector-modal" class="modal-overlay">
@@ -118,7 +120,18 @@
         </p>
         <!-- <button onclick="resetLearned()" style="background:var(--red); color:#fff; border:none; padding:8px 12px; border-radius:8px; font-weight:bold; cursor:pointer;">🧹 Сбросить прогресс карточек</button> -->
       </div>
-
+      
+      <div id="coins-block" style="background:#fff8e1; padding:15px; border-radius:12px; margin-bottom:20px; border: 2px solid var(--gold);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span style="font-size:16px; font-weight:bold;">🪙 Англокоины:</span>
+          <span id="coins-count" style="font-size:20px; font-weight:bold; color:#b45309;">0</span>
+        </div>
+        <button id="exchange-btn" class="menu-btn" style="display:none; background:#f59e0b; box-shadow: 0 5px 0 #b45309; justify-content:center;" onclick="openExchangeModal()">🔄 Обменять звёзды</button>
+        <div style="text-align:center; margin-top:10px;">
+          <a onclick="openParentMode()" style="color:#666; font-size:12px; text-decoration:underline; cursor:pointer;">🔒 Родительский режим</a>
+        </div>
+      </div>
+      
       <!-- Список достижений (без внутреннего скролла) -->
       <div id="achievements-list" style="display:flex; flex-direction:column; gap:10px;">
         <!-- Список достижений генерируется в JS -->
@@ -212,9 +225,46 @@
   </div>
 </div>
 
+ <!-- МОДАЛКА ОБМЕНА -->
+<div id="exchange-modal" class="modal-overlay">
+  <div class="modal-content">
+    <h2 class="modal-title">Обмен звёзд</h2>
+    <p style="text-align:center;">У тебя: <b><span id="exchange-stars">0</span> ⭐</b></p>
+    <input type="number" id="exchange-amount" class="spelling-input" min="100" step="1" oninput="previewExchange()" placeholder="Сколько звёзд обменять?" style="margin-bottom:10px;">
+    <p style="margin:5px 0; text-align:center;">Ставка: <span id="exchange-rate">—</span></p>
+    <p style="margin:5px 0; text-align:center;">Получишь: <b><span id="exchange-coins">0</span> 🪙</b></p>
+    <p style="color:#888; font-size:12px; margin:10px 0; text-align:center;">Обмен — только в воскресенье с 10:00 до 23:59.<br>После обмена новый цикл начнётся с понедельника.</p>
+    <button class="menu-btn btn-green" style="justify-content:center;" onclick="confirmExchange()">Обменять</button>
+    <button class="menu-btn" style="background:#ccc; box-shadow:0 5px 0 #999; color:#333; justify-content:center;" onclick="closeExchangeModal()">Отмена</button>
+  </div>
+</div>
+
+<!-- МОДАЛКА РОДИТЕЛЬСКОГО РЕЖИМА -->
+<div id="parent-modal" class="modal-overlay">
+  <div class="modal-content">
+    <h2 class="modal-title">🔒 Родительский режим</h2>
+    <div id="parent-auth">
+      <p style="text-align:center; color:#666; font-size:14px;">Введите пароль для доступа</p>
+      <input type="password" id="parent-password" class="spelling-input" placeholder="Пароль" onkeydown="if(event.key==='Enter') verifyParentPassword()">
+      <button class="menu-btn btn-green" style="justify-content:center;" onclick="verifyParentPassword()">Войти</button>
+      <button class="menu-btn" style="background:#ccc; box-shadow:0 5px 0 #999; color:#333; justify-content:center;" onclick="closeParentModal()">Отмена</button>
+    </div>
+    <div id="parent-content" style="display:none;">
+      <p>Коинов к выплате: <b><span id="parent-coins">0</span></b> 🪙</p>
+      <p>Выплачено за всё время: <b><span id="parent-paid">0</span></b> ₽</p>
+      <p id="parent-not-avail" style="display:none; color:#d97706; text-align:center; font-size:14px;">Выплата доступна только в воскресенье с 10:00 до 23:59.</p>
+      <button id="parent-payout-btn" class="menu-btn btn-green" style="justify-content:center;" onclick="payoutCoins()">💰 Выплатить и обнулить</button>
+      <button class="menu-btn" style="background:#ccc; box-shadow:0 5px 0 #999; color:#333; justify-content:center;" onclick="closeParentModal()">Закрыть</button>
+    </div>
+  </div>
+</div> 
+
 <script src="js/data.js"></script>
+<script src="js/parent-config.js"></script>
 <script src="js/app.js"></script>
 <script src="js/pet.js"></script>
+<script src="js/cycle.js"></script>
+<script src="js/parent.js"></script>
 <script src="js/trainer.js"></script>
 <script src="js/tasks.js"></script>
 <script src="js/quiz.js"></script>
