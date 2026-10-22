@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 69 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 70 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -394,20 +394,27 @@
   }
   .spelling-input:focus { border-color: var(--main-color); }
 
-    /* Уведомления СНИЗУ (Звезды) */
-  .toast-bottom {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    background: var(--gold); color: #000; padding: 12px 25px; border-radius: 30px;
-    font-weight: bold; font-size: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    z-index: 9999; animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+  /* Контейнеры для уведомлений */
+  .toast-container {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    z-index: 9999; pointer-events: none; width: 90%; max-width: 400px;
+  }
+  #toast-top-container { top: 80px; }
+  #toast-bottom-container { bottom: 20px; flex-direction: column-reverse; }
+
+  /* Само уведомление */
+  .toast-item {
+    background: var(--gold); color: #000; padding: 12px 20px; border-radius: 30px;
+    font-weight: bold; font-size: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    text-align: center; width: 100%;
+    animation: popIn 0.3s ease forwards;
+    transition: opacity 0.3s ease, transform 0.3s ease;
   }
 
-  /* Уведомления СВЕРХУ (Достижения, Стрики) */
-  .toast-top {
-    position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
-    background: var(--gold); color: #000; padding: 15px 30px; border-radius: 30px;
-    font-weight: bold; font-size: 18px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    z-index: 9999; animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+  @keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
   }
 
   @keyframes slideUp { from { bottom: -50px; opacity: 0; } to { bottom: 20px; opacity: 1; } }
@@ -419,6 +426,9 @@
 </head>
 <body>
 
+<div id="toast-top-container" class="toast-container"></div>
+<div id="toast-bottom-container" class="toast-container"></div>
+  
 <!-- Верхняя панель -->
 <div class="top-bar">
   <div style="display:flex; align-items:center; gap:15px;">
@@ -850,11 +860,23 @@
   }
 
   function showToast(text, position = 'top') {
+    // Выбираем нужный контейнер (сверху или снизу)
+    const container = document.getElementById(position === 'bottom' ? 'toast-bottom-container' : 'toast-top-container');
+    
+    // Создаем элемент
     const t = document.createElement('div');
-    t.className = position === 'bottom' ? 'toast-bottom' : 'toast-top';
+    t.className = 'toast-item';
     t.innerText = text;
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 3000);
+    
+    // Добавляем в контейнер
+    container.appendChild(t);
+    
+    // Удаляем через 3 секунды с плавным исчезновением
+    setTimeout(() => {
+      t.style.opacity = '0';
+      t.style.transform = 'scale(0.8)';
+      setTimeout(() => t.remove(), 300); // Ждем завершения анимации исчезновения
+    }, 2500);
   }
 
   function checkDailyProgress() {
