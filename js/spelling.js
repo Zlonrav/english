@@ -54,6 +54,7 @@ function setSpellingMode(mode) {
 
 function startSpellingRound() {
   spellingAttempts = 0;
+  currentRevealedIndices = [];
   
   let pool = cardsData.filter(c => c.cat !== "1. Буквы");
   let newCard = pool[Math.floor(Math.random() * pool.length)];
@@ -152,13 +153,13 @@ function checkSpelling() {
       ruInput.style.backgroundColor = "#f8d7da";
     }
     
-    if (spellingAttempts < 7) {
-      spellingAttempts++;
-    }
-    showToast(`❌ Ошибка! Попытка ${spellingAttempts}/7`, 'top');
-    
-    updateSpellingHint();
-    startSpellingCooldown();
+      if (spellingAttempts < 7) { 
+        spellingAttempts++;
+      }
+      showToast(`❌ Ошибка! Попытка ${spellingAttempts}/7`, 'top');
+      
+      updateSpellingHint(); 
+      startSpellingCooldown();
   }
 }
 
@@ -166,42 +167,57 @@ function updateSpellingHint() {
   const word = currentSpellingCard.word;
   const hintEl = document.getElementById('spelling-hint');
   
-  // Подсказки начинаются с 4-й попытки
+  // 1, 2 и 3 попытки — подсказок нет
   if (spellingAttempts < 4) {
     hintEl.innerHTML = ""; 
     return;
   }
 
-  let percentToReveal = 0;
-  if (spellingAttempts === 4) percentToReveal = 0.25;
-  if (spellingAttempts === 5) percentToReveal = 0.50;
-  if (spellingAttempts === 6) percentToReveal = 0.75;
-  if (spellingAttempts >= 7) percentToReveal = 1.00;
+  // Определяем целевой процент в зависимости от попытки
+  let targetPercent = 0;
+  if (spellingAttempts === 4) targetPercent = 0.25;
+  if (spellingAttempts === 5) targetPercent = 0.50;
+  if (spellingAttempts === 6) targetPercent = 0.75;
+  if (spellingAttempts >= 7) targetPercent = 1.00;
 
-  // Собираем индексы всех букв/цифр
-  let letterIndices = [];
+  // Собираем индексы ВСЕХ букв и цифр в слове
+  let allLetterIndices = [];
   for (let i = 0; i < word.length; i++) {
     if (word[i].match(/[a-zA-Z0-9]/)) {
-      letterIndices.push(i);
+      allLetterIndices.push(i);
     }
   }
 
-  // Считаем, сколько нужно открыть
-  let charsToShow = Math.floor(letterIndices.length * percentToReveal);
-  if (percentToReveal === 1) charsToShow = letterIndices.length;
+  // Считаем, сколько всего букв нужно открыть
+  let targetCount = Math.floor(allLetterIndices.length * targetPercent);
+  if (targetPercent === 1) targetCount = allLetterIndices.length;
 
-  // Перемешиваем индексы для случайного открытия
-  letterIndices.sort(() => Math.random() - 0.5);
-  let indicesToReveal = letterIndices.slice(0, charsToShow);
+  // Сколько еще букв нужно открыть (недостающее количество)
+  let needed = targetCount - currentRevealedIndices.length;
 
-  // Собираем подсказку
+  if (needed > 0) {
+    // Берем только те индексы, которые еще НЕ открыты
+    let unrevealedIndices = allLetterIndices.filter(idx => !currentRevealedIndices.includes(idx));
+    
+    // Перемешиваем их случайным образом
+    unrevealedIndices.sort(() => Math.random() - 0.5);
+    
+    // Добавляем нужное количество новых случайных букв к уже открытым
+    let toAdd = unrevealedIndices.slice(0, needed);
+    currentRevealedIndices.push(...toAdd);
+  }
+
+  // Собираем итоговую строку подсказки
   let hintHTML = "";
   for (let i = 0; i < word.length; i++) {
     let char = word[i];
+    
     if (char.match(/[a-zA-Z0-9]/)) {
-      if (indicesToReveal.includes(i)) {
+      if (currentRevealedIndices.includes(i)) {
+        // Буква открыта
         hintHTML += `<span style="color:#d97706; font-weight:900;">${char}</span> `; 
       } else {
+        // Буква скрыта
         hintHTML += `_ `;
       }
     } else if (char === ' ') {
