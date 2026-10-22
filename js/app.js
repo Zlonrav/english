@@ -411,3 +411,118 @@ function setupPinPad() {
   btn0.className = 'pin-btn btn-zero';
   btn0.innerText = '0';
   btn0.onclick = () => enterPin(0);
+  grid.appendChild(btn0);
+  let btnDel = document.createElement('button');
+  btnDel.className = 'pin-btn';
+  btnDel.innerText = '⌫';
+  btnDel.onclick = () => deletePin();
+  grid.appendChild(btnDel);
+  updatePinDots();
+}
+
+function enterPin(num) {
+  if (tempPin.length < 4) {
+    tempPin += num;
+    updatePinDots();
+    if (tempPin.length === 4) setTimeout(checkPin, 200);
+  }
+}
+
+function deletePin() {
+  if (tempPin.length > 0) {
+    tempPin = tempPin.slice(0, -1);
+    updatePinDots();
+  }
+}
+
+function updatePinDots() {
+  let dots = '';
+  for (let i = 0; i < 4; i++) {
+    dots += i < tempPin.length ? '🔵' : '⚪';
+  }
+  document.getElementById('pin-dots').innerText = dots;
+}
+
+function checkPin() {
+  if (isCreating) {
+    db.profiles[tempProfileName] = {
+      petName: tempProfileName, pin: tempPin,
+      stars: 0, streak: 0, dailyCount: 0, lastDate: '',
+      learned: [], listenCounts: {}, achievements: [],
+      totalStarsEarned: 0, coins: 0, totalPaidRubles: 0,
+      dailyEarned: 0, dailyEarnedDate: new Date().toDateString(),
+      cycleStartDate: getMondayOfWeek(new Date()).toISOString(),
+      lastExchangeDate: null, streakCountedDate: null,
+      pendingNewCycleToast: false
+    };
+    saveDb();
+    loginSuccess(tempProfileName);
+  } else {
+    if (db.profiles[tempProfileName].pin === tempPin) {
+      loginSuccess(tempProfileName);
+    } else {
+      alert("Неверный ПИН-код!");
+      tempPin = "";
+      updatePinDots();
+    }
+  }
+}
+
+function cancelPin() {
+  tempPin = "";
+  document.getElementById('pin-pad-container').style.display = 'none';
+  if (isCreating) {
+    showCreateProfile();
+  } else {
+    renderAuthScreen();
+  }
+}
+
+function loginSuccess(name) {
+  state = db.profiles[name];
+  ensureStateDefaults();
+  resetDailyIfNeeded();
+  checkForcedReset();
+  checkStreakReset();
+  checkPendingNewCycleToast();
+  saveDb();
+  goHome();
+}
+
+function logout() {
+  state = {}; 
+  renderAuthScreen();
+}
+
+// ================= ИНИЦИАЛИЗАЦИЯ =================
+window.onload = () => {
+  migrateOldData();
+  checkStreakReset();
+  renderAuthScreen();
+};
+
+function resetLearned() {
+  if(confirm("Сбросить прогресс изучения ВСЕХ карточек? Звезды и ачивки за уровни останутся, но золотые карточки и награды за них исчезнут.")) {
+    state.learned = [];
+    state.listenCounts = {};
+    if (state.achievements) {
+      state.achievements = state.achievements.filter(a => !['gold_1', 'gold_10', 'gold_50', 'gold_100'].includes(a));
+    }
+    saveState();
+    renderAchievements();
+    alert("Прогресс карточек сброшен!");
+  }
+}
+
+function checkStreakReset() {
+  if (!state.streakCountedDate) return;
+  const last = new Date(state.streakCountedDate);
+  last.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diffDays = Math.round((today - last) / 86400000);
+  if (diffDays > 1) {
+    state.streak = 0;
+    saveState();
+  }
+}
