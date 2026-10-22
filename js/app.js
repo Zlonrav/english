@@ -147,6 +147,7 @@ allAchievements = allAchievements.concat([
 ]);
 
 function openAchievements() {
+  if (!checkAuth()) return;
   hideAllViews();
   document.getElementById('achievements-view').style.display = 'flex';
   renderAchievements();
