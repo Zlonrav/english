@@ -18,6 +18,14 @@ function showRandomCard() {
   else html += `<div class="trainer-icon">${card.icon}</div>`;
   html += `<div class="divider"></div>`;
 
+  // Шаблон для кнопки "Слушать" с внутренней заливкой
+  const listenBtnHTML = (id, text, wordToSpeak) => `
+    <button class="action-btn btn-listen" id="${id}" onclick="handleListen('${card.word}', '${wordToSpeak}')" style="position: relative; overflow: hidden; background: #ffdb4d; color: #333;">
+      <div class="listen-fill" style="position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: rgba(0,0,0,0.15); z-index: 0; transition: none;"></div>
+      <span style="position: relative; z-index: 1;">🔊 Слушать ${text}</span>
+    </button>
+  `;
+
   if (card.single) {
     html += `
       <div class="trainer-entry">
@@ -25,9 +33,8 @@ function showRandomCard() {
         <div class="trainer-pron">${card.pron}</div>
         <div class="trainer-trans">${card.trans}</div>
       </div>
-      <button class="action-btn btn-listen" id="btn-listen" onclick="handleListen('${card.word}', '${card.word}')">
-        🔊 Слушать <div class="cooldown-bar" id="bar-listen"></div>
-      </button>`;
+      ${listenBtnHTML('btn-listen', '', card.word)}
+    `;
   } else {
     html += `
       <div class="trainer-entry" style="margin-bottom:10px;">
@@ -36,9 +43,7 @@ function showRandomCard() {
         <div class="trainer-pron">${card.pron}</div>
         <div class="trainer-trans">${card.trans}</div>
       </div>
-      <button class="action-btn btn-listen" id="btn-listen-single" onclick="handleListen('${card.word}', '${card.word}')" style="margin-bottom: 8px;">
-        🔊 Слушать (ед. ч.) <div class="cooldown-bar" id="bar-listen-single"></div>
-      </button>
+      ${listenBtnHTML('btn-listen-single', '(ед. ч.)', card.word)}
 
       <div class="divider" style="margin:5px 0;"></div>
 
@@ -48,12 +53,11 @@ function showRandomCard() {
         <div class="trainer-pron">${card.pronP}</div>
         <div class="trainer-trans">${card.transP}</div>
       </div>
-      <button class="action-btn btn-listen" id="btn-listen-plural" onclick="handleListen('${card.word}', '${card.plural}')">
-        🔊 Слушать (мн. ч.) <div class="cooldown-bar" id="bar-listen-plural"></div>
-      </button>`;
+      ${listenBtnHTML('btn-listen-plural', '(мн. ч.)', card.plural)}
+    `;
   }
 
-  // Кнопка "Дальше" изначально заблокирована и бледная. Внутри неё будет заливка прогресса.
+  // Кнопка "Дальше" изначально заблокирована и бледная.
   html += `
     <button class="action-btn btn-next" id="btn-next" onclick="handleNext()" disabled style="margin-top: 15px; background: #c2d2e8; color: #6d84a3; box-shadow: 0 5px 0 #a0b4ce; opacity: 0.8; position: relative; overflow: hidden;">
       <div id="next-fill" style="position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--main-color); z-index: 0; transition: width 0.3s ease;"></div>
@@ -69,7 +73,6 @@ function showRandomCard() {
 function handleListen(baseWord, textToSpeak) {
   if (listenCooldown) return;
   
-  // Воспроизводим и начисляем звезду
   speakWord(textToSpeak);
   addStars(1);
   markAsLearned(baseWord); 
@@ -79,9 +82,9 @@ function handleListen(baseWord, textToSpeak) {
     currentListenCount++;
     
     // Обновляем заливку на кнопке "Дальше"
-    const fill = document.getElementById('next-fill');
-    if (fill) {
-      fill.style.width = (currentListenCount / 3 * 100) + '%';
+    const nextFill = document.getElementById('next-fill');
+    if (nextFill) {
+      nextFill.style.width = (currentListenCount / 3 * 100) + '%';
     }
 
     // Если прослушали 3 раза — разблокируем "Дальше" и делаем её синей
@@ -97,36 +100,41 @@ function handleListen(baseWord, textToSpeak) {
     }
   }
 
-  // Блокируем кнопки "Слушать" на 5 секунд
+  // Анимация заполнения самой кнопки "Слушать" на 5 секунд
   listenCooldown = true;
   const btns = document.querySelectorAll('.btn-listen');
-  const bars = document.querySelectorAll('.cooldown-bar[id^="bar-listen"]');
-
-  btns.forEach(btn => btn.disabled = true);
-  bars.forEach(bar => {
-    bar.style.width = '100%';
-    bar.style.transition = 'width 5s linear';
-    setTimeout(() => bar.style.width = '0%', 50);
+  
+  btns.forEach(btn => {
+    btn.disabled = true;
+    const fill = btn.querySelector('.listen-fill');
+    if (fill) {
+      fill.style.transition = 'none';
+      fill.style.width = '0%';
+      // Форсируем перерисовку браузера, чтобы анимация сработала заново
+      void fill.offsetWidth; 
+      fill.style.transition = 'width 5s linear';
+      fill.style.width = '100%';
+    }
   });
 
+  // Разблокировка через 5 секунд
   setTimeout(() => { 
-    btns.forEach(btn => btn.disabled = false); 
+    btns.forEach(btn => {
+      btn.disabled = false;
+      const fill = btn.querySelector('.listen-fill');
+      if (fill) {
+        fill.style.transition = 'none';
+        fill.style.width = '0%';
+      }
+    });
     listenCooldown = false; 
   }, 5000);
 }
 
 function handleNext() {
-  if (nextCooldown || currentListenCount < 3) return; // Двойная защита
+  if (nextCooldown || currentListenCount < 3) return;
   nextCooldown = true;
-  const btn = document.getElementById('btn-next');
-  const bar = document.getElementById('bar-next');
   
-  btn.disabled = true;
-  if (bar) {
-    bar.style.width = '100%';
-    bar.style.transition = 'width 5s linear';
-    setTimeout(() => bar.style.width = '0%', 50);
-  }
-  
-  setTimeout(() => { showRandomCard(); }, 2500); 
+  // Мгновенный переход без задержек
+  showRandomCard(); 
 }
