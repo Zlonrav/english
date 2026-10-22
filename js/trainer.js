@@ -2,6 +2,7 @@
 let currentCardIndex = -1;
 let listenCooldown = false;
 let nextCooldown = false;
+let currentListenCount = 0; // Счетчик прослушиваний для текущей карточки
 
 function showRandomCard() {
   let newIndex = Math.floor(Math.random() * cardsData.length);
@@ -10,6 +11,7 @@ function showRandomCard() {
   }
   currentCardIndex = newIndex;
   const card = cardsData[currentCardIndex];
+  currentListenCount = 0; // Сбрасываем счетчик при новой карточке
 
   let html = '';
   if (card.color) html += `<div class="trainer-color-circle" style="width:80px; height:80px; border-radius:50%; background:${card.color}; margin-bottom:10px; border:3px solid #333;"></div>`;
@@ -51,9 +53,11 @@ function showRandomCard() {
       </button>`;
   }
 
+  // Кнопка "Дальше" изначально заблокирована и бледная. Внутри неё будет заливка прогресса.
   html += `
-    <button class="action-btn btn-next" id="btn-next" onclick="handleNext()" style="margin-top: 15px;">
-      Дальше ➔ <div class="cooldown-bar" id="bar-next"></div>
+    <button class="action-btn btn-next" id="btn-next" onclick="handleNext()" disabled style="margin-top: 15px; background: #c2d2e8; color: #6d84a3; box-shadow: 0 5px 0 #a0b4ce; opacity: 0.8; position: relative; overflow: hidden;">
+      <div id="next-fill" style="position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--main-color); z-index: 0; transition: width 0.3s ease;"></div>
+      <span style="position: relative; z-index: 1;">Дальше ➔</span>
     </button>
   `;
 
@@ -64,13 +68,37 @@ function showRandomCard() {
 
 function handleListen(baseWord, textToSpeak) {
   if (listenCooldown) return;
+  
+  // Воспроизводим и начисляем звезду
   speakWord(textToSpeak);
   addStars(1);
   markAsLearned(baseWord); 
 
-  listenCooldown = true;
+  // Увеличиваем счетчик прослушиваний
+  if (currentListenCount < 3) {
+    currentListenCount++;
+    
+    // Обновляем заливку на кнопке "Дальше"
+    const fill = document.getElementById('next-fill');
+    if (fill) {
+      fill.style.width = (currentListenCount / 3 * 100) + '%';
+    }
 
-  // Блокируем обе кнопки (для ед. и мн. числа) одновременно
+    // Если прослушали 3 раза — разблокируем "Дальше" и делаем её синей
+    if (currentListenCount === 3) {
+      const btnNext = document.getElementById('btn-next');
+      if (btnNext) {
+        btnNext.disabled = false;
+        btnNext.style.background = 'var(--main-color)';
+        btnNext.style.color = '#fff';
+        btnNext.style.boxShadow = '0 5px 0 #153870';
+        btnNext.style.opacity = '1';
+      }
+    }
+  }
+
+  // Блокируем кнопки "Слушать" на 5 секунд
+  listenCooldown = true;
   const btns = document.querySelectorAll('.btn-listen');
   const bars = document.querySelectorAll('.cooldown-bar[id^="bar-listen"]');
 
@@ -88,13 +116,17 @@ function handleListen(baseWord, textToSpeak) {
 }
 
 function handleNext() {
-  if (nextCooldown) return;
+  if (nextCooldown || currentListenCount < 3) return; // Двойная защита
   nextCooldown = true;
   const btn = document.getElementById('btn-next');
   const bar = document.getElementById('bar-next');
+  
   btn.disabled = true;
-  bar.style.width = '100%';
-  bar.style.transition = 'width 5s linear';
-  setTimeout(() => bar.style.width = '0%', 50);
+  if (bar) {
+    bar.style.width = '100%';
+    bar.style.transition = 'width 5s linear';
+    setTimeout(() => bar.style.width = '0%', 50);
+  }
+  
   setTimeout(() => { showRandomCard(); }, 2500); 
 }
