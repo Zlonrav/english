@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 61 --> <!-- Американский английский -->
+<!DOCTYPE html> <!-- 62 --> <!-- Американский английский -->
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -1472,6 +1472,7 @@
 
   function setSpellingMode(mode) {
     spellingMode = mode;
+    spellingCooldown = false;
     const easyBtn = document.getElementById('mode-easy-btn');
     const hardBtn = document.getElementById('mode-hard-btn');
     
@@ -1528,30 +1529,16 @@
     
     speakWord(currentSpellingCard.word);
     
+    // В самом конце функции startSpellingRound
     const btn = document.getElementById('spelling-submit-btn');
-    btn.disabled = false;
-    btn.style.opacity = '1';
-    document.getElementById('spelling-cooldown').style.width = '0%';
-  }
-
-  function checkSpelling() {
-    if (spellingCooldown) return;
-
-    const enInput = document.getElementById('spelling-en-input');
-    const ruInput = document.getElementById('spelling-ru-input');
-    const userEn = enInput.value.trim().toLowerCase();
-    const userRu = ruInput.value.trim().toLowerCase();
     
-    const correctEn = currentSpellingCard.word.toLowerCase();
-    const correctRu = currentSpellingCard.trans.toLowerCase();
-
-    let isCorrect = false;
-
-    if (spellingMode === 'easy') {
-      isCorrect = (userEn === correctEn);
-    } else {
-      isCorrect = (userEn === correctEn && userRu === correctRu);
+    // Если мы ждем окончания таймера, не разблокируем кнопку раньше времени
+    if (!spellingCooldown) {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      document.getElementById('spelling-cooldown').style.width = '0%';
     }
+  }
 
     if (isCorrect) {
       enInput.style.borderColor = "var(--green)";
@@ -1567,23 +1554,11 @@
       markAsLearned(currentSpellingCard.word);
       showToast("✅ Правильно! Молодец!", 'top');
       
+      startSpellingCooldown(); // <--- ДОБАВИТЬ ВОТ ЭТУ СТРОЧКУ
+      
       setTimeout(() => { startSpellingRound(); }, 1500);
-
     } else {
-      enInput.style.borderColor = "var(--red)";
-      enInput.style.backgroundColor = "#f8d7da";
-      if (spellingMode === 'hard') {
-        ruInput.style.borderColor = "var(--red)";
-        ruInput.style.backgroundColor = "#f8d7da";
-      }
-      
-      spellingAttempts++;
-      showToast(`❌ Ошибка! Попытка ${spellingAttempts}/9`, 'top');
-      
-      updateSpellingHint();
-      startSpellingCooldown();
-    }
-  }
+      // ... (код для неправильного ответа остается как был) ...
 
   function updateSpellingHint() {
     const word = currentSpellingCard.word;
@@ -1629,6 +1604,14 @@
       spellingCooldown = false;
       btn.disabled = false;
       btn.style.opacity = '1';
+      
+      // СБРОС ПОЛЕЙ В ИСХОДНОЕ СОСТОЯНИЕ ПОСЛЕ ТАЙМЕРА
+      const enInput = document.getElementById('spelling-en-input');
+      const ruInput = document.getElementById('spelling-ru-input');
+      enInput.style.borderColor = "#ccc";
+      enInput.style.backgroundColor = "";
+      ruInput.style.borderColor = "#ccc";
+      ruInput.style.backgroundColor = "";
     }, seconds * 1000);
   }
   
