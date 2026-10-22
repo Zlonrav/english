@@ -1,5 +1,8 @@
 // ================= РОДИТЕЛЬСКИЙ РЕЖИМ =================
 function canPayoutNow() {
+  // ЧИТ: Если в URL есть debug, разрешаем выплату в любой день
+  if (window.location.search.includes('debug=')) return true;
+  
   const now = new Date();
   return now.getDay() === 0 && now.getHours() >= 10;
 }
