@@ -315,14 +315,6 @@ function openQuiz() {
   document.getElementById('quiz-play').style.display = 'none';
 }
 
-function openAchievements() {
-  if (!checkAuth()) return;
-  hideAllViews();
-  document.getElementById('achievements-view').style.display = 'flex';
-  renderAchievements();
-  renderCoinsBlock();
-}
-
 // ================= ОЗВУЧКА =================
 function speakWord(text) {
   if ('speechSynthesis' in window) {
