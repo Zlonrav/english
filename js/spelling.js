@@ -151,10 +151,10 @@ function checkSpelling() {
       ruInput.style.backgroundColor = "#f8d7da";
     }
     
-    if (spellingAttempts < 9) {
+    if (spellingAttempts < 7) {
       spellingAttempts++;
     }
-    showToast(`❌ Ошибка! Попытка ${spellingAttempts}/9`, 'top');
+    showToast(`❌ Ошибка! Попытка ${spellingAttempts}/7`, 'top');
     
     updateSpellingHint();
     startSpellingCooldown();
@@ -165,31 +165,41 @@ function updateSpellingHint() {
   const word = currentSpellingCard.word;
   const hintEl = document.getElementById('spelling-hint');
   
-  if (spellingAttempts < 5) {
+  // Подсказки начинаются с 4-й попытки
+  if (spellingAttempts < 4) {
     hintEl.innerHTML = ""; 
     return;
   }
 
   let percentToReveal = 0;
-  if (spellingAttempts === 5) percentToReveal = 0.25;
-  if (spellingAttempts === 6) percentToReveal = 0.50;
-  if (spellingAttempts === 7) percentToReveal = 0.75;
-  if (spellingAttempts >= 8) percentToReveal = 1.00;
+  if (spellingAttempts === 4) percentToReveal = 0.25;
+  if (spellingAttempts === 5) percentToReveal = 0.50;
+  if (spellingAttempts === 6) percentToReveal = 0.75;
+  if (spellingAttempts >= 7) percentToReveal = 1.00;
 
-  let lettersOnly = word.replace(/[^a-zA-Z0-9]/g, '');
-  let charsToShow = Math.floor(lettersOnly.length * percentToReveal);
-  if (percentToReveal === 1) charsToShow = lettersOnly.length;
+  // Собираем индексы всех букв/цифр
+  let letterIndices = [];
+  for (let i = 0; i < word.length; i++) {
+    if (word[i].match(/[a-zA-Z0-9]/)) {
+      letterIndices.push(i);
+    }
+  }
 
+  // Считаем, сколько нужно открыть
+  let charsToShow = Math.floor(letterIndices.length * percentToReveal);
+  if (percentToReveal === 1) charsToShow = letterIndices.length;
+
+  // Перемешиваем индексы для случайного открытия
+  letterIndices.sort(() => Math.random() - 0.5);
+  let indicesToReveal = letterIndices.slice(0, charsToShow);
+
+  // Собираем подсказку
   let hintHTML = "";
-  let revealedCount = 0;
-
   for (let i = 0; i < word.length; i++) {
     let char = word[i];
-    
     if (char.match(/[a-zA-Z0-9]/)) {
-      if (revealedCount < charsToShow) {
+      if (indicesToReveal.includes(i)) {
         hintHTML += `<span style="color:#d97706; font-weight:900;">${char}</span> `; 
-        revealedCount++;
       } else {
         hintHTML += `_ `;
       }
