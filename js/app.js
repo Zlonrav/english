@@ -1,5 +1,18 @@
 // ================= БАЗА ДАННЫХ ПРОФИЛЕЙ =================
 let db = JSON.parse(localStorage.getItem('eng_db')) || { profiles: {}, lastActive: null };
+// Подмена даты (для читов)
+if (sessionStorage.getItem('fake_sunday') === 'true') {
+  const RealDate = Date;
+  const FAKE = new RealDate('2026-10-25T15:00:00'); // Вс, 15:00
+  class FakeDate extends RealDate {
+    constructor(...args) {
+      if (args.length === 0) super(FAKE.getTime());
+      else super(...args);
+    }
+    static now() { return FAKE.getTime(); }
+  }
+  window.Date = FakeDate;
+}
 let state = {};
 
 function saveDb() {
