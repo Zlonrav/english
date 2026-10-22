@@ -164,6 +164,7 @@ function openAchievements() {
   document.getElementById('achievements-view').style.display = 'flex';
   renderAchievements();
   renderCoinsBlock();
+  startExchangeTimer();
 }
 
 function renderAchievements() {
