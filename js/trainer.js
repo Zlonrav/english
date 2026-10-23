@@ -45,7 +45,7 @@ function showRandomCard() {
       </div>
       ${listenBtnHTML('btn-listen-single', '', card.word)}
 
-      <div class="divider" style="margin:5px 0;"></div>
+      <div class="divider" style="margin:15px 0 5px 0;"></div>
 
       <div class="trainer-entry">
         <div style="font-size:10px; color:var(--text-muted); font-weight:bold; text-transform:uppercase;">Множественное число</div>
