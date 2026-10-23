@@ -123,18 +123,54 @@ html, body {
 /* ================= ТРЕНАЖЕР ================= */
 .trainer-icon { font-size: clamp(60px, 15vh, 100px); margin-bottom: 5px; display: flex; justify-content: center;}
 .trainer-icon img { max-width: 120px; max-height: 120px; object-fit: contain; margin: 0 auto; }
-.trainer-word { font-size: clamp(28px, 6vh, 40px); font-weight: 900; line-height: 1.1; margin-bottom: 2px; color: #fff; text-shadow: 0 2px 10px rgba(255,255,255,0.2); }
-.trainer-pron { font-size: clamp(18px, 4vh, 24px); color: var(--text-muted); margin-bottom: 2px; }
-.trainer-trans { font-size: clamp(22px, 5vh, 30px); color: var(--gold); font-weight: 800; margin-bottom: 15px; text-shadow: 0 0 10px rgba(251, 191, 36, 0.4); }
+/* .trainer-word { font-size: clamp(28px, 6vh, 40px); font-weight: 900; line-height: 1.1; margin-bottom: 2px; color: #fff; text-shadow: 0 2px 10px rgba(255,255,255,0.2); } */
+.trainer-word { 
+  font-size: clamp(32px, 7vh, 46px); 
+  font-weight: 900; 
+  line-height: 1.2; 
+  margin-bottom: 4px; /* Одинаковый небольшой отступ */
+  color: #fff; 
+  text-shadow: 0 2px 10px rgba(255,255,255,0.2); 
+  width: 100%;
+  text-align: center;
+}
+/*.trainer-pron { font-size: clamp(18px, 4vh, 24px); color: var(--text-muted); margin-bottom: 2px; }*/
+/* 3. Произношение (третье по важности, серое) */
+.trainer-pron { 
+  font-size: clamp(18px, 4vh, 24px); 
+  color: var(--text-muted); 
+  line-height: 1.2;
+  margin-bottom: 15px; /* Чуть больший отступ перед кнопкой */
+  width: 100%;
+  text-align: center;
+}
+/* Чтобы множественное число тоже стояло идеально */
+.trainer-card .trainer-entry[style*="margin-bottom:10px"] {
+  flex-grow: 0; /* Убираем растягивание, если их два */
+}
+/*.trainer-trans { font-size: clamp(22px, 5vh, 30px); color: var(--gold); font-weight: 800; margin-bottom: 15px; text-shadow: 0 0 10px rgba(251, 191, 36, 0.4); }*/
+/* 2. Перевод (второй по важности, золотой) */
+.trainer-trans { 
+  font-size: clamp(24px, 5vh, 32px); 
+  color: var(--gold); 
+  font-weight: 800; 
+  line-height: 1.2;
+  margin-bottom: 4px; 
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.4); 
+  width: 100%;
+  text-align: center;
+}
 .divider { width: 80%; height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0; }
 
-/* Контейнер для слов в тренажере, чтобы он растягивался */
+/* Выравниваем контейнер со словами строго по центру */
 .trainer-card .trainer-entry {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center; /* Центрируем элементы по горизонтали */
   width: 100%;
+  text-align: center;  /* Центрируем сам текст */
 }
 
 .action-btn {
