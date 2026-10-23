@@ -418,3 +418,7 @@ html, body {
   font-family: Arial, sans-serif;
   font-weight: 300 !important; /* Делает плюс тоньше, если нужно */
 }
+/* Центрируем меню на главном экране, так как карточку питомца убрали */
+#dashboard-view {
+  justify-content: center;
+}
