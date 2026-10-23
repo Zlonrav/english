@@ -323,24 +323,20 @@ let tempProfileName = "";
 let isCreating = false;
 
 function renderAuthScreen() {
-  document.querySelector('.top-bar').style.display = 'none'; 
+  document.querySelector('.top-bar').style.display = 'none';
   hideAllViews();
   document.getElementById('auth-view').style.display = 'flex';
   document.getElementById('pin-pad-container').style.display = 'none';
   document.getElementById('create-profile-container').style.display = 'none';
-  document.getElementById('btn-add-profile').style.display = 'block';
   document.getElementById('auth-title').innerText = "Кто играет?";
 
   const list = document.getElementById('profiles-list');
-  list.style.display = 'grid';
+  list.style.display = 'flex'; // Обязательно flex для центрирования
   list.innerHTML = '';
-  
-  const profileNames = Object.keys(db.profiles);
-  if (profileNames.length === 0) {
-    list.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #666;">Пока нет игроков.<br>Создай первого!</div>';
-    return;
-  }
 
+  const profileNames = Object.keys(db.profiles);
+
+  // 1. Рисуем существующие профили
   profileNames.forEach(name => {
     let hash = 0;
     for (let i = 0; i < name.length; i++) hash += name.charCodeAt(i);
@@ -356,6 +352,16 @@ function renderAuthScreen() {
     `;
     list.appendChild(div);
   });
+
+  // 2. Всегда добавляем карточку "Новый"
+  const addDiv = document.createElement('div');
+  addDiv.className = 'profile-btn';
+  addDiv.onclick = () => showCreateProfile(); // При клике открываем создание
+  addDiv.innerHTML = `
+    <div class="profile-avatar" style="font-size: 48px; font-weight: 900; color: var(--main-color); display: flex; align-items: center; justify-content: center; height: 50px;">+</div>
+    <div class="profile-name">Новый</div>
+  `;
+  list.appendChild(addDiv);
 }
 
 function deleteProfile(name) {
@@ -370,7 +376,6 @@ function showCreateProfile() {
   isCreating = true;
   document.getElementById('auth-title').innerText = "Новый игрок";
   document.getElementById('profiles-list').style.display = 'none';
-  document.getElementById('btn-add-profile').style.display = 'none';
   document.getElementById('create-profile-container').style.display = 'flex';
   document.getElementById('new-profile-name').value = '';
   document.getElementById('new-pet-preview').innerText = '❓';
