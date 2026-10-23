@@ -391,10 +391,10 @@ function previewNewPet() {
 
 function cancelCreate() {
   isCreating = false;
-  document.getElementById('profiles-list').style.display = 'grid';
-  document.getElementById('btn-add-profile').style.display = 'block';
+  document.getElementById('profiles-list').style.display = 'flex'; // Возвращаем flex
   document.getElementById('create-profile-container').style.display = 'none';
   document.getElementById('auth-title').innerText = "Кто играет?";
+  // Строка с btn-add-profile удалена
 }
 
 function startPinCreation() {
