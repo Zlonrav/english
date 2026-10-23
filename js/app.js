@@ -332,6 +332,7 @@ function renderAuthScreen() {
   document.getElementById('auth-title').innerText = "Кто играет?";
 
   const list = document.getElementById('profiles-list');
+  list.style.display = 'grid'; 
   list.innerHTML = '';
 
   const profileNames = Object.keys(db.profiles);
