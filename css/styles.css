@@ -294,15 +294,21 @@ html, body {
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
 /* ================= УНИВЕРСАЛЬНАЯ РАБОЧАЯ ОБЛАСТЬ ================= */
-.trainer-card, #quiz-menu, #quiz-play, #spelling-view .quiz-menu {
+/* Задаем всем панелям строго одинаковую высоту */
+.trainer-card, 
+#quiz-menu, 
+#quiz-play, 
+#spelling-view .quiz-menu,
+#dashboard-view .quiz-menu,
+#achievements-view .quiz-menu {
   width: 100%;
-  max-width: 500px;
-  min-height: 520px; 
-  height: auto; 
+  max-width: 480px;
+  height: 560px; /* Фиксированная высота, чтобы ничего не прыгало */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between; 
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 /* Чтобы карточки в заданиях были одинаковой высоты */
