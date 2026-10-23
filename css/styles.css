@@ -61,7 +61,7 @@ html, body {
 #achievements-view .quiz-menu {
   width: 100%;
   max-width: 480px;
-  height: 685px; /* Поменяли на 560, как ты хотел */
+  height: 620px; /* Поменяли на 560, как ты хотел */
   display: flex;
   flex-direction: column;
   justify-content: space-between; 
