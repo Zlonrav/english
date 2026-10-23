@@ -418,7 +418,7 @@ html, body {
 #profiles-list {
   display: grid;
   grid-template-columns: repeat(2, 120px); /* Ширина колонок под размер карточки */
-  gap: 10px; /* ОДИНАКОВЫЙ отступ по вертикали и горизонтали */
+  gap: 15px; /* ОДИНАКОВЫЙ отступ по вертикали и горизонтали */
   justify-content: center; /* Центрируем сетку по горизонтали */
   align-content: center; /* Центрируем сетку по вертикали */
   flex-grow: 1;
