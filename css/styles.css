@@ -330,3 +330,101 @@ html, body {
 .btn-exit:hover {
   color: #fff;
 }
+
+/* ================= БУКВЫ И ЦИФРЫ ДЛЯ ТРЕНАЖЕРА ================= */
+.words {
+	width: 3em; 
+	height: 2em; 
+	background: #1f4e9c; 
+	color: #fff; 
+	border-radius: 10%; 
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
+	font-weight: 900; 
+	font-size: 0.55em; 
+	line-height: 1; 
+	white-space: nowrap;
+}
+.digits {width: 1em; 
+	height: 1em; 
+	background: #1f4e9c; 
+	color: #fff; 
+	border-radius: 10%; 
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
+	font-weight: 900; 
+	font-size: 0.75em; 
+	line-height: 1;
+	}
+.ordinal0-9 {
+	width: 1em; 
+	height: 1em; 
+	background: #1f4e9c; 
+	color: #fff; 
+	border-radius: 10%; 
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
+	font-weight: 900; 
+	font-size: 0.6em; 
+	line-height: 1;"
+	}
+.ordinal10-90 {
+	width: 1em; 
+	height: 1em; 
+	background: #1f4e9c; 
+	color: #fff; 
+	border-radius: 10%; 
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
+	font-weight: 900; 
+	font-size: 0.5em; 
+	line-height: 1;
+	}
+.ordinal100 {
+	width: 1em; 
+	height: 1em; 
+	background: #1f4e9c; 
+	color: #fff; 
+	border-radius: 10%; 
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
+	font-weight: 900; 
+	font-size: 0.45em; 
+	line-height: 1;
+	}
+.th {
+	font-size: 0.5em; 
+	vertical-align: super;
+	}
+
+.numbers {
+	width: 1em; 
+	height: 1em; 
+	background: #1f4e9c; 
+	color: #fff; 
+	border-radius: 10%; 
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
+	font-weight: 900; 
+	font-size: 0.6em; 
+	line-height: 1;
+	}
+.number100 {
+	width: 1em; 
+	height: 1em; 
+	background: #1f4e9c; 
+	color: #fff; 
+	border-radius: 10%; 
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
+	font-weight: 900; 
+	font-size: 0.45em; 
+	line-height: 1;
+	}
