@@ -1,9 +1,10 @@
 // ================= ТРЕНАЖЕР =================
 let currentCardIndex = -1;
 let nextCooldown = false;
-let currentTab = 'single'; // 'single' или 'plural'
+let listenCooldown = false; // <--- Защита от спама
+let currentTab = 'single'; 
 let listenCounts = { single: 0, plural: 0 };
-const REQUIRED_CLICKS = 2; // Сколько раз нужно нажать на каждую форму
+const REQUIRED_CLICKS = 2; 
 
 function showRandomCard() {
   let newIndex = Math.floor(Math.random() * cardsData.length);
@@ -13,16 +14,15 @@ function showRandomCard() {
   currentCardIndex = newIndex;
   const card = cardsData[currentCardIndex];
   
-  // Сброс состояния
   listenCounts = { single: 0, plural: 0 };
   currentTab = 'single';
   nextCooldown = false;
+  listenCooldown = false;
 
   let iconHtml = '';
   if (card.color) iconHtml = `<div class="trainer-color-circle" style="width:80px; height:80px; border-radius:50%; background:${card.color}; margin-bottom:10px; border:3px solid rgba(255,255,255,0.2);"></div>`;
   else iconHtml = `<div class="trainer-icon">${card.icon}</div>`;
 
-  // Генерируем вкладки (скрытые, если слово single)
   const tabsHtml = `
     <div class="v5-tabs ${card.single ? 'hidden-tabs' : ''}" id="trainer-tabs">
       <div class="v5-tab active" id="tab-single" onclick="${card.single ? '' : "switchTrainerTab('single')"}">Ед. число</div>
@@ -46,8 +46,6 @@ function showRandomCard() {
   `;
 
   document.getElementById('trainer-card-container').innerHTML = html;
-  
-  // Отрисовываем первый контент
   renderTrainerContent();
 }
 
@@ -55,21 +53,33 @@ function renderTrainerContent() {
   const card = cardsData[currentCardIndex];
   const content = document.getElementById('trainer-content');
   
-  // Берем данные в зависимости от вкладки
   const data = currentTab === 'single' 
     ? { word: card.word, pron: card.pron, trans: card.trans } 
     : { word: card.plural, pron: card.pronP, trans: card.transP };
 
+  // Добавляем полоску заливки внутрь кнопки Слушать
   content.innerHTML = `
     <div class="trainer-word">${data.word}</div>
     <div class="trainer-pron">${data.pron}</div>
     <div class="trainer-trans">${data.trans}</div>
-    <button class="action-btn btn-listen" onclick="handleListen()">
-      🔊 Слушать (${listenCounts[currentTab]}/${REQUIRED_CLICKS})
+    <button class="action-btn btn-listen" id="btn-listen-action" onclick="handleListen()" ${listenCooldown ? 'disabled' : ''}>
+      <div class="listen-fill" id="listen-fill-action" style="position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: rgba(0,0,0,0.2); z-index: 0; transition: none;"></div>
+      <span style="position: relative; z-index: 1;">🔊 Слушать (${listenCounts[currentTab]}/${REQUIRED_CLICKS})</span>
     </button>
   `;
 
-  // Обновляем вкладки (галочки и активный цвет)
+  // Если кулдаун активен, запускаем анимацию заливки кнопки
+  if (listenCooldown) {
+    const fill = document.getElementById('listen-fill-action');
+    if (fill) {
+      fill.style.transition = 'none';
+      fill.style.width = '0%';
+      void fill.offsetWidth; // Хак для перезапуска анимации
+      fill.style.transition = 'width 5s linear';
+      fill.style.width = '100%';
+    }
+  }
+
   if (!card.single) {
     const tabSingle = document.getElementById('tab-single');
     const tabPlural = document.getElementById('tab-plural');
@@ -86,28 +96,37 @@ function renderTrainerContent() {
 
 function switchTrainerTab(tab) {
   const card = cardsData[currentCardIndex];
-  if (card.single) return; // Если слова нет, не переключаем
+  if (card.single) return; 
   
   currentTab = tab;
   renderTrainerContent();
 }
 
 function handleListen() {
+  if (listenCooldown) return; // <--- Блокировка спама
+
   const card = cardsData[currentCardIndex];
   const data = currentTab === 'single' 
     ? { word: card.word, pron: card.pron } 
     : { word: card.plural, pron: card.pronP };
 
-  // Озвучка и звезды
   speakWord(data.word);
   addStars(1);
-  markAsLearned(card.word); // Прогресс пишется на базовое слово
+  markAsLearned(card.word);
 
-  // Счетчик
   if (listenCounts[currentTab] < REQUIRED_CLICKS) {
     listenCounts[currentTab]++;
-    renderTrainerContent();
   }
+
+  // Включаем кулдаун
+  listenCooldown = true;
+  renderTrainerContent(); // Перерисовываем, чтобы кнопка заблокировалась и пошла заливка
+
+  // Разблокируем через 5 секунд
+  setTimeout(() => {
+    listenCooldown = false;
+    renderTrainerContent(); // Перерисовываем, чтобы кнопка стала активной
+  }, 5000);
 }
 
 function updateNextButton() {
@@ -150,6 +169,5 @@ function handleNext() {
   if (nextCooldown || !isReady) return;
   nextCooldown = true;
   
-  // Мгновенный переход без задержек
   showRandomCard(); 
 }
