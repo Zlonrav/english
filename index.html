@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 92 --> <!-- Американский английский --> <!-- англокоины --> 
+<!DOCTYPE html> <!-- 93 --> <!-- Американский английский --> <!-- англокоины --> 
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -151,7 +151,10 @@
   </div>
 
   <!-- 3. СПИСОК ЗАДАНИЙ -->
-  <div id="tasks-view" class="view" style="display:none;">
+  <div id="tasks-view" class="view" style="display:none; justify-content: flex-start;">
+    <div style="width: 100%; max-width: 800px; display: flex; justify-content: flex-start; margin-bottom: 15px;">
+      <button class="btn-exit" onclick="goHome()">← Назад</button>
+    </div>
     <h2 style="color:var(--main-color); margin-top:0;">Выберите тему</h2>
     <div class="category-list" id="category-list-container"></div>
   </div>
@@ -185,27 +188,30 @@
     </div>
 
     <div class="quiz-play" id="quiz-play" style="width: 100%;">
-      <div style="display:flex; justify-content:space-between; margin-bottom:20px; align-items:center;">
-        <button onclick="openQuiz()" style="background:none; border:none; font-size:16px; font-weight:bold; color:var(--main-color); cursor:pointer;">← Выйти</button>
-        <span id="quiz-score" style="font-weight:bold; font-size:18px; color:var(--green);">Правильно: 0</span>
+      <div style="display:flex; justify-content:space-between; width: 100%; align-items:center;">
+        <button class="btn-exit" onclick="openQuiz()">← Выйти</button>
+        <span id="quiz-score" style="font-weight:bold; font-size:18px; color:var(--green);">Правильно: 0/10</span>
       </div>
-      <div class="quiz-question" id="quiz-question">Вопрос</div>
-      <button id="quiz-sound-btn" style="display:none; font-size:60px; background:#fff; border:3px solid var(--main-color); border-radius:50%; width:100px; height:100px; cursor:pointer; margin: 0 auto 25px auto; box-shadow: 0 5px 0 var(--main-color);" onclick="speakWord(currentQuizCard.word)">🔊</button>
-      <div class="quiz-options" id="quiz-options"></div>
+      <div class="quiz-question" id="quiz-question" style="margin-top: auto;">Вопрос</div>
+      <button id="quiz-sound-btn" style="display:none; font-size:60px; background:#fff; border:3px solid var(--main-color); border-radius:50%; width:100px; height:100px; cursor:pointer; margin: 0 auto auto auto; box-shadow: 0 5px 0 var(--main-color);" onclick="speakWord(currentQuizCard.word)">🔊</button>
+      <div class="quiz-options" id="quiz-options" style="margin-top: auto;"></div>
     </div>
   </div>
      <!-- ИГРА (ПРАВОПИСАНИЕ) -->
   <div id="spelling-view" class="view">
-    <div class="quiz-menu">
+    <div class="quiz-menu" style="max-width: 500px;">
       
+      <!-- НОВАЯ ШАПКА -->
+      <div style="display:flex; justify-content:space-between; width: 100%; align-items:center; margin-bottom: 15px;">
+        <button class="btn-exit" onclick="openQuiz()">← Выйти</button>
+        <span id="spelling-score" style="font-weight:bold; font-size:18px; color:var(--green);">Правильно: 0/10</span>
+      </div>
+
       <!-- Переключатель сложности -->
-      <div style="display: flex; background: #e0e7ff; border-radius: 12px; padding: 5px; margin-bottom: 20px;">
+      <div style="display: flex; background: #e0e7ff; border-radius: 12px; padding: 5px; margin-bottom: 20px; width: 100%;">
         <button id="mode-easy-btn" style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; background: #fff; color: var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1);" onclick="setSpellingMode('easy')">Легкий</button>
         <button id="mode-hard-btn" style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; background: transparent; color: #666;" onclick="setSpellingMode('hard')">Сложный</button>
       </div>
-
-      <!-- Счетчик раунда -->
-      <div style="text-align: center; font-weight: bold; color: var(--green); margin-bottom: 10px;" id="spelling-score">Правильно: 0/10</div>
 
       <!-- Кнопка звука -->
       <button id="spelling-sound-btn" style="font-size: 60px; background: #fff; border: 3px solid var(--main-color); border-radius: 50%; width: 100px; height: 100px; cursor: pointer; margin: 0 auto 15px auto; box-shadow: 0 5px 0 var(--main-color); display: block;" onclick="speakWord(currentSpellingCard.word)">🔊</button>
@@ -219,13 +225,10 @@
       <input type="text" id="spelling-ru-input" class="spelling-input" placeholder="Напиши перевод..." style="display: none;">
 
       <!-- Кнопка Проверить -->
-      <button id="spelling-submit-btn" class="menu-btn" style="justify-content: center; background: #8b5cf6; box-shadow: 0 5px 0 #6d28d9; position: relative; overflow: hidden;" onclick="checkSpelling()">
+      <button id="spelling-submit-btn" class="menu-btn" style="justify-content: center; background: #8b5cf6; box-shadow: 0 5px 0 #6d28d9; position: relative; overflow: hidden; margin-top: auto;" onclick="checkSpelling()">
         Проверить
         <div class="cooldown-bar" id="spelling-cooldown"></div>
       </button>
-      
-      <!-- Кнопка Выйти -->
-      <button class="menu-btn" style="background: #ccc; box-shadow: 0 5px 0 #999; color: #333; padding: 10px; font-size: 16px; margin-top: 15px; justify-content: center;" onclick="openQuiz()">← Выйти</button>
     </div>
   </div>
 </div>
