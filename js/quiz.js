@@ -38,23 +38,27 @@ function loadQuestion() {
   soundBtn.style.display = 'none';
   qEl.style.display = 'block';
 
+  // Отрисовка слова/перевода с текстовым произношением
   if (quizMode === 1) {
-    qEl.innerHTML = `${currentQuizCard.word} <button style="background:none; border:none; font-size:28px; cursor:pointer; vertical-align: middle;" onclick="speakWord('${currentQuizCard.word}')">🔊</button>`;
+    qEl.innerHTML = `${currentQuizCard.word} <span style="font-size: 24px; color: var(--text-muted); font-weight: normal; margin-left: 10px;">[${currentQuizCard.pron}]</span>`;
   } else if (quizMode === 2) {
     qEl.style.display = 'none';
     soundBtn.style.display = 'inline-block';
     speakWord(currentQuizCard.word); 
   } else if (quizMode === 3) {
-    qEl.innerHTML = `${currentQuizCard.trans} <button style="background:none; border:none; font-size:28px; cursor:pointer; vertical-align: middle;" onclick="speakWord('${currentQuizCard.word}')">🔊</button>`;
+    qEl.innerHTML = `${currentQuizCard.trans} <span style="font-size: 24px; color: var(--text-muted); font-weight: normal; margin-left: 10px;">[${currentQuizCard.pron}]</span>`;
   }
 
   optsEl.innerHTML = '';
   options.forEach(opt => {
     const btn = document.createElement('button');
     btn.className = 'quiz-opt-btn';
+    btn.dataset.word = opt.word; // Сохраняем слово в атрибут для надежной проверки
+    
     if (quizMode === 1) btn.innerText = opt.trans; 
     else if (quizMode === 2) btn.innerText = `${opt.word} — ${opt.trans}`; 
     else if (quizMode === 3) btn.innerText = `${opt.word} — ${opt.pron}`; 
+    
     btn.onclick = () => checkQuizAnswer(opt, currentQuizCard, btn);
     optsEl.appendChild(btn);
   });
@@ -71,22 +75,30 @@ function checkQuizAnswer(selected, correct, btnElement) {
     btnElement.classList.add('correct');
     quizScore++; 
     document.getElementById('quiz-score').innerText = `Правильно: ${quizScore}/10`;
-    addStars(2); 
-    markAsLearned(correct.word);
+    
+    try {
+      addStars(2); 
+      markAsLearned(correct.word);
+    } catch (e) {
+      console.error("Ошибка наград:", e);
+    }
     
     setTimeout(() => {
       if (quizScore >= 10) {
         showToast("🏆 Раунд пройден! Ты молодец!");
         openQuiz(); 
       } else {
-        ; 
+        loadQuestion(); // <--- Восстановлен переход
       }
     }, 1000);
   } else {
     btnElement.classList.add('wrong');
     allBtns.forEach(b => {
-      if (b.innerText.includes(correct.word) || b.innerText === correct.trans) b.classList.add('correct');
+      // Проверка по data-word, чтобы регистр текста не мешал
+      if (b.dataset.word === correct.word) b.classList.add('correct');
     });
-    setTimeout(() => { ; }, 2000);
+    setTimeout(() => { 
+      loadQuestion(); // <--- Восстановлен переход
+    }, 2000);
   }
 }
