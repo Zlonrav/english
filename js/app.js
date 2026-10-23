@@ -378,6 +378,12 @@ function deleteProfile(name) {
 }
 
 function showCreateProfile() {
+  // Защита от создания больше 4 игроков
+  if (Object.keys(db.profiles).length >= 4) {
+    alert("Максимум 4 игрока на устройстве. Удалите кого-нибудь, чтобы создать нового.");
+    return;
+  }
+
   isCreating = true;
   document.getElementById('auth-title').innerText = "Новый игрок";
   document.getElementById('profiles-list').style.display = 'none';
@@ -389,7 +395,7 @@ function showCreateProfile() {
 
 function previewNewPet() {
   const name = document.getElementById('new-profile-name').value.trim();
-  if (!name) { document.getElementById('new-pet-preview').innerText = '❓'; return; }
+  if (!name) { document.getElementById('new-pet-preview').innerText = '👻'; return; }
   let hash = 0;
   for (let i = 0; i < name.length; i++) hash += name.charCodeAt(i);
   document.getElementById('new-pet-preview').innerText = pets[hash % pets.length];
