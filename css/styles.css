@@ -396,3 +396,17 @@ html, body {
 	font-size: 0.5em; 
 	vertical-align: super;
 }
+/* ================= ЭКРАН АВТОРИЗАЦИИ ================= */
+/* Задаем панели авторизации высоту и идеальное центрирование */
+#auth-view .quiz-menu {
+  min-height: 450px;
+  justify-content: center;
+  margin: auto;
+  align-items: center;
+}
+
+/* Делаем карточку профиля чуть шире, чтобы она красиво смотрелась по центру */
+.profile-btn {
+  width: 120px;
+  margin: 0 auto;
+}
