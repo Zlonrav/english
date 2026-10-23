@@ -19,6 +19,8 @@ const acc = [
 // ================= ЛОГИКА ПИТОМЦА =================
 function updatePet() {
   const container = document.getElementById('pet-box');
+  
+  // 1. Если имени нет, показываем форму создания
   if (!state.petName) {
     container.innerHTML = `
       <div style="font-size:16px; margin-bottom:10px;">Как зовут твоего питомца?</div>
@@ -28,23 +30,21 @@ function updatePet() {
     return;
   }
 
-  // Генерация на лету (hash от имени), если питомец еще не выбран
+  // 2. Генерация на лету (hash от имени), если питомец еще не выбран
   let hash = 0;
   for (let i = 0; i < state.petName.length; i++) hash += state.petName.charCodeAt(i);
   
-  // Если в профиле еще нет сохраненного питомца, генерируем по имени
   if (!state.pet) {
       state.pet = pets[hash % pets.length];
       state.acc = acc[hash % acc.length];
       saveState();
   }
 
-  // Отрисовываем карточку с кнопкой выбора питомца
+  // 3. Отрисовываем карточку с кликабельным питомцем (без кнопки)
   container.innerHTML = `
-    <div class="pet-avatar" id="pet-avatar-img">${state.pet}</div>
+    <div class="pet-avatar" id="pet-avatar-img" onclick="openPetSelector()" style="cursor: pointer;" title="Сменить питомца">${state.pet}</div>
     <div class="pet-name">${state.petName} ${state.acc}</div>
     <div id="level-container"></div>
-    <button onclick="openPetSelector()" style="margin-top: 10px; background: #e0e7ff; border: none; padding: 8px 15px; border-radius: 20px; color: var(--main-color); font-weight: bold; cursor: pointer; font-size: 14px;">🎨 Выбрать питомца</button>
   `;
   updateLevel();
 }
