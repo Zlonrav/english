@@ -267,7 +267,19 @@ html, body {
 .profile-name { font-size: 18px; font-weight: bold; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; text-align: center; }
 .profile-del { position: absolute; top: -10px; right: -10px; background: var(--red); color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 4px 10px rgba(239,68,68,0.4); }
 
-.pin-btn { padding: 18px; font-size: 26px; font-weight: bold; color: #fff; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; cursor: pointer; transition: 0.1s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); backdrop-filter: blur(8px); }
+.pin-btn { 
+  padding: 12px; /* Уменьшили с 18px */
+  font-size: 22px; /* Уменьшили с 26px */
+  font-weight: bold; 
+  color: #fff; 
+  background: rgba(255,255,255,0.1); 
+  border: 1px solid rgba(255,255,255,0.2); 
+  border-radius: 16px; 
+  cursor: pointer; 
+  transition: 0.1s; 
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+  backdrop-filter: blur(8px); 
+}
 .pin-btn:active { background: rgba(255,255,255,0.2); transform: translateY(2px); }
 .pin-btn.btn-zero { grid-column: span 2; }
 
