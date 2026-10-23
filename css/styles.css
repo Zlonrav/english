@@ -376,3 +376,8 @@ html, body {
   width: 120px;
   margin: 0 auto;
 }
+/* Стилизация плюса на карточке "Новый" */
+.profile-avatar[style*="font-size: 48px"] {
+  font-family: Arial, sans-serif;
+  font-weight: 300 !important; /* Делает плюс тоньше, если нужно */
+}
