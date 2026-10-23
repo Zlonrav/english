@@ -388,6 +388,7 @@ html, body {
   margin: auto;
   padding: 30px 20px;
   box-sizing: border-box;
+  overflow: hidden;
   
   /* Стеклянный эффект */
   background: var(--glass-bg);
