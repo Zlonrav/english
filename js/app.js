@@ -331,7 +331,7 @@ function renderAuthScreen() {
   document.getElementById('auth-title').innerText = "Кто играет?";
 
   const list = document.getElementById('profiles-list');
-  list.style.display = 'flex'; // Обязательно flex для центрирования
+  list.style.display = 'flex';
   list.innerHTML = '';
 
   const profileNames = Object.keys(db.profiles);
@@ -347,7 +347,7 @@ function renderAuthScreen() {
     div.onclick = () => selectProfile(name);
     div.innerHTML = `
       <div class="profile-del" onclick="event.stopPropagation(); deleteProfile('${name}')">×</div>
-      <div class="">${petEmoji}</div>
+      <div class="profile-avatar">${petEmoji}</div>
       <div class="profile-name">${name}</div>
     `;
     list.appendChild(div);
