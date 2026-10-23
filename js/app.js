@@ -416,7 +416,6 @@ function selectProfile(name) {
   tempPin = "";
   setupPinPad();
   document.getElementById('profiles-list').style.display = 'none';
-  document.getElementById('btn-add-profile').style.display = 'none';
   document.getElementById('pin-pad-container').style.display = 'block';
   document.getElementById('pin-pet-name').innerText = `Введи ПИН для ${name}`;
   document.getElementById('auth-title').innerText = "Вход";
