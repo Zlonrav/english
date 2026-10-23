@@ -39,13 +39,13 @@ function loadQuestion() {
   qEl.style.display = 'block';
 
   if (quizMode === 1) {
-    qEl.innerText = currentQuizCard.word;
+    qEl.innerHTML = `${currentQuizCard.word} <button style="background:none; border:none; font-size:28px; cursor:pointer; vertical-align: middle;" onclick="speakWord('${currentQuizCard.word}')">🔊</button>`;
   } else if (quizMode === 2) {
     qEl.style.display = 'none';
     soundBtn.style.display = 'inline-block';
     speakWord(currentQuizCard.word); 
   } else if (quizMode === 3) {
-    qEl.innerText = currentQuizCard.trans; 
+    qEl.innerHTML = `${currentQuizCard.trans} <button style="background:none; border:none; font-size:28px; cursor:pointer; vertical-align: middle;" onclick="speakWord('${currentQuizCard.word}')">🔊</button>`;
   }
 
   optsEl.innerHTML = '';
@@ -79,7 +79,7 @@ function checkQuizAnswer(selected, correct, btnElement) {
         showToast("🏆 Раунд пройден! Ты молодец!");
         openQuiz(); 
       } else {
-        loadQuestion(); 
+        ; 
       }
     }, 1000);
   } else {
@@ -87,6 +87,6 @@ function checkQuizAnswer(selected, correct, btnElement) {
     allBtns.forEach(b => {
       if (b.innerText.includes(correct.word) || b.innerText === correct.trans) b.classList.add('correct');
     });
-    setTimeout(() => { loadQuestion(); }, 2000);
+    setTimeout(() => { ; }, 2000);
   }
 }
