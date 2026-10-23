@@ -267,7 +267,7 @@ function hideAllViews() {
 // Проверка авторизации
 function checkAuth() {
   if (!state || !state.petName) {
-    renderAuthScreen();
+    ();
     return false;
   }
   return true;
@@ -356,9 +356,9 @@ function renderAuthScreen() {
   // 2. Всегда добавляем карточку "Новый"
   const addDiv = document.createElement('div');
   addDiv.className = 'profile-btn';
-  addDiv.onclick = () => showCreateProfile(); // При клике открываем создание
+  addDiv.onclick = () => showCreateProfile();
   addDiv.innerHTML = `
-    <div class="profile-avatar" style="font-size: 48px; font-weight: 900; color: var(--main-color); display: flex; align-items: center; justify-content: center; height: 67px;">+</div>
+    <div class="profile-avatar" style="color: var(--main-color); font-weight: 900;">+</div>
     <div class="profile-name">Новый</div>
   `;
   list.appendChild(addDiv);
