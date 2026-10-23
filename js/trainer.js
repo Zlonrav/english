@@ -100,20 +100,6 @@ function renderTrainerContent() {
   updateNextButton();
 }
 
-  if (!card.single) {
-    const tabSingle = document.getElementById('tab-single');
-    const tabPlural = document.getElementById('tab-plural');
-    
-    tabSingle.className = `v5-tab ${currentTab === 'single' ? 'active' : ''} ${listenCounts.single >= REQUIRED_CLICKS ? 'done' : ''}`;
-    tabPlural.className = `v5-tab ${currentTab === 'plural' ? 'active' : ''} ${listenCounts.plural >= REQUIRED_CLICKS ? 'done' : ''}`;
-    
-    tabSingle.innerText = `Ед. число ${listenCounts.single >= REQUIRED_CLICKS ? '✅' : ''}`;
-    tabPlural.innerText = `Мн. число ${listenCounts.plural >= REQUIRED_CLICKS ? '✅' : ''}`;
-  }
-
-  updateNextButton();
-}
-
 function switchTrainerTab(tab) {
   const card = cardsData[currentCardIndex];
   if (card.single) return; 
