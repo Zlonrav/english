@@ -326,6 +326,8 @@ function renderAuthScreen() {
   document.querySelector('.top-bar').style.display = 'none';
   hideAllViews();
   document.getElementById('auth-view').style.display = 'flex';
+  
+  // Гарантированно скрываем ПИН-пад и создание профиля
   document.getElementById('pin-pad-container').style.display = 'none';
   document.getElementById('create-profile-container').style.display = 'none';
   document.getElementById('auth-title').innerText = "Кто играет?";
@@ -495,7 +497,13 @@ function checkPin() {
 
 function cancelPin() {
   tempPin = "";
-  document.getElementById('pin-pad-container').style.display = 'none';
+  // Принудительно скрываем все вложенные контейнеры
+  const pinPad = document.getElementById('pin-pad-container');
+  if (pinPad) pinPad.style.display = 'none';
+  
+  const createProfile = document.getElementById('create-profile-container');
+  if (createProfile) createProfile.style.display = 'none';
+
   if (isCreating) {
     showCreateProfile();
   } else {
