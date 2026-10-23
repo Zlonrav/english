@@ -254,7 +254,16 @@ html, body {
 
 .profile-btn { display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 20px; padding: 15px 10px; cursor: pointer; transition: 0.2s; position: relative; backdrop-filter: blur(10px); }
 .profile-btn:hover { border-color: var(--main-color); background: rgba(59, 130, 246, 0.1); }
-.profile-avatar { font-size: 50px; margin-bottom: 5px; }
+.profile-avatar { 
+  font-size: 45px; 
+  width: 67px;
+  height: 67px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px; 
+  line-height: 1;
+}
 .profile-name { font-size: 18px; font-weight: bold; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; text-align: center; }
 .profile-del { position: absolute; top: -10px; right: -10px; background: var(--red); color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 4px 10px rgba(239,68,68,0.4); }
 
