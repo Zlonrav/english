@@ -381,15 +381,15 @@ html, body {
 }
 
 .numbers {
-	width: 1em; 
-	height: 1em; 
+	width: 3em; 
+	height: 1.5em; 
 	font-size: 0.6em; 
 }
 
 .number100 {
-	width: 1em; 
-	height: 1em; 
-	font-size: 0.45em; 
+	width: 3.5em; 
+	height: 1.5em; 
+	font-size: 0.6em; 
 }
 
 .th {
