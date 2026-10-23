@@ -350,33 +350,33 @@ html, body {
 
 /* Индивидуальные размеры */
 .words {
-	width: 3em; 
-	height: 2em; 
+	width: 2.5em; 
+	height: 1.5em; 
 	font-size: 0.55em; 
 	white-space: nowrap;
 }
 
 .digits {
-	width: 1em; 
-	height: 1em; 
+	width: 1.5em; 
+	height: 1.5em; 
 	font-size: 0.75em; 
 }
 
 .ordinal0-9 {
-	width: 1em; 
-	height: 1em; 
+	width: 3em; 
+	height: 1.5em; 
 	font-size: 0.6em; 
 }
 
 .ordinal10-90 {
-	width: 1em; 
-	height: 1em; 
+	width: 3em; 
+	height: 1.5em; 
 	font-size: 0.5em; 
 }
 
 .ordinal100 {
-	width: 1em; 
-	height: 1em; 
+	width: 3.5em; 
+	height: 1.5em; 
 	font-size: 0.45em; 
 }
 
