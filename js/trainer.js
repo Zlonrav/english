@@ -37,7 +37,7 @@ function showRandomCard() {
     `;
   } else {
     html += `
-      <div class="trainer-entry" style="margin-bottom:10px;">
+      <div class="trainer-entry" style="margin-bottom:5px;">
         <div style="font-size:10px; color:var(--text-muted); font-weight:bold; text-transform:uppercase;">Единственное число</div>
         <div class="trainer-word">${card.word}</div>
         <div class="trainer-pron">${card.pron}</div>
