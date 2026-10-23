@@ -46,7 +46,7 @@ function loadQuestion() {
     soundBtn.style.display = 'inline-block';
     speakWord(currentQuizCard.word); 
   } else if (quizMode === 3) {
-    qEl.innerHTML = `<div style="display: flex; flex-direction: column; align-items: center;"><span>${currentQuizCard.trans}</span><span style="font-size: 20px; color: var(--text-muted); font-weight: normal; margin-top: 5px;">${currentQuizCard.pron}</span></div>`;
+    qEl.innerHTML = currentQuizCard.trans;
   }
 
   optsEl.innerHTML = '';
