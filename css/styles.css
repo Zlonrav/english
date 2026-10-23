@@ -417,13 +417,12 @@ html, body {
 
 #profiles-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Строго 2 колонки */
-  gap: 15px;
-  width: 100%;
-  flex-grow: 1;
+  grid-template-columns: repeat(2, 120px); /* Ширина колонок под размер карточки */
+  gap: 10px; /* ОДИНАКОВЫЙ отступ по вертикали и горизонтали */
+  justify-content: center; /* Центрируем сетку по горизонтали */
   align-content: center; /* Центрируем сетку по вертикали */
-  justify-items: center; /* Центрируем карточки в ячейках */
-  padding-bottom: 20px;
+  flex-grow: 1;
+  width: 100%;
 }
 
 /* Делаем карточку профиля аккуратной */
