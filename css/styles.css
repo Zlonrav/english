@@ -394,13 +394,23 @@ html, body {
 }
 
 /* Заставляем контейнеры ниже заголовка занимать всё свободное место и центрировать содержимое */
-#profiles-list, 
 #create-profile-container, 
 #pin-pad-container {
-  flex-grow: 1; /* Растягиваем на всё доступное пространство */
+  flex-grow: 1; 
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Центрируем содержимое */
+  justify-content: center;
+  width: 100%;
+}
+
+#profiles-list {
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 15px;
   width: 100%;
 }
 
