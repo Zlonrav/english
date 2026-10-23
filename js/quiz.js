@@ -70,7 +70,7 @@ function checkQuizAnswer(selected, correct, btnElement) {
   if (selected.word === correct.word) {
     btnElement.classList.add('correct');
     quizScore++; 
-    document.getElementById('quiz-score').innerText = `Правильно: ${quizScore}`;
+    document.getElementById('quiz-score').innerText = `Правильно: ${quizScore}/10`;
     addStars(2); 
     markAsLearned(correct.word);
     
