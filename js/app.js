@@ -347,7 +347,7 @@ function renderAuthScreen() {
     div.onclick = () => selectProfile(name);
     div.innerHTML = `
       <div class="profile-del" onclick="event.stopPropagation(); deleteProfile('${name}')">×</div>
-      <div class="profile-avatar">${petEmoji}</div>
+      <div class="">${petEmoji}</div>
       <div class="profile-name">${name}</div>
     `;
     list.appendChild(div);
@@ -358,7 +358,7 @@ function renderAuthScreen() {
   addDiv.className = 'profile-btn';
   addDiv.onclick = () => showCreateProfile(); // При клике открываем создание
   addDiv.innerHTML = `
-    <div class="profile-avatar" style="font-size: 48px; font-weight: 900; color: var(--main-color); display: flex; align-items: center; justify-content: center; height: 50px;">+</div>
+    <div class="profile-avatar" style="font-size: 48px; font-weight: 900; color: var(--main-color); display: flex; align-items: center; justify-content: center; height: 67px;">+</div>
     <div class="profile-name">Новый</div>
   `;
   list.appendChild(addDiv);
