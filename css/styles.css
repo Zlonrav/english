@@ -121,7 +121,7 @@ html, body {
 .menu-btn.btn-orange { background: linear-gradient(135deg, #f59e0b, #b45309); box-shadow: 0 6px 0 #78350f, 0 10px 20px rgba(245, 158, 11, 0.4); }
 
 /* ================= ТРЕНАЖЕР ================= */
-.trainer-icon { font-size: clamp(60px, 15vh, 100px); margin-bottom: 5px; display: flex; justify-content: center;}
+.trainer-icon { font-size: clamp(60px, 15vh, 100px); /*margin-bottom: 5px;*/ display: flex; justify-content: center;}
 .trainer-icon img { max-width: 120px; max-height: 120px; object-fit: contain; margin: 0 auto; }
 /* .trainer-word { font-size: clamp(28px, 6vh, 40px); font-weight: 900; line-height: 1.1; margin-bottom: 2px; color: #fff; text-shadow: 0 2px 10px rgba(255,255,255,0.2); } */
 .trainer-word { 
