@@ -44,12 +44,21 @@ function updatePet() {
 
   // 2. Отрисовываем карточку внутри модалки
   if (container) {
-    container.innerHTML = `
-      <div class="pet-avatar" id="pet-avatar-img" onclick="openPetSelector()" style="cursor: pointer;" title="Сменить питомца">${state.pet}</div>
-      <div class="pet-name">${state.petName} ${state.acc}</div>
-      <div id="level-container"></div>
-    `;
-    updateLevel();
+  // 3. Отрисовываем карточку с кликабельным питомцем
+  container.innerHTML = `
+    <div class="pet-avatar" id="pet-avatar-img" onclick="openPetSelector()" style="cursor: pointer;" title="Сменить питомца">${state.pet}</div>
+    <div class="pet-name">${state.petName} ${state.acc}</div>
+    <div id="level-container"></div>
+    
+    <!-- БЛОК ПРОГРЕССА ОГОНЬКА -->
+    <div style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 12px; font-size: 14px; width: 100%; box-sizing: border-box;">
+      ${(state.dailyEarned || 0) >= 50 
+        ? `<span style="color: var(--green); font-weight: bold;">🔥 Огонек получен! (50/50)</span>` 
+        : `<span style="color: var(--text-main);">🔥 До огонька: <b>${state.dailyEarned || 0} / 50 ⭐</b></span>`
+      }
+    </div>
+  `;
+  updateLevel();
   }
 }
 
