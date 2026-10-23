@@ -25,6 +25,8 @@
   </div>
   
   <div style="display: flex; gap: 15px; align-items: center;">
+    <!-- МАЛЕНЬКАЯ АВАТАРКА В ШАПКЕ -->
+    <div id="top-bar-avatar" onclick="openPetInfoModal()" style="font-size: 24px; cursor: pointer; line-height: 1;" title="Профиль">🐲</div>
     <!-- Кнопка достижений -->
     <button onclick="openAchievements()" style="background:none; border:none; font-size:24px; cursor:pointer;" title="Достижения">🏆</button>
     <!-- Кнопка смены игрока -->
@@ -85,9 +87,6 @@
   </div>
   <!-- 1. ГЛАВНАЯ (ДАШБОРД) -->
   <div id="dashboard-view" class="view" style="display:flex;">
-    <div class="pet-container" id="pet-box">
-      <!-- Генерируется JS -->
-    </div>
     
     <!-- Оборачиваем кнопки в контейнер, как в меню игры -->
     <div class="quiz-menu" style="margin-top: 20px;">
@@ -266,6 +265,15 @@
     </div>
   </div>
 </div> 
+<!-- МОДАЛКА ПРОФИЛЯ ПИТОМЦА -->
+<div id="pet-info-modal" class="modal-overlay">
+  <div class="modal-content" style="text-align: center;">
+    <h2 class="modal-title">Мой профиль</h2>
+    <!-- Сюда мы переносим старый контейнер питомца -->
+    <div id="pet-box" class="pet-container" style="box-shadow: none; border: none; background: transparent; padding: 0; margin-bottom: 20px;"></div>
+    <button class="menu-btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 5px 0 rgba(0,0,0,0.3); justify-content:center;" onclick="closePetInfoModal()">Закрыть</button>
+  </div>
+</div>
 
 <script src="js/data.js"></script>
 <script src="js/parent-config.js"></script>
