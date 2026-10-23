@@ -25,6 +25,12 @@
   <p style="text-align:center; color:#aaa;">Сюда нельзя заходить детям!</p>
 
   <div class="card">
+    <h3>👥 Управление игроками</h3>
+    <p class="desc">Удаление профилей. Выберите, кого удалить, прогресс будет стерт безвозвратно.</p>
+    <div id="cheat-profiles-list" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;"></div>
+  </div>
+
+  <div class="card">
     <h3>⭐ Добавить звёзды</h3>
     <input type="number" id="stars-amount" placeholder="Сколько звёзд?" value="1000">
     <button onclick="addCheatStars()">Начислить</button>
@@ -51,6 +57,53 @@
   <button onclick="location.href='index.html'" style="background:#1f4e9c; margin-top:20px;">Вернуться в игру (обычный режим)</button>
 
 <script>
+  // ================= УПРАВЛЕНИЕ ПРОФИЛЯМИ =================
+  function renderCheatProfiles() {
+    const listEl = document.getElementById('cheat-profiles-list');
+    const db = JSON.parse(localStorage.getItem('eng_db'));
+    
+    if (!db || !db.profiles || Object.keys(db.profiles).length === 0) {
+      listEl.innerHTML = '<span style="color: #aaa;">Нет созданных профилей.</span>';
+      return;
+    }
+
+    listEl.innerHTML = '';
+    // Перебираем всех игроков в базе
+    for (const name in db.profiles) {
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.justifyContent = 'space-between';
+      row.style.alignItems = 'center';
+      row.style.background = '#333';
+      row.style.padding = '10px';
+      row.style.borderRadius = '5px';
+      
+      row.innerHTML = `
+        <span style="font-weight: bold; font-size: 18px;">${name}</span>
+        <button onclick="deleteCheatProfile('${name}')" style="width: auto; padding: 8px 15px; margin: 0; background: #ff4444;">❌ Удалить</button>
+      `;
+      listEl.appendChild(row);
+    }
+  }
+
+  function deleteCheatProfile(name) {
+    if (!confirm(`Удалить профиль "${name}"? Весь прогресс сгорит!`)) return;
+    
+    const db = JSON.parse(localStorage.getItem('eng_db'));
+    if (db && db.profiles && db.profiles[name]) {
+      delete db.profiles[name];
+      
+      // Если удаляемый профиль был последним активным — обнуляем lastActive
+      if (db.lastActive === name) {
+        db.lastActive = null;
+      }
+      
+      localStorage.setItem('eng_db', JSON.stringify(db));
+      renderCheatProfiles(); // Обновляем список на странице
+    }
+  }
+
+  // ================= ОСТАЛЬНЫЕ ЧИТЫ =================
   function getState() {
     const db = JSON.parse(localStorage.getItem('eng_db'));
     if (!db || !db.lastActive) { alert("Сначала зайди в профиль в игре!"); return null; }
@@ -80,7 +133,6 @@
     data.profile.totalStarsEarned = 0;
     data.profile.dailyEarned = 0;
     
-    // Удаляем достижения за звания (начинаются с 'lvl_')
     if (data.profile.achievements) {
         data.profile.achievements = data.profile.achievements.filter(id => !id.startsWith('lvl_'));
     }
@@ -95,6 +147,11 @@
     sessionStorage.clear();
     location.href = 'index.html';
   }
+
+  // Запускаем отрисовку списка профилей при загрузке страницы
+  window.onload = () => {
+    renderCheatProfiles();
+  };
 </script>
 </body>
 </html>
