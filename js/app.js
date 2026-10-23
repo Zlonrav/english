@@ -104,7 +104,7 @@ function updateLevel() {
     <div class="level-bar-container" style="margin-top: 5px;">
       <div class="level-bar" style="width: ${progress}%;"></div>
     </div>
-    <div class="level-text" style="font-size: 13px; color: var(--text-muted); margin-top: 7px; opacity: 0.5">
+    <div class="level-text" style="font-size: 13px; color: var(--text-muted); margin-top: 7px; opacity: 0.5; font-weight: normal;">
       ${nextLevel.name !== currentLevel.name ? `До звания "${nextLevel.name}": ${starsLeft} ⭐` : `Максимальное звание достигнуто!`}
     </div>
   `;
