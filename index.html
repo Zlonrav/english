@@ -67,7 +67,7 @@
         <div id="pin-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
           <!-- Кнопки будут сгенерированы JS -->
         </div>
-        <button class="menu-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 0 rgba(0,0,0,0.2); color: var(--text-muted); padding: 10px; font-size: 16px; justify-content: center;" onclick="cancelCreate()">Отмена</button>
+        <button class="menu-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 0 rgba(0,0,0,0.2); color: var(--text-muted); padding: 10px; font-size: 16px; justify-content: center;" onclick="cancelPin()">Отмена</button>
       </div>
 
       <!-- Создание нового профиля -->
@@ -77,7 +77,7 @@
           <input type="text" id="new-profile-name" placeholder="Введи имя" oninput="previewNewPet()" style="width: 100%; padding: 12px; font-size: 18px; border: 2px solid var(--main-color); border-radius: 12px; text-align: center;">
         </div>
         <button class="menu-btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 5px 0 rgba(0,0,0,0.3); justify-content: center;" onclick="startPinCreation()">Придумать PIN-код</button>
-        <button class="menu-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 0 rgba(0,0,0,0.2); color: var(--text-muted); padding: 10px; font-size: 16px; justify-content: center;" onclick="cancelPin()">Отмена</button>
+        <button class="menu-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 0 rgba(0,0,0,0.2); color: var(--text-muted); padding: 10px; font-size: 16px; justify-content: center;" onclick="cancelCreate()">Отмена</button>
       </div>
 
       <!-- <button id="btn-add-profile" class="menu-btn btn-green" style="justify-content: center; margin-top: 15px;" onclick="showCreateProfile()">➕ Новый игрок</button> -->
