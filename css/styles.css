@@ -422,3 +422,7 @@ html, body {
 #dashboard-view {
   justify-content: center;
 }
+/* Модалка выбора питомца должна быть выше модалки профиля */
+#pet-selector-modal {
+  z-index: 10005; 
+}
