@@ -311,3 +311,28 @@ html, body {
 /* ================= АНИМАЦИИ ================= */
 @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* ================= УНИВЕРСАЛЬНАЯ РАБОЧАЯ ОБЛАСТЬ ================= */
+/* Единый размер для всех игровых экранов */
+.trainer-card, #quiz-menu, #quiz-play, #spelling-view .quiz-menu {
+  width: 100%;
+  max-width: 500px; /* Единая ширина */
+  min-height: 520px; /* Единая высота */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Центрируем контент по вертикали */
+  margin: 0 auto;
+}
+
+/* Чтобы карточки в заданиях были одинаковой высоты, даже если текст разный */
+.task-card {
+  height: 100%;
+  justify-content: space-between; /* Распределяем контент: картинка сверху, кнопки снизу */
+}
+
+.task-card > div:last-child {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
