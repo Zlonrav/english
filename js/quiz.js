@@ -38,15 +38,15 @@ function loadQuestion() {
   soundBtn.style.display = 'none';
   qEl.style.display = 'block';
 
-  // Отрисовка слова/перевода с текстовым произношением
+  // Отрисовка слова/перевода с текстовым произношением на новой строке
   if (quizMode === 1) {
-    qEl.innerHTML = `${currentQuizCard.word} <span style="font-size: 24px; color: var(--text-muted); font-weight: normal; margin-left: 10px;">[${currentQuizCard.pron}]</span>`;
+    qEl.innerHTML = `<div style="display: flex; flex-direction: column; align-items: center;"><span>${currentQuizCard.word}</span><span style="font-size: 20px; color: var(--text-muted); font-weight: normal; margin-top: 5px;">${currentQuizCard.pron}</span></div>`;
   } else if (quizMode === 2) {
     qEl.style.display = 'none';
     soundBtn.style.display = 'inline-block';
     speakWord(currentQuizCard.word); 
   } else if (quizMode === 3) {
-    qEl.innerHTML = `${currentQuizCard.trans} <span style="font-size: 24px; color: var(--text-muted); font-weight: normal; margin-left: 10px;">[${currentQuizCard.pron}]</span>`;
+    qEl.innerHTML = `<div style="display: flex; flex-direction: column; align-items: center;"><span>${currentQuizCard.trans}</span><span style="font-size: 20px; color: var(--text-muted); font-weight: normal; margin-top: 5px;">${currentQuizCard.pron}</span></div>`;
   }
 
   optsEl.innerHTML = '';
