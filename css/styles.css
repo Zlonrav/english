@@ -357,17 +357,17 @@ html, body {
 .number100 { width: 3.5em; height: 1.5em; font-size: 0.6em; }
 .th { font-size: 0.5em; vertical-align: super; }
 
-/* ================= ЭКРАН АВТОРИЗАЦИИ ================= */
 /* Единая плитка с эффектом стекла */
+/* ================= ЭКРАН АВТОРИЗАЦИИ ================= */
 #auth-view .quiz-menu {
   width: 100%;
   max-width: 400px;
   min-height: 450px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* <--- МЕНЯЕМ НА flex-start (прижимаем к верху) */
   align-items: center;
-  margin: auto; /* Центрирует плитку на экране */
+  margin: auto;
   padding: 30px 20px;
   box-sizing: border-box;
   
@@ -378,6 +378,24 @@ html, body {
   border: 1px solid var(--glass-border);
   border-radius: 24px;
   box-shadow: var(--glass-shadow);
+}
+
+/* Фиксируем заголовок, чтобы он не прыгал */
+#auth-title {
+  margin-top: 10px;
+  margin-bottom: 30px; /* Отступ от заголовка до профилей/формы */
+  width: 100%;
+}
+
+/* Заставляем контейнеры ниже заголовка занимать всё свободное место и центрировать содержимое */
+#profiles-list, 
+#create-profile-container, 
+#pin-pad-container {
+  flex-grow: 1; /* Растягиваем на всё доступное пространство */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Центрируем содержимое */
+  width: 100%;
 }
 
 /* Делаем карточку профиля аккуратной */
