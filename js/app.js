@@ -327,19 +327,17 @@ function renderAuthScreen() {
   hideAllViews();
   document.getElementById('auth-view').style.display = 'flex';
   
-  // Гарантированно скрываем ПИН-пад и создание профиля
   document.getElementById('pin-pad-container').style.display = 'none';
   document.getElementById('create-profile-container').style.display = 'none';
   document.getElementById('auth-title').innerText = "Кто играет?";
 
   const list = document.getElementById('profiles-list');
-  list.style.display = 'flex';
   list.innerHTML = '';
 
   const profileNames = Object.keys(db.profiles);
 
-  // 1. Рисуем существующие профили
-  profileNames.forEach(name => {
+  // 1. Рисуем существующие профили (максимум 4)
+  profileNames.slice(0, 4).forEach(name => {
     let hash = 0;
     for (let i = 0; i < name.length; i++) hash += name.charCodeAt(i);
     const petEmoji = pets[hash % pets.length];
@@ -355,15 +353,20 @@ function renderAuthScreen() {
     list.appendChild(div);
   });
 
-  // 2. Всегда добавляем карточку "Новый"
-  const addDiv = document.createElement('div');
-  addDiv.className = 'profile-btn';
-  addDiv.onclick = () => showCreateProfile();
-  addDiv.innerHTML = `
-    <div class="profile-avatar" style="color: var(--main-color); font-weight: 900;">+</div>
-    <div class="profile-name">Новый</div>
-  `;
-  list.appendChild(addDiv);
+  // 2. Считаем, сколько пустых мест осталось (всего 4)
+  const emptySlots = 4 - profileNames.length;
+
+  // 3. Дорисовываем пустые плитки с плюсом
+  for (let i = 0; i < emptySlots; i++) {
+    const addDiv = document.createElement('div');
+    addDiv.className = 'profile-btn';
+    addDiv.onclick = () => showCreateProfile();
+    addDiv.innerHTML = `
+      <div class="profile-avatar" style="color: var(--main-color); font-weight: 900;">+</div>
+      <div class="profile-name">Новый</div>
+    `;
+    list.appendChild(addDiv);
+  }
 }
 
 function deleteProfile(name) {
