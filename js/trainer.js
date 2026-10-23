@@ -65,8 +65,9 @@ function renderTrainerContent() {
       <div class="trainer-trans">${data.trans}</div>
     </div>
     
-    <div style="width: 100%; display: flex; justify-content: center; margin-bottom: 5px;">
-      <button class="action-btn btn-listen" id="btn-listen-action" onclick="handleListen()" ${listenCooldown ? 'disabled' : ''} style="max-width: 300px; margin-top: 0;">
+    <!-- Обертка для кнопки Слушать. Задаем ей те же размеры, что и у кнопки Дальше, плюс отступ снизу -->
+    <div style="width: 100%; max-width: 320px; margin-bottom: 15px;">
+      <button class="action-btn btn-listen" id="btn-listen-action" onclick="handleListen()" ${listenCooldown ? 'disabled' : ''} style="width: 100%; max-width: 100%; margin-top: 0; padding: 15px; box-sizing: border-box; font-size: 18px;">
         <div class="listen-fill" id="listen-fill-action" style="position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: rgba(0,0,0,0.2); z-index: 0; transition: none;"></div>
         <span style="position: relative; z-index: 1;">🔊 Слушать (${listenCounts[currentTab]}/${REQUIRED_CLICKS})</span>
       </button>
@@ -84,6 +85,20 @@ function renderTrainerContent() {
       fill.style.width = '100%';
     }
   }
+
+  if (!card.single) {
+    const tabSingle = document.getElementById('tab-single');
+    const tabPlural = document.getElementById('tab-plural');
+    
+    tabSingle.className = `v5-tab ${currentTab === 'single' ? 'active' : ''} ${listenCounts.single >= REQUIRED_CLICKS ? 'done' : ''}`;
+    tabPlural.className = `v5-tab ${currentTab === 'plural' ? 'active' : ''} ${listenCounts.plural >= REQUIRED_CLICKS ? 'done' : ''}`;
+    
+    tabSingle.innerText = `Ед. число ${listenCounts.single >= REQUIRED_CLICKS ? '✅' : ''}`;
+    tabPlural.innerText = `Мн. число ${listenCounts.plural >= REQUIRED_CLICKS ? '✅' : ''}`;
+  }
+
+  updateNextButton();
+}
 
   if (!card.single) {
     const tabSingle = document.getElementById('tab-single');
