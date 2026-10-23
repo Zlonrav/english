@@ -347,7 +347,6 @@ function renderAuthScreen() {
     div.className = 'profile-btn';
     div.onclick = () => selectProfile(name);
     div.innerHTML = `
-      <div class="profile-del" onclick="event.stopPropagation(); deleteProfile('${name}')">×</div>
       <div class="profile-avatar">${petEmoji}</div>
       <div class="profile-name">${name}</div>
     `;
