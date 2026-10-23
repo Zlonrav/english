@@ -278,3 +278,18 @@ html, body {
   flex-direction: column;
   align-items: center;
 }
+
+/* ================= ЕДИНАЯ КНОПКА ВЫХОДА ================= */
+.btn-exit {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  color: #93c5fd; /* Светло-синий для темного фона */
+  cursor: pointer;
+  padding: 5px 0;
+  transition: color 0.2s;
+}
+.btn-exit:hover {
+  color: #fff;
+}
