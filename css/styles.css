@@ -350,7 +350,7 @@ html, body {
 
 /* Индивидуальные размеры */
 .words {
-	width: 2.5em; 
+	width: 3em; 
 	height: 1.5em; 
 	font-size: 0.55em; 
 	white-space: nowrap;
