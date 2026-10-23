@@ -134,7 +134,7 @@ html, body {
   font-size: clamp(18px, 4vh, 24px); 
   color: var(--text-muted); 
   line-height: 1.2;
-  margin-bottom: 8px; /* Чуть больший отступ перед кнопкой */
+  margin-bottom: 5px; /* Чуть больший отступ перед кнопкой */
   width: 100%;
   text-align: center;
 }
