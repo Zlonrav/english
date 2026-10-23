@@ -416,14 +416,14 @@ html, body {
 }
 
 #profiles-list {
-  flex-grow: 1; 
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Строго 2 колонки */
   gap: 15px;
   width: 100%;
+  flex-grow: 1;
+  align-content: center; /* Центрируем сетку по вертикали */
+  justify-items: center; /* Центрируем карточки в ячейках */
+  padding-bottom: 20px;
 }
 
 /* Делаем карточку профиля аккуратной */
