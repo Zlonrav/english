@@ -402,7 +402,7 @@ html, body {
 /* Фиксируем заголовок, чтобы он не прыгал */
 #auth-title {
   margin-top: 10px;
-  margin-bottom: 30px; /* Отступ от заголовка до профилей/формы */
+  margin-bottom: 30px; 
   width: 100%;
 }
 
