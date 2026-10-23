@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 91 --> <!-- Американский английский --> <!-- англокоины --> 
+<!DOCTYPE html> <!-- 92 --> <!-- Американский английский --> <!-- англокоины --> 
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -53,7 +53,7 @@
 <div class="content-wrapper">
     <!-- ЭКРАН ВХОДА (АВТОРИЗАЦИЯ) -->
   <div id="auth-view" class="view" style="display: flex; align-items: center; justify-content: center;">
-    <div class="quiz-menu" style="max-width: 400px;">
+    <div class="quiz-menu">
       <h2 style="text-align: center; color: var(--main-color); margin-top: 0;" id="auth-title">Кто играет?</h2>
       
       <!-- Список профилей -->
@@ -106,7 +106,7 @@
 
   <!-- НОВАЯ СТРАНИЦА: ДОСТИЖЕНИЯ -->
   <div id="achievements-view" class="view">
-    <div class="quiz-menu" style="max-width: 600px;">
+    <div class="quiz-menu" style="width: 100%;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
         <h2 style="margin:0;">Достижения</h2>
         <button onclick="goHome()" style="background:none; border:none; font-size:16px; color:var(--main-color); font-weight:bold; cursor:pointer;">← Закрыть</button>
@@ -184,7 +184,7 @@
       </button>
     </div>
 
-    <div class="quiz-play" id="quiz-play">
+    <div class="quiz-play" id="quiz-play" style="width: 100%;">
       <div style="display:flex; justify-content:space-between; margin-bottom:20px; align-items:center;">
         <button onclick="openQuiz()" style="background:none; border:none; font-size:16px; font-weight:bold; color:var(--main-color); cursor:pointer;">← Выйти</button>
         <span id="quiz-score" style="font-weight:bold; font-size:18px; color:var(--green);">Правильно: 0</span>
@@ -196,7 +196,7 @@
   </div>
      <!-- ИГРА (ПРАВОПИСАНИЕ) -->
   <div id="spelling-view" class="view">
-    <div class="quiz-menu" style="max-width: 500px;">
+    <div class="quiz-menu">
       
       <!-- Переключатель сложности -->
       <div style="display: flex; background: #e0e7ff; border-radius: 12px; padding: 5px; margin-bottom: 20px;">
