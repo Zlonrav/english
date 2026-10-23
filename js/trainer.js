@@ -57,15 +57,20 @@ function renderTrainerContent() {
     ? { word: card.word, pron: card.pron, trans: card.trans } 
     : { word: card.plural, pron: card.pronP, trans: card.transP };
 
-  // Добавляем полоску заливки внутрь кнопки Слушать
+  // Разделяем контент на верхний блок (текст) и нижний блок (кнопка Слушать)
   content.innerHTML = `
-    <div class="trainer-word">${data.word}</div>
-    <div class="trainer-pron">${data.pron}</div>
-    <div class="trainer-trans">${data.trans}</div>
-    <button class="action-btn btn-listen" id="btn-listen-action" onclick="handleListen()" ${listenCooldown ? 'disabled' : ''}>
-      <div class="listen-fill" id="listen-fill-action" style="position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: rgba(0,0,0,0.2); z-index: 0; transition: none;"></div>
-      <span style="position: relative; z-index: 1;">🔊 Слушать (${listenCounts[currentTab]}/${REQUIRED_CLICKS})</span>
-    </button>
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 15px; width: 100%;">
+      <div class="trainer-word">${data.word}</div>
+      <div class="trainer-pron">${data.pron}</div>
+      <div class="trainer-trans">${data.trans}</div>
+    </div>
+    
+    <div style="width: 100%; display: flex; justify-content: center; margin-bottom: 5px;">
+      <button class="action-btn btn-listen" id="btn-listen-action" onclick="handleListen()" ${listenCooldown ? 'disabled' : ''} style="max-width: 300px; margin-top: 0;">
+        <div class="listen-fill" id="listen-fill-action" style="position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: rgba(0,0,0,0.2); z-index: 0; transition: none;"></div>
+        <span style="position: relative; z-index: 1;">🔊 Слушать (${listenCounts[currentTab]}/${REQUIRED_CLICKS})</span>
+      </button>
+    </div>
   `;
 
   // Если кулдаун активен, запускаем анимацию заливки кнопки
@@ -74,7 +79,7 @@ function renderTrainerContent() {
     if (fill) {
       fill.style.transition = 'none';
       fill.style.width = '0%';
-      void fill.offsetWidth; // Хак для перезапуска анимации
+      void fill.offsetWidth; 
       fill.style.transition = 'width 5s linear';
       fill.style.width = '100%';
     }
