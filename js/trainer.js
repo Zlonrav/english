@@ -14,14 +14,14 @@ function showRandomCard() {
   currentListenCount = 0; // Сбрасываем счетчик при новой карточке
 
   let html = '';
-  if (card.color) html += `<div class="trainer-color-circle" style="width:80px; height:80px; border-radius:50%; background:${card.color}; margin-bottom:10px; border:3px solid #333;"></div>`;
+  if (card.color) html += `<div class="trainer-color-circle" style="width:80px; height:80px; border-radius:50%; background:${card.color}; margin-bottom:10px; border:3px solid rgba(255,255,255,0.2);"></div>`;
   else html += `<div class="trainer-icon">${card.icon}</div>`;
   html += `<div class="divider"></div>`;
 
   // Шаблон для кнопки "Слушать" с внутренней заливкой
   const listenBtnHTML = (id, text, wordToSpeak) => `
-    <button class="action-btn btn-listen" id="${id}" onclick="handleListen('${card.word}', '${wordToSpeak}')" style="position: relative; overflow: hidden; background: #ffdb4d; color: #333;">
-      <div class="listen-fill" style="position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: rgba(0,0,0,0.15); z-index: 0; transition: none;"></div>
+    <button class="action-btn btn-listen" id="${id}" onclick="handleListen('${card.word}', '${wordToSpeak}')" style="position: relative; overflow: hidden;">
+      <div class="listen-fill" style="position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: rgba(0,0,0,0.2); z-index: 0; transition: none;"></div>
       <span style="position: relative; z-index: 1;">🔊 Слушать ${text}</span>
     </button>
   `;
@@ -38,7 +38,7 @@ function showRandomCard() {
   } else {
     html += `
       <div class="trainer-entry" style="margin-bottom:10px;">
-        <div style="font-size:8px; color:#888; font-weight:bold; text-transform:uppercase;">Единственное число</div>
+        <div style="font-size:10px; color:var(--text-muted); font-weight:bold; text-transform:uppercase;">Единственное число</div>
         <div class="trainer-word">${card.word}</div>
         <div class="trainer-pron">${card.pron}</div>
         <div class="trainer-trans">${card.trans}</div>
@@ -48,7 +48,7 @@ function showRandomCard() {
       <div class="divider" style="margin:5px 0;"></div>
 
       <div class="trainer-entry">
-        <div style="font-size:8px; color:#888; font-weight:bold; text-transform:uppercase;">Множественное число</div>
+        <div style="font-size:10px; color:var(--text-muted); font-weight:bold; text-transform:uppercase;">Множественное число</div>
         <div class="trainer-word">${card.plural}</div>
         <div class="trainer-pron">${card.pronP}</div>
         <div class="trainer-trans">${card.transP}</div>
@@ -57,10 +57,10 @@ function showRandomCard() {
     `;
   }
 
-  // Кнопка "Дальше" изначально заблокирована и бледная.
+  // Кнопка "Дальше" изначально заблокирована и выглядит как полупрозрачное стекло.
   html += `
-    <button class="action-btn btn-next" id="btn-next" onclick="handleNext()" disabled style="margin-top: 15px; background: #c2d2e8; color: #6d84a3; box-shadow: 0 5px 0 #a0b4ce; opacity: 0.8; position: relative; overflow: hidden;">
-      <div id="next-fill" style="position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--main-color); z-index: 0; transition: width 0.3s ease;"></div>
+    <button class="action-btn btn-next" id="btn-next" onclick="handleNext()" disabled style="margin-top: 15px; background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4); box-shadow: none; border: 1px dashed rgba(255,255,255,0.2); position: relative; overflow: hidden; text-shadow: none;">
+      <div id="next-fill" style="position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: linear-gradient(135deg, #3b82f6, #2563eb); z-index: 0; transition: width 0.3s ease; opacity: 0.7;"></div>
       <span style="position: relative; z-index: 1;">Дальше ➔</span>
     </button>
   `;
@@ -87,15 +87,17 @@ function handleListen(baseWord, textToSpeak) {
       nextFill.style.width = (currentListenCount / 3 * 100) + '%';
     }
 
-    // Если прослушали 3 раза — разблокируем "Дальше" и делаем её синей
+    // Если прослушали 3 раза — разблокируем "Дальше" и делаем её сияющей
     if (currentListenCount === 3) {
       const btnNext = document.getElementById('btn-next');
       if (btnNext) {
         btnNext.disabled = false;
-        btnNext.style.background = 'var(--main-color)';
+        btnNext.style.background = 'linear-gradient(135deg, #3b82f6, #2563eb)';
         btnNext.style.color = '#fff';
-        btnNext.style.boxShadow = '0 5px 0 #153870';
-        btnNext.style.opacity = '1';
+        btnNext.style.boxShadow = '0 5px 0 #1e3a8a, 0 10px 20px rgba(59, 130, 246, 0.4)';
+        btnNext.style.border = '1px solid rgba(255,255,255,0.2)';
+        btnNext.style.textShadow = '0 1px 2px rgba(0,0,0,0.3)';
+        if (nextFill) nextFill.style.opacity = '0'; // Скрываем заливку, так как кнопка теперь полностью синяя
       }
     }
   }
