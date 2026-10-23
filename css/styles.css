@@ -75,12 +75,6 @@ html, body {
   border-radius: 24px; box-shadow: var(--glass-shadow);
 }
 
-/* Меню выбора питомца и авторизация чуть ниже, им не нужна высота 580 */
-#auth-view .quiz-menu {
-  height: auto;
-  min-height: 450px;
-}
-
 /* ================= ЭЛЕМЕНТЫ ПИТОМЦА ================= */
 .pet-container {
   text-align: center; 
@@ -291,7 +285,6 @@ html, body {
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
 /* ================= УНИВЕРСАЛЬНАЯ РАБОЧАЯ ОБЛАСТЬ ================= */
-/* Единый размер для всех игровых экранов */
 .trainer-card, #quiz-menu, #quiz-play, #spelling-view .quiz-menu {
   width: 100%;
   max-width: 500px;
@@ -299,16 +292,15 @@ html, body {
   height: auto; 
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Центрируем контент по вертикали */
+  justify-content: center;
   margin: 0 auto;
 }
 
-/* Чтобы карточки в заданиях были одинаковой высоты, даже если текст разный */
+/* Чтобы карточки в заданиях были одинаковой высоты */
 .task-card {
   height: 100%;
-  justify-content: space-between; /* Распределяем контент: картинка сверху, кнопки снизу */
+  justify-content: space-between;
 }
-
 .task-card > div:last-child {
   width: 100%;
   display: flex;
@@ -322,7 +314,7 @@ html, body {
   border: none;
   font-size: 16px;
   font-weight: bold;
-  color: #93c5fd; /* Светло-синий для темного фона */
+  color: #93c5fd;
   cursor: pointer;
   padding: 5px 0;
   transition: color 0.2s;
@@ -332,80 +324,54 @@ html, body {
 }
 
 /* ================= БУКВЫ И ЦИФРЫ ДЛЯ ТРЕНАЖЕРА ================= */
-/* ================= БУКВЫ И ЦИФРЫ ДЛЯ ТРЕНАЖЕРА ================= */
-/* Общие стили для всех подложек (градиент, тень, белый текст) */
 .words, .digits, .ordinal0-9, .ordinal10-90, .ordinal100, .numbers, .number100 {
-	background: linear-gradient(135deg, #3b82f6, #8b5cf6); /* Космический сине-фиолетовый градиент */
+	background: linear-gradient(135deg, #3b82f6, #8b5cf6);
 	color: #fff;
-	border-radius: 16px; /* Мягкое скругление вместо жестких процентов */
+	border-radius: 16px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	font-weight: 900;
 	line-height: 1;
-	box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4), inset 0 2px 5px rgba(255, 255, 255, 0.3); /* Внешнее свечение и внутренний блик */
+	box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4), inset 0 2px 5px rgba(255, 255, 255, 0.3);
 	text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 	box-sizing: border-box;
 }
 
 /* Индивидуальные размеры */
-.words {
-	width: 3em; 
-	height: 1.5em; 
-	font-size: 0.55em; 
-	white-space: nowrap;
-}
+.words { width: 3em; height: 1.5em; font-size: 0.55em; white-space: nowrap; }
+.digits { width: 1.5em; height: 1.5em; font-size: 0.75em; }
+.ordinal0-9 { width: 3em; height: 1.5em; font-size: 0.6em; }
+.ordinal10-90 { width: 3em; height: 1.5em; font-size: 0.5em; }
+.ordinal100 { width: 3.5em; height: 1.5em; font-size: 0.45em; }
+.numbers { width: 3em; height: 1.5em; font-size: 0.6em; }
+.number100 { width: 3.5em; height: 1.5em; font-size: 0.6em; }
+.th { font-size: 0.5em; vertical-align: super; }
 
-.digits {
-	width: 1.5em; 
-	height: 1.5em; 
-	font-size: 0.75em; 
-}
-
-.ordinal0-9 {
-	width: 3em; 
-	height: 1.5em; 
-	font-size: 0.6em; 
-}
-
-.ordinal10-90 {
-	width: 3em; 
-	height: 1.5em; 
-	font-size: 0.5em; 
-}
-
-.ordinal100 {
-	width: 3.5em; 
-	height: 1.5em; 
-	font-size: 0.45em; 
-}
-
-.numbers {
-	width: 3em; 
-	height: 1.5em; 
-	font-size: 0.6em; 
-}
-
-.number100 {
-	width: 3.5em; 
-	height: 1.5em; 
-	font-size: 0.6em; 
-}
-
-.th {
-	font-size: 0.5em; 
-	vertical-align: super;
-}
 /* ================= ЭКРАН АВТОРИЗАЦИИ ================= */
-/* Задаем панели авторизации высоту и идеальное центрирование */
+/* Единая плитка с эффектом стекла */
 #auth-view .quiz-menu {
+  width: 100%;
+  max-width: 400px;
   min-height: 450px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin: auto;
   align-items: center;
+  margin: auto; /* Центрирует плитку на экране */
+  padding: 30px 20px;
+  box-sizing: border-box;
+  
+  /* Стеклянный эффект */
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: var(--glass-shadow);
 }
 
-/* Делаем карточку профиля чуть шире, чтобы она красиво смотрелась по центру */
+/* Делаем карточку профиля аккуратной */
 .profile-btn {
   width: 120px;
   margin: 0 auto;
