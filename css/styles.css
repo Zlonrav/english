@@ -160,7 +160,7 @@ html, body {
   width: 100%;
   text-align: center;
 }
-.divider { width: 80%; height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0; }
+.divider { width: 80%; height: 1px; background: rgba(255,255,255,0.1); margin: 0 0 5px 0; }
 
 /* Выравниваем контейнер со словами строго по центру */
 .trainer-card .trainer-entry {
