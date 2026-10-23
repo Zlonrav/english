@@ -332,99 +332,67 @@ html, body {
 }
 
 /* ================= БУКВЫ И ЦИФРЫ ДЛЯ ТРЕНАЖЕРА ================= */
+/* ================= БУКВЫ И ЦИФРЫ ДЛЯ ТРЕНАЖЕРА ================= */
+/* Общие стили для всех подложек (градиент, тень, белый текст) */
+.words, .digits, .ordinal0-9, .ordinal10-90, .ordinal100, .numbers, .number100 {
+	background: linear-gradient(135deg, #3b82f6, #8b5cf6); /* Космический сине-фиолетовый градиент */
+	color: #fff;
+	border-radius: 16px; /* Мягкое скругление вместо жестких процентов */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 900;
+	line-height: 1;
+	box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4), inset 0 2px 5px rgba(255, 255, 255, 0.3); /* Внешнее свечение и внутренний блик */
+	text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+	box-sizing: border-box;
+}
+
+/* Индивидуальные размеры */
 .words {
 	width: 3em; 
 	height: 2em; 
-	background: #1f4e9c; 
-	color: #fff; 
-	border-radius: 10%; 
-	display: flex; 
-	align-items: center; 
-	justify-content: center; 
-	font-weight: 900; 
 	font-size: 0.55em; 
-	line-height: 1; 
 	white-space: nowrap;
 }
-.digits {width: 1em; 
+
+.digits {
+	width: 1em; 
 	height: 1em; 
-	background: #1f4e9c; 
-	color: #fff; 
-	border-radius: 10%; 
-	display: flex; 
-	align-items: center; 
-	justify-content: center; 
-	font-weight: 900; 
 	font-size: 0.75em; 
-	line-height: 1;
-	}
+}
+
 .ordinal0-9 {
 	width: 1em; 
 	height: 1em; 
-	background: #1f4e9c; 
-	color: #fff; 
-	border-radius: 10%; 
-	display: flex; 
-	align-items: center; 
-	justify-content: center; 
-	font-weight: 900; 
 	font-size: 0.6em; 
-	line-height: 1;"
-	}
+}
+
 .ordinal10-90 {
 	width: 1em; 
 	height: 1em; 
-	background: #1f4e9c; 
-	color: #fff; 
-	border-radius: 10%; 
-	display: flex; 
-	align-items: center; 
-	justify-content: center; 
-	font-weight: 900; 
 	font-size: 0.5em; 
-	line-height: 1;
-	}
+}
+
 .ordinal100 {
 	width: 1em; 
 	height: 1em; 
-	background: #1f4e9c; 
-	color: #fff; 
-	border-radius: 10%; 
-	display: flex; 
-	align-items: center; 
-	justify-content: center; 
-	font-weight: 900; 
 	font-size: 0.45em; 
-	line-height: 1;
-	}
-.th {
-	font-size: 0.5em; 
-	vertical-align: super;
-	}
+}
 
 .numbers {
 	width: 1em; 
 	height: 1em; 
-	background: #1f4e9c; 
-	color: #fff; 
-	border-radius: 10%; 
-	display: flex; 
-	align-items: center; 
-	justify-content: center; 
-	font-weight: 900; 
 	font-size: 0.6em; 
-	line-height: 1;
-	}
+}
+
 .number100 {
 	width: 1em; 
 	height: 1em; 
-	background: #1f4e9c; 
-	color: #fff; 
-	border-radius: 10%; 
-	display: flex; 
-	align-items: center; 
-	justify-content: center; 
-	font-weight: 900; 
 	font-size: 0.45em; 
-	line-height: 1;
-	}
+}
+
+.th {
+	font-size: 0.5em; 
+	vertical-align: super;
+}
