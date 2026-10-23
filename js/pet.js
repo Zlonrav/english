@@ -19,18 +19,15 @@ const acc = [
 // ================= ЛОГИКА ПИТОМЦА =================
 function updatePet() {
   const container = document.getElementById('pet-box');
-  
-  // 1. Если имени нет, показываем форму создания
+  const topBarAvatar = document.getElementById('top-bar-avatar'); // Наша новая аватарка в шапке
+
   if (!state.petName) {
-    container.innerHTML = `
-      <div style="font-size:16px; margin-bottom:10px;">Как зовут твоего питомца?</div>
-      <input type="text" id="pet-input" style="padding:10px; font-size:16px; border-radius:8px; border:2px solid #ccc; width:80%; text-align:center;" placeholder="Введи имя...">
-      <button onclick="createPet()" style="margin-top:10px; padding:10px 20px; background:var(--main-color); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">Создать</button>
-    `;
+    // На случай если профиль не выбран
+    if (topBarAvatar) topBarAvatar.innerText = '👤';
     return;
   }
 
-  // 2. Генерация на лету (hash от имени), если питомец еще не выбран
+  // Генерация на лету (hash от имени), если питомец еще не выбран
   let hash = 0;
   for (let i = 0; i < state.petName.length; i++) hash += state.petName.charCodeAt(i);
   
@@ -40,13 +37,30 @@ function updatePet() {
       saveState();
   }
 
-  // 3. Отрисовываем карточку с кликабельным питомцем (без кнопки)
-  container.innerHTML = `
-    <div class="pet-avatar" id="pet-avatar-img" onclick="openPetSelector()" style="cursor: pointer;" title="Сменить питомца">${state.pet}</div>
-    <div class="pet-name">${state.petName} ${state.acc}</div>
-    <div id="level-container"></div>
-  `;
-  updateLevel();
+  // 1. Обновляем маленькую аватарку в шапке
+  if (topBarAvatar) {
+    topBarAvatar.innerText = state.pet;
+  }
+
+  // 2. Отрисовываем карточку внутри модалки
+  if (container) {
+    container.innerHTML = `
+      <div class="pet-avatar" id="pet-avatar-img" onclick="openPetSelector()" style="cursor: pointer;" title="Сменить питомца">${state.pet}</div>
+      <div class="pet-name">${state.petName} ${state.acc}</div>
+      <div id="level-container"></div>
+    `;
+    updateLevel();
+  }
+}
+
+// ================= МОДАЛКА ПРОФИЛЯ =================
+function openPetInfoModal() {
+  document.getElementById('pet-info-modal').style.display = 'flex';
+  updatePet(); // Обновляем данные перед показом
+}
+
+function closePetInfoModal() {
+  document.getElementById('pet-info-modal').style.display = 'none';
 }
 
 function createPet() {
