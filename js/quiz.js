@@ -8,8 +8,8 @@ function startQuiz(mode) {
   quizMode = mode;
   quizScore = 0;
   document.getElementById('quiz-menu').style.display = 'none';
-  document.getElementById('quiz-play').style.display = 'block';
-  document.getElementById('quiz-score').innerText = 'Правильно: 0';
+  document.getElementById('quiz-play').style.display = 'flex'; // Чтобы кнопки прижались к низу
+  document.getElementById('quiz-score').innerText = 'Правильно: 0/10'; // Добавили /10
   loadQuestion();
 }
 
