@@ -38,7 +38,7 @@ function showRandomCard() {
   } else {
     html += `
       <div class="trainer-entry" style="margin-bottom:5px;">
-        <div style="font-size:10px; color:var(--text-muted); font-weight:bold; text-transform:uppercase;">Единственное число</div>
+        <div style="font-size:8px; color:var(--text-muted); font-weight:bold; text-transform:uppercase;">Единственное число</div>
         <div class="trainer-word">${card.word}</div>
         <div class="trainer-pron">${card.pron}</div>
         <div class="trainer-trans">${card.trans}</div>
@@ -48,7 +48,7 @@ function showRandomCard() {
       <div class="divider" style="margin:15px 0 5px 0;"></div>
 
       <div class="trainer-entry">
-        <div style="font-size:10px; color:var(--text-muted); font-weight:bold; text-transform:uppercase;">Множественное число</div>
+        <div style="font-size:8px; color:var(--text-muted); font-weight:bold; text-transform:uppercase;">Множественное число</div>
         <div class="trainer-word">${card.plural}</div>
         <div class="trainer-pron">${card.pronP}</div>
         <div class="trainer-trans">${card.transP}</div>
