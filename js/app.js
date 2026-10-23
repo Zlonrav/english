@@ -267,7 +267,7 @@ function hideAllViews() {
 // Проверка авторизации
 function checkAuth() {
   if (!state || !state.petName) {
-    ();
+    renderAuthScreen(); 
     return false;
   }
   return true;
