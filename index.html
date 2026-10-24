@@ -108,10 +108,10 @@
   <!-- НОВАЯ СТРАНИЦА: ДОСТИЖЕНИЯ -->
   <div id="achievements-view" class="view">
     <div class="quiz-menu">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-        <h2 style="margin:0;">Достижения</h2>
-        <button onclick="goHome()" style="background:none; border:none; font-size:16px; color:var(--main-color); font-weight:bold; cursor:pointer;">← Закрыть</button>
+      <div style="width: 100%; display: flex; justify-content: flex-start; margin-bottom: 15px;">
+        <button class="btn-exit" onclick="goHome()">← Назад</button>
       </div>
+      <h2 style="text-align: center; margin-bottom: 20px;">Достижения</h2>
       
       <div id="coins-block" style="background: rgba(251, 191, 36, 0.1); padding:15px; border-radius:12px; margin-bottom:20px; border: 1px solid var(--gold); box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
@@ -166,9 +166,12 @@
   </div>
 
   <!-- 4. ИГРА (УГАДАЙКА) -->
-  <div id="quiz-view" class="view">
     <div class="quiz-menu" id="quiz-menu">
-      <h2>Выберите режим</h2>
+      <div style="width: 100%; display: flex; justify-content: flex-start; margin-bottom: 15px;">
+        <button class="btn-exit" onclick="goHome()">← Назад</button>
+      </div>
+      <h2 style="text-align: center; margin-bottom: 20px;">Выберите режим</h2>
+      <!-- Дальше идут кнопки режимов... -->
       <button class="menu-btn btn-purple" onclick="startQuiz(1)">
         <span class="menu-icon">👁️</span> Вижу слово
       </button>
