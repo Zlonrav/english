@@ -90,7 +90,7 @@ function doExchange(amount) {
   state.cycleStartDate = getNextMonday(new Date()).toISOString();
   state.pendingNewCycleToast = true;
   saveState();
-  showToast(`🪙 +${coins} пульсаров!`, 'top');
+  showToast(` +${coins} пульсаров!`, 'top');
 }
 
 function updateCycleBanner() {
