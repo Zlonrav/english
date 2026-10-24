@@ -211,9 +211,9 @@
       </div>
 
       <!-- Переключатель сложности -->
-      <div style="display: flex; background: #e0e7ff; border-radius: 12px; padding: 5px; margin-bottom: 20px; width: 100%;">
-        <button id="mode-easy-btn" style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; background: #fff; color: var(--main-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1);" onclick="setSpellingMode('easy')">Легкий</button>
-        <button id="mode-hard-btn" style="flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; background: transparent; color: #666;" onclick="setSpellingMode('hard')">Сложный</button>
+      <div class="v5-tabs" style="margin-bottom: 20px;">
+        <div id="mode-easy-btn" class="v5-tab active" onclick="setSpellingMode('easy')">Легкий</div>
+        <div id="mode-hard-btn" class="v5-tab" onclick="setSpellingMode('hard')">Сложный</div>
       </div>
 
       <!-- Кнопка звука -->
