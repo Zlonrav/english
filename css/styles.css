@@ -636,3 +636,12 @@ html, body {
   /* Убираем внутренний скролл, если он был */
   overflow: visible !important; 
 }
+/* Растягиваем список достижений на всю ширину плитки */
+#achievements-list {
+  width: 100% !important;
+}
+
+/* Если нужно растянуть и блок с кнопкой "Правила игры" */
+#achievements-view .quiz-menu > div {
+  width: 100% !important;
+}
