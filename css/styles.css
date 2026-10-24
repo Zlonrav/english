@@ -481,6 +481,7 @@ html, body {
   margin-bottom: 15px; 
   width: 100%; 
   box-sizing: border-box;
+  gap: 5px; 
 }
 .v5-tabs.hidden-tabs {
   visibility: hidden; /* Скрываем, но оставляем место */
