@@ -115,7 +115,9 @@
       
       <div id="coins-block" style="background: rgba(251, 191, 36, 0.1); padding:15px; border-radius:12px; margin-bottom:20px; border: 1px solid var(--gold); box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <span style="font-size:16px; font-weight:bold; color: #fff;">🪙 Пульсары:</span>
+          <span style="font-size:16px; font-weight:bold; color: #fff; display: flex; align-items: center; gap: 5px;">
+            <img src="img/ruble.png" style="width: 24px; height: 24px; vertical-align: middle;"> Пульсары:
+          </span>
           <span id="coins-count" style="font-size:20px; font-weight:bold; color: var(--gold);">0</span>
         </div>
         <button id="exchange-btn" class="menu-btn" style="display:none; background:#f59e0b; box-shadow: 0 5px 0 #b45309; justify-content:center;" onclick="openExchangeModal()">🔄 Обменять звёзды</button>
@@ -234,7 +236,10 @@
     <p style="text-align:center;">У тебя: <b><span id="exchange-stars">0</span> ⭐</b></p>
     <input type="number" id="exchange-amount" class="spelling-input" min="100" step="1" oninput="previewExchange()" placeholder="Сколько звёзд обменять?" style="margin-bottom:10px;">
     <p style="margin:5px 0; text-align:center;">Ставка: <span id="exchange-rate">—</span></p>
-    <p style="margin:5px 0; text-align:center;">Получишь: <b><span id="exchange-coins">0</span> 🪙</b></p>
+    <p style="margin:5px 0; text-align:center; display: flex; justify-content: center; align-items: center; gap: 5px;">
+      Получишь: <b><span id="exchange-coins">0</span></b> 
+      <img src="img/ruble.png" style="width: 20px; height: 20px;">
+    </p>
     <p style="color:#888; font-size:12px; margin:10px 0; text-align:center;">Обмен — только в воскресенье с 10:00 до 23:59.<br>После обмена новый цикл начнётся с понедельника.</p>
     <button class="menu-btn btn-green" style="justify-content:center;" onclick="confirmExchange()">Обменять</button>
     <button class="menu-btn" style="background:#ccc; box-shadow:0 5px 0 #999; color:#333; justify-content:center;" onclick="closeExchangeModal()">Отмена</button>
@@ -252,7 +257,10 @@
       <button class="menu-btn" style="background:#ccc; box-shadow:0 5px 0 #999; color:#333; justify-content:center;" onclick="closeParentModal()">Отмена</button>
     </div>
     <div id="parent-content" style="display:none;">
-      <p>Пульсаров к выплате: <b><span id="parent-coins">0</span></b> 🪙</p>
+      <p style="display: flex; align-items: center; gap: 5px;">
+        Пульсаров к выплате: <b><span id="parent-coins">0</span></b> 
+        <img src="img/ruble.png" style="width: 20px; height: 20px;">
+      </p>
       <p>Выплачено за всё время: <b><span id="parent-paid">0</span></b> ₽</p>
       <p id="parent-not-avail" style="display:none; color:#d97706; text-align:center; font-size:14px;">Выплата доступна только в воскресенье с 10:00 до 23:59.</p>
       <button id="parent-payout-btn" class="menu-btn btn-green" style="justify-content:center;" onclick="payoutCoins()">💰 Выплатить и обнулить</button>
