@@ -1,25 +1,31 @@
 // ================= ТРЕНАЖЕР =================
 let currentCardIndex = -1;
+let currentCard = null; // <--- ДОБАВИТЬ ЭТУ СТРОКУ
 let nextCooldown = false;
-let listenCooldown = false; // <--- Защита от спама
+let listenCooldown = false;
 let currentTab = 'single'; 
 let listenCounts = { single: 0, plural: 0 };
 const REQUIRED_CLICKS = 2; 
 
 function showRandomCard() {
-  let newIndex = Math.floor(Math.random() * cardsData.length);
-  while (newIndex === currentCardIndex && cardsData.length > 1) {
-    newIndex = Math.floor(Math.random() * cardsData.length);
+  // 1. Фильтруем базу: исключаем Буквы (1) и Цифры 0-9 (2)
+  let trainerPool = cardsData.filter(c => c.cat !== "1. Буквы" && c.cat !== "2. Цифры");
+  if (trainerPool.length === 0) trainerPool = cardsData; // Защита, если вдруг база пустая
+
+  // 2. Выбираем случайную карточку из оставшихся
+  let newIndex = Math.floor(Math.random() * trainerPool.length);
+  while (currentCard && newIndex !== -1 && trainerPool[newIndex].word === currentCard.word && trainerPool.length > 1) {
+    newIndex = Math.floor(Math.random() * trainerPool.length);
   }
-  currentCardIndex = newIndex;
-  const card = cardsData[currentCardIndex];
+  
+  currentCard = trainerPool[newIndex];
+  const card = currentCard;
   
   listenCounts = { single: 0, plural: 0 };
   currentTab = 'single';
   nextCooldown = false;
   listenCooldown = false;
 
-  // 1. Сначала определяем иконку
   let iconHtml = '';
   if (card.color) {
     iconHtml = `<div class="trainer-color-circle" style="width:80px; height:80px; border-radius:50%; background:${card.color}; margin-bottom:10px; border:3px solid rgba(255,255,255,0.2);"></div>`;
@@ -27,7 +33,6 @@ function showRandomCard() {
     iconHtml = `<div class="trainer-icon">${card.icon}</div>`;
   }
 
-  // 2. Определяем вкладки
   const tabsHtml = `
     <div class="v5-tabs ${card.single ? 'hidden-tabs' : ''}" id="trainer-tabs">
       <div class="v5-tab active" id="tab-single" onclick="${card.single ? '' : "switchTrainerTab('single')"}">Ед. число</div>
@@ -35,12 +40,10 @@ function showRandomCard() {
     </div>
   `;
 
-  // 3. Собираем общий HTML с кнопкой "Назад"
   let html = `
     <div style="width: 100%; display: flex; justify-content: flex-start; margin-bottom: 5px;">
       <button class="btn-exit" onclick="goHome()">← Назад</button>
     </div>
-    
     ${iconHtml}
     <div class="divider" style="margin:15px 0 5px 0;"></div>
     ${tabsHtml}
