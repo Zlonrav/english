@@ -582,24 +582,24 @@ html, body {
   padding-bottom: 40px;                  /* Отступ снизу, чтобы последняя кнопка не прилипала к краю */
 }
 
-/* ================= ПЛИТКА ДЛЯ СПИСКА ЗАДАНИЙ ================= */
+/* ================= ЖЕСТКАЯ ПЛИТКА ДЛЯ ЗАДАНИЙ ================= */
 #tasks-view .quiz-menu {
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px); 
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
-  border-radius: 24px; 
-  box-shadow: var(--glass-shadow);
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(16px) !important; 
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 24px !important; 
+  box-shadow: var(--glass-shadow) !important;
   
-  width: 100%;
-  max-width: 480px;
-  height: auto !important; /* Разрешаем плите растягиваться под список тем */
+  width: 100% !important;
+  max-width: 480px !important;
+  height: auto !important; 
   
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
   
-  padding: 30px 20px;
-  margin: 20px auto;
-  box-sizing: border-box;
+  padding: 30px 20px !important;
+  margin: 20px auto !important;
+  box-sizing: border-box !important;
 }
