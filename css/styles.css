@@ -645,3 +645,24 @@ html, body {
 #achievements-view .quiz-menu > div {
   width: 100% !important;
 }
+/* ================= АНИМАЦИЯ ЗВЕЗДЫ В ШАПКЕ ================= */
+@keyframes pulseStar {
+  0% { 
+    transform: scale(1); 
+    color: inherit;
+  }
+  50% { 
+    transform: scale(1.6); /* Увеличиваем звезду */
+    color: var(--gold); /* Делаем ее золотой */
+    text-shadow: 0 0 15px rgba(251, 191, 36, 0.8); /* Добавляем свечение */
+  }
+  100% { 
+    transform: scale(1); 
+    color: inherit;
+  }
+}
+
+.animate-star {
+  display: inline-block; /* Обязательно для работы transform */
+  animation: pulseStar 0.4s ease-in-out;
+}
