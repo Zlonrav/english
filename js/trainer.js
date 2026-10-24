@@ -149,7 +149,7 @@ function handleListen() {
 }
 
 function updateNextButton() {
-  const card = currentCard; // <--- ИСПОЛЬЗУЕМ currentCard ВМЕСТО cardsData[currentCardIndex]
+  const card = currentCard;
   const btn = document.getElementById('btn-next');
   const fill = document.getElementById('btn-next-fill');
   
@@ -163,12 +163,16 @@ function updateNextButton() {
     maxClicks = REQUIRED_CLICKS * 2;
   }
 
+  // Заливка кнопки заполняется до 100% сразу, как только сделаны все клики
   const percent = (totalClicks / maxClicks) * 100;
   fill.style.width = `${percent}%`;
 
-  const isReady = card.single 
+  // Проверяем, что клики собраны И пауза уже закончилась (!listenCooldown)
+  const allClicksDone = card.single 
     ? listenCounts.single >= REQUIRED_CLICKS
     : (listenCounts.single >= REQUIRED_CLICKS && listenCounts.plural >= REQUIRED_CLICKS);
+    
+  const isReady = allClicksDone && !listenCooldown; // <--- ВОЗВРАЩАЕМ ПРОВЕРКУ
 
   if (isReady) {
     btn.classList.add('active');
