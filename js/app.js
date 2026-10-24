@@ -331,6 +331,8 @@ function renderAuthScreen() {
   document.getElementById('create-profile-container').style.display = 'none';
   document.getElementById('auth-title').innerText = "Кто играет?";
 
+  document.getElementById('auth-rules-link').style.display = 'block';
+
   const list = document.getElementById('profiles-list');
   list.style.display = 'grid'; 
   list.innerHTML = '';
