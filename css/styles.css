@@ -573,16 +573,16 @@ html, body {
   text-align: center;
   margin-bottom: 25px; /* Отступ от заголовка до первой кнопки */
 }
-/* ================= ПРОКРУТКА ДЛЯ СПИСКА ЗАДАНИЙ ================= */
+/* ================= ПЛИТКА ДЛЯ СПИСКА ЗАДАНИЙ ================= */
 /* Разрешаем экрану заданий растягиваться и скроллиться */
 #tasks-view {
-  justify-content: flex-start !important; /* Прижимаем к верху */
-  height: auto !important;               /* Убираем жесткую высоту */
-  min-height: 100%;                      /* Растягиваем на весь экран */
-  padding-bottom: 40px;                  /* Отступ снизу, чтобы последняя кнопка не прилипала к краю */
+  justify-content: flex-start !important; 
+  height: auto !important;               
+  min-height: 100%;                      
+  padding-bottom: 40px;                  
 }
 
-/* ================= ЖЕСТКАЯ ПЛИТКА ДЛЯ ЗАДАНИЙ ================= */
+/* Рисуем стеклянную плитку вокруг списка тем */
 #tasks-view .quiz-menu {
   background: var(--glass-bg) !important;
   backdrop-filter: blur(16px) !important; 
@@ -593,7 +593,7 @@ html, body {
   
   width: 100% !important;
   max-width: 480px !important;
-  height: auto !important; 
+  height: auto !important; /* Плитка тянется по высоте контента */
   
   display: flex !important;
   flex-direction: column !important;
