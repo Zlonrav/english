@@ -406,10 +406,12 @@ function previewNewPet() {
 
 function cancelCreate() {
   isCreating = false;
-  document.getElementById('profiles-list').style.display = 'flex'; // Возвращаем flex
-  document.getElementById('create-profile-container').style.display = 'none';
   document.getElementById('auth-title').innerText = "Кто играет?";
-  // Строка с btn-add-profile удалена
+  document.getElementById('auth-rules-link').style.display = 'block'; // Показываем ссылку на правила
+  document.getElementById('create-profile-container').style.display = 'none';
+  
+  // ВМЕСТО ПРОСТОГО ПОКАЗА, ПЕРЕРИСОВЫВАЕМ ЭКРАН ЦЕЛИКОМ
+  renderAuthScreen(); 
 }
 
 function startPinCreation() {
