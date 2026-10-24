@@ -63,7 +63,7 @@ function showRandomCard() {
 }
 
 function renderTrainerContent() {
-  const card = cardsData[currentCardIndex];
+  const card = currentCard;
   const content = document.getElementById('trainer-content');
   
   const data = currentTab === 'single' 
@@ -124,7 +124,7 @@ function switchTrainerTab(tab) {
 function handleListen() {
   if (listenCooldown) return; // <--- Блокировка спама
 
-  const card = cardsData[currentCardIndex];
+  const card = currentCard;
   const data = currentTab === 'single' 
     ? { word: card.word, pron: card.pron } 
     : { word: card.plural, pron: card.pronP };
@@ -184,7 +184,7 @@ function updateNextButton() {
 }
 
 function handleNext() {
-  const card = cardsData[currentCardIndex];
+  const card = currentCard;
   const isReady = card.single 
     ? listenCounts.single >= REQUIRED_CLICKS
     : (listenCounts.single >= REQUIRED_CLICKS && listenCounts.plural >= REQUIRED_CLICKS);
