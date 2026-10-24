@@ -166,6 +166,8 @@
   </div>
 
   <!-- 4. ИГРА (УГАДАЙКА) -->
+  <div id="quiz-view" class="view">
+    
     <div class="quiz-menu" id="quiz-menu">
       <div style="width: 100%; display: flex; justify-content: flex-start; margin-bottom: 15px;">
         <button class="btn-exit" onclick="goHome()">← Назад</button>
@@ -195,7 +197,9 @@
       <button id="quiz-sound-btn" style="display:none; font-size:60px; background:#fff; border:3px solid var(--main-color); border-radius:50%; width:100px; height:100px; cursor:pointer; margin: 0 auto auto auto; box-shadow: 0 5px 0 var(--main-color);" onclick="speakWord(currentQuizCard.word)">🔊</button>
       <div class="quiz-options" id="quiz-options" style="margin-top: auto;"></div>
     </div>
+
   </div>
+  
      <!-- ИГРА (ПРАВОПИСАНИЕ) -->
   <div id="spelling-view" class="view">
     <div class="quiz-menu" style="max-width: 500px;">
