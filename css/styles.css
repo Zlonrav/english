@@ -573,3 +573,18 @@ html, body {
   text-align: center;
   margin-bottom: 25px; /* Отступ от заголовка до первой кнопки */
 }
+/* ================= ПРОКРУТКА ДЛЯ СПИСКА ЗАДАНИЙ ================= */
+/* Разрешаем экрану заданий растягиваться и скроллиться */
+#tasks-view {
+  justify-content: flex-start !important; /* Прижимаем к верху */
+  height: auto !important;               /* Убираем жесткую высоту */
+  min-height: 100%;                      /* Растягиваем на весь экран */
+  padding-bottom: 40px;                  /* Отступ снизу, чтобы последняя кнопка не прилипала к краю */
+}
+
+/* Убеждаемся, что контейнер с заданиями не имеет внутреннего скролла */
+#tasks-view .quiz-menu {
+  height: auto !important;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
