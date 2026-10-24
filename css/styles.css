@@ -520,3 +520,19 @@ html, body {
   position: relative; 
   z-index: 1; 
 }
+/* ================= ИСПРАВЛЕНИЕ МЕНЮ ================= */
+
+/* 1. Прижимаем кнопки к верху и убираем растягивание по высоте */
+#dashboard-view .quiz-menu,
+#quiz-menu {
+  justify-content: flex-start !important;
+  padding-top: 30px !important;
+}
+
+/* 2. Центрируем заголовки в меню и даем отступ снизу */
+#dashboard-view .quiz-menu h2,
+#quiz-menu h2 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 25px; /* Отступ от заголовка до первой кнопки */
+}
