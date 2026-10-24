@@ -192,17 +192,54 @@ html, body {
 
 /* ================= ЗАДАНИЯ ================= */
 #tasks-view, #category-view { display: none; padding: 15px; max-width: 800px; margin: 0 auto; }
-.category-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 15px; }
-.category-btn {
-  background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 16px; padding: 15px 10px;
-  font-size: clamp(16px, 3vw, 20px); font-weight: bold; color: var(--text-main); cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; gap: 5px; transition: 0.2s;
-  backdrop-filter: blur(8px); box-sizing: border-box;
+.category-list { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 12px; 
+  width: 100%;
 }
-.category-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.4); }
-.category-btn.done { background: rgba(251, 191, 36, 0.15); border-color: var(--gold); color: var(--gold); box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
-.cat-progress { font-size: 13px; color: var(--text-muted); }
-.category-btn.done .cat-progress { color: var(--gold); opacity: 0.8; }
+.category-btn {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6); /* Сине-фиолетовый градиент */
+  border: 1px solid rgba(255,255,255,0.2); 
+  border-radius: 16px; 
+  padding: 15px 20px;
+  font-size: 18px; 
+  font-weight: bold; 
+  color: #fff; 
+  cursor: pointer;
+  display: flex; 
+  justify-content: space-between; /* Текст слева, счетчик справа */
+  align-items: center; 
+  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 0 5px 0 #1e3a8a, 0 10px 20px rgba(59, 130, 246, 0.3);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  box-sizing: border-box;
+}
+
+.category-btn:active {
+  transform: translateY(5px); /* Эффект нажатия */
+  box-shadow: 0 0 0 transparent;
+}
+
+/* Стили для пройденной темы (золотая) */
+.category-btn.done { 
+  background: linear-gradient(135deg, #fbbf24, #d97706); 
+  box-shadow: 0 5px 0 #78350f, 0 10px 20px rgba(251, 191, 36, 0.3);
+  color: #fff; 
+}
+
+.cat-progress { 
+  font-size: 14px; 
+  color: rgba(255, 255, 255, 0.8); 
+  font-weight: bold;
+  background: rgba(0,0,0,0.2);
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+.category-btn.done .cat-progress { 
+  color: #fff; 
+  background: rgba(0,0,0,0.15);
+}
 
 /* ВЫРАВНИВАНИЕ КАРТОЧЕК В ЗАДАНИЯХ */
 .cards-grid { 
