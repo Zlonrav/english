@@ -603,3 +603,36 @@ html, body {
   margin: 20px auto !important;
   box-sizing: border-box !important;
 }
+/* ================= ПЛИТКА ДЛЯ ДОСТИЖЕНИЙ ================= */
+/* Разрешаем экрану достижений растягиваться и скроллиться */
+#achievements-view {
+  justify-content: flex-start !important; 
+  height: auto !important;               
+  min-height: 100%;                      
+  padding-bottom: 40px;                  
+}
+
+/* Рисуем стеклянную плитку вокруг достижений */
+#achievements-view .quiz-menu {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(16px) !important; 
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 24px !important; 
+  box-shadow: var(--glass-shadow) !important;
+  
+  width: 100% !important;
+  max-width: 480px !important;
+  height: auto !important; /* Плитка тянется по высоте контента */
+  
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  
+  padding: 30px 20px !important;
+  margin: 20px auto !important;
+  box-sizing: border-box !important;
+  
+  /* Убираем внутренний скролл, если он был */
+  overflow: visible !important; 
+}
