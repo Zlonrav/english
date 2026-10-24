@@ -150,12 +150,16 @@
   </div>
 
   <!-- 3. СПИСОК ЗАДАНИЙ -->
-  <div id="tasks-view" class="view" style="display:none; justify-content: flex-start;">
-    <div style="width: 100%; max-width: 800px; display: flex; justify-content: flex-start; margin-bottom: 15px;">
-      <button class="btn-exit" onclick="goHome()">← Назад</button>
+  <div id="tasks-view" class="view">
+    <div class="quiz-menu" style="height: auto; max-height: 85vh; padding: 20px; overflow-y: auto;">
+      <div style="width: 100%; display: flex; justify-content: flex-start; margin-bottom: 15px;">
+        <button class="btn-exit" onclick="goHome()">← Назад</button>
+      </div>
+      
+      <h2 style="text-align: center; margin-bottom: 20px;">Выберите тему</h2>
+      
+      <div class="category-list" id="category-list-container" style="width: 100%;"></div>
     </div>
-    <h2 style="color:var(--main-color); margin-top:0;">Выберите тему</h2>
-    <div class="category-list" id="category-list-container"></div>
   </div>
 
   <!-- 3.1 КАРТОЧКИ КАТЕГОРИИ -->
