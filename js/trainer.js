@@ -114,7 +114,7 @@ function renderTrainerContent() {
 }
 
 function switchTrainerTab(tab) {
-  const card = cardsData[currentCardIndex];
+  const card = currentCard; 
   if (card.single) return; 
   
   currentTab = tab;
