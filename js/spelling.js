@@ -29,22 +29,14 @@ function setSpellingMode(mode) {
   const hardBtn = document.getElementById('mode-hard-btn');
   
   if (mode === 'easy') {
-    easyBtn.style.background = '#fff'; 
-    easyBtn.style.color = 'var(--main-color)'; 
-    easyBtn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-    hardBtn.style.background = 'transparent'; 
-    hardBtn.style.color = '#666'; 
-    hardBtn.style.boxShadow = 'none';
+    easyBtn.classList.add('active');
+    hardBtn.classList.remove('active');
     
     document.getElementById('spelling-ru-text').style.display = 'block';
     document.getElementById('spelling-ru-input').style.display = 'none';
   } else {
-    easyBtn.style.background = 'transparent'; 
-    easyBtn.style.color = '#666'; 
-    easyBtn.style.boxShadow = 'none';
-    hardBtn.style.background = '#fff'; 
-    hardBtn.style.color = 'var(--main-color)'; 
-    hardBtn.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+    easyBtn.classList.remove('active');
+    hardBtn.classList.add('active');
     
     document.getElementById('spelling-ru-text').style.display = 'none';
     document.getElementById('spelling-ru-input').style.display = 'block';
