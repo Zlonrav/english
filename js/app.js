@@ -388,6 +388,7 @@ function showCreateProfile() {
   document.getElementById('auth-title').innerText = "Новый игрок";
   document.getElementById('profiles-list').style.display = 'none';
   document.getElementById('pin-pad-container').style.display = 'none'; 
+  document.getElementById('auth-rules-link').style.display = 'none';
   document.getElementById('create-profile-container').style.display = 'flex';
   document.getElementById('new-profile-name').value = '';
   document.getElementById('new-pet-preview').innerText = '👻';
