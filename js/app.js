@@ -445,7 +445,7 @@ function selectProfile(name) {
   document.getElementById('profiles-list').style.display = 'none';
   document.getElementById('auth-rules-link').style.display = 'none';
   document.getElementById('pin-pad-container').style.display = 'flex';
-  document.getElementById('pin-pet-name').innerText = "Придумай PIN-код";
+  document.getElementById('pin-pet-name').innerText = "Введи PIN-код";
   document.getElementById('auth-title').innerText = "Вход";
 }
 
