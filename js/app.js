@@ -227,8 +227,18 @@ function addStars(amount) {
 
   checkDailyProgress();
   saveState();
-  showToast(`+${actualAmount} ⭐`, 'bottom');
+  
+  // --- УДАЛЕНА СТРОКА showToast(`+${actualAmount} ⭐`, 'bottom'); ---
+  
   checkNewAchievements();
+
+  // Запускаем анимацию для звездочки в шапке
+  const starEl = document.getElementById('ui-stars');
+  if (starEl) {
+    starEl.classList.remove('animate-star');
+    void starEl.offsetWidth; // Хак для перезапуска анимации
+    starEl.classList.add('animate-star');
+  }
 
   if (state.dailyEarned >= dailyCap && state.capBannerShownDate !== today) {
     state.capBannerShownDate = today;
