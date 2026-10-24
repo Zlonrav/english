@@ -111,13 +111,13 @@
         <button onclick="goHome()" style="background:none; border:none; font-size:16px; color:var(--main-color); font-weight:bold; cursor:pointer;">← Закрыть</button>
       </div>
       
-      <div id="coins-block" style="background:#fff8e1; padding:15px; border-radius:12px; margin-bottom:20px; border: 2px solid var(--gold);">
+      <div id="coins-block" style="background: rgba(251, 191, 36, 0.1); padding:15px; border-radius:12px; margin-bottom:20px; border: 1px solid var(--gold); box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <span style="font-size:16px; font-weight:bold;">🪙 Пульсары:</span>
-          <span id="coins-count" style="font-size:20px; font-weight:bold; color:#b45309;">0</span>
+          <span style="font-size:16px; font-weight:bold; color: #fff;">🪙 Пульсары:</span>
+          <span id="coins-count" style="font-size:20px; font-weight:bold; color: var(--gold);">0</span>
         </div>
         <button id="exchange-btn" class="menu-btn" style="display:none; background:#f59e0b; box-shadow: 0 5px 0 #b45309; justify-content:center;" onclick="openExchangeModal()">🔄 Обменять звёзды</button>
-        <div id="exchange-timer" style="text-align:center; font-size:15px; font-weight:bold; margin-top:10px; color:#d97706;"></div>
+        <div id="exchange-timer" style="text-align:center; font-size:15px; font-weight:bold; margin-top:10px; color:var(--text-muted);"></div>
         <div style="text-align:center; margin-top:10px;">
           <a onclick="openParentMode()" style="color:#666; font-size:12px; cursor:pointer;">🔒</a>
         </div>
