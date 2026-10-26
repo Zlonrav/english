@@ -125,7 +125,7 @@ function selectConnectItem(item, element, side) {
 
       // Показываем красивый перевод
       const transBox = document.getElementById('connect-translation-box');
-      transBox.innerHTML = `🌟 <span style="color: #fff;">${fullSentence}</span><br><span style="font-size: 16px; color: var(--gold);">${translation}</span>`;
+      transBox.innerHTML = `<span style="color: #fff;">${fullSentence}</span><br><span style="font-size: 16px; color: var(--gold);">${translation}</span>`;
       transBox.style.opacity = '1';
 
       let savedLeft = connectLeftSelected.el;
