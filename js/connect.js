@@ -30,7 +30,8 @@ function openConnect() {
         </div>
 
         <!-- Блок для подсказок и перевода -->
-        <div id="connect-translation-box" style="margin-top: 25px; text-align: center; font-size: 18px; font-weight: bold; color: var(--gold); min-height: 70px; transition: opacity 0.3s ease; opacity: 0; line-height: 1.4;"></div>
+                <!-- Блок для подсказок и перевода -->
+                <div id="connect-translation-box" style="margin-top: 25px; text-align: center; font-size: 18px; font-weight: bold; color: var(--gold); height: 90px; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.3s ease; opacity: 0; line-height: 1.4; overflow: hidden;"></div>
       </div>
     `;
     document.querySelector('.content-wrapper').appendChild(view);
@@ -50,6 +51,7 @@ function startConnectGame() {
   const transBox = document.getElementById('connect-translation-box');
   transBox.style.opacity = '0';
   transBox.innerHTML = '';
+  transBox.style.display = 'flex';
 
   // 1. Берем по ОДНОМУ слову из каждого времени
   const categories = ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"];
@@ -110,9 +112,9 @@ function selectConnectItem(item, element, side) {
   // Показываем подсказку ТОЛЬКО при нажатии на левую кнопку
   if (side === 'left' && item.hint) {
     transBox.innerHTML = `
-      <div style="background: rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); display: inline-block; max-width: 90%; text-align: center;">
-        <div style="font-size: 13px; color: var(--gold); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">💡 Подсказка</div>
-        <div style="font-size: 15px; color: #fff; font-weight: normal; line-height: 1.2; opacity: 0.7;">${item.hint}</div>
+      <div style="background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); width: 100%; max-width: 90%; box-sizing: border-box; text-align: center;">
+        <div style="font-size: 13px; color: var(--gold); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;">💡 Подсказка</div>
+        <div style="font-size: 14px; color: #fff; font-weight: normal; line-height: 1.1; opacity: 0.7;">${item.hint}</div>
       </div>
     `;
     transBox.style.opacity = '1';
