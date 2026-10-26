@@ -38,18 +38,19 @@ function openConstructor() {
   view.style.display = 'flex';
   constructorScore = 0;
   document.getElementById('constructor-score').innerText = `Правильно: 0/10`;
+  
+  startConstructorRound(); // <--- ВОССТАНОВЛЕН ЗАПУСК РАУНДА
 }
 
 function startConstructorRound() {
-  let pool = getCleanGamePool(cardsData);
-  if (pool.length === 0) pool = cardsData;
-  currentConstructorCard = pool[Math.floor(Math.random() * pool.length)];
   userBuiltWord = [];
   document.getElementById('constructor-check-btn').disabled = true;
   document.getElementById('constructor-check-btn').classList.remove('active');
 
-  // Берем слова, исключая буквы
+  // Берем слова из очищенного пула
   let pool = getCleanGamePool(cardsData);
+  if (pool.length === 0) pool = cardsData; // Защита
+  
   currentConstructorCard = pool[Math.floor(Math.random() * pool.length)];
 
   // Рендерим иконку и перевод
@@ -68,11 +69,11 @@ function startConstructorRound() {
   let cleanWord = currentConstructorCard.word.toLowerCase().replace(/[^a-z0-9]/g, '');
   let letters = cleanWord.split('');
   
-  // Добавляем 2 случайные буквы-обманки для усложнения, если слово короткое (меньше 6 букв)
-    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-    for (let i = 0; i < 2; i++) {
-      letters.push(alphabet[Math.floor(Math.random() * alphabet.length)]);
-    }
+  // Добавляем 2 случайные буквы-обманки для усложнения
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  for (let i = 0; i < 2; i++) {
+    letters.push(alphabet[Math.floor(Math.random() * alphabet.length)]);
+  }
 
   // Перемешиваем буквы
   shuffledLetters = letters.map((letter, index) => ({ id: index, char: letter }));
