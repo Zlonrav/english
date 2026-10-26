@@ -98,7 +98,7 @@ function updateLevel() {
   }
   
   lvlBox.innerHTML = `
-    <div style="font-size:14px; font-weight:bold; color:#555; margin-top:10px;">
+    <div style="font-size:14px; font-weight:bold; color:#555; margin-top:10px; text-align: center;">
       Звание: <span style="color:var(--main-color); font-size:16px;">${currentLevel.name}</span>
     </div>
     <div class="level-bar-container" style="margin-top: 5px;">
