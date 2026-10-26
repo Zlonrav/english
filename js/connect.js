@@ -3,6 +3,7 @@ let connectLeftSelected = null;
 let connectRightSelected = null;
 let connectPairsLeft = 4;
 let connectScore = 0;
+let connectLocked = false; // Блокировка на время показа ошибки
 
 function openConnect() {
   if (!checkAuth()) return;
@@ -22,15 +23,12 @@ function openConnect() {
         </div>
         
         <div style="display: flex; width: 100%; gap: 15px; justify-content: space-between; position: relative;">
-          <!-- Левая колонка (Кто?) -->
           <div id="connect-left-col" style="display: flex; flex-direction: column; gap: 15px; width: 40%;"></div>
-          
-          <!-- Правая колонка (Что делает?) -->
           <div id="connect-right-col" style="display: flex; flex-direction: column; gap: 15px; width: 55%;"></div>
         </div>
 
-        <!-- Блок для подсказок и перевода (фиксированная высота 90px) -->
-        <div id="connect-translation-box" style="margin-top: 25px; text-align: center; font-size: 18px; font-weight: bold; color: var(--gold); height: 90px; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.3s ease; opacity: 0; line-height: 1.4; overflow: hidden;"></div>
+        <!-- Блок для подсказок и перевода (фиксированная высота) -->
+        <div id="connect-translation-box" style="margin-top: 25px; text-align: center; font-size: 18px; font-weight: bold; color: var(--gold); height: 90px; display: flex; justify-content: center; align-items: center; transition: opacity 0.3s ease; opacity: 0; line-height: 1.2; overflow: hidden;"></div>
       </div>
     `;
     document.querySelector('.content-wrapper').appendChild(view);
@@ -38,6 +36,7 @@ function openConnect() {
 
   view.style.display = 'flex';
   connectScore = 0;
+  connectLocked = false;
   document.getElementById('connect-score').innerText = `Правильно: 0/10`;
   startConnectGame();
 }
@@ -46,11 +45,11 @@ function startConnectGame() {
   connectLeftSelected = null;
   connectRightSelected = null;
   connectPairsLeft = 4;
+  connectLocked = false;
   
   const transBox = document.getElementById('connect-translation-box');
   transBox.style.opacity = '0';
   transBox.innerHTML = ''; 
-  transBox.style.display = 'flex'; 
 
   // 1. Берем по ОДНОМУ слову из каждого времени
   const categories = ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"];
@@ -61,7 +60,6 @@ function startConnectGame() {
     let pool = tensesData.filter(c => c.cat === cat);
     pool.sort(() => Math.random() - 0.5);
     
-    // Ищем слово, где такого персонажа еще не было
     for (let item of pool) {
       if (!seenLefts.has(item.left)) {
         seenLefts.add(item.left);
@@ -104,20 +102,22 @@ function startConnectGame() {
 }
 
 function selectConnectItem(item, element, side) {
+  if (connectLocked) return; // Если показываем ошибку — игнорируем клики
   if (element.style.visibility === 'hidden' || element.classList.contains('correct')) return;
 
   const transBox = document.getElementById('connect-translation-box');
   
-  // Показываем подсказку ТОЛЬКО при нажатии на левую кнопку
+  // Показываем подсказку ТОЛЬКО при нажатии на левую кнопку (в одну строку)
   if (side === 'left' && item.hint) {
     transBox.innerHTML = `
-      <div style="background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); width: 100%; max-width: 90%; box-sizing: border-box; text-align: center;">
-        <div style="font-size: 13px; color: var(--gold); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;">💡 Подсказка</div>
-        <div style="font-size: 14px; color: #fff; font-weight: normal; line-height: 1.1; opacity: 0.7;">${item.hint}</div>
+      <div style="background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); max-width: 95%; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span style="font-size: 18px;">💡</span>
+        <span style="font-size: 14px; color: #fff; font-weight: normal; opacity: 0.7;">${item.hint}</span>
       </div>
     `;
     transBox.style.opacity = '1';
-  } else if (side === 'right') {
+  } else if (side === 'right' && !connectLeftSelected) {
+    // Если нажали правую, но левая еще не выбрана — скрываем подсказку
     transBox.style.opacity = '0';
   }
 
@@ -167,7 +167,6 @@ function selectConnectItem(item, element, side) {
         savedRight.style.visibility = 'hidden';
 
         if (connectPairsLeft === 0) {
-          // Раунд завершен! Начисляем 1 очко за весь раунд
           connectScore++;
           document.getElementById('connect-score').innerText = `Правильно: ${connectScore}/10`;
 
@@ -183,6 +182,8 @@ function selectConnectItem(item, element, side) {
 
     } else {
       // ОШИБКА
+      connectLocked = true; // Блокируем клики на 1 секунду
+      
       transBox.innerHTML = `
         <div style="background: rgba(239, 68, 68, 0.2); padding: 10px 15px; border-radius: 12px; border: 1px solid var(--red); width: 100%; max-width: 90%; box-sizing: border-box; text-align: center;">
           <span style="font-size: 15px; color: var(--red); font-weight: normal;">❌ Неверно! Попробуй другую пару.</span>
@@ -195,6 +196,7 @@ function selectConnectItem(item, element, side) {
         connectLeftSelected = null;
         connectRightSelected = null;
         transBox.style.opacity = '0';
+        connectLocked = false; // Разблокируем
       }, 1000); 
     }
   }
