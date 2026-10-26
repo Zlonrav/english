@@ -24,8 +24,8 @@ function openConstructor() {
         
         <!-- Новый блок: перевод + кнопка звука -->
         <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 15px; width: 100%;">
-          <div id="constructor-translation" class="trainer-trans" style="margin: 0; padding: 0;"></div>
-          <button onclick="speakWord(currentConstructorCard.word)" style="background: #fff; border: 2px solid var(--main-color); border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 var(--main-color); padding: 0; line-height: 1;">🔊</button>
+          <div id="constructor-translation" class="trainer-trans" style="margin: 0; padding: 0; width: auto;"></div>
+          <button onclick="speakWord(currentConstructorCard.word)" style="opacity: 0.5; background: #fff; border: 2px solid var(--main-color); border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 var(--main-color); padding: 0; line-height: 1;">🔊</button>
         </div>
         
         <!-- Область собранного слова -->
