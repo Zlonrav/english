@@ -9,7 +9,7 @@ const REQUIRED_CLICKS = 2;
 
 function showRandomCard() {
   // 1. Фильтруем базу: исключаем Буквы (1) и Цифры 0-9 (2)
-  let trainerPool = cardsData.filter(c => c.cat !== "1. Буквы" && c.cat !== "2. Цифры");
+  let trainerPool = getCleanGamePool(cardsData);
   if (trainerPool.length === 0) trainerPool = cardsData; // Защита, если вдруг база пустая
 
   // 2. Выбираем случайную карточку из оставшихся
