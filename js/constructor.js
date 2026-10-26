@@ -71,7 +71,21 @@ function startConstructorRound() {
   if (currentConstructorCard.color) {
     iconBox.innerHTML = `<div style="width:60px; height:60px; background:${currentConstructorCard.color}; border-radius:50%; border:2px solid rgba(255,255,255,0.2);"></div>`;
   } else {
-    iconBox.innerHTML = currentConstructorCard.icon;
+    // Если это картинка, ограничиваем её размер, чтобы не ломала верстку
+    if (currentConstructorCard.icon && currentConstructorCard.icon.includes('<img')) {
+        let tempDiv = document.createElement('div');
+        tempDiv.innerHTML = currentConstructorCard.icon;
+        let img = tempDiv.querySelector('img');
+        if (img) {
+            img.style.maxWidth = '65px';
+            img.style.maxHeight = '65px';
+            img.style.objectFit = 'contain';
+        }
+        iconBox.innerHTML = tempDiv.innerHTML;
+    } else {
+        // Если это эмодзи, выводим как есть
+        iconBox.innerHTML = currentConstructorCard.icon;
+    }
   }
   document.getElementById('constructor-translation').innerText = currentConstructorCard.trans;
 
