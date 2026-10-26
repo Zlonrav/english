@@ -40,18 +40,30 @@ function startConnectGame() {
   connectRightSelected = null;
   connectPairsLeft = 4;
 
-  // 1. Берем данные из новой базы времен
+  // 1. Берем данные из базы времен
   let pool = [...tensesData]; 
   pool.sort(() => Math.random() - 0.5);
-  
-  // 2. Берем 4 случайные пары для раунда
-  let selected = pool.slice(0, 4);
 
-  // 3. Генерируем левую колонку (Кто? Местоимение)
+  // 2. ФИЛЬТР: Убираем дубликаты левых слов (местоимений)
+  let seenLefts = new Set();
+  let uniquePool = [];
+  
+  for (let item of pool) {
+    if (!seenLefts.has(item.left)) {
+      seenLefts.add(item.left);
+      uniquePool.push(item);
+    }
+    if (uniquePool.length === 4) break; // Нам нужно всего 4 пары
+  }
+
+  // 3. Берем 4 уникальные пары для раунда
+  let selected = uniquePool;
+
+  // 4. Генерируем левую колонку (Кто? Местоимение/Существительное)
   let leftData = selected.map(c => ({ word: c.left, content: c.left }));
   leftData.sort(() => Math.random() - 0.5);
 
-  // 4. Генерируем правую колонку (Что делает? Глагол)
+  // 5. Генерируем правую колонку (Что делает? Глагол)
   // Важно: в word мы сохраняем left (кто), чтобы при клике сравнивать с левой колонкой
   let rightData = selected.map(c => ({ word: c.left, content: c.right }));
   rightData.sort(() => Math.random() - 0.5);
