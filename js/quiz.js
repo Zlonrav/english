@@ -8,22 +8,26 @@ function startQuiz(mode) {
   quizMode = mode;
   quizScore = 0;
   document.getElementById('quiz-menu').style.display = 'none';
-  document.getElementById('quiz-play').style.display = 'flex'; // Чтобы кнопки прижались к низу
-  document.getElementById('quiz-score').innerText = 'Правильно: 0/10'; // Добавили /10
+  document.getElementById('quiz-play').style.display = 'flex'; 
+  document.getElementById('quiz-score').innerText = 'Правильно: 0/10'; 
   loadQuestion();
 }
 
 function loadQuestion() {
+  // 1. Берем основной пул из очищенной базы
   let quizPool = getCleanGamePool(cardsData);
-  if (quizPool.length === 0) quizPool = cardsData; 
+  if (quizPool.length === 0) quizPool = cardsData; // Защита
+  
   currentQuizCard = quizPool[Math.floor(Math.random() * quizPool.length)];
   
-  let sameCategoryCards = cardsData.filter(c => c.cat === currentQuizCard.cat && c.word !== currentQuizCard.word);
+  // 2. Ищем неправильные ответы ТОЛЬКО из очищенного пула (чтобы не было скобок)
+  let sameCategoryCards = quizPool.filter(c => c.cat === currentQuizCard.cat && c.word !== currentQuizCard.word);
   sameCategoryCards.sort(() => Math.random() - 0.5);
   let wrongOptions = sameCategoryCards.slice(0, 2);
   
+  // Если в категории мало слов, добираем из других
   if (wrongOptions.length < 2) {
-      let fallbackPool = cardsData.filter(c => c.word !== currentQuizCard.word && !wrongOptions.includes(c));
+      let fallbackPool = quizPool.filter(c => c.word !== currentQuizCard.word && !wrongOptions.includes(c));
       fallbackPool.sort(() => Math.random() - 0.5);
       while (wrongOptions.length < 2) { wrongOptions.push(fallbackPool.pop()); }
   }
@@ -88,7 +92,7 @@ function checkQuizAnswer(selected, correct, btnElement) {
         showToast("🏆 Раунд пройден! Ты молодец!");
         openQuiz(); 
       } else {
-        loadQuestion(); // <--- Восстановлен переход
+        loadQuestion(); 
       }
     }, 1000);
   } else {
@@ -98,7 +102,7 @@ function checkQuizAnswer(selected, correct, btnElement) {
       if (b.dataset.word === correct.word) b.classList.add('correct');
     });
     setTimeout(() => { 
-      loadQuestion(); // <--- Восстановлен переход
+      loadQuestion(); 
     }, 2000);
   }
 }
