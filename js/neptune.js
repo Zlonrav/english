@@ -78,7 +78,7 @@ let nCurrentCorrectWord = "";
 
 // --- ДВИЖОК АНИМАЦИИ ЗВЕЗД ---
 let nStarOffset = 0;
-let nTargetStarSpeed = 0,33; // 1 = медленно вниз (покой)
+let nTargetStarSpeed = 0.33; // 1 = медленно вниз (покой)
 let nCurrentStarSpeed = 1;
 let nStarAnimId = null;
 
@@ -143,7 +143,7 @@ function openNeptune() {
   nPlanetIdx = 0;
   nProgress = 0;
   nLocked = false;
-  nTargetStarSpeed = 0,33; // В покое звезды летят вниз
+  nTargetStarSpeed = 0.33; // В покое звезды летят вниз
   nCurrentStarSpeed = 1;
   
   // Мгновенный сброс планеты наверх при старте
@@ -267,7 +267,7 @@ function answerNeptune(selectedOpt, btnElement) {
         
         nPlanetIdx++;
         nProgress = 0;
-        nTargetStarSpeed = 0,33; 
+        nTargetStarSpeed = 0.33; 
         
         // Мгновенно убираем старую планету наверх, чтобы она не летела обратно
         if (planetEl) {
@@ -286,7 +286,7 @@ function answerNeptune(selectedOpt, btnElement) {
          showToast("🌌 Вы покинули Млечный Путь... Продолжение следует!", 'top');
          setTimeout(goHome, 3000);
       } else {
-        nTargetStarSpeed = 0,33; // Возвращаем скорость покоя
+        nTargetStarSpeed = 0.33; // Возвращаем скорость покоя
         startNeptuneQuestion();
       }
     }, 2000); // 2000 мс = 2 секунды полета
@@ -313,7 +313,7 @@ function answerNeptune(selectedOpt, btnElement) {
       // Возвращаем ракету в центр
       rocket.style.transition = 'top 0.5s ease-in-out';
       rocket.style.top = '50%';
-      nTargetStarSpeed = 0,33; // Возвращаем медленный дрейф вниз
+      nTargetStarSpeed = 0.33; // Возвращаем медленный дрейф вниз
       
       setTimeout(() => {
         startNeptuneQuestion();
