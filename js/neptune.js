@@ -188,6 +188,16 @@ function updateNeptuneHUD() {
 // 5. Генерация вопроса
 function startNeptuneQuestion() {
   nLocked = false;
+  
+  // ВОЗВРАЩАЕМ РАКЕТУ В ЦЕНТР
+  const rocket = document.getElementById('n-rocket');
+  if (rocket) {
+    rocket.style.transition = 'none'; // Отключаем анимацию, чтобы не было видно "прыжка"
+    rocket.style.top = '50%';
+    // Включаем анимацию обратно через миллисекунду
+    setTimeout(() => { rocket.style.transition = 'top 2s ease-out'; }, 50);
+  }
+
   const terminal = document.getElementById('n-terminal');
   terminal.style.display = 'flex';
   terminal.style.opacity = '1';
