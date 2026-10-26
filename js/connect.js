@@ -27,8 +27,8 @@ function openConnect() {
           <div id="connect-right-col" style="display: flex; flex-direction: column; gap: 15px; width: 55%;"></div>
         </div>
 
-        <!-- Блок для подсказок и перевода (фиксированная высота) -->
-        <div id="connect-translation-box" style="margin-top: 25px; text-align: center; font-size: 18px; font-weight: bold; color: var(--gold); height: 40px; display: flex; justify-content: center; align-items: center; transition: opacity 0.3s ease; opacity: 0; line-height: 1.2; overflow: hidden;"></div>
+        <!-- Блок для подсказок и перевода (фиксированная высота, верхнее выравнивание) -->
+        <div id="connect-translation-box" style="margin-top: 25px; text-align: center; font-size: 16px; font-weight: bold; color: var(--gold); height: 90px; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 15px; transition: opacity 0.3s ease; opacity: 0; line-height: 1.3; overflow: hidden;"></div>
       </div>
     `;
     document.querySelector('.content-wrapper').appendChild(view);
@@ -48,8 +48,8 @@ function startConnectGame() {
   connectLocked = false;
   
   const transBox = document.getElementById('connect-translation-box');
+  transBox.innerHTML = '';
   transBox.style.opacity = '0';
-  transBox.innerHTML = ''; 
 
   // 1. Берем по ОДНОМУ слову из каждого времени
   const categories = ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"];
@@ -107,9 +107,13 @@ function selectConnectItem(item, element, side) {
 
   const transBox = document.getElementById('connect-translation-box');
   
-  // 1. ПОДСКАЗКА (без плитки, в одну строку, мелкий шрифт)
+  // 1. ПОДСКАЗКА (перенос строк разрешен, ширина ограничена)
   if (side === 'left' && item.hint) {
-    transBox.innerHTML = `<div style="font-size: 13px; color: var(--gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">💡 ${item.hint}</div>`;
+    transBox.innerHTML = `
+      <div style="font-size: 14px; color: var(--gold); line-height: 1.2; width: 100%; padding: 0 10px; box-sizing: border-box;">
+        💡 ${item.hint}
+      </div>
+    `;
     transBox.style.opacity = '1';
   } else if (side === 'right' && !connectLeftSelected) {
     transBox.style.opacity = '0';
@@ -140,10 +144,10 @@ function selectConnectItem(item, element, side) {
       speakWord(fullSentence); 
       addStars(2);
 
-      // 2. ПРАВИЛЬНЫЙ ОТВЕТ (в две строки, без вылезания за рамки)
+      // 2. ПРАВИЛЬНЫЙ ОТВЕТ (в две строки, выравнивание по верху)
       transBox.innerHTML = `
-        <div style="display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center; width: 100%; text-align: center;">
-          <div style="font-size: 16px; color: #fff; line-height: 1.2;">${fullSentence}</div>
+        <div style="display: flex; flex-direction: column; gap: 2px; align-items: center; justify-content: flex-start; width: 100%; padding: 0 10px; box-sizing: border-box;">
+          <div style="font-size: 15px; color: #fff; line-height: 1.2;">${fullSentence}</div>
           <div style="font-size: 14px; color: var(--gold); line-height: 1.2;">${translation}</div>
         </div>
       `;
@@ -160,7 +164,6 @@ function selectConnectItem(item, element, side) {
         savedLeft.style.visibility = 'hidden';
         savedRight.style.visibility = 'hidden';
 
-        // ОЧИЩАЕМ ПЕРЕВОД ПОСЛЕ ИСЧЕЗНОВЕНИЯ КАРТОЧЕК
         transBox.innerHTML = '';
         transBox.style.opacity = '0';
 
@@ -176,13 +179,17 @@ function selectConnectItem(item, element, side) {
             setTimeout(startConnectGame, 2500);
           }
         }
-      }, 2000);
+      }, 2500);
 
     } else {
-      // 3. ОШИБКА (без плитки, в одну строку)
+      // 3. ОШИБКА (без плитки, по центру)
       connectLocked = true; 
       
-      transBox.innerHTML = `<div style="font-size: 15px; color: var(--red); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">❌ Неверно! Попробуй другую пару.</div>`;
+      transBox.innerHTML = `
+        <div style="font-size: 15px; color: var(--red); line-height: 1.2; width: 100%; padding: 0 10px; box-sizing: border-box;">
+          ❌ Неверно! Попробуй другую пару.
+        </div>
+      `;
       transBox.style.opacity = '1';
       
       setTimeout(() => {
