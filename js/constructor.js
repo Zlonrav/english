@@ -38,7 +38,6 @@ function openConstructor() {
   view.style.display = 'flex';
   constructorScore = 0;
   document.getElementById('constructor-score').innerText = `Правильно: 0/10`;
-  ();
 }
 
 function startConstructorRound() {
