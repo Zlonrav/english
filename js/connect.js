@@ -17,7 +17,7 @@ function openConnect() {
       <div class="trainer-card" style="height: auto; min-height: 560px; justify-content: flex-start; padding: 25px 15px;">
         <!-- ЕДИНАЯ ШАПКА С ВЫХОДОМ И СЧЕТЧИКОМ -->
         <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-          <button class="btn-exit" onclick="goHome()">← Выйти</button>
+          <button class="btn-exit" onclick="openQuiz()">← Выйти</button>
           <span id="connect-score" style="font-weight: bold; color: var(--green); font-size: 18px;">Правильно: 0/10</span>
         </div>
         
