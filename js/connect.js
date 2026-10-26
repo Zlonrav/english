@@ -179,7 +179,7 @@ function selectConnectItem(item, element, side) {
             setTimeout(startConnectGame, 2500);
           }
         }
-      }, 3000);
+      }, 3500);
 
     } else {
       // 3. ОШИБКА (без плитки, по центру)
