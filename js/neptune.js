@@ -124,12 +124,16 @@ function updateNeptuneHUD() {
   const planetEl = document.getElementById('n-planet');
   if (planetEl) {
     planetEl.innerText = currentP.icon;
-    // Планета подплывает справа при старте
-    planetEl.style.right = '-100px';
-    setTimeout(() => planetEl.style.right = '10px', 100);
+
+    // Высчитываем позицию планеты от -20% до 100%
+    // Чем больше прогресс, тем ниже опускается планета
+    let progressPercent = nextP.target > 0 ? (nProgress / nextP.target) : 0;
+    let topPos = -20 + (progressPercent * 120); 
+    
+    planetEl.style.top = `${topPos}%`;
   }
 
-  // Сброс ракеты в центр
+  // Сброс ракеты в центр (она возвращается после полета)
   const rocket = document.getElementById('n-rocket');
   if (rocket) rocket.style.top = '50%';
 }
@@ -184,7 +188,7 @@ function answerNeptune(selectedOpt, btnElement) {
     // ПРАВИЛЬНО
     btnElement.classList.add('correct');
     nProgress++;
-    updateNeptuneHUD();
+    updateNeptuneHUD(); // Двигаем планету вниз
 
     // Анимация полета ВВЕРХ
     rocket.style.transition = 'top 2s ease-out';
@@ -194,22 +198,26 @@ function answerNeptune(selectedOpt, btnElement) {
     setTimeout(() => terminal.style.display = 'none', 300);
 
     setTimeout(() => {
-      // Проверка: долетели ли до планеты?
       const currentP = neptunePlanets[nPlanetIdx];
       const nextP = neptunePlanets[nPlanetIdx + 1];
       
       if (nextP && nProgress >= nextP.target) {
-        // ДОЛЕТЕЛИ
+        // ДОЛЕТЕЛИ ДО ПЛАНЕТЫ
         addStars(nextP.reward);
         showToast(`🪐 Вы достигли ${nextP.name}! Награда: +${nextP.reward} ⭐`, 'top');
         
-        nPlanetIdx++;
-        nProgress = 0;
+        // Заставляем планету улететь вниз за экран
+        const planetEl = document.getElementById('n-planet');
+        if (planetEl) planetEl.style.top = '120%';
         
-        // Перезапускаем визуал планеты
-        updateNeptuneHUD();
-        
-        setTimeout(startNeptuneQuestion, 1000);
+        // Ждем, пока планета улетит, и запускаем новую
+        setTimeout(() => {
+          nPlanetIdx++;
+          nProgress = 0;
+          updateNeptuneHUD(); // Новая планета появится сверху (-20%)
+          setTimeout(startNeptuneQuestion, 1000);
+        }, 600); 
+
       } else if (!nextP) {
          showToast("🌌 Вы покинули Млечный Путь... Продолжение следует!", 'top');
          setTimeout(goHome, 3000);
@@ -232,7 +240,7 @@ function answerNeptune(selectedOpt, btnElement) {
 
     setTimeout(() => {
       // Возвращаем ракету на место
-      rocket.style.transition = 'top 0.5s ease-out';
+      rocket.style.transition = 'top 0.5s ease-in-out';
       rocket.style.top = '50%';
       
       setTimeout(() => {
