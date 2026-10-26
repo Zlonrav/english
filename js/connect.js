@@ -155,17 +155,13 @@ function selectConnectItem(item, element, side) {
         savedLeft.style.visibility = 'hidden';
         savedRight.style.visibility = 'hidden';
 
+        // ОЧИЩАЕМ ПЕРЕВОД ПОСЛЕ ИСЧЕЗНОВЕНИЯ КАРТОЧЕК
+        transBox.innerHTML = '';
+        transBox.style.opacity = '0';
+
         if (connectPairsLeft === 0) {
           connectScore++;
-          document.getElementById('connect-score').innerText = `Правильно: ${connectScore}/10`;
-
-          if (connectScore >= 10) {
-            showToast("🏆 Все 10 раундов пройдены! Ты молодец!", 'top');
-            setTimeout(() => { goHome(); }, 2000); 
-          } else {
-            showToast(`🌌 Раунд пройден! (${connectScore}/10)`, 'top');
-            setTimeout(startConnectGame, 2500);
-          }
+          // ... (остальной код)
         }
       }, 2000);
 
