@@ -15,15 +15,15 @@ function openConnect() {
     view.innerHTML = `
       <div class="trainer-card" style="height: auto; min-height: 560px; justify-content: flex-start; padding: 25px 15px;">
         <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-          <button class="btn-exit" onclick="goHome()">← Выйти</button>
+          <button class="btn-exit" onclick="openQuiz()">← Выйти</button>
           <span style="font-weight: bold; color: var(--main-color); font-size: 18px;">✨ Космические Пары</span>
         </div>
         
         <div style="display: flex; width: 100%; gap: 20px; justify-content: space-between; position: relative;">
-          <!-- Левая колонка (Иконки) -->
+          <!-- Левая колонка (Местоимения/Существительные) -->
           <div id="connect-left-col" style="display: flex; flex-direction: column; gap: 15px; width: 45%;"></div>
           
-          <!-- Правая колонка (Слова) -->
+          <!-- Правая колонка (Глаголы) -->
           <div id="connect-right-col" style="display: flex; flex-direction: column; gap: 15px; width: 45%;"></div>
         </div>
       </div>
@@ -47,11 +47,12 @@ function startConnectGame() {
   // 2. Берем 4 случайные пары для раунда
   let selected = pool.slice(0, 4);
 
-  // 3. Генерируем левую колонку (Кто? Местоимение/Существительное)
+  // 3. Генерируем левую колонку (Кто? Местоимение)
   let leftData = selected.map(c => ({ word: c.left, content: c.left }));
   leftData.sort(() => Math.random() - 0.5);
 
-  // 4. Генерируем правую колонку (Что делает? Глагол с окончанием)
+  // 4. Генерируем правую колонку (Что делает? Глагол)
+  // Важно: в word мы сохраняем left (кто), чтобы при клике сравнивать с левой колонкой
   let rightData = selected.map(c => ({ word: c.left, content: c.right }));
   rightData.sort(() => Math.random() - 0.5);
 
@@ -65,16 +66,29 @@ function startConnectGame() {
     const box = document.createElement('div');
     box.className = 'quiz-opt-btn';
     box.style.cssText = `padding: 14px; font-size: 18px; height: 65px; display: flex; align-items: center; justify-content: center; margin: 0; text-align: center;`;
-    box
+    box.innerText = item.content;
+    box.onclick = () => selectConnectItem(item, box, 'left');
+    leftCol.appendChild(box);
+  });
+
+  rightData.forEach(item => {
+    const box = document.createElement('div');
+    box.className = 'quiz-opt-btn';
+    box.style.cssText = `padding: 14px; font-size: 16px; height: 65px; display: flex; align-items: center; justify-content: center; margin: 0; font-weight: 900; text-align: center;`;
+    box.innerText = item.content;
+    box.onclick = () => selectConnectItem(item, box, 'right');
+    rightCol.appendChild(box);
+  });
+}
 
 function selectConnectItem(item, element, side) {
   if (element.style.visibility === 'hidden') return;
+  if (element.classList.contains('correct')) return; // Нельзя нажать на уже собранное
 
   if (side === 'left') {
-    // Снимаем класс со старого выбора слева
     if (connectLeftSelected) connectLeftSelected.el.classList.remove('wrong');
     connectLeftSelected = { item: item, el: element };
-    element.classList.add('wrong'); // Используем готовый класс оранжевого/красного бордера из CSS
+    element.classList.add('wrong'); 
   } else {
     if (connectRightSelected) connectRightSelected.el.classList.remove('wrong');
     connectRightSelected = { item: item, el: element };
@@ -85,7 +99,7 @@ function selectConnectItem(item, element, side) {
   if (connectLeftSelected && connectRightSelected) {
     if (connectLeftSelected.item.word === connectRightSelected.item.word) {
       // Верно!
-      let wordToSpeak = connectLeftSelected.item.word;
+      let wordToSpeak = connectRightSelected.item.content; // Озвучиваем глагол
       connectLeftSelected.el.classList.remove('wrong');
       connectRightSelected.el.classList.remove('wrong');
       
@@ -94,8 +108,7 @@ function selectConnectItem(item, element, side) {
 
       speakWord(wordToSpeak);
       addStars(2);
-      markAsLearned(wordToSpeak);
-
+      
       let savedLeft = connectLeftSelected.el;
       let savedRight = connectRightSelected.el;
 
