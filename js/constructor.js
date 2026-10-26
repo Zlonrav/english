@@ -17,7 +17,7 @@ function openConstructor() {
     view.innerHTML = `
       <div class="trainer-card" id="constructor-card">
         <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-          <button class="btn-exit" onclick="goHome()">← Выйти</button>
+          <button class="btn-exit" onclick="openQuiz()">← Выйти</button>
           <span id="constructor-score" style="font-weight: bold; color: var(--text-muted);">Правильно: 0/10</span>
         </div>
         <div id="constructor-icon-box" style="font-size: 60px; height: 70px; display: flex; align-items: center; justify-content: center; margin-bottom: 5px;"></div>
