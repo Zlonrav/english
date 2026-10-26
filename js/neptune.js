@@ -14,10 +14,27 @@ neptuneStyle.innerHTML = `
   @keyframes n-move { from { transform: translateY(0); } to { transform: translateY(-50%); } }
 
   /* Ракета */
-  #n-rocket { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 60px; z-index: 10; transition: top 0.5s ease-in-out; filter: drop-shadow(0 0 10px #3b82f6); }
+  #n-rocket { 
+    position: absolute; 
+    left: 50%; 
+    top: 50%; 
+    transform: translate(-50%, -50%) rotate(-45deg); /* <--- ПОВОРОТ ВВЕРХ */
+    font-size: 60px; 
+    z-index: 10; 
+    transition: top 0.5s ease-in-out; 
+    filter: drop-shadow(0 0 10px #3b82f6); 
+  }
   
   /* Планета на фоне */
-  #n-planet { position: absolute; right: -100px; top: 20%; font-size: 150px; z-index: 1; opacity: 0.4; transition: right 2s ease-in-out, opacity 2s; }
+  #n-planet { 
+    position: absolute; 
+    right: 10%; /* Справа */
+    top: -20%; /* Стартует за верхним краем экрана */
+    font-size: 120px; 
+    z-index: 1; 
+    opacity: 0.8; 
+    transition: top 0.5s ease-in-out, opacity 0.5s; /* Анимируем движение сверху вниз */
+  }
 
   /* Терминал (Матрица) */
   #n-terminal { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 420px; background: rgba(0, 15, 0, 0.85); border: 1px solid #00ffcc; box-shadow: 0 0 15px rgba(0, 255, 204, 0.3); padding: 15px; border-radius: 8px; z-index: 20; display: none; flex-direction: column; gap: 10px; }
