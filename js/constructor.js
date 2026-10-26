@@ -197,7 +197,7 @@ function checkConstructorAnswer() {
 
     setTimeout(() => {
       if (constructorScore >= 10) {
-        showToast("🏆 Космический раунд завершен!", 'top');
+        showToast("🏆 Раунд завершен!", 'top');
         goHome();
       } else {
         startConstructorRound();
