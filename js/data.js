@@ -427,7 +427,7 @@ const cardsData = [
   { cat: "8. Дом и мебель", icon: "🪟", word: "Curtain", pron: "кё́ртэн", trans: "штора / занавеска", plural: "Curtains", pronP: "кё́ртэнз", transP: "шторы" },
   { cat: "8. Дом и мебель", icon: "🟫", word: "Carpet", pron: "ка́рпэт", trans: "ковёр", plural: "Carpets", pronP: "ка́рпэтс", transP: "ковры" },
   { cat: "8. Дом и мебель", icon: "🟫", word: "Rug", pron: "раг", trans: "коврик (небольшой)", plural: "Rugs", pronP: "рагз", transP: "коврики" },
-  { cat: "8. Дом и мебель", icon: "🏺", word: "Vase", pron: "вааз", trans: "ваза", plural: "Vases", pronP: "ва́азiz", transP: "вазы" },
+  { cat: "8. Дом и мебель", icon: "🏺", word: "Vase", pron: "вааз", trans: "ваза", plural: "Vases", pronP: "ва́азиз", transP: "вазы" },
   { cat: "8. Дом и мебель", icon: "🕯️", word: "Candle", pron: "кэ́ндл", trans: "свеча", plural: "Candles", pronP: "кэ́ндлз", transP: "свечи" },
   { cat: "8. Дом и мебель", icon: "🔨", word: "Hammer", pron: "хэ́мэр", trans: "молоток", plural: "Hammers", pronP: "хэ́мэрз", transP: "молотки" },
   { cat: "8. Дом и мебель", icon: "🪛", word: "Screwdriver", pron: "скру́удайвэр", trans: "отвёртка", plural: "Screwdrivers", pronP: "скру́удайвэрз", transP: "отвёртки" },
@@ -1169,7 +1169,6 @@ const cardsData = [
   { cat: "9. Еда и посуда", icon: "🍡", word: "Marshmallow", pron: "маршмэ́ллоу", trans: "зефир / маршмеллоу", plural: "Marshmallows", pronP: "маршмэ́ллоуз", transP: "зефирки" },
   { cat: "9. Еда и посуда", icon: "🍭", word: "Lollipop", pron: "ло́липоп", trans: "леденец на палочке", plural: "Lollipops", pronP: "ло́липопс", transP: "леденцы" },
   { cat: "9. Еда и посуда", icon: "🍝", word: "Spaghetti", pron: "спагэ́тти", trans: "спагетти", single: true },
-  { cat: "9. Еда и посуда", icon: "🥣", word: "Oatmeal", pron: "о́утмиил", trans: "овсяная каша", single: true },
 
   // 11. Одежда (Новые детали)
   { cat: "11. Одежда", icon: "👕", word: "Sweatshirt", pron: "суэ́тшёрт", trans: "толстовка", plural: "Sweatshirts", pronP: "суэ́тшёртс", transP: "толстовки" },
@@ -1268,7 +1267,7 @@ const cardsData = [
   { cat: "25. Спорт", icon: "🥊", word: "Boxing", pron: "бо́ксин", trans: "бокс", single: true },
   { cat: "25. Спорт", icon: "🤼", word: "Wrestling", pron: "рэ́слин", trans: "борьба", single: true },
   { cat: "25. Спорт", icon: "🥋", word: "Judo", pron: "джу́доу", trans: "дзюдо", single: true },
-  { cat: "25. Спорт", icon: "🥋", word: "Karate", pron: "карáте", trans: "карате", single: true },
+  { cat: "25. Спорт", icon: "🥋", word: "Karate", pron: "карáте", trans: "кара́те", single: true },
   { cat: "25. Спорт", icon: "⛷️", word: "Skiing", pron: "ски́ин", trans: "лыжный спорт", single: true },
   { cat: "25. Спорт", icon: "🏂", word: "Snowboarding", pron: "сно́убоордин", trans: "сноубординг", single: true },
   { cat: "25. Спорт", icon: "⛸️", word: "Skating", pron: "скэ́йтин", trans: "катание на коньках", single: true },
@@ -1303,3 +1302,25 @@ console.log(
   `%c📚 База данных: v${DB_VERSION} | Слов: ${DB_WORD_COUNT}`, 
   'background: #0f172a; color: #10b981; font-weight: bold; font-size: 14px; padding: 4px 8px; border-radius: 4px; border: 1px solid #10b981;'
 );
+
+// ================= ПЛАГИН-ФИКСЕР ДЛЯ СЛОЖНЫХ СЛОВ =================
+function getCleanGamePool(cards) {
+  return cards.filter(c => {
+    // Исключаем алфавит и порядковые для игровых режимов
+    if (c.cat === "1. Буквы" || c.cat === "4. Порядковые") return false;
+    
+    // Исключаем фразы длиннее 10 символов
+    if (c.word.length > 10) return false;
+    
+    return true;
+  }).map(card => {
+    let cleanCard = { ...card };
+    
+    // Если в слове есть скобки, отсекаем их для игр
+    if (cleanCard.word.includes('(')) {
+      cleanCard.word = cleanCard.word.split('(')[0].trim();
+    }
+    
+    return cleanCard;
+  });
+}
