@@ -11,12 +11,12 @@ neptuneStyle.innerHTML = `
   .n-layer2 { background-size: 300px 300px; opacity: 0.5; }
   .n-layer3 { background-size: 400px 400px; opacity: 0.8; }
 
-  /* Ракета */
+  /* Ракета (время полета 1с - как вниз, так и вверх) */
   #n-rocket { 
     position: absolute; left: 50%; top: 50%; 
     transform: translate(-50%, -50%) rotate(-45deg); 
     font-size: 60px; z-index: 10; 
-    transition: top 2s ease-out; /* 2 секунды на полет */
+    transition: top 1s ease-out; /* Исправлено: теперь 1с, чтобы не висла */
     filter: drop-shadow(0 0 10px #3b82f6); 
   }
   
@@ -24,7 +24,7 @@ neptuneStyle.innerHTML = `
   #n-planet { 
     position: absolute; right: 10%; top: -20%; 
     font-size: 120px; z-index: 1; opacity: 0.8; 
-    transition: top 2s ease-out, opacity 0.5s; /* Синхронизировано с ракетой */
+    transition: top 1s ease-out, opacity 0.5s; /* Синхронизировано с ракетой */
   }
 
   /* Терминал (Матрица) */
@@ -78,8 +78,8 @@ let nCurrentCorrectWord = "";
 
 // --- ДВИЖОК АНИМАЦИИ ЗВЕЗД ---
 let nStarOffset = 0;
-let nTargetStarSpeed = 0.33; // 1 = медленно вниз (покой)
-let nCurrentStarSpeed = 1;
+let nTargetStarSpeed = 0.33; // Медленный дрейф
+let nCurrentStarSpeed = 0.33;
 let nStarAnimId = null;
 
 function animateNeptuneStars() {
@@ -140,11 +140,20 @@ function openNeptune() {
   }
 
   view.style.display = 'flex';
-  nPlanetIdx = 0;
-  nProgress = 0;
   nLocked = false;
-  nTargetStarSpeed = 0.33; // В покое звезды летят вниз
-  nCurrentStarSpeed = 1;
+  
+  // ВОССТАНАВЛИВАЕМ ПРОГРЕСС ИЗ ПРОФИЛЯ
+  nPlanetIdx = state.neptunePlanetIdx || 0;
+  nProgress = state.neptuneProgress || 0;
+  
+  // Если уже долетели до конца игры, начинаем заново
+  if (nPlanetIdx >= neptunePlanets.length - 1) {
+    nPlanetIdx = 0;
+    nProgress = 0;
+  }
+  
+  nTargetStarSpeed = 0.33; 
+  nCurrentStarSpeed = 0.33;
   
   // Мгновенный сброс планеты наверх при старте
   const planetEl = document.getElementById('n-planet');
@@ -160,8 +169,8 @@ function openNeptune() {
   }
   
   setTimeout(() => {
-    if (planetEl) planetEl.style.transition = 'top 2s ease-out';
-    if (rocket) rocket.style.transition = 'top 2s ease-out';
+    if (planetEl) planetEl.style.transition = 'top 1s ease-out';
+    if (rocket) rocket.style.transition = 'top 1s ease-out';
     updateNeptuneHUD();
     startNeptuneQuestion();
   }, 50);
@@ -192,8 +201,8 @@ function startNeptuneQuestion() {
   // ПЛАВНО ВОЗВРАЩАЕМ РАКЕТУ В ЦЕНТР
   const rocket = document.getElementById('n-rocket');
   if (rocket) {
-    rocket.style.transition = 'top 1s ease-in-out'; // Включаем плавную анимацию возврата
-    rocket.style.top = '50%'; // Возвращаем в центр экрана
+    rocket.style.transition = 'top 0.5s ease-in-out'; // Возврат в центр быстрее
+    rocket.style.top = '50%'; 
   }
 
   const terminal = document.getElementById('n-terminal');
@@ -245,20 +254,25 @@ function answerNeptune(selectedOpt, btnElement) {
     // ПРАВИЛЬНО (+1)
     btnElement.classList.add('correct');
     
-    // Обновляем прогресс и двигаем планету (займет 2 секунды из-за transition в CSS)
+    // Обновляем прогресс и двигаем планету (займет 1 секунду из-за transition в CSS)
     nProgress = Math.min(nProgress + 1, nextP.target); 
     updateNeptuneHUD(); 
 
-    // Звезды летят вниз в 2 раза быстрее (было 1, стало 2)
+    // СОХРАНЯЕМ ПРОГРЕСС
+    state.neptunePlanetIdx = nPlanetIdx;
+    state.neptuneProgress = nProgress;
+    saveState();
+
+    // Звезды летят вниз в 2 раза быстрее 
     nTargetStarSpeed = 2; 
 
-    // Ракета летит вверх (займет 2 секунды)
+    // Ракета летит вверх (займет 1 секунду)
     rocket.style.top = '10%';
     
     terminal.style.opacity = '0';
     setTimeout(() => terminal.style.display = 'none', 300);
 
-    // Ждем 2 секунды, пока летит ракета и двигается планета
+    // Ждем 1 секунду, пока летит ракета и двигается планета (синхронно)
     setTimeout(() => {
       if (nextP && nProgress >= nextP.target) {
         // ДОЛЕТЕЛИ ДО ПЛАНЕТЫ
@@ -269,16 +283,23 @@ function answerNeptune(selectedOpt, btnElement) {
         nProgress = 0;
         nTargetStarSpeed = 0.33; 
         
-        // Мгновенно убираем старую планету наверх, чтобы она не летела обратно
+        // СОХРАНЯЕМ НОВУЮ ПЛАНЕТУ
+        state.neptunePlanetIdx = nPlanetIdx;
+        state.neptuneProgress = 0;
+        saveState();
+        
+        // МГНОВЕННАЯ СМЕНА ПЛАНЕТЫ (чтобы не было пустоты)
         if (planetEl) {
-          planetEl.style.transition = 'none';
-          planetEl.style.top = '-20%';
+          planetEl.style.transition = 'none'; // Отключаем анимацию
+          planetEl.style.top = '-20%';        // Ставим наверх
         }
         
+        // Вызываем обновление, чтобы сменилась иконка и текст HUD
+        updateNeptuneHUD(); 
+
         setTimeout(() => {
-          // Возвращаем анимацию и запускаем новую планету
-          if (planetEl) planetEl.style.transition = 'top 2s ease-out';
-          updateNeptuneHUD(); 
+          // Включаем анимацию обратно и запускаем новую планету
+          if (planetEl) planetEl.style.transition = 'top 1s ease-out';
           startNeptuneQuestion();
         }, 50);
 
@@ -289,7 +310,7 @@ function answerNeptune(selectedOpt, btnElement) {
         nTargetStarSpeed = 0.33; // Возвращаем скорость покоя
         startNeptuneQuestion();
       }
-    }, 2000); // 2000 мс = 2 секунды полета
+    }, 1000); // 1000 мс = 1 секунда полета
 
   } else {
     // НЕПРАВИЛЬНО (-2)
@@ -302,7 +323,12 @@ function answerNeptune(selectedOpt, btnElement) {
     nProgress = Math.max(0, nProgress - 2);
     updateNeptuneHUD(); // Планета откатывается вверх
 
-    // Звезды летят ВВЕРХ в 3 раза быстрее (отрицательная скорость)
+    // СОХРАНЯЕМ ПРОГРЕСС
+    state.neptunePlanetIdx = nPlanetIdx;
+    state.neptuneProgress = nProgress;
+    saveState();
+
+    // Звезды летят ВВЕРХ
     nTargetStarSpeed = -3; 
 
     // Ракета летит вниз (1 секунда)
