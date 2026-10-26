@@ -1295,5 +1295,11 @@ const cardsData = [
   { cat: "26. Искусство", icon: "🗿", word: "Sculpture", pron: "ска́лпчэр", trans: "скульптура", plural: "Sculptures", pronP: "ска́лпчэрз", transP: "скульптуры" },
 ];
 
-// Автоматический подсчет слов
+// Автоматический подсчет количества слов
 const DB_WORD_COUNT = cardsData.length;
+
+// Красивый вывод в консоль (будет зеленым и жирным)
+console.log(
+  `%c📚 База данных: v${DB_VERSION} | Слов: ${DB_WORD_COUNT}`, 
+  'background: #0f172a; color: #10b981; font-weight: bold; font-size: 14px; padding: 4px 8px; border-radius: 4px; border: 1px solid #10b981;'
+);
