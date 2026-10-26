@@ -21,7 +21,12 @@ function openConstructor() {
           <span id="constructor-score" style="font-weight: bold; color: var(--text-muted);">Правильно: 0/10</span>
         </div>
         <div id="constructor-icon-box" style="font-size: 60px; height: 70px; display: flex; align-items: center; justify-content: center; margin-bottom: 5px;"></div>
-        <div id="constructor-translation" class="trainer-trans" style="margin-bottom: 15px;"></div>
+        
+        <!-- Новый блок: перевод + кнопка звука -->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 15px; width: 100%;">
+          <div id="constructor-translation" class="trainer-trans" style="margin: 0; padding: 0;"></div>
+          <button onclick="speakWord(currentConstructorCard.word)" style="background: #fff; border: 2px solid var(--main-color); border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 var(--main-color); padding: 0; line-height: 1;">🔊</button>
+        </div>
         
         <!-- Область собранного слова -->
         <div id="constructor-slots" style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; min-height: 50px; width: 100%; margin-bottom: 20px;"></div>
