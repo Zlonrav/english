@@ -39,7 +39,7 @@ function openConstructor() {
   constructorScore = 0;
   document.getElementById('constructor-score').innerText = `Правильно: 0/10`;
   
-  startConstructorRound(); // <--- ВОССТАНОВЛЕН ЗАПУСК РАУНДА
+  startConstructorRound(); 
 }
 
 function startConstructorRound() {
@@ -47,11 +47,19 @@ function startConstructorRound() {
   document.getElementById('constructor-check-btn').disabled = true;
   document.getElementById('constructor-check-btn').classList.remove('active');
 
-  // Берем слова из очищенного пула
+  // 1. Берем слова из очищенного пула
   let pool = getCleanGamePool(cardsData);
-  if (pool.length === 0) pool = cardsData; // Защита
   
-  currentConstructorCard = pool[Math.floor(Math.random() * pool.length)];
+  // 2. ДОПОЛНИТЕЛЬНЫЙ ФИЛЬТР ТОЛЬКО ДЛЯ КОНСТРУКТОРА:
+  // Оставляем только слова без пробелов и дефисов (т.е. состоящие из одного слова)
+  let singleWordPool = pool.filter(c => !c.word.includes(' ') && !c.word.includes('-'));
+  
+  // 3. Защита на случай, если пул вдруг опустеет (маловероятно, но пусть будет)
+  if (singleWordPool.length === 0) {
+    singleWordPool = pool; 
+  }
+
+  currentConstructorCard = singleWordPool[Math.floor(Math.random() * singleWordPool.length)];
 
   // Рендерим иконку и перевод
   const iconBox = document.getElementById('constructor-icon-box');
@@ -74,6 +82,13 @@ function startConstructorRound() {
   for (let i = 0; i < 2; i++) {
     letters.push(alphabet[Math.floor(Math.random() * alphabet.length)]);
   }
+
+  // Перемешиваем буквы
+  shuffledLetters = letters.map((letter, index) => ({ id: index, char: letter }));
+  shuffledLetters.sort(() => Math.random() - 0.5);
+
+  renderConstructorMechanics();
+}
 
   // Перемешиваем буквы
   shuffledLetters = letters.map((letter, index) => ({ id: index, char: letter }));
