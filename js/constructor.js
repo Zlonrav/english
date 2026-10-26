@@ -41,6 +41,9 @@ function openConstructor() {
 }
 
 function startConstructorRound() {
+  let pool = getCleanGamePool(cardsData);
+  if (pool.length === 0) pool = cardsData;
+  currentConstructorCard = pool[Math.floor(Math.random() * pool.length)];
   userBuiltWord = [];
   document.getElementById('constructor-check-btn').disabled = true;
   document.getElementById('constructor-check-btn').classList.remove('active');
