@@ -74,6 +74,12 @@ function updateLevel() {
   const lvlBox = document.getElementById('level-container');
   if (!lvlBox) return;
   
+  // Магия центрирования: делаем контейнер флексом
+  lvlBox.style.display = 'flex';
+  lvlBox.style.flexDirection = 'column';
+  lvlBox.style.alignItems = 'center';
+  lvlBox.style.width = '100%';
+  
   const total = state.totalStarsEarned || 0;
   let currentLevel = levelList[0];
   let nextLevel = levelList[1];
@@ -101,10 +107,11 @@ function updateLevel() {
     <div style="font-size:14px; font-weight:bold; color:#555; margin-top:10px; text-align: center;">
       Звание: <span style="color:var(--main-color); font-size:16px;">${currentLevel.name}</span>
     </div>
-    <div class="level-bar-container" style="margin-top: 5px;">
+    <!-- Полоске задаем ширину 80% и максимальную 250px, чтобы она была аккуратной и центрировалась -->
+    <div class="level-bar-container" style="margin-top: 5px; width: 80%; max-width: 250px;">
       <div class="level-bar" style="width: ${progress}%;"></div>
     </div>
-    <div class="level-text" style="font-size: 13px; color: var(--text-muted); margin-top: 7px; opacity: 0.5; font-weight: normal;">
+    <div class="level-text" style="font-size: 13px; color: var(--text-muted); margin-top: 7px; opacity: 0.5; font-weight: normal; text-align: center;">
       ${nextLevel.name !== currentLevel.name ? `До звания "${nextLevel.name}": ${starsLeft} ⭐` : `Максимальное звание достигнуто!`}
     </div>
   `;
