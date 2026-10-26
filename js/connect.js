@@ -107,11 +107,16 @@ function selectConnectItem(item, element, side) {
 
   const transBox = document.getElementById('connect-translation-box');
   
-  // 1. ПОДСКАЗКА (перенос строк разрешен, ширина ограничена)
+    // 1. ПОДСКАЗКА (перенос строк разрешен, ширина ограничена)
   if (side === 'left' && item.hint) {
+    // Делаем принудительный перенос перед "добавляется" и склеиваем дефис с окончанием (-ed, -s, -ing)
+    let formattedHint = item.hint
+      .replace('добавляется', '<br>добавляется')
+      .replace(/ (-[a-z]+)/g, '&nbsp;$1'); 
+
     transBox.innerHTML = `
       <div style="font-size: 14px; color: var(--gold); line-height: 1.2; width: 100%; padding: 0 10px; box-sizing: border-box;">
-        💡 ${item.hint}
+        💡 ${formattedHint}
       </div>
     `;
     transBox.style.opacity = '1';
