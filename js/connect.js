@@ -193,7 +193,7 @@ function selectConnectItem(item, element, side) {
         connectLeftSelected = null;
         connectRightSelected = null;
         transBox.style.opacity = '0'; // Скрываем ошибку
-      }, 800);
+      }, 1000);
     }
   }
 }
