@@ -50,12 +50,23 @@ function updatePet() {
     <div class="pet-name">${state.petName} ${state.acc}</div>
     <div id="level-container"></div>
     
-    <!-- БЛОК ПРОГРЕССА ОГОНЬКА -->
-    <div style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 12px; font-size: 14px; width: 100%; box-sizing: border-box;">
-      ${(state.dailyEarned || 0) >= 50 
-        ? `<span style="color: var(--green); font-weight: bold;">🔥 Огонек получен! (50/50)</span>` 
-        : `<span style="color: var(--text-main);">🔥 До огонька: <b>${state.dailyEarned || 0} / 50 ⭐</b></span>`
-      }
+    <!-- БЛОК ПРОГРЕССА ОГОНЬКА И ДНЕВНЫХ ЗВЕЗД -->
+    <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px; width: 100%; box-sizing: border-box;">
+      <!-- Огонек -->
+      <div style="padding: 10px; background: rgba(0,0,0,0.2); border-radius: 12px; font-size: 14px; width: 100%; text-align: center; box-sizing: border-box;">
+        ${(state.dailyEarned || 0) >= 50 
+          ? `<span style="color: var(--green); font-weight: bold;">🔥 Огонек получен! (50/50)</span>` 
+          : `<span style="color: var(--text-main);">🔥 До огонька: <b>${state.dailyEarned || 0} / 50 ⭐</b></span>`
+        }
+      </div>
+      
+      <!-- Дневной лимит 250 -->
+      <div style="padding: 10px; background: rgba(0,0,0,0.2); border-radius: 12px; font-size: 14px; width: 100%; text-align: center; box-sizing: border-box;">
+        ${(state.dailyEarned || 0) >= 250 
+          ? `<span style="color: var(--green); font-weight: bold;">🎉 Поздравляю, сегодня все звёзды заработаны!</span>` 
+          : `<span style="color: var(--text-main);">⭐ Сегодня заработано: <b>${state.dailyEarned || 0} / 250</b></span>`
+        }
+      </div>
     </div>
   `;
   updateLevel();
