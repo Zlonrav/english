@@ -1079,7 +1079,7 @@ const cardsData = [
   { cat: "24. Праздники", icon: "🎉", word: "Confetti", pron: "конфэ́тти", trans: "конфетти", single: true },
   { cat: "24. Праздники", icon: "🍬", word: "Sweets", pron: "суиитс", trans: "сладости / конфеты", single: true },
   { cat: "24. Праздники", icon: "🌠", word: "Wish", pron: "уиш", trans: "желание (загадать)", plural: "Wishes", pronP: "уи́шиз", transP: "желания" },
-  { cat: "24. Праздники", icon: "🎀", word: "Ribbon", pron: "ри́бэн", trans: "лента / бант", plural: "Ribbons", pronP: "ри́бэнз", transP: "ленты" }
+  { cat: "24. Праздники", icon: "🎀", word: "Ribbon", pron: "ри́бэн", trans: "лента / бант", plural: "Ribbons", pronP: "ри́бэнз", transP: "ленты" },
   
   // --- ДОБАВКА ДО 1000 СЛОВ ---
 
@@ -1294,5 +1294,5 @@ const cardsData = [
   { cat: "26. Искусство", icon: "🎭", word: "Theater", pron: "си́этэр", trans: "театр", plural: "Theaters", pronP: "си́этэрз", transP: "театры" },
   { cat: "26. Искусство", icon: "🖼️", word: "Canvas", pron: "кэ́нвэс", trans: "холст", plural: "Canvases", pronP: "кэ́нвэсиз", transP: "холсты" },
   { cat: "26. Искусство", icon: "🎨", word: "Palette", pron: "пэ́лит", trans: "палитра", plural: "Palettes", pronP: "пэ́литс", transP: "палитры" },
-  { cat: "26. Искусство", icon: "🗿", word: "Sculpture", pron: "ска́лпчэр", trans: "скульптура", plural: "Sculptures", pronP: "ска́лпчэрз", transP: "скульптуры" }
+  { cat: "26. Искусство", icon: "🗿", word: "Sculpture", pron: "ска́лпчэр", trans: "скульптура", plural: "Sculptures", pronP: "ска́лпчэрз", transP: "скульптуры" },
 ];
