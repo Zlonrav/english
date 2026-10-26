@@ -1,7 +1,5 @@
 // ================= БАЗА ДАННЫХ =================
-// Версия от: 26.10.2026
-// Всего слов: 820
-// ===============================================
+const DB_VERSION = "26.10.2026";
 
 const cardsData = [
   // 1. БУКВЫ (АЛФАВИТ)
@@ -1296,3 +1294,6 @@ const cardsData = [
   { cat: "26. Искусство", icon: "🎨", word: "Palette", pron: "пэ́лит", trans: "палитра", plural: "Palettes", pronP: "пэ́литс", transP: "палитры" },
   { cat: "26. Искусство", icon: "🗿", word: "Sculpture", pron: "ска́лпчэр", trans: "скульптура", plural: "Sculptures", pronP: "ска́лпчэрз", transP: "скульптуры" },
 ];
+
+// Автоматический подсчет слов
+const DB_WORD_COUNT = cardsData.length;
