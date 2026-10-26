@@ -29,9 +29,8 @@ function openConnect() {
           <div id="connect-right-col" style="display: flex; flex-direction: column; gap: 15px; width: 55%;"></div>
         </div>
 
-        <!-- Блок для подсказок и перевода -->
-                <!-- Блок для подсказок и перевода -->
-                <div id="connect-translation-box" style="margin-top: 25px; text-align: center; font-size: 18px; font-weight: bold; color: var(--gold); height: 90px; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.3s ease; opacity: 0; line-height: 1.4; overflow: hidden;"></div>
+        <!-- Блок для подсказок и перевода (фиксированная высота 90px) -->
+        <div id="connect-translation-box" style="margin-top: 25px; text-align: center; font-size: 18px; font-weight: bold; color: var(--gold); height: 90px; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.3s ease; opacity: 0; line-height: 1.4; overflow: hidden;"></div>
       </div>
     `;
     document.querySelector('.content-wrapper').appendChild(view);
@@ -50,8 +49,8 @@ function startConnectGame() {
   
   const transBox = document.getElementById('connect-translation-box');
   transBox.style.opacity = '0';
-  transBox.innerHTML = '';
-  transBox.style.display = 'flex';
+  transBox.innerHTML = ''; 
+  transBox.style.display = 'flex'; 
 
   // 1. Берем по ОДНОМУ слову из каждого времени
   const categories = ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"];
@@ -147,11 +146,11 @@ function selectConnectItem(item, element, side) {
       speakWord(fullSentence); 
       addStars(2);
 
-      // Показываем красивый перевод
+      // Показываем перевод
       transBox.innerHTML = `
-        <div style="background: rgba(16, 185, 129, 0.2); padding: 10px 15px; border-radius: 12px; border: 1px solid var(--green); display: inline-block; max-width: 90%;">
-          <span style="font-size: 18px; color: #fff;">${fullSentence}</span><br>
-          <span style="font-size: 15px; color: var(--gold);">${translation}</span>
+        <div style="background: rgba(16, 185, 129, 0.2); padding: 8px 15px; border-radius: 12px; border: 1px solid var(--green); width: 100%; max-width: 90%; box-sizing: border-box; text-align: center;">
+          <span style="font-size: 16px; color: #fff;">${fullSentence}</span><br>
+          <span style="font-size: 14px; color: var(--gold);">${translation}</span>
         </div>
       `;
       transBox.style.opacity = '1';
@@ -168,6 +167,7 @@ function selectConnectItem(item, element, side) {
         savedRight.style.visibility = 'hidden';
 
         if (connectPairsLeft === 0) {
+          // Раунд завершен! Начисляем 1 очко за весь раунд
           connectScore++;
           document.getElementById('connect-score').innerText = `Правильно: ${connectScore}/10`;
 
@@ -184,7 +184,7 @@ function selectConnectItem(item, element, side) {
     } else {
       // ОШИБКА
       transBox.innerHTML = `
-        <div style="background: rgba(239, 68, 68, 0.2); padding: 10px 15px; border-radius: 12px; border: 1px solid var(--red); display: inline-block; max-width: 90%;">
+        <div style="background: rgba(239, 68, 68, 0.2); padding: 10px 15px; border-radius: 12px; border: 1px solid var(--red); width: 100%; max-width: 90%; box-sizing: border-box; text-align: center;">
           <span style="font-size: 15px; color: var(--red); font-weight: normal;">❌ Неверно! Попробуй другую пару.</span>
         </div>
       `;
@@ -194,8 +194,8 @@ function selectConnectItem(item, element, side) {
         if (connectRightSelected) connectRightSelected.el.classList.remove('wrong');
         connectLeftSelected = null;
         connectRightSelected = null;
-        transBox.style.opacity = '0'; // Скрываем ошибку
-      }, 1000);
+        transBox.style.opacity = '0';
+      }, 1000); 
     }
   }
 }
