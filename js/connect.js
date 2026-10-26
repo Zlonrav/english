@@ -140,8 +140,13 @@ function selectConnectItem(item, element, side) {
       speakWord(fullSentence); 
       addStars(2);
 
-      // 2. ПРАВИЛЬНЫЙ ОТВЕТ (без плитки, в одну строку)
-      transBox.innerHTML = `<div style="font-size: 16px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">${fullSentence} <span style="color: var(--gold); font-size: 14px;">— ${translation}</span></div>`;
+      // 2. ПРАВИЛЬНЫЙ ОТВЕТ (в две строки, без вылезания за рамки)
+      transBox.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center; width: 100%; text-align: center;">
+          <div style="font-size: 16px; color: #fff; line-height: 1.2;">${fullSentence}</div>
+          <div style="font-size: 14px; color: var(--gold); line-height: 1.2;">${translation}</div>
+        </div>
+      `;
       transBox.style.opacity = '1';
 
       let savedLeft = connectLeftSelected.el;
@@ -161,7 +166,15 @@ function selectConnectItem(item, element, side) {
 
         if (connectPairsLeft === 0) {
           connectScore++;
-          // ... (остальной код)
+          document.getElementById('connect-score').innerText = `Правильно: ${connectScore}/10`;
+
+          if (connectScore >= 10) {
+            showToast("🏆 Все 10 раундов пройдены! Ты молодец!", 'top');
+            setTimeout(() => { goHome(); }, 2000); 
+          } else {
+            showToast(`🌌 Раунд пройден! (${connectScore}/10)`, 'top');
+            setTimeout(startConnectGame, 2500);
+          }
         }
       }, 2000);
 
