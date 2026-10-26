@@ -1306,17 +1306,18 @@ console.log(
 // ================= ПЛАГИН-ФИКСЕР ДЛЯ СЛОЖНЫХ СЛОВ =================
 function getCleanGamePool(cards) {
   return cards.filter(c => {
-    // Исключаем алфавит и порядковые для игровых режимов
-    if (c.cat === "1. Буквы" || c.cat === "4. Порядковые") return false;
+    // Исключаем только алфавит (1) и простые цифры 0-9 (2)
+    if (c.cat === "1. Буквы" || c.cat === "2. Цифры") return false;
     
-    // Исключаем фразы длиннее 10 символов
+    // Исключаем фразы длиннее 10 символов, чтобы они не ломали верстку
     if (c.word.length > 10) return false;
     
     return true;
   }).map(card => {
+    // Клонируем объект, чтобы не портить оригинальную базу cardsData
     let cleanCard = { ...card };
     
-    // Если в слове есть скобки, отсекаем их для игр
+    // Если в слове есть скобки (например, "Short (height)"), отсекаем их для игр
     if (cleanCard.word.includes('(')) {
       cleanCard.word = cleanCard.word.split('(')[0].trim();
     }
