@@ -2,6 +2,7 @@
 let connectLeftSelected = null;
 let connectRightSelected = null;
 let connectPairsLeft = 4;
+let connectScore = 0; // <--- НОВАЯ ПЕРЕМЕННАЯ ДЛЯ СЧЕТЧИКА
 
 function openConnect() {
   if (!checkAuth()) return;
@@ -14,9 +15,10 @@ function openConnect() {
     view.className = 'view';
     view.innerHTML = `
       <div class="trainer-card" style="height: auto; min-height: 560px; justify-content: flex-start; padding: 25px 15px;">
+        <!-- ЕДИНАЯ ШАПКА С ВЫХОДОМ И СЧЕТЧИКОМ -->
         <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
           <button class="btn-exit" onclick="goHome()">← Выйти</button>
-          <span style="font-weight: bold; color: var(--main-color); font-size: 18px;">✨ Космические Пары</span>
+          <span id="connect-score" style="font-weight: bold; color: var(--green); font-size: 18px;">Правильно: 0/10</span>
         </div>
         
         <div style="display: flex; width: 100%; gap: 15px; justify-content: space-between; position: relative;">
@@ -35,6 +37,8 @@ function openConnect() {
   }
 
   view.style.display = 'flex';
+  connectScore = 0; // Сброс при входе
+  document.getElementById('connect-score').innerText = `Правильно: 0/10`;
   startConnectGame();
 }
 
@@ -112,7 +116,7 @@ function selectConnectItem(item, element, side) {
     if (connectLeftSelected.item.word === connectRightSelected.item.word) {
       // ВЕРНО!
       let fullSentence = connectLeftSelected.item.content + " " + connectRightSelected.item.content;
-      let translation = connectLeftSelected.item.trans; // Берем готовый перевод из базы
+      let translation = connectLeftSelected.item.trans;
       
       connectLeftSelected.el.classList.remove('wrong');
       connectRightSelected.el.classList.remove('wrong');
@@ -120,8 +124,12 @@ function selectConnectItem(item, element, side) {
       connectLeftSelected.el.classList.add('correct');
       connectRightSelected.el.classList.add('correct');
 
-      speakWord(fullSentence); // Озвучиваем всё предложение
+      speakWord(fullSentence); 
       addStars(2);
+
+      // НАЧИСЛЯЕМ ОЧКО И ОБНОВЛЯЕМ СЧЕТЧИК
+      connectScore++;
+      document.getElementById('connect-score').innerText = `Правильно: ${connectScore}/10`;
 
       // Показываем красивый перевод
       const transBox = document.getElementById('connect-translation-box');
@@ -140,10 +148,15 @@ function selectConnectItem(item, element, side) {
         savedRight.style.visibility = 'hidden';
 
         if (connectPairsLeft === 0) {
-          showToast("🌌 Все пары соединены!", 'top');
-          setTimeout(startConnectGame, 2500); // Даем время прочитать последний перевод
+          if (connectScore >= 10) {
+            showToast("🏆 Раунд пройден! Ты молодец!", 'top');
+            setTimeout(() => { goHome(); }, 2000); // Если набрали 10, выходим
+          } else {
+            showToast("🌌 Все пары соединены! Новый раунд.", 'top');
+            setTimeout(startConnectGame, 2500);
+          }
         }
-      }, 2000); // Задержка 2 сек, чтобы ребенок успел прочитать перевод
+      }, 2000);
 
     } else {
       // ОШИБКА
