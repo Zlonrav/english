@@ -209,12 +209,18 @@
      <!-- ИГРА (ПРАВОПИСАНИЕ) -->
   <div id="spelling-view" class="view">
     <div class="quiz-menu">
-      
+
       <!-- НОВАЯ ШАПКА -->
+      <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <button class="btn-exit" onclick="openQuiz()">← Выйти</button>
+        <span id="spelling-score" style="font-weight: bold; color: var(--green); font-size: 18px;">Правильно: 0/10</span>
+      </div>
+      
+      <!-- НОВАЯ ШАПКА 
       <div style="display:flex; justify-content:space-between; width: 100%; align-items:center; margin-bottom: 15px;">
         <button class="btn-exit" onclick="openQuiz()">← Выйти</button>
         <span id="spelling-score" style="font-weight:bold; font-size:18px; color:var(--green);">Правильно: 0/10</span>
-      </div>
+      </div>-->
 
       <!-- Переключатель сложности -->
       <div class="v5-tabs" style="margin-bottom: 20px;">
