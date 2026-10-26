@@ -5,48 +5,55 @@ const neptuneStyle = document.createElement('style');
 neptuneStyle.innerHTML = `
   #neptune-view { padding: 0; overflow: hidden; background: #000; position: relative; justify-content: flex-start; }
   
-  /* Анимация параллакса звезд */
-  .n-stars { position: absolute; top: 0; left: 0; width: 100%; height: 200%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)), radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)); background-repeat: repeat; opacity: 0.3; }
-  .n-layer1 { animation: n-move 20s linear infinite; background-size: 200px 200px; }
-  .n-layer2 { animation: n-move 10s linear infinite; background-size: 300px 300px; opacity: 0.5; }
-  .n-layer3 { animation: n-move 5s linear infinite; background-size: 400px 400px; opacity: 0.8; }
-  
-  @keyframes n-move { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+  /* Звездный фон (управляется через JS) */
+  .n-stars { position: absolute; top: 0; left: 0; width: 100%; height: 200%; background-image: radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)), radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)); background-repeat: repeat; will-change: background-position; }
+  .n-layer1 { background-size: 200px 200px; opacity: 0.3; }
+  .n-layer2 { background-size: 300px 300px; opacity: 0.5; }
+  .n-layer3 { background-size: 400px 400px; opacity: 0.8; }
 
   /* Ракета */
   #n-rocket { 
-    position: absolute; 
-    left: 50%; 
-    top: 50%; 
-    transform: translate(-50%, -50%) rotate(-45deg); /* <--- ПОВОРОТ ВВЕРХ */
-    font-size: 60px; 
-    z-index: 10; 
+    position: absolute; left: 50%; top: 50%; 
+    transform: translate(-50%, -50%) rotate(-45deg); /* Ракета смотрит вверх */
+    font-size: 60px; z-index: 10; 
     transition: top 0.5s ease-in-out; 
     filter: drop-shadow(0 0 10px #3b82f6); 
   }
   
   /* Планета на фоне */
   #n-planet { 
-    position: absolute; 
-    right: 10%; /* Справа */
-    top: -20%; /* Стартует за верхним краем экрана */
-    font-size: 120px; 
-    z-index: 1; 
-    opacity: 0.8; 
-    transition: top 0.5s ease-in-out, opacity 0.5s; /* Анимируем движение сверху вниз */
+    position: absolute; right: 10%; top: -20%; 
+    font-size: 120px; z-index: 1; opacity: 0.8; 
+    transition: top 0.5s ease-in-out, opacity 0.5s; 
   }
 
   /* Терминал (Матрица) */
-  #n-terminal { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 420px; background: rgba(0, 15, 0, 0.85); border: 1px solid #00ffcc; box-shadow: 0 0 15px rgba(0, 255, 204, 0.3); padding: 15px; border-radius: 8px; z-index: 20; display: none; flex-direction: column; gap: 10px; }
+  #n-terminal { 
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); 
+    width: 90%; max-width: 420px; 
+    background: rgba(0, 15, 0, 0.85); border: 1px solid #00ffcc; 
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.3); padding: 15px; border-radius: 8px; 
+    z-index: 20; display: none; flex-direction: column; gap: 10px; 
+  }
   .n-matrix-text { color: #00ffcc; font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.4; }
   .n-matrix-word { color: #fff; font-size: 22px; font-weight: bold; text-shadow: 0 0 8px #00ffcc; letter-spacing: 1px; }
-  .n-opt-btn { background: rgba(0, 255, 204, 0.1); border: 1px solid #00ffcc; color: #00ffcc; font-family: 'Courier New', Courier, monospace; font-size: 16px; padding: 10px; border-radius: 4px; cursor: pointer; transition: 0.2s; text-align: left; width: 100%; }
+  .n-opt-btn { 
+    background: rgba(0, 255, 204, 0.1); border: 1px solid #00ffcc; color: #00ffcc; 
+    font-family: 'Courier New', Courier, monospace; font-size: 16px; 
+    padding: 10px; border-radius: 4px; cursor: pointer; transition: 0.2s; 
+    text-align: left; width: 100%; 
+  }
   .n-opt-btn:hover { background: rgba(0, 255, 204, 0.3); color: #fff; }
   .n-opt-btn.correct { background: #10b981; color: #fff; border-color: #10b981; }
   .n-opt-btn.wrong { background: #ef4444; color: #fff; border-color: #ef4444; }
   
-  /* HUD */
-  #n-hud { position: absolute; top: 15px; left: 15px; right: 15px; display: flex; justify-content: space-between; align-items: center; z-index: 20; color: #00ffcc; font-family: monospace; font-weight: bold; text-shadow: 0 0 5px #00ffcc; }
+  /* HUD (Верхняя панель) */
+  #n-hud { 
+    position: absolute; top: 15px; left: 15px; right: 15px; 
+    display: flex; justify-content: space-between; align-items: center; 
+    z-index: 20; color: #00ffcc; font-family: monospace; 
+    font-weight: bold; text-shadow: 0 0 5px #00ffcc; 
+  }
 `;
 document.head.appendChild(neptuneStyle);
 
@@ -68,6 +75,28 @@ let nPlanetIdx = 0;
 let nProgress = 0;
 let nLocked = false;
 let nCurrentCorrectWord = "";
+
+// --- ДВИЖОК АНИМАЦИИ ЗВЕЗД ---
+let nStarOffset = 0;
+let nTargetStarSpeed = 0.5; // Обычное медленное движение
+let nCurrentStarSpeed = 0.5;
+let nStarAnimId = null;
+
+function animateNeptuneStars() {
+  // Плавно меняем скорость (интерполяция)
+  nCurrentStarSpeed += (nTargetStarSpeed - nCurrentStarSpeed) * 0.05;
+  nStarOffset -= nCurrentStarSpeed;
+
+  const l1 = document.querySelector('.n-layer1');
+  const l2 = document.querySelector('.n-layer2');
+  const l3 = document.querySelector('.n-layer3');
+
+  if (l1) l1.style.backgroundPositionY = (nStarOffset * 0.5) + 'px';
+  if (l2) l2.style.backgroundPositionY = (nStarOffset * 1) + 'px';
+  if (l3) l3.style.backgroundPositionY = (nStarOffset * 2) + 'px';
+
+  nStarAnimId = requestAnimationFrame(animateNeptuneStars);
+}
 
 // 3. Запуск игры
 function openNeptune() {
@@ -102,12 +131,23 @@ function openNeptune() {
       </div>
     `;
     document.querySelector('.content-wrapper').appendChild(view);
+    
+    // Запускаем анимацию звезд
+    if (!nStarAnimId) {
+      animateNeptuneStars();
+    }
   }
 
   view.style.display = 'flex';
   nPlanetIdx = 0;
   nProgress = 0;
   nLocked = false;
+  nTargetStarSpeed = 0.5; // Сброс скорости
+  nCurrentStarSpeed = 0.5;
+  
+  // Сброс визуала планеты и ракеты
+  const rocket = document.getElementById('n-rocket');
+  if (rocket) rocket.style.top = '50%';
   
   updateNeptuneHUD();
   startNeptuneQuestion();
@@ -124,16 +164,12 @@ function updateNeptuneHUD() {
   const planetEl = document.getElementById('n-planet');
   if (planetEl) {
     planetEl.innerText = currentP.icon;
-
-    // Высчитываем позицию планеты от -20% до 100%
-    // Чем больше прогресс, тем ниже опускается планета
+    // Высчитываем позицию планеты от -20% (сверху) до 100% (снизу)
     let progressPercent = nextP.target > 0 ? (nProgress / nextP.target) : 0;
     let topPos = -20 + (progressPercent * 120); 
-    
     planetEl.style.top = `${topPos}%`;
   }
 
-  // Сброс ракеты в центр (она возвращается после полета)
   const rocket = document.getElementById('n-rocket');
   if (rocket) rocket.style.top = '50%';
 }
@@ -183,14 +219,19 @@ function answerNeptune(selectedOpt, btnElement) {
   const terminal = document.getElementById('n-terminal');
   const rocket = document.getElementById('n-rocket');
   const allBtns = document.querySelectorAll('.n-opt-btn');
+  const currentP = neptunePlanets[nPlanetIdx];
+  const nextP = neptunePlanets[nPlanetIdx + 1];
   
   if (selectedOpt === nCurrentCorrectWord) {
-    // ПРАВИЛЬНО
+    // ПРАВИЛЬНО (+1)
     btnElement.classList.add('correct');
-    nProgress++;
-    updateNeptuneHUD(); // Двигаем планету вниз
+    nProgress = Math.min(nProgress + 1, nextP.target); 
+    updateNeptuneHUD(); // Планета едет вниз
 
-    // Анимация полета ВВЕРХ
+    // Звезды летят вниз (ускорение)
+    nTargetStarSpeed = 15; 
+
+    // Ракета летит вверх
     rocket.style.transition = 'top 2s ease-out';
     rocket.style.top = '10%';
     
@@ -198,23 +239,19 @@ function answerNeptune(selectedOpt, btnElement) {
     setTimeout(() => terminal.style.display = 'none', 300);
 
     setTimeout(() => {
-      const currentP = neptunePlanets[nPlanetIdx];
-      const nextP = neptunePlanets[nPlanetIdx + 1];
-      
       if (nextP && nProgress >= nextP.target) {
         // ДОЛЕТЕЛИ ДО ПЛАНЕТЫ
         addStars(nextP.reward);
         showToast(`🪐 Вы достигли ${nextP.name}! Награда: +${nextP.reward} ⭐`, 'top');
         
-        // Заставляем планету улететь вниз за экран
         const planetEl = document.getElementById('n-planet');
         if (planetEl) planetEl.style.top = '120%';
         
-        // Ждем, пока планета улетит, и запускаем новую
         setTimeout(() => {
           nPlanetIdx++;
           nProgress = 0;
-          updateNeptuneHUD(); // Новая планета появится сверху (-20%)
+          nTargetStarSpeed = 0.5; // Сброс скорости звезд
+          updateNeptuneHUD(); 
           setTimeout(startNeptuneQuestion, 1000);
         }, 600); 
 
@@ -222,26 +259,34 @@ function answerNeptune(selectedOpt, btnElement) {
          showToast("🌌 Вы покинули Млечный Путь... Продолжение следует!", 'top');
          setTimeout(goHome, 3000);
       } else {
+        nTargetStarSpeed = 0.5; // Возвращаем обычную скорость
         updateNeptuneHUD();
         startNeptuneQuestion();
       }
     }, 2200);
 
   } else {
-    // НЕПРАВИЛЬНО
+    // НЕПРАВИЛЬНО (-2)
     btnElement.classList.add('wrong');
     allBtns.forEach(b => {
       if (b.innerText.includes(nCurrentCorrectWord)) b.classList.add('correct');
     });
 
-    // Анимация полета ВНИЗ
+    // Штраф -2 звезды (не ниже нуля)
+    nProgress = Math.max(0, nProgress - 2);
+    updateNeptuneHUD(); // Планета откатывается наверх
+
+    // Звезды летят вверх (отрицательная скорость)
+    nTargetStarSpeed = -15; 
+
+    // Ракета летит вниз
     rocket.style.transition = 'top 1s ease-in';
     rocket.style.top = '70%';
 
     setTimeout(() => {
-      // Возвращаем ракету на место
       rocket.style.transition = 'top 0.5s ease-in-out';
       rocket.style.top = '50%';
+      nTargetStarSpeed = 0.5; // Возвращаем медленный дрейф
       
       setTimeout(() => {
         startNeptuneQuestion();
