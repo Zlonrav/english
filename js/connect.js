@@ -51,92 +51,26 @@ function startConnectGame() {
   transBox.style.opacity = '0';
   transBox.innerHTML = '';
 
-  // 1. Выбираем ОДНО случайное время для текущего раунда
+  // 1. Берем по ОДНОМУ слову из каждого времени
   const categories = ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"];
-  const randomCat = categories[Math.floor(Math.random() * categories.length)];
-
-  // 2. Берем слова только из этого времени
-  let pool = tensesData.filter(c => c.cat === randomCat);
-  pool.sort(() => Math.random() - 0.5);
-
-  // 3. Берем 4 уникальные пары (уникальны и кто, и что делает)
-  let seenLefts = new Set();
-  let seenRights = new Set();
   let selected = [];
-  
-  for (let item of pool) {
-    if (!seenLefts.has(item.left) && !seenRights.has(item.right)) {
-      seenLefts.add(item.left);
-      seenRights.add(item.right);
-      selected.push(item);
+  let seenLefts = new Set();
+
+  categories.forEach(cat => {
+    let pool = tensesData.filter(c => c.cat === cat);
+    pool.sort(() => Math.random() - 0.5);
+    
+    // Ищем слово, где такого персонажа еще не было
+    for (let item of pool) {
+      if (!seenLefts.has(item.left)) {
+        seenLefts.add(item.left);
+        selected.push(item);
+        break;
+      }
     }
-    if (selected.length === 4) break; 
-  }
-
-  // 4. Генерируем левую и правую колонки
-  let leftData = selected.map(c => ({ word: c.left, content: c.left, trans: c.trans, hint: c.hint, fullRight: c.right }));
-  leftData.sort(() => Math.random() - 0.5);
-
-  let rightData = selected.map(c => ({ word: c.left, content: c.right, trans: c.trans, hint: c.hint, fullRight: c.right }));
-  rightData.sort(() => Math.random() - 0.5);
-
-  const leftCol = document.getElementById('connect-left-col');
-  const rightCol = document.getElementById('connect-right-col');
-  
-  leftCol.innerHTML = '';
-  rightCol.innerHTML = '';
-
-  leftData.forEach(item => {
-    const box = document.createElement('div');
-    box.className = 'quiz-opt-btn';
-    box.style.cssText = `padding: 15px 10px; font-size: 18px; height: 75px; display: flex; align-items: center; justify-content: center; margin: 0; text-align: center; word-break: break-word;`;
-    box.innerText = item.content;
-    box.onclick = () => selectConnectItem(item, box, 'left');
-    leftCol.appendChild(box);
   });
 
-  rightData.forEach(item => {
-    const box = document.createElement('div');
-    box.className = 'quiz-opt-btn';
-    box.style.cssText = `padding: 15px 10px; font-size: 15px; height: 75px; display: flex; align-items: center; justify-content: center; margin: 0; font-weight: 900; text-align: center; word-break: break-word; line-height: 1.2;`;
-    box.innerText = item.content;
-    box.onclick = () => selectConnectItem(item, box, 'right');
-    rightCol.appendChild(box);
-  });
-}
-
-function startConnectGame() {
-  connectLeftSelected = null;
-  connectRightSelected = null;
-  connectPairsLeft = 4;
-  
-  const transBox = document.getElementById('connect-translation-box');
-  transBox.style.opacity = '0';
-  transBox.innerHTML = '';
-
-  // 1. Выбираем ОДНО случайное время для текущего раунда
-  const categories = ["Present Simple", "Present Continuous", "Past Simple", "Future Simple"];
-  const randomCat = categories[Math.floor(Math.random() * categories.length)];
-
-  // 2. Берем слова только из этого времени
-  let pool = tensesData.filter(c => c.cat === randomCat);
-  pool.sort(() => Math.random() - 0.5);
-
-  // 3. Берем 4 уникальные пары (уникальны и кто, и что делает)
-  let seenLefts = new Set();
-  let seenRights = new Set();
-  let selected = [];
-  
-  for (let item of pool) {
-    if (!seenLefts.has(item.left) && !seenRights.has(item.right)) {
-      seenLefts.add(item.left);
-      seenRights.add(item.right);
-      selected.push(item);
-    }
-    if (selected.length === 4) break; 
-  }
-
-  // 4. Генерируем левую и правую колонки
+  // 2. Генерируем левую и правую колонки
   let leftData = selected.map(c => ({ word: c.left, content: c.left, trans: c.trans, hint: c.hint, fullRight: c.right }));
   leftData.sort(() => Math.random() - 0.5);
 
