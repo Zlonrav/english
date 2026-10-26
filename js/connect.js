@@ -107,10 +107,18 @@ function selectConnectItem(item, element, side) {
 
   const transBox = document.getElementById('connect-translation-box');
   
-  // Показываем подсказку при нажатии на любую кнопку
-  if (item.hint) {
-    transBox.innerHTML = `💡 <span style="font-size: 16px; color: #fff; font-weight: normal;">${item.hint}</span>`;
+  // Показываем подсказку ТОЛЬКО при нажатии на левую кнопку
+  if (side === 'left' && item.hint) {
+    transBox.innerHTML = `
+      <div style="background: rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); display: inline-block; max-width: 90%;">
+        <span style="font-size: 14px; color: var(--gold); font-weight: bold;">💡 Подсказка:</span><br>
+        <span style="font-size: 15px; color: #fff; font-weight: normal;">${item.hint}</span>
+      </div>
+    `;
     transBox.style.opacity = '1';
+  } else if (side === 'right') {
+    // Если нажата правая кнопка — скрываем старую подсказку, чтобы не мешала
+    transBox.style.opacity = '0';
   }
 
   if (side === 'left') {
@@ -136,10 +144,15 @@ function selectConnectItem(item, element, side) {
       connectRightSelected.el.classList.add('correct');
 
       speakWord(fullSentence); 
-      addStars(2); // Звезды за каждую пару оставляем!
+      addStars(2);
 
-      // Показываем перевод
-      transBox.innerHTML = `<span style="color: #fff;">${fullSentence}</span><br><span style="font-size: 16px; color: var(--gold);">${translation}</span>`;
+      // Показываем красивый перевод
+      transBox.innerHTML = `
+        <div style="background: rgba(16, 185, 129, 0.2); padding: 10px 15px; border-radius: 12px; border: 1px solid var(--green); display: inline-block; max-width: 90%;">
+          <span style="font-size: 18px; color: #fff;">${fullSentence}</span><br>
+          <span style="font-size: 15px; color: var(--gold);">${translation}</span>
+        </div>
+      `;
       transBox.style.opacity = '1';
 
       let savedLeft = connectLeftSelected.el;
@@ -154,7 +167,6 @@ function selectConnectItem(item, element, side) {
         savedRight.style.visibility = 'hidden';
 
         if (connectPairsLeft === 0) {
-          // Раунд завершен! Начисляем 1 очко за весь раунд
           connectScore++;
           document.getElementById('connect-score').innerText = `Правильно: ${connectScore}/10`;
 
@@ -170,13 +182,18 @@ function selectConnectItem(item, element, side) {
 
     } else {
       // ОШИБКА
-      transBox.innerHTML = `❌ <span style="font-size: 16px; color: var(--red); font-weight: normal;">Неверно! Посмотри на подсказку и попробуй снова.</span>`;
+      transBox.innerHTML = `
+        <div style="background: rgba(239, 68, 68, 0.2); padding: 10px 15px; border-radius: 12px; border: 1px solid var(--red); display: inline-block; max-width: 90%;">
+          <span style="font-size: 15px; color: var(--red); font-weight: normal;">❌ Неверно! Попробуй другую пару.</span>
+        </div>
+      `;
       
       setTimeout(() => {
         if (connectLeftSelected) connectLeftSelected.el.classList.remove('wrong');
         if (connectRightSelected) connectRightSelected.el.classList.remove('wrong');
         connectLeftSelected = null;
         connectRightSelected = null;
+        transBox.style.opacity = '0'; // Скрываем ошибку
       }, 800);
     }
   }
