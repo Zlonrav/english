@@ -189,30 +189,31 @@ function updateNeptuneHUD() {
 function startNeptuneQuestion() {
   nLocked = false;
   
-  // ВОЗВРАЩАЕМ РАКЕТУ В ЦЕНТР
+  // ПЛАВНО ВОЗВРАЩАЕМ РАКЕТУ В ЦЕНТР
   const rocket = document.getElementById('n-rocket');
   if (rocket) {
-    rocket.style.transition = 'none'; // Отключаем анимацию, чтобы не было видно "прыжка"
-    rocket.style.top = '50%';
-    // Включаем анимацию обратно через миллисекунду
-    setTimeout(() => { rocket.style.transition = 'top 2s ease-out'; }, 50);
+    rocket.style.transition = 'top 1s ease-in-out'; // Включаем плавную анимацию возврата
+    rocket.style.top = '50%'; // Возвращаем в центр экрана
   }
 
   const terminal = document.getElementById('n-terminal');
   terminal.style.display = 'flex';
   terminal.style.opacity = '1';
 
+  // Берем пул слов
   let pool = getCleanGamePool(cardsData);
   if (pool.length === 0) pool = cardsData;
   
   const correctCard = pool[Math.floor(Math.random() * pool.length)];
   nCurrentCorrectWord = correctCard.trans;
   
+  // Ищем неверный ответ
   let wrongCard = pool[Math.floor(Math.random() * pool.length)];
   while (wrongCard.trans === nCurrentCorrectWord) {
     wrongCard = pool[Math.floor(Math.random() * pool.length)];
   }
 
+  // Перемешиваем ответы
   let options = [correctCard.trans, wrongCard.trans].sort(() => Math.random() - 0.5);
 
   document.getElementById('n-question').innerText = `[ ${correctCard.word} ]`;
