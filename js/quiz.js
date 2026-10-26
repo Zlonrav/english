@@ -14,7 +14,7 @@ function startQuiz(mode) {
 }
 
 function loadQuestion() {
-  let quizPool = cardsData.filter(c => c.cat !== "1. Буквы" && c.cat !== "3. Порядковые");
+  let quizPool = getCleanGamePool(cardsData);
   if (quizPool.length === 0) quizPool = cardsData; 
   currentQuizCard = quizPool[Math.floor(Math.random() * quizPool.length)];
   
