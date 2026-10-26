@@ -38,7 +38,7 @@ function openConstructor() {
   view.style.display = 'flex';
   constructorScore = 0;
   document.getElementById('constructor-score').innerText = `Правильно: 0/10`;
-  startConstructorRound();
+  ();
 }
 
 function startConstructorRound() {
@@ -47,7 +47,7 @@ function startConstructorRound() {
   document.getElementById('constructor-check-btn').classList.remove('active');
 
   // Берем слова, исключая буквы
-  let pool = cardsData.filter(c => c.cat !== "1. Буквы");
+  let pool = getCleanGamePool(cardsData);
   currentConstructorCard = pool[Math.floor(Math.random() * pool.length)];
 
   // Рендерим иконку и перевод
