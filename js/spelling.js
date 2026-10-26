@@ -4,7 +4,7 @@ let currentSpellingCard = null;
 let spellingAttempts = 0;
 let spellingMode = 'easy';
 let spellingCooldown = false;
-let spellingRoundScore = 0; // Счетчик раундов
+let spellingRoundScore = 0; 
 
 function openSpelling() {
   if (!checkAuth()) return; 
@@ -12,9 +12,6 @@ function openSpelling() {
   document.getElementById('spelling-view').style.display = 'flex';
   
   spellingRoundScore = 0; 
-  // ... и так далее
-  
-  spellingRoundScore = 0; // Сброс при входе
   document.getElementById('spelling-score').innerText = `Правильно: 0/10`;
   
   setSpellingMode('easy');
@@ -48,7 +45,10 @@ function startSpellingRound() {
   spellingAttempts = 0;
   currentRevealedIndices = [];
   
+  // Берем слова из очищенного пула
   let pool = getCleanGamePool(cardsData);
+  if (pool.length === 0) pool = cardsData; // Защита
+  
   let newCard = pool[Math.floor(Math.random() * pool.length)];
 
   while (pool.length > 1 && newCard === currentSpellingCard) {
@@ -89,9 +89,9 @@ function checkSpelling() {
   
   const cleanString = (str) => {
     return str.toLowerCase()
-              .replace(/[.,?!]/g, '')     // убираем точки и вопросы
-              .replace(/-/g, ' ')         // дефисы меняем на пробел
-              .replace(/\s+/g, ' ')       // убираем двойные пробелы
+              .replace(/[.,?!]/g, '')     
+              .replace(/-/g, ' ')         
+              .replace(/\s+/g, ' ')       
               .trim();
   };
 
@@ -145,13 +145,13 @@ function checkSpelling() {
       ruInput.style.backgroundColor = "#f8d7da";
     }
     
-      if (spellingAttempts < 7) { 
-        spellingAttempts++;
-      }
-      showToast(`❌ Ошибка! Попытка ${spellingAttempts}/7`, 'top');
-      
-      updateSpellingHint(); 
-      startSpellingCooldown();
+    if (spellingAttempts < 7) { 
+      spellingAttempts++;
+    }
+    showToast(`❌ Ошибка! Попытка ${spellingAttempts}/7`, 'top');
+    
+    updateSpellingHint(); 
+    startSpellingCooldown();
   }
 }
 
@@ -159,20 +159,17 @@ function updateSpellingHint() {
   const word = currentSpellingCard.word;
   const hintEl = document.getElementById('spelling-hint');
   
-  // 1, 2 и 3 попытки — подсказок нет
   if (spellingAttempts < 4) {
     hintEl.innerHTML = ""; 
     return;
   }
 
-  // Определяем целевой процент в зависимости от попытки
   let targetPercent = 0;
   if (spellingAttempts === 4) targetPercent = 0.25;
   if (spellingAttempts === 5) targetPercent = 0.50;
   if (spellingAttempts === 6) targetPercent = 0.75;
   if (spellingAttempts >= 7) targetPercent = 1.00;
 
-  // Собираем индексы ВСЕХ букв и цифр в слове
   let allLetterIndices = [];
   for (let i = 0; i < word.length; i++) {
     if (word[i].match(/[a-zA-Z0-9]/)) {
@@ -180,36 +177,26 @@ function updateSpellingHint() {
     }
   }
 
-  // Считаем, сколько всего букв нужно открыть
   let targetCount = Math.floor(allLetterIndices.length * targetPercent);
   if (targetPercent === 1) targetCount = allLetterIndices.length;
 
-  // Сколько еще букв нужно открыть (недостающее количество)
   let needed = targetCount - currentRevealedIndices.length;
 
   if (needed > 0) {
-    // Берем только те индексы, которые еще НЕ открыты
     let unrevealedIndices = allLetterIndices.filter(idx => !currentRevealedIndices.includes(idx));
-    
-    // Перемешиваем их случайным образом
     unrevealedIndices.sort(() => Math.random() - 0.5);
-    
-    // Добавляем нужное количество новых случайных букв к уже открытым
     let toAdd = unrevealedIndices.slice(0, needed);
     currentRevealedIndices.push(...toAdd);
   }
 
-  // Собираем итоговую строку подсказки
   let hintHTML = "";
   for (let i = 0; i < word.length; i++) {
     let char = word[i];
     
     if (char.match(/[a-zA-Z0-9]/)) {
       if (currentRevealedIndices.includes(i)) {
-        // Буква открыта
         hintHTML += `<span style="color:#d97706; font-weight:900;">${char}</span> `; 
       } else {
-        // Буква скрыта
         hintHTML += `_ `;
       }
     } else if (char === ' ') {
