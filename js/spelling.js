@@ -48,7 +48,7 @@ function startSpellingRound() {
   spellingAttempts = 0;
   currentRevealedIndices = [];
   
-  let pool = cardsData.filter(c => c.cat !== "1. Буквы");
+  let pool = getCleanGamePool(cardsData);
   let newCard = pool[Math.floor(Math.random() * pool.length)];
 
   while (pool.length > 1 && newCard === currentSpellingCard) {
