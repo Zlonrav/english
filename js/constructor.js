@@ -90,13 +90,6 @@ function startConstructorRound() {
   renderConstructorMechanics();
 }
 
-  // Перемешиваем буквы
-  shuffledLetters = letters.map((letter, index) => ({ id: index, char: letter }));
-  shuffledLetters.sort(() => Math.random() - 0.5);
-
-  renderConstructorMechanics();
-}
-
 function renderConstructorMechanics() {
   // 1. Рендерим слоты (куда падают буквы)
   const slotsContainer = document.getElementById('constructor-slots');
