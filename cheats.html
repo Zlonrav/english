@@ -59,7 +59,6 @@
       // Динамически подгружаем защищенный JS-файл
       const script = document.createElement('script');
       
-      // ЗАКОДИРОВАННЫЙ ПУТЬ: 'js/chits-content.js'
       script.src = atob('anMvY2hpdHMtY29udGVudC5qcw=='); 
       
       script.onload = () => {
@@ -70,7 +69,7 @@
       };
       
       script.onerror = () => {
-        alert('Ошибка загрузки модуля читов. Убедитесь, что файл js/chits-content.js существует.');
+        alert('❌ Ошибка загрузки защищенного модуля. Проверьте подключение к интернету.');
       };
       
       document.body.appendChild(script);
