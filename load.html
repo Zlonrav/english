@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Загрузка профиля | Англомания</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  body { background-color: var(--bg-color); display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+  .transfer-card {
+    width: 100%; max-width: 480px; height: 500px;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border); border-radius: 24px; box-shadow: var(--glass-shadow);
+    padding: 30px 20px; box-sizing: border-box;
+  }
+  .transfer-textarea {
+    width: 100%; height: 250px; padding: 15px;
+    background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 12px; color: #fff; font-family: monospace; font-size: 14px;
+    resize: none; outline: none; margin-bottom: 20px; box-sizing: border-box;
+  }
+  .transfer-textarea:focus { border-color: var(--main-color); box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
+</style>
+</head>
+<body>
+
+<div class="transfer-card">
+  <div style="width: 100%; display: flex; justify-content: flex-start; margin-bottom: 10px;">
+    <button class="btn-exit" onclick="location.href='index.html'">← На главную</button>
+  </div>
+
+  <h2 style="text-align: center; margin-bottom: 15px; color: #fff;">Загрузка</h2>
+  <p style="color: var(--text-muted); font-size: 14px; text-align: center; margin-bottom: 15px;">
+    Вставьте код, который вы сохранили на другом устройстве.
+  </p>
+
+  <textarea id="import-code" class="transfer-textarea" placeholder="Вставьте сюда код..."></textarea>
+  
+  <button class="menu-btn btn-green" style="justify-content: center; margin-top: auto;" onclick="importCode()">Загрузить прогресс</button>
+</div>
+
+<script>
+  function importCode() {
+    const code = document.getElementById('import-code').value.trim();
+    if (!code) { alert("Вставьте код в поле!"); return; }
+
+    try {
+      const jsonStr = decodeURIComponent(escape(atob(code)));
+      const importObj = JSON.parse(jsonStr);
+      const importName = importObj.name;
+      const importData = importObj.data;
+
+      if (!importName || !importData || !importData.pin) throw new Error("Неверный формат кода");
+
+      // Всегда требуем ПИН-код
+      const enteredPin = prompt(`Для загрузки профиля "${importName}" введите его ПИН-код:`);
+      if (enteredPin !== importData.pin) {
+        alert("❌ Неверный ПИН-код! Доступ запрещен."); return;
+      }
+
+      let db = JSON.parse(localStorage.getItem('eng_db')) || { profiles: {}, lastActive: null };
+
+      if (db.profiles[importName]) {
+        if (!confirm(`Профиль "${importName}" уже существует.\n\nПерезаписать его текущий прогресс данными из кода?`)) return;
+      } else {
+        if (Object.keys(db.profiles).length >= 4) {
+          alert(`На этом устройстве уже 4 профиля. Удалите один, чтобы добавить "${importName}".`); return;
+        }
+      }
+
+      db.profiles[importName] = importData;
+      db.lastActive = importName;
+      localStorage.setItem('eng_db', JSON.stringify(db));
+      
+      alert(`✅ Прогресс игрока "${importName}" успешно загружен! Сейчас вы вернетесь на главную.`);
+      location.href = 'index.html';
+      
+    } catch (e) {
+      alert("❌ Ошибка! Код поврежден или вставлен не полностью.");
+    }
+  }
+</script>
+</body>
+</html>
