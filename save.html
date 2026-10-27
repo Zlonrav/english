@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Сохранение профиля | Англомания</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  body { background-color: var(--bg-color); display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+  .transfer-card {
+    width: 100%; max-width: 480px; height: 500px;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border); border-radius: 24px; box-shadow: var(--glass-shadow);
+    padding: 30px 20px; box-sizing: border-box;
+  }
+  .transfer-textarea {
+    width: 100%; height: 250px; padding: 15px;
+    background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 12px; color: #fff; font-family: monospace; font-size: 14px;
+    resize: none; outline: none; margin-bottom: 20px; box-sizing: border-box;
+  }
+  .transfer-textarea:focus { border-color: var(--main-color); box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
+</style>
+</head>
+<body>
+
+<div class="transfer-card">
+  <div style="width: 100%; display: flex; justify-content: flex-start; margin-bottom: 10px;">
+    <button class="btn-exit" onclick="history.back()">← Назад</button>
+  </div>
+
+  <h2 style="text-align: center; margin-bottom: 15px; color: #fff;">Сохранение</h2>
+  <p style="color: var(--text-muted); font-size: 14px; text-align: center; margin-bottom: 15px;">
+    Скопируйте этот код и отправьте его себе в мессенджер или сохраните в заметки.
+  </p>
+
+  <textarea id="export-code" class="transfer-textarea" readonly placeholder="Генерация кода..."></textarea>
+  
+  <button class="menu-btn" style="background: #3b82f6; box-shadow: 0 5px 0 #1e3a8a; justify-content: center; margin-top: auto;" onclick="copyExportCode()">Скопировать в буфер</button>
+</div>
+
+<script>
+  function generateExportCode() {
+    const dbStr = localStorage.getItem('eng_db');
+    if (!dbStr) {
+      document.getElementById('export-code').value = "Ошибка: База данных пуста.";
+      return;
+    }
+    const db = JSON.parse(dbStr);
+    if (!db.lastActive || !db.profiles[db.lastActive]) {
+      document.getElementById('export-code').value = "Ошибка: Нет активного профиля.";
+      return;
+    }
+    const activeName = db.lastActive;
+    const profileData = db.profiles[activeName];
+    const exportObj = { name: activeName, data: profileData };
+    const jsonStr = JSON.stringify(exportObj);
+    const base64Code = btoa(unescape(encodeURIComponent(jsonStr)));
+    document.getElementById('export-code').value = base64Code;
+  }
+
+  function copyExportCode() {
+    const textarea = document.getElementById('export-code');
+    if (!textarea.value || textarea.value.startsWith("Ошибка")) {
+      alert("Нет данных для копирования!"); return;
+    }
+    textarea.select();
+    textarea.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(textarea.value).then(() => {
+      alert("✅ Код успешно скопирован в буфер обмена!");
+    }).catch(() => {
+      alert("Не удалось скопировать. Выделите текст и скопируйте вручную.");
+    });
+  }
+
+  window.onload = generateExportCode;
+</script>
+</body>
+</html>
