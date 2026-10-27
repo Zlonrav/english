@@ -287,26 +287,29 @@ function updateNeptuneHUD() {
   const currentP = neptunePlanets[nPlanetIdx];
   const nextP = neptunePlanets[nPlanetIdx + 1];
   
-  // Определяем, куда мы летим. Если есть следующая планета - цель она, иначе - текущая (Великий Аттрактор)
   const targetP = nextP || currentP;
-
   let progressPercent = targetP.target > 0 ? (nProgress / targetP.target) : 0;
   if (progressPercent > 1) progressPercent = 1;
 
   // Математика движения
-  const currentTop = 50 + (progressPercent * 100);
-  const currentScale = 2.5 - (progressPercent * 2.0);
-  const currentOpacity = Math.max(0, 1 - (progressPercent * 1.5)); 
+  let currentTop = 50 + (progressPercent * 100);
+  let currentScale = 2.5 - (progressPercent * 2.0);
+  let currentOpacity = Math.max(0, 1 - (progressPercent * 1.5)); 
+  
+  // Если текущая планета - Великий Аттрактор (финал)
+  if (nPlanetIdx === neptunePlanets.length - 1) {
+    currentTop = 50;
+    currentScale = 0.5 + (progressPercent * 2.0);
+    currentOpacity = 1;
+  }
 
   const nextTop = -50 + (progressPercent * 100);
   const nextScale = 0.5 + (progressPercent * 2.0);
   const nextOpacity = Math.min(1, progressPercent * 1.5); 
 
-  // Сдвиг планет вправо
   let currentLeft = 70; 
   let nextLeft = 70;
 
-  // Если это финальный Великий Аттрактор, он едет в центр (left: 50%) 
   if (nPlanetIdx === neptunePlanets.length - 1) {
     currentLeft = 70 - (progressPercent * 20); 
   }
@@ -336,6 +339,13 @@ function updateNeptuneHUD() {
     curEl.style.top = `${currentTop}%`;
     curEl.style.transform = `translate(-50%, -50%) scale(${currentScale})`;
     curEl.style.opacity = currentOpacity;
+    
+    // Если это Великий Аттрактор, добавляем свечение
+    if (nPlanetIdx === neptunePlanets.length - 1) {
+      curEl.style.textShadow = '0 0 40px #a855f7, 0 0 80px #a855f7';
+    } else {
+      curEl.style.textShadow = 'none';
+    }
   }
 
   const nextEl = document.getElementById('n-planet-next');
@@ -347,6 +357,13 @@ function updateNeptuneHUD() {
       nextEl.style.top = `${nextTop}%`;
       nextEl.style.transform = `translate(-50%, -50%) scale(${nextScale})`;
       nextEl.style.opacity = nextOpacity;
+
+      // Если СЛЕДУЮЩАЯ планета - Великий Аттрактор, тоже добавляем свечение
+      if (nPlanetIdx + 1 === neptunePlanets.length - 1) {
+        nextEl.style.textShadow = '0 0 40px #a855f7, 0 0 80px #a855f7';
+      } else {
+        nextEl.style.textShadow = 'none';
+      }
     } else {
       nextEl.style.display = 'none';
     }
