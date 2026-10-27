@@ -77,10 +77,16 @@
     <button onclick="resetNeptuneCheat()" class="btn-grey" style="margin-top: 10px;">Сбросить на Землю (0/10)</button>
     
     <div style="margin-top: 15px; border-top: 1px dashed #555; padding-top: 10px;">
-      <select id="neptune-cheat-select">
+      <select id="neptune-cheat-select" onchange="updateNeptuneMaxStep()">
         <!-- Список планет добавится через JS -->
       </select>
-      <button onclick="teleportNeptuneCheat()" class="btn-green">Перелететь к выбранной планете</button>
+      
+      <div style="display: flex; gap: 10px; margin-top: 5px;">
+        <input type="number" id="neptune-cheat-step" placeholder="Шаг" value="0" min="0" style="margin: 0;">
+        <button onclick="teleportNeptuneCheat()" class="btn-green" style="width: auto; white-space: nowrap; margin: 0; padding: 12px 20px;">Перелет</button>
+      </div>
+      
+      <p class="desc" id="neptune-step-hint" style="text-align: center; margin-top: 5px;">Выберите планету</p>
     </div>
   </div>
 
@@ -252,38 +258,69 @@
   }
 
   // ================= ЧИТЫ ДЛЯ НЕПТУНА =================
+  // Добавили target, чтобы знать, сколько шагов до следующей планеты
   const cheatNeptunePlanets = [
-    "Земля", "Луна", "Марс", "Юпитер", "Сатурн", "Уран", "Нептун", 
-    "Пояс Койпера", "Облако Оорта", "Альфа Центавра", "Сириус", "Вега", 
-    "Арктур", "Бетельгейзе", "Кассиопея", "Орион", "Большая Медведица", 
-    "Облако Смита", "Межзвездное Облако", "Магеллановы Облака", 
-    "Галактика Андромеды", "Галактика Треугольника", "Галактика Боде", 
-    "Галактика Сигара", "Скопление Девы", "Сверхскопление Центавра", 
-    "Сверхскопление Ланиакея", "Великий Аттрактор"
+    { name: "Земля", target: 10 }, 
+    { name: "Луна", target: 12 }, 
+    { name: "Марс", target: 15 }, 
+    { name: "Юпитер", target: 18 }, 
+    { name: "Сатурн", target: 22 }, 
+    { name: "Уран", target: 25 }, 
+    { name: "Нептун", target: 28 }, 
+    { name: "Пояс Койпера", target: 30 }, 
+    { name: "Облако Оорта", target: 35 }, 
+    { name: "Альфа Центавра", target: 38 }, 
+    { name: "Сириус", target: 40 }, 
+    { name: "Вега", target: 42 }, 
+    { name: "Арктур", target: 45 }, 
+    { name: "Бетельгейзе", target: 48 }, 
+    { name: "Кассиопея", target: 50 }, 
+    { name: "Орион", target: 52 }, 
+    { name: "Большая Медведица", target: 55 }, 
+    { name: "Облако Смита", target: 58 }, 
+    { name: "Межзвездное Облако", target: 60 }, 
+    { name: "Магеллановы Облака", target: 62 }, 
+    { name: "Галактика Андромеды", target: 65 }, 
+    { name: "Галактика Треугольника", target: 68 }, 
+    { name: "Галактика Боде", target: 70 }, 
+    { name: "Галактика Сигара", target: 75 }, 
+    { name: "Скопление Девы", target: 80 }, 
+    { name: "Сверхскопление Центавра", target: 85 }, 
+    { name: "Сверхскопление Ланиакея", target: 90 }, 
+    { name: "Великий Аттрактор", target: 100 } // У финальной планеты 100 шагов до победы
   ];
 
   function renderNeptuneOptions() {
     const select = document.getElementById('neptune-cheat-select');
     if (!select) return;
-    select.innerHTML = cheatNeptunePlanets.map((name, idx) => 
-      `<option value="${idx}">${idx}. ${name}</option>`
+    select.innerHTML = cheatNeptunePlanets.map((p, idx) => 
+      `<option value="${idx}">${idx}. ${p.name} (до цели: ${p.target})</option>`
     ).join('');
+    updateNeptuneMaxStep();
   }
 
-  function resetNeptuneCheat() {
-    const data = getState();
-    if (!data) return;
-    data.profile.neptunePlanetIdx = 0;
-    data.profile.neptuneProgress = 0;
-    saveState(data.db);
+  function updateNeptuneMaxStep() {
+    const idx = parseInt(document.getElementById('neptune-cheat-select').value);
+    const hint = document.getElementById('neptune-step-hint');
+    const stepInput = document.getElementById('neptune-cheat-step');
+    
+    if (cheatNeptunePlanets[idx] && hint && stepInput) {
+      hint.innerText = `Максимальный шаг для этой планеты: ${cheatNeptunePlanets[idx].target}`;
+      stepInput.value = 0; // Сбрасываем на 0 при смене планеты
+      stepInput.max = cheatNeptunePlanets[idx].target;
+    }
   }
 
   function teleportNeptuneCheat() {
     const data = getState();
     if (!data) return;
+    
     const idx = parseInt(document.getElementById('neptune-cheat-select').value);
+    const step = parseInt(document.getElementById('neptune-cheat-step').value) || 0;
+    
     data.profile.neptunePlanetIdx = idx;
-    data.profile.neptuneProgress = 0;
+    data.profile.neptuneProgress = step;
+    
     saveState(data.db);
   }
 
