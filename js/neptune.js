@@ -16,7 +16,7 @@ neptuneStyle.innerHTML = `
     position: absolute; left: 50%; top: 50%; 
     transform: translate(-50%, -50%) rotate(-45deg); 
     font-size: 60px; z-index: 10; 
-    transition: top 1s ease-out;
+    transition: top 2s ease-out;
     filter: drop-shadow(0 0 10px #3b82f6); 
   }
   
@@ -397,8 +397,8 @@ function answerNeptune(selectedOpt, btnElement) {
     state.neptuneProgress = nProgress;
     saveState();
 
-    nTargetStarSpeed = 2; 
-    if (rocket) rocket.style.top = '10%';
+    nTargetStarSpeed = 3; 
+    if (rocket) rocket.style.top = '20%';
     
     if (terminal) {
       terminal.style.opacity = '0';
