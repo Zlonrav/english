@@ -504,6 +504,12 @@ function answerNeptune(selectedOpt, btnElement) {
           let countdown = 10;
           if (timerEl) timerEl.innerText = countdown;
 
+          // ПРЯЧЕМ РАКЕТУ НА ВРЕМЯ ОТСЧЕТА
+          if (rocket) {
+            rocket.style.opacity = '0';
+            rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(0)`;
+          }
+
           let int = setInterval(() => {
             countdown--;
             if (countdown > 0) {
@@ -520,16 +526,27 @@ function answerNeptune(selectedOpt, btnElement) {
                 const warpText = document.getElementById('n-warp-text');
                 if (warpText) warpText.style.opacity = '1';
 
-                // ЭТАП 2: Гиперпрыжок (5 секунд)
-                nTargetStarSpeed = -80; // Звезды летят вверх с огромной скоростью
+                // ДЕЛАЕМ ФОН ФИНАЛЬНОГО ЭКРАНА ПРОЗРАЧНЫМ, ЧТОБЫ УВИДЕТЬ КОСМОС
+                if (finalScreen) finalScreen.style.background = 'transparent';
+
+                // ПОКАЗЫВАЕМ РАКЕТУ ДЛЯ ГИПЕРПРЫЖКА
                 if (rocket) {
-                  rocket.style.transition = 'top 1s ease-in, transform 1s ease-in';
-                  rocket.style.top = '150%'; // Ракета падает вниз
-                  rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(0.5)`;
+                  rocket.style.opacity = '1';
+                  rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
+                }
+
+                // ЭТАП 2: Гиперпрыжок (5 секунд)
+                nTargetStarSpeed = -15; // Скорость снижена, чтобы звезды были видны
+                if (rocket) {
+                  // Ракета улетает вниз, растворяясь в пространстве
+                  rocket.style.transition = 'top 2s ease-in, transform 2s ease-in, opacity 2s';
+                  rocket.style.top = '150%'; 
+                  rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(0)`;
+                  rocket.style.opacity = '0';
                 }
 
                 setTimeout(() => {
-                  // ЭТАП 3: Прибытие (2 секунды)
+                  // ЭТАП 3: Прибытие
                   if (warpText) warpText.innerText = "ПРИБЫТИЕ НА ЗЕМЛЮ...";
                   
                   nPlanetIdx = 0;
@@ -538,7 +555,12 @@ function answerNeptune(selectedOpt, btnElement) {
                   state.neptuneProgress = 0;
                   saveState();
                   
-                  if (finalScreen) finalScreen.style.display = 'none';
+                  // ВОЗВРАЩАЕМ ФОН И СКРЫВАЕМ ФИНАЛЬНЫЙ ЭКРАН
+                  if (finalScreen) {
+                    finalScreen.style.display = 'none';
+                    finalScreen.style.background = 'rgba(0,0,0,0.9)'; // Возвращаем на будущее
+                  }
+                  
                   if (finalText) finalText.style.opacity = '1';
                   if (timerEl) timerEl.style.opacity = '1';
                   if (warpText) warpText.style.opacity = '0';
@@ -565,7 +587,7 @@ function answerNeptune(selectedOpt, btnElement) {
                   if (nextEl) void nextEl.offsetWidth;
                   
                   setTimeout(() => {
-                    // Земля выезжает в центр, ракета поднимается снизу
+                    // Земля выезжает в центр, ракета плавно появляется снизу
                     if (curEl) {
                         curEl.style.transition = 'top 2s ease-out, left 2s ease-out, transform 2s ease-out, opacity 2s';
                         curEl.style.top = '50%';
@@ -574,9 +596,10 @@ function answerNeptune(selectedOpt, btnElement) {
                     if (nextEl) nextEl.style.transition = 'top 2s ease-out, left 2s ease-out, transform 2s ease-out, opacity 2s';
                     
                     if (rocket) {
-                      rocket.style.transition = 'top 2s ease-out, transform 2s ease-out';
+                      rocket.style.transition = 'top 2s ease-out, transform 2s ease-out, opacity 2s';
                       rocket.style.top = '50%';
                       rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
+                      rocket.style.opacity = '1'; // Ракета возвращается домой
                     }
 
                     // Запускаем игру только после завершения анимации
