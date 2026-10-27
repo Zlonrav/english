@@ -4,6 +4,7 @@ let connectRightSelected = null;
 let connectPairsLeft = 4;
 let connectScore = 0;
 let connectLocked = false;
+let connectRoundEnded = false; // Защита от двойного начисления
 
 function openConnect() {
   if (!checkAuth()) return;
@@ -37,6 +38,7 @@ function openConnect() {
   view.style.display = 'flex';
   connectScore = 0;
   connectLocked = false;
+  connectRoundEnded = false; // Сбрасываем
   document.getElementById('connect-score').innerText = `Правильно: 0/10`;
   startConnectGame();
 }
@@ -46,6 +48,7 @@ function startConnectGame() {
   connectRightSelected = null;
   connectPairsLeft = 4;
   connectLocked = false;
+  connectRoundEnded = false; // Сбрасываем
   
   const transBox = document.getElementById('connect-translation-box');
   transBox.innerHTML = '';
@@ -176,6 +179,10 @@ function selectConnectItem(item, element, side) {
         transBox.style.opacity = '0';
 
         if (connectPairsLeft === 0) {
+          // ЗАЩИТА ОТ ДВОЙНОГО КЛИКА
+          if (connectRoundEnded) return; 
+          connectRoundEnded = true;
+
           connectScore++;
           document.getElementById('connect-score').innerText = `Правильно: ${connectScore}/10`;
 
