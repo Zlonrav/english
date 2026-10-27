@@ -47,7 +47,10 @@ function updatePet() {
   // 3. Отрисовываем карточку с кликабельным питомцем
   container.innerHTML = `
     <div class="pet-avatar" id="pet-avatar-img" onclick="openPetSelector()" style="cursor: pointer;" title="Сменить питомца">${state.pet}</div>
-    <div class="pet-name">${state.petName} ${state.acc}</div>
+        <div class="pet-name" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+      <span>${state.petName} ${state.acc}</span>
+      <span onclick="location.href='users.html'" style="cursor: pointer; font-size: 22px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="Сохранить/Перенести профиль">💾</span>
+    </div>
     <div id="level-container"></div>
     
     <!-- БЛОК ПРОГРЕССА ОГОНЬКА И ДНЕВНЫХ ЗВЕЗД -->
