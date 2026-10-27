@@ -65,35 +65,67 @@ neptuneStyle.innerHTML = `
 `;
 document.head.appendChild(neptuneStyle);
 
-// 2. Данные планет (26 этапов)
+// 2. Данные космических этапов (дистанции в километрах для расчетов)
 const neptunePlanets = [
-  { name: "Луна", icon: "🌕", target: 10, reward: 5 },
-  { name: "Марс", icon: "🔴", target: 12, reward: 5 },
-  { name: "Юпитер", icon: "🟠", target: 15, reward: 10 },
-  { name: "Сатурн", icon: "🪐", target: 18, reward: 10 },
-  { name: "Уран", icon: "🔵", target: 22, reward: 15 },
-  { name: "Нептун", icon: "🌀", target: 25, reward: 15 },
-  { name: "Пояс Койпера", icon: "☄️", target: 28, reward: 20 },
-  { name: "Облако Оорта", icon: "🌌", target: 30, reward: 20 },
-  { name: "Альфа Центавра", icon: "✨", target: 35, reward: 25 },
-  { name: "Сириус", icon: "⭐", target: 38, reward: 25 },
-  { name: "Вега", icon: "💙", target: 40, reward: 30 },
-  { name: "Арктур", icon: "🧡", target: 42, reward: 30 },
-  { name: "Бетельгейзе", icon: "❤️‍🔥", target: 45, reward: 35 },
-  { name: "Кассиопея", icon: "👑", target: 48, reward: 35 },
-  { name: "Орион", icon: "🏹", target: 50, reward: 40 },
-  { name: "Большая Медведица", icon: "🐻", target: 52, reward: 40 },
-  { name: "Любовь (Планета)", icon: "💖", target: 55, reward: 45 },
-  { name: "Межзвездное Облако", icon: "☁️", target: 58, reward: 45 },
-  { name: "Галактика Андромеды", icon: "🌪️", target: 60, reward: 50 },
-  { name: "Галактика Треугольника", icon: "🔺", target: 62, reward: 50 },
-  { name: "Галактика Боде", icon: "🌌", target: 65, reward: 55 },
-  { name: "Галактика Сигара", icon: "🚬", target: 68, reward: 55 },
-  { name: "Скопление Девы", icon: "💫", target: 70, reward: 60 },
-  { name: "Сверхскопление Центавра", icon: "🌀", target: 75, reward: 70 },
-  { name: "Сверхскопление Ланиакея", icon: "💦", target: 80, reward: 80 },
-  { name: "Великий Аттрактор", icon: "🌑", target: 100, reward: 100 }
+  // I. Солнечная система
+  { name: "Луна", icon: "🌕", target: 10, reward: 5, distKm: 384000, category: "sol" },
+  { name: "Марс", icon: "🔴", target: 12, reward: 5, distKm: 225000000, category: "sol" },
+  { name: "Юпитер", icon: "🟠", target: 15, reward: 10, distKm: 778000000, category: "sol" },
+  { name: "Сатурн", icon: "🪐", target: 18, reward: 10, distKm: 1400000000, category: "sol" },
+  { name: "Уран", icon: "🔵", target: 22, reward: 15, distKm: 2800000000, category: "sol" },
+  { name: "Нептун", icon: "🌀", target: 25, reward: 15, distKm: 4500000000, category: "sol" },
+  { name: "Пояс Койпера", icon: "☄️", target: 28, reward: 20, distKm: 7500000000, category: "sol" }, // 50 а.е. ≈ 7.5 млрд км
+  { name: "Облако Оорта", icon: "🌌", target: 30, reward: 20, distKm: 15000000000000, category: "sol" }, // 100 тыс. а.е.
+
+  // II. Ближние звёзды
+  { name: "Альфа Центавра", icon: "✨", target: 35, reward: 25, distKm: 40000000000000, category: "star" },
+  { name: "Сириус", icon: "⭐", target: 38, reward: 25, distKm: 81400000000000, category: "star" },
+  { name: "Вега", icon: "💙", target: 40, reward: 30, distKm: 236000000000000, category: "star" },
+  { name: "Арктур", icon: "🧡", target: 42, reward: 30, distKm: 350000000000000, category: "star" },
+  { name: "Бетельгейзе", icon: "❤️‍🔥", target: 45, reward: 35, distKm: 6050000000000000, category: "star" },
+
+  // III. Созвездия и структуры Млечного Пути
+  { name: "Кассиопея", icon: "👑", target: 48, reward: 35, distKm: 10000000000000000, category: "constellation" },
+  { name: "Орион", icon: "🏹", target: 50, reward: 40, distKm: 12300000000000000, category: "constellation" },
+  { name: "Большая Медведица", icon: "🐻", target: 52, reward: 40, distKm: 15000000000000000, category: "constellation" },
+  { name: "Облако Смита", icon: "☁️", target: 55, reward: 45, distKm: 20000000000000000, category: "constellation" },
+  { name: "Межзвездное Облако", icon: "☁️", target: 58, reward: 45, distKm: 25000000000000000, category: "constellation" },
+
+  // IV. Другие Галактики
+  { name: "Магеллановы Облака", icon: "🌪️", target: 58, reward: 45, distKm: 154000000000000000, category: "galaxy" },
+  { name: "Галактика Андромеды", icon: "🌪️", target: 60, reward: 50, distKm: 236000000000000000, category: "galaxy" },
+  { name: "Галактика Треугольника", icon: "🔺", target: 62, reward: 50, distKm: 284000000000000000, category: "galaxy" },
+  { name: "Галактика Боде", icon: "🌌", target: 65, reward: 55, distKm: 1130000000000000000, category: "galaxy" },
+  { name: "Галактика Сигара", icon: "🚬", target: 68, reward: 55, distKm: 1230000000000000000, category: "galaxy" },
+
+  // V. Скопления и Сверхскопления
+  { name: "Скопление Девы", icon: "💫", target: 70, reward: 60, distKm: 5100000000000000000, category: "cluster" },
+  { name: "Сверхскопление Центавра", icon: "🌀", target: 75, reward: 70, distKm: 16100000000000000000, category: "cluster" },
+  { name: "Сверхскопление Ланиакея", icon: "💦", target: 80, reward: 80, distKm: 18900000000000000000, category: "cluster" },
+  { name: "Великий Аттрактор", icon: "🌑", target: 100, reward: 100, distKm: 23600000000000000000, category: "cluster" }
 ];
+
+// Функция для красивого вывода дистанции
+function formatDistance(km) {
+  if (km <= 0) return "0 км";
+  
+  // 1 световой год ≈ 9.46 трлн км
+  const lightYear = 9460000000000;
+
+  if (km >= lightYear) {
+    let ly = km / lightYear;
+    if (ly >= 1000000) return (ly / 1000000).toFixed(1) + " млн св. лет";
+    if (ly >= 1000) return (ly / 1000).toFixed(1) + " тыс. св. лет";
+    return ly.toFixed(1) + " св. лет";
+  }
+  
+  // Если меньше светового года, показываем в км/млн/млрд
+  if (km >= 1000000000) return (km / 1000000000).toFixed(1) + " млрд км";
+  if (km >= 1000000) return (km / 1000000).toFixed(0) + " млн км";
+  if (km >= 1000) return (km / 1000).toFixed(0) + " тыс. км";
+  
+  return km.toFixed(0) + " км";
+}
 
 let nPlanetIdx = 0;
 let nProgress = 0;
@@ -145,7 +177,10 @@ function openNeptune() {
       
       <div id="n-hud">
         <button class="btn-exit" onclick="closeNeptune()" style="color: #00ffcc; font-size: 16px; z-index: 60;">← Выйти</button>
-        <div id="n-hud-text">Луна: 0/10</div>
+        <div style="display: flex; flex-direction: column; align-items: flex-end;">
+          <div id="n-hud-text">Луна: 0/10</div>
+          <div id="n-hud-dist" style="font-size: 12px; color: #88ffee; margin-top: 2px;">До цели: 384 тыс. км</div>
+        </div>
       </div>
 
       <div id="n-planet">🌕</div>
@@ -261,6 +296,26 @@ function updateNeptuneHUD() {
   
   const hud = document.getElementById('n-hud-text');
   if (hud) hud.innerText = `${currentP.name}: ${nProgress}/${currentP.target}`;
+  
+  // Расчет оставшейся дистанции
+  const hudDist = document.getElementById('n-hud-dist');
+  if (hudDist) {
+    // Узнаем, сколько осталось ответов до цели
+    let remainingSteps = currentP.target - nProgress;
+    // Вычисляем, сколько км приходится на 1 шаг
+    let kmPerStep = currentP.distKm / currentP.target;
+    // Вычитаем пройденное
+    let remainingKm = remainingSteps * kmPerStep;
+    
+    // Если это финальный шаг, показываем "Достигнуто!"
+    if (remainingSteps <= 0) {
+      hudDist.innerText = "Достигнуто!";
+      hudDist.style.color = "#10b981"; // Зеленый
+    } else {
+      hudDist.innerText = `До цели: ${formatDistance(remainingKm)}`;
+      hudDist.style.color = "#88ffee"; // Голубой
+    }
+  }
   
   const planetEl = document.getElementById('n-planet');
   if (planetEl) {
