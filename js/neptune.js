@@ -66,7 +66,7 @@ neptuneStyle.innerHTML = `
 `;
 document.head.appendChild(neptuneStyle);
 
-// 2. Данные планет
+// 2. Данные планет (с родительным падежом и 125 шагами у Аттрактора)
 const neptunePlanets = [
   { name: "Земля", rod: "Земли", icon: "🌍", target: 10, reward: 5, distKm: 384000 },
   { name: "Луна", rod: "Луны", icon: "🌕", target: 12, reward: 5, distKm: 225000000 },
@@ -192,6 +192,7 @@ function openNeptune() {
         <div style="color: #fbbf24; font-family: 'Courier New', Courier, monospace; font-size: 20px; font-weight: bold; text-align: center; text-transform: uppercase; line-height: 1.5; text-shadow: 0 0 10px #fbbf24; margin-bottom: 10px; transition: opacity 0.5s;" id="n-final-text">
           ВЫ СОБРАЛИ ВСЕ ДАННЫЕ ВО ВСЕЛЕННОЙ!<br>ПОДГОТОВКА К ВОЗВРАЩЕНИЮ...
         </div>
+        <div id="n-warp-text" style="color: #00ffcc; font-family: 'Courier New', Courier, monospace; font-size: 30px; font-weight: bold; text-align: center; text-transform: uppercase; text-shadow: 0 0 20px #00ffcc; opacity: 0; transition: opacity 0.5s; margin-bottom: 20px;">ГИПЕРПРЫЖОК...</div>
         <div id="n-countdown" style="color: #ef4444; font-family: 'Courier New', Courier, monospace; font-size: 80px; font-weight: bold; text-shadow: 0 0 20px #ef4444; transition: opacity 0.5s;">10</div>
       </div>
     `;
@@ -511,18 +512,26 @@ function answerNeptune(selectedOpt, btnElement) {
               clearInterval(int);
               if (timerEl) timerEl.innerText = "ПУСК!";
               
-              // АНИМАЦИЯ ВОЗВРАТА
+              // ЭТАП 1: Пауза перед гиперпрыжком (1 сек)
               setTimeout(() => {
                 if (finalText) finalText.style.opacity = '0';
                 if (timerEl) timerEl.style.opacity = '0';
+                
+                const warpText = document.getElementById('n-warp-text');
+                if (warpText) warpText.style.opacity = '1';
 
-                nTargetStarSpeed = -30; // Звезды летят вверх
+                // ЭТАП 2: Гиперпрыжок (5 секунд)
+                nTargetStarSpeed = -80; // Звезды летят вверх с огромной скоростью
                 if (rocket) {
-                  rocket.style.transition = 'top 1s ease-in';
-                  rocket.style.top = '150%'; // Ракета падает
+                  rocket.style.transition = 'top 1s ease-in, transform 1s ease-in';
+                  rocket.style.top = '150%'; // Ракета падает вниз
+                  rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(0.5)`;
                 }
 
                 setTimeout(() => {
+                  // ЭТАП 3: Прибытие (2 секунды)
+                  if (warpText) warpText.innerText = "ПРИБЫТИЕ НА ЗЕМЛЮ...";
+                  
                   nPlanetIdx = 0;
                   nProgress = 0;
                   state.neptunePlanetIdx = 0;
@@ -532,6 +541,7 @@ function answerNeptune(selectedOpt, btnElement) {
                   if (finalScreen) finalScreen.style.display = 'none';
                   if (finalText) finalText.style.opacity = '1';
                   if (timerEl) timerEl.style.opacity = '1';
+                  if (warpText) warpText.style.opacity = '0';
                   if (hudText) hudText.style.display = 'block';
                   if (hudDist) hudDist.style.display = 'block';
                   
@@ -539,9 +549,13 @@ function answerNeptune(selectedOpt, btnElement) {
 
                   const curEl = document.getElementById('n-planet-current');
                   const nextEl = document.getElementById('n-planet-next');
+                  
+                  // Ставим Землю наверх, чтобы она выплыла сверху
                   if (curEl) {
                       curEl.style.transition = 'none';
                       curEl.style.opacity = '0'; 
+                      curEl.style.top = '-50%'; 
+                      curEl.style.transform = `translate(-50%, -50%) scale(1)`;
                   }
                   if (nextEl) nextEl.style.transition = 'none';
                   
@@ -551,22 +565,29 @@ function answerNeptune(selectedOpt, btnElement) {
                   if (nextEl) void nextEl.offsetWidth;
                   
                   setTimeout(() => {
+                    // Земля выезжает в центр, ракета поднимается снизу
                     if (curEl) {
-                        curEl.style.transition = 'top 1s ease-out, left 1s ease-out, transform 1s ease-out, opacity 0.5s';
+                        curEl.style.transition = 'top 2s ease-out, left 2s ease-out, transform 2s ease-out, opacity 2s';
+                        curEl.style.top = '50%';
                         curEl.style.opacity = '1';
                     }
-                    if (nextEl) nextEl.style.transition = 'top 1s ease-out, left 1s ease-out, transform 1s ease-out, opacity 0.5s';
+                    if (nextEl) nextEl.style.transition = 'top 2s ease-out, left 2s ease-out, transform 2s ease-out, opacity 2s';
                     
                     if (rocket) {
-                      rocket.style.transition = 'top 1s ease-out';
+                      rocket.style.transition = 'top 2s ease-out, transform 2s ease-out';
                       rocket.style.top = '50%';
+                      rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
                     }
 
-                    startNeptuneQuestion();
+                    // Запускаем игру только после завершения анимации
+                    setTimeout(() => {
+                      startNeptuneQuestion();
+                    }, 2000);
+
                   }, 50);
 
-                }, 1000); 
-              }, 1000); 
+                }, 5000); // Ждем 5 секунд гиперпрыжка
+              }, 1000); // Ждем 1 секунду после слова "ПУСК!"
             }
           }, 1000);
 
