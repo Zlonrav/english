@@ -9,18 +9,37 @@
   h1 { color: #ff4444; text-align: center; }
   .card { background: #2a2a2a; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #444; }
   h3 { margin-top: 0; color: #fff; }
-  input, button { width: 100%; padding: 12px; margin: 5px 0; border-radius: 5px; border: none; box-sizing: border-box; font-size: 16px; }
-  input { background: #333; color: #fff; border: 1px solid #555; }
+  input, select, button { width: 100%; padding: 12px; margin: 5px 0; border-radius: 5px; border: none; box-sizing: border-box; font-size: 16px; }
+  input, select { background: #333; color: #fff; border: 1px solid #555; }
   button { background: #ff4444; color: #fff; font-weight: bold; cursor: pointer; transition: 0.2s; }
   button:hover { background: #cc0000; }
   .btn-green { background: #28a745; }
   .btn-green:hover { background: #218838; }
   .btn-grey { background: #555; }
   .btn-grey:hover { background: #444; }
+  .btn-blue { background: #2563eb; }
+  .btn-blue:hover { background: #1d4ed8; }
   p.desc { font-size: 12px; color: #aaa; margin-top: 5px; }
+  
+  /* Стили для экрана блокировки */
+  #password-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #1a1a1a; z-index: 9999; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;
+  }
 </style>
 </head>
 <body>
+
+<!-- ЭКРАН БЛОКИРОВКИ -->
+<div id="password-overlay">
+  <h2 style="color: #ff4444; text-align: center; margin-bottom: 20px;">🔒 Доступ только для разработчика</h2>
+  <input type="password" id="cheat-password" placeholder="Введите пароль" style="width: 100%; max-width: 300px; text-align: center;">
+  <button onclick="checkCheatPassword()" style="width: 100%; max-width: 300px;">Войти</button>
+</div>
+
+<!-- ОСНОВНОЙ КОНТЕНТ ЧИТОВ -->
+<div id="main-content" style="display: none;">
   <h1>🛠 Читы разработчика</h1>
   <p style="text-align:center; color:#aaa;">Сюда нельзя заходить детям!</p>
 
@@ -34,6 +53,27 @@
     <h3>⭐ Добавить звёзды</h3>
     <input type="number" id="stars-amount" placeholder="Сколько звёзд?" value="1000">
     <button onclick="addCheatStars()">Начислить</button>
+  </div>
+
+  <div class="card">
+    <h3>🚀 Управление полетом (Нептун)</h3>
+    <p class="desc">Сброс на Землю или телепортация к любой точке Вселенной.</p>
+    
+    <button onclick="resetNeptuneCheat()" class="btn-grey" style="margin-top: 10px;">Сбросить на Землю (0/10)</button>
+    
+    <div style="margin-top: 15px; border-top: 1px dashed #555; padding-top: 10px;">
+      <select id="neptune-cheat-select">
+        <!-- Список планет добавится через JS -->
+      </select>
+      <button onclick="teleportNeptuneCheat()" class="btn-green">Перелететь к выбранной планете</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💾 Сохранение / Загрузка</h3>
+    <p class="desc">Быстрый переход на страницы переноса прогресса.</p>
+    <button onclick="location.href='save.html'" class="btn-blue" style="margin-bottom: 5px;">Сохранить прогресс</button>
+    <button onclick="location.href='load.html'" class="btn-grey">Загрузить прогресс</button>
   </div>
 
   <div class="card">
@@ -55,8 +95,30 @@
   </div>
 
   <button onclick="location.href='index.html'" style="background:#1f4e9c; margin-top:20px;">Вернуться в игру (обычный режим)</button>
+</div>
 
+<!-- Подключаем конфиг с паролем -->
+<script src="js/parent-config.js"></script>
 <script>
+  // ================= ПРОВЕРКА ПАРОЛЯ =================
+  function checkCheatPassword() {
+    const pwd = document.getElementById('cheat-password').value;
+    if (btoa(pwd) === PARENT_PASSWORD_B64) {
+      document.getElementById('password-overlay').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+      renderCheatProfiles();
+      renderNeptuneOptions();
+    } else {
+      alert('Неверный пароль!');
+      document.getElementById('cheat-password').value = '';
+    }
+  }
+
+  // Вход по Enter
+  document.getElementById('cheat-password').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') checkCheatPassword();
+  });
+
   // ================= УПРАВЛЕНИЕ ПРОФИЛЯМИ =================
   function renderCheatProfiles() {
     const listEl = document.getElementById('cheat-profiles-list');
@@ -68,7 +130,6 @@
     }
 
     listEl.innerHTML = '';
-    // Перебираем всех игроков в базе
     for (const name in db.profiles) {
       const row = document.createElement('div');
       row.style.display = 'flex';
@@ -88,19 +149,49 @@
 
   function deleteCheatProfile(name) {
     if (!confirm(`Удалить профиль "${name}"? Весь прогресс сгорит!`)) return;
-    
     const db = JSON.parse(localStorage.getItem('eng_db'));
     if (db && db.profiles && db.profiles[name]) {
       delete db.profiles[name];
-      
-      // Если удаляемый профиль был последним активным — обнуляем lastActive
-      if (db.lastActive === name) {
-        db.lastActive = null;
-      }
-      
+      if (db.lastActive === name) db.lastActive = null;
       localStorage.setItem('eng_db', JSON.stringify(db));
-      renderCheatProfiles(); // Обновляем список на странице
+      renderCheatProfiles();
     }
+  }
+
+  // ================= ЧИТЫ ДЛЯ НЕПТУНА =================
+  const cheatNeptunePlanets = [
+    "Земля", "Луна", "Марс", "Юпитер", "Сатурн", "Уран", "Нептун", 
+    "Пояс Койпера", "Облако Оорта", "Альфа Центавра", "Сириус", "Вега", 
+    "Арктур", "Бетельгейзе", "Кассиопея", "Орион", "Большая Медведица", 
+    "Облако Смита", "Межзвездное Облако", "Магеллановы Облака", 
+    "Галактика Андромеды", "Галактика Треугольника", "Галактика Боде", 
+    "Галактика Сигара", "Скопление Девы", "Сверхскопление Центавра", 
+    "Сверхскопление Ланиакея", "Великий Аттрактор"
+  ];
+
+  function renderNeptuneOptions() {
+    const select = document.getElementById('neptune-cheat-select');
+    if (!select) return;
+    select.innerHTML = cheatNeptunePlanets.map((name, idx) => 
+      `<option value="${idx}">${idx}. ${name}</option>`
+    ).join('');
+  }
+
+  function resetNeptuneCheat() {
+    const data = getState();
+    if (!data) return;
+    data.profile.neptunePlanetIdx = 0;
+    data.profile.neptuneProgress = 0;
+    saveState(data.db);
+  }
+
+  function teleportNeptuneCheat() {
+    const data = getState();
+    if (!data) return;
+    const idx = parseInt(document.getElementById('neptune-cheat-select').value);
+    data.profile.neptunePlanetIdx = idx;
+    data.profile.neptuneProgress = 0;
+    saveState(data.db);
   }
 
   // ================= ОСТАЛЬНЫЕ ЧИТЫ =================
@@ -147,11 +238,6 @@
     sessionStorage.clear();
     location.href = 'index.html';
   }
-
-  // Запускаем отрисовку списка профилей при загрузке страницы
-  window.onload = () => {
-    renderCheatProfiles();
-  };
 </script>
 </body>
 </html>
