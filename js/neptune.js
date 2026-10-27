@@ -41,18 +41,19 @@ neptuneStyle.innerHTML = `
     background: rgba(0, 255, 204, 0.1); border: 1px solid #00ffcc; color: #00ffcc; 
     font-family: 'Courier New', Courier, monospace; font-size: 16px; 
     padding: 10px; border-radius: 4px; cursor: pointer; transition: 0.2s; 
-    text-align: left; width: 100%; 
+    text-align: left; width: 100%; text-transform: lowercase;
   }
   .n-opt-btn:hover { background: rgba(0, 255, 204, 0.3); color: #fff; }
   .n-opt-btn.correct { background: #10b981; color: #fff; border-color: #10b981; }
   .n-opt-btn.wrong { background: #ef4444; color: #fff; border-color: #ef4444; }
 
-  /* Экран ошибки (Топливо) */
-  #n-error-screen {
+  /* Экран ошибки (Топливо) и Финала */
+  #n-error-screen, #n-final-screen {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: #000; z-index: 50; display: none; flex-direction: column;
     align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;
   }
+  #n-final-screen { z-index: 100; background: rgba(0,0,0,0.9); }
   
   /* HUD */
   #n-hud { 
@@ -64,18 +65,34 @@ neptuneStyle.innerHTML = `
 `;
 document.head.appendChild(neptuneStyle);
 
-// 2. Данные планет
+// 2. Данные планет (26 этапов)
 const neptunePlanets = [
-  { name: "Земля", icon: "🌍", target: 10, reward: 10 },
-  { name: "Луна", icon: "🌕", target: 15, reward: 15 },
-  { name: "Марс", icon: "🔴", target: 20, reward: 20 },
-  { name: "Юпитер", icon: "🟠", target: 25, reward: 25 },
-  { name: "Сатурн", icon: "🪐", target: 30, reward: 30 },
-  { name: "Уран", icon: "🔵", target: 35, reward: 35 },
-  { name: "Нептун", icon: "🌀", target: 40, reward: 40 },
-  { name: "Пояс Койпера", icon: "☄️", target: 45, reward: 45 },
-  { name: "Облако Оорта", icon: "🌌", target: 50, reward: 50 },
-  { name: "Альфа Центавра", icon: "✨", target: 60, reward: 60 }
+  { name: "Луна", icon: "🌕", target: 10, reward: 5 },
+  { name: "Марс", icon: "🔴", target: 12, reward: 5 },
+  { name: "Юпитер", icon: "🟠", target: 15, reward: 10 },
+  { name: "Сатурн", icon: "🪐", target: 18, reward: 10 },
+  { name: "Уран", icon: "🔵", target: 22, reward: 15 },
+  { name: "Нептун", icon: "🌀", target: 25, reward: 15 },
+  { name: "Пояс Койпера", icon: "☄️", target: 28, reward: 20 },
+  { name: "Облако Оорта", icon: "🌌", target: 30, reward: 20 },
+  { name: "Альфа Центавра", icon: "✨", target: 35, reward: 25 },
+  { name: "Сириус", icon: "⭐", target: 38, reward: 25 },
+  { name: "Вега", icon: "💙", target: 40, reward: 30 },
+  { name: "Арктур", icon: "🧡", target: 42, reward: 30 },
+  { name: "Бетельгейзе", icon: "❤️‍🔥", target: 45, reward: 35 },
+  { name: "Кассиопея", icon: "👑", target: 48, reward: 35 },
+  { name: "Орион", icon: "🏹", target: 50, reward: 40 },
+  { name: "Большая Медведица", icon: "🐻", target: 52, reward: 40 },
+  { name: "Любовь (Планета)", icon: "💖", target: 55, reward: 45 },
+  { name: "Межзвездное Облако", icon: "☁️", target: 58, reward: 45 },
+  { name: "Галактика Андромеды", icon: "🌪️", target: 60, reward: 50 },
+  { name: "Галактика Треугольника", icon: "🔺", target: 62, reward: 50 },
+  { name: "Галактика Боде", icon: "🌌", target: 65, reward: 55 },
+  { name: "Галактика Сигара", icon: "🚬", target: 68, reward: 55 },
+  { name: "Скопление Девы", icon: "💫", target: 70, reward: 60 },
+  { name: "Сверхскопление Центавра", icon: "🌀", target: 75, reward: 70 },
+  { name: "Сверхскопление Ланиакея", icon: "💦", target: 80, reward: 80 },
+  { name: "Великий Аттрактор", icon: "🌑", target: 100, reward: 100 }
 ];
 
 let nPlanetIdx = 0;
@@ -90,6 +107,13 @@ let nCurrentStarSpeed = 0.33;
 let nStarAnimId = null;
 
 function animateNeptuneStars() {
+  // Защита от утечки памяти: если экран скрыт, останавливаем анимацию
+  const view = document.getElementById('neptune-view');
+  if (!view || view.style.display === 'none') {
+    nStarAnimId = null;
+    return;
+  }
+
   nCurrentStarSpeed += (nTargetStarSpeed - nCurrentStarSpeed) * 0.05;
   nStarOffset += nCurrentStarSpeed;
 
@@ -120,11 +144,11 @@ function openNeptune() {
       <div class="n-stars n-layer3"></div>
       
       <div id="n-hud">
-        <button class="btn-exit" onclick="goHome()" style="color: #00ffcc; font-size: 16px; z-index: 60;">← Выйти</button>
-        <div id="n-hud-text">Земля ➔ Луна: 0/10</div>
+        <button class="btn-exit" onclick="closeNeptune()" style="color: #00ffcc; font-size: 16px; z-index: 60;">← Выйти</button>
+        <div id="n-hud-text">Луна: 0/10</div>
       </div>
 
-      <div id="n-planet">🌍</div>
+      <div id="n-planet">🌕</div>
       <div id="n-rocket">🚀</div>
 
       <div id="n-terminal">
@@ -136,43 +160,52 @@ function openNeptune() {
         <div id="n-options" style="display: flex; flex-direction: column; gap: 8px;"></div>
       </div>
 
-      <!-- Экран блокировки из-за нехватки топлива -->
+      <!-- Экран ошибки (Топливо) -->
       <div id="n-error-screen">
         <div style="color: #ef4444; font-family: 'Courier New', Courier, monospace; font-size: 22px; font-weight: bold; text-align: center; text-transform: uppercase; line-height: 1.5; text-shadow: 0 0 10px #ef4444;" id="n-error-text">
           ⚠️ КАПИТАН, ДЛЯ ЗАПУСКА РАКЕТЫ НУЖНО ТОПЛИВО, ЗАРАБОТАЙТЕ 150 ЗВЕЗД В ЗАДАНИЯХ СЕГОДНЯ. СЕЙЧАС ЗАРАБОТАНО: 0/150
         </div>
       </div>
+
+      <!-- Экран Финала -->
+      <div id="n-final-screen">
+        <div style="color: #fbbf24; font-family: 'Courier New', Courier, monospace; font-size: 24px; font-weight: bold; text-align: center; text-transform: uppercase; line-height: 1.5; text-shadow: 0 0 10px #fbbf24; margin-bottom: 20px;">
+          ВЫ СОБРАЛИ ВСЕ ДАННЫЕ ВО ВСЕЛЕННОЙ, ТЕПЕРЬ ВЫ МОЖЕТЕ ОТПРАВЛЯТЬСЯ НА ЗЕМЛЮ!
+        </div>
+        <div style="font-size: 60px; animation: bounce 1s infinite;">🏠</div>
+      </div>
     `;
     document.querySelector('.content-wrapper').appendChild(view);
-    
-    if (!nStarAnimId) {
-      animateNeptuneStars();
-    }
   }
 
   view.style.display = 'flex';
   
+  // Сброс анимации (в случае если она была остановлена)
+  if (!nStarAnimId) {
+    nStarAnimId = requestAnimationFrame(animateNeptuneStars);
+  }
+
   // Проверка топлива
   const dailyEarned = state.dailyEarned || 0;
   const errorScreen = document.getElementById('n-error-screen');
+  const finalScreen = document.getElementById('n-final-screen');
   const gameElements = [document.getElementById('n-planet'), document.getElementById('n-rocket'), document.getElementById('n-terminal')];
   const hudText = document.getElementById('n-hud-text');
 
   if (dailyEarned < 150) {
-    // Показываем ошибку
     errorScreen.style.display = 'flex';
+    finalScreen.style.display = 'none';
     document.getElementById('n-error-text').innerHTML = `⚠️ КАПИТАН, ДЛЯ ЗАПУСКА РАКЕТЫ НУЖНО ТОПЛИВО, ЗАРАБОТАЙТЕ 150 ЗВЕЗД В ЗАДАНИЯХ СЕГОДНЯ. СЕЙЧАС ЗАРАБОТАНО: ${dailyEarned}/150`;
     gameElements.forEach(el => { if(el) el.style.display = 'none'; });
     hudText.style.display = 'none';
     
-    // Запускаем анимацию звезд на фоне ошибки
     nTargetStarSpeed = 0.33;
     nCurrentStarSpeed = 0.33;
     return;
   }
 
-  // Если топливо есть, запускаем игру
   errorScreen.style.display = 'none';
+  finalScreen.style.display = 'none';
   gameElements.forEach(el => { if(el) el.style.display = ''; });
   hudText.style.display = 'block';
 
@@ -180,9 +213,13 @@ function openNeptune() {
   nPlanetIdx = state.neptunePlanetIdx || 0;
   nProgress = state.neptuneProgress || 0;
   
-  if (nPlanetIdx >= neptunePlanets.length - 1) {
+  // Если игрок уже на последней планете и прошел её, сбрасываем на Землю
+  if (nPlanetIdx >= neptunePlanets.length - 1 && nProgress >= neptunePlanets[nPlanetIdx].target) {
     nPlanetIdx = 0;
     nProgress = 0;
+    state.neptunePlanetIdx = 0;
+    state.neptuneProgress = 0;
+    saveState();
   }
   
   nTargetStarSpeed = 0.33; 
@@ -208,18 +245,27 @@ function openNeptune() {
   }, 50);
 }
 
+// Функция для правильного выхода (остановка анимации)
+function closeNeptune() {
+  if (nStarAnimId) {
+    cancelAnimationFrame(nStarAnimId);
+    nStarAnimId = null;
+  }
+  goHome();
+}
+
 // 4. Обновление интерфейса
 function updateNeptuneHUD() {
   const currentP = neptunePlanets[nPlanetIdx];
-  const nextP = neptunePlanets[nPlanetIdx + 1] || neptunePlanets[nPlanetIdx];
+  const nextP = neptunePlanets[nPlanetIdx + 1] || currentP;
   
   const hud = document.getElementById('n-hud-text');
-  if (hud) hud.innerText = `${currentP.name} ➔ ${nextP.name}: ${nProgress}/${nextP.target}`;
+  if (hud) hud.innerText = `${currentP.name}: ${nProgress}/${currentP.target}`;
   
   const planetEl = document.getElementById('n-planet');
   if (planetEl) {
     planetEl.innerText = currentP.icon;
-    let progressPercent = nextP.target > 0 ? (nProgress / nextP.target) : 0;
+    let progressPercent = currentP.target > 0 ? (nProgress / currentP.target) : 0;
     let topPos = -20 + (progressPercent * 120); 
     planetEl.style.top = `${topPos}%`;
   }
@@ -236,8 +282,10 @@ function startNeptuneQuestion() {
   }
 
   const terminal = document.getElementById('n-terminal');
-  terminal.style.display = 'flex';
-  terminal.style.opacity = '1';
+  if (terminal) {
+    terminal.style.display = 'flex';
+    terminal.style.opacity = '1';
+  }
 
   let pool = getCleanGamePool(cardsData);
   if (pool.length === 0) pool = cardsData;
@@ -252,21 +300,23 @@ function startNeptuneQuestion() {
 
   let options = [correctCard.trans, wrongCard.trans].sort(() => Math.random() - 0.5);
 
-  // Делаем первую букву заглавной для вопроса
-  let formattedWord = correctCard.word.charAt(0).toUpperCase() + correctCard.word.slice(1);
-  document.getElementById('n-question').innerText = `[ ${formattedWord} ]`;
+  const questionEl = document.getElementById('n-question');
+  if (questionEl) {
+    let formattedWord = correctCard.word.charAt(0).toUpperCase() + correctCard.word.slice(1);
+    questionEl.innerText = `[ ${formattedWord} ]`;
+  }
   
   const optContainer = document.getElementById('n-options');
-  optContainer.innerHTML = '';
-  
-  options.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'n-opt-btn';
-    // Все варианты ответов делаем с маленькой буквы
-    btn.innerText = `> ${opt.toLowerCase()}`;
-    btn.onclick = () => answerNeptune(opt, btn);
-    optContainer.appendChild(btn);
-  });
+  if (optContainer) {
+    optContainer.innerHTML = '';
+    options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'n-opt-btn';
+      btn.innerText = `> ${opt.toLowerCase()}`;
+      btn.onclick = () => answerNeptune(opt, btn);
+      optContainer.appendChild(btn);
+    });
+  }
 }
 
 // 6. Обработка ответа
@@ -278,13 +328,14 @@ function answerNeptune(selectedOpt, btnElement) {
   const rocket = document.getElementById('n-rocket');
   const planetEl = document.getElementById('n-planet');
   const allBtns = document.querySelectorAll('.n-opt-btn');
+  const currentP = neptunePlanets[nPlanetIdx];
   const nextP = neptunePlanets[nPlanetIdx + 1];
   
   if (selectedOpt === nCurrentCorrectWord) {
     // ПРАВИЛЬНО (+1)
-    btnElement.classList.add('correct');
+    if (btnElement) btnElement.classList.add('correct');
     
-    nProgress = Math.min(nProgress + 1, nextP.target); 
+    nProgress = Math.min(nProgress + 1, currentP.target); 
     updateNeptuneHUD(); 
 
     state.neptunePlanetIdx = nPlanetIdx;
@@ -292,15 +343,59 @@ function answerNeptune(selectedOpt, btnElement) {
     saveState();
 
     nTargetStarSpeed = 2; 
-    rocket.style.top = '10%';
+    if (rocket) rocket.style.top = '10%';
     
-    terminal.style.opacity = '0';
-    setTimeout(() => terminal.style.display = 'none', 300);
+    if (terminal) {
+      terminal.style.opacity = '0';
+      setTimeout(() => { if(terminal) terminal.style.display = 'none'; }, 300);
+    }
 
     setTimeout(() => {
-      if (nextP && nProgress >= nextP.target) {
-        addStars(nextP.reward);
-        showToast(`🪐 Вы достигли ${nextP.name}! Награда: +${nextP.reward} ⭐`, 'top');
+      // Проверяем, долетели ли до планеты
+      if (nProgress >= currentP.target) {
+        
+        // Если это была последняя планета
+        if (!nextP) {
+          // ФИНАЛЬНЫЙ АВТОПИЛОТ
+          addStars(currentP.reward);
+          
+          // Увеличиваем счетчик полетов
+          state.neptuneFlights = (state.neptuneFlights || 0) + 1;
+          saveState();
+          checkNewAchievements(); // Проверяем ачивку
+
+          const finalScreen = document.getElementById('n-final-screen');
+          const hudText = document.getElementById('n-hud-text');
+          if (finalScreen) finalScreen.style.display = 'flex';
+          if (hudText) hudText.style.display = 'none';
+          
+          // Ускоряем звезды для ощущения гиперпрыжка
+          nTargetStarSpeed = 20; 
+          
+          if (rocket) rocket.style.top = '50%'; // Ракета в центре
+          
+          setTimeout(() => {
+            // Возвращаемся на Землю
+            nPlanetIdx = 0;
+            nProgress = 0;
+            state.neptunePlanetIdx = 0;
+            state.neptuneProgress = 0;
+            saveState();
+            
+            if (finalScreen) finalScreen.style.display = 'none';
+            if (hudText) hudText.style.display = 'block';
+            
+            nTargetStarSpeed = 0.33; 
+            updateNeptuneHUD();
+            startNeptuneQuestion();
+          }, 5000); // 5 секунд красивого полета домой
+
+          return;
+        }
+
+        // Если есть следующая планета
+        addStars(currentP.reward);
+        showToast(`🪐 Вы достигли ${currentP.name}! Награда: +${currentP.reward} ⭐`, 'top');
         
         nPlanetIdx++;
         nProgress = 0;
@@ -322,9 +417,6 @@ function answerNeptune(selectedOpt, btnElement) {
           startNeptuneQuestion();
         }, 50);
 
-      } else if (!nextP) {
-         showToast("🌌 Вы покинули Млечный Путь... Продолжение следует!", 'top');
-         setTimeout(goHome, 3000);
       } else {
         nTargetStarSpeed = 0.33; 
         startNeptuneQuestion();
@@ -333,7 +425,7 @@ function answerNeptune(selectedOpt, btnElement) {
 
   } else {
     // НЕПРАВИЛЬНО (-2)
-    btnElement.classList.add('wrong');
+    if (btnElement) btnElement.classList.add('wrong');
     allBtns.forEach(b => {
       if (b.innerText.includes(nCurrentCorrectWord.toLowerCase())) b.classList.add('correct');
     });
@@ -347,17 +439,19 @@ function answerNeptune(selectedOpt, btnElement) {
 
     nTargetStarSpeed = -3; 
 
-    rocket.style.transition = 'top 1s ease-in';
-    rocket.style.top = '70%';
+    if (rocket) {
+      rocket.style.transition = 'top 1s ease-in';
+      rocket.style.top = '70%';
 
-    setTimeout(() => {
-      rocket.style.transition = 'top 0.5s ease-in-out';
-      rocket.style.top = '50%';
-      nTargetStarSpeed = 0.33; 
-      
       setTimeout(() => {
-        startNeptuneQuestion();
-      }, 500);
-    }, 1000);
+        rocket.style.transition = 'top 0.5s ease-in-out';
+        rocket.style.top = '50%';
+        nTargetStarSpeed = 0.33; 
+        
+        setTimeout(() => {
+          startNeptuneQuestion();
+        }, 500);
+      }, 1000);
+    }
   }
 }
