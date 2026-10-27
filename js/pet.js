@@ -47,8 +47,8 @@ function updatePet() {
   // 3. Отрисовываем карточку с кликабельным питомцем
   container.innerHTML = `
     <div class="pet-avatar" id="pet-avatar-img" onclick="openPetSelector()" style="cursor: pointer;" title="Сменить питомца">${state.pet}</div>
-        <div class="pet-name" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-      <span>${staten o.petName} ${state.acc}</span>
+    <div class="pet-name" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+      <span>${state.petName} ${state.acc}</span>
     </div>
     <div id="level-container"></div>
     
