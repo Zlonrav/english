@@ -82,8 +82,15 @@
         <button class="menu-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 0 rgba(0,0,0,0.2); color: var(--text-muted); padding: 10px; font-size: 16px; justify-content: center;" onclick="cancelCreate()">Отмена</button>
       </div>
 
-      <div style="margin-top: 25px; text-align: center; width: 100%;" id="auth-rules-link">
-        <span style="opacity: 0.5">📚</span> <a href="rules.html" target="_blanl" style="color: var(--text-muted); font-size: 14px; text-decoration: none; border-bottom: 1px dashed var(--text-muted); padding-bottom: 2px; opacity: 0.5;">Правила игры</a>
+      <div style="margin-top: 25px; text-align: center; width: 100%; display: flex; flex-direction: column; gap: 15px;" id="auth-rules-link">
+        <div>
+          <span style="opacity: 0.5">📚</span> <a href="rules.html" target="_blank" style="color: var(--text-muted); font-size: 14px; text-decoration: none; border-bottom: 1px dashed var(--text-muted); padding-bottom: 2px; opacity: 0.5;">Правила игры</a>
+        </div>
+        <div>
+          <button class="menu-btn" onclick="location.href='load.html'" style="background: rgba(59, 130, 246, 0.2); border: 1px solid var(--main-color); box-shadow: none; color: #93c5fd; font-size: 14px; padding: 10px; justify-content: center; gap: 5px; width: auto; display: inline-flex;">
+            📥 Загрузить профиль
+          </button>
+        </div>
       </div>
     </div>
   </div>
