@@ -47,7 +47,6 @@
       Скопируйте этот код и отправьте его себе в мессенджер (или сохраните в заметки).
     </p>
     <textarea id="export-code" class="transfer-textarea" readonly placeholder="Здесь появится код..."></textarea>
-    <button class="menu-btn btn-green" style="justify-content: center;" onclick="generateExportCode()">Сгенерировать код</button>
     <button class="menu-btn" style="background: #3b82f6; box-shadow: 0 5px 0 #1e3a8a; justify-content: center;" onclick="copyExportCode()">Скопировать в буфер</button>
   </div>
 
@@ -83,13 +82,13 @@
   function generateExportCode() {
     const dbStr = localStorage.getItem('eng_db');
     if (!dbStr) {
-      alert("База данных пуста. Сначала создайте профиль в игре!");
+      document.getElementById('export-code').value = "Ошибка: База данных пуста. Создайте профиль в игре.";
       return;
     }
 
     const db = JSON.parse(dbStr);
     if (!db.lastActive || !db.profiles[db.lastActive]) {
-      alert("Нет активного профиля. Зайдите в игру и выберите игрока.");
+      document.getElementById('export-code').value = "Ошибка: Нет активного профиля.";
       return;
     }
 
@@ -109,8 +108,8 @@
   // Копирование в буфер обмена
   function copyExportCode() {
     const textarea = document.getElementById('export-code');
-    if (!textarea.value) {
-      alert("Сначала нажмите «Сгенерировать код»!");
+    if (!textarea.value || textarea.value.startsWith("Ошибка")) {
+      alert("Нет данных для копирования!");
       return;
     }
     
@@ -123,7 +122,7 @@
     });
   }
 
-  // Загрузка прогресса с проверкой
+  // Загрузка прогресса с обязательной проверкой ПИН-кода
   function importCode() {
     const code = document.getElementById('import-code').value.trim();
     if (!code) {
@@ -139,51 +138,53 @@
       const importName = importObj.name;
       const importData = importObj.data;
 
-      if (!importName || !importData) throw new Error("Неверный формат");
+      if (!importName || !importData || !importData.pin) {
+        throw new Error("Неверный формат кода");
+      }
 
+      // 1. ВСЕГДА спрашиваем ПИН-код для защиты от кражи прогресса
+      const enteredPin = prompt(`Для загрузки профиля "${importName}" введите его ПИН-код:`);
+      
+      // Если нажали "Отмена" или ввели неверно
+      if (enteredPin !== importData.pin) {
+        alert("❌ Неверный ПИН-код! Доступ запрещен.");
+        return;
+      }
+
+      // 2. Если ПИН верный, проверяем текущую базу
       let db = JSON.parse(localStorage.getItem('eng_db')) || { profiles: {}, lastActive: null };
 
-      // Проверка: существует ли уже такой профиль
+      // Проверяем, есть ли уже такой игрок на устройстве
       if (db.profiles[importName]) {
-        // Профиль есть, проверяем ПИН-коды
-        if (db.profiles[importName].pin !== importData.pin) {
-          alert("❌ Ошибка! Профиль с таким именем уже существует, но ПИН-коды не совпадают. Импорт отменен для безопасности.");
-          return;
+        if (!confirm(`Профиль "${importName}" уже существует.\n\nПерезаписать его текущий прогресс данными из кода?`)) {
+          return; // Пользователь отказался перезаписывать
         }
-
-        // ПИН-коды совпадают, спрашиваем подтверждение
-        if (!confirm(`Профиль "${importName}" уже существует на этом устройстве.\n\nПерезаписать его прогресс данными из кода?`)) {
-          return;
-        }
-
-        // Дополнительная защита: просим ввести ПИН
-        const enteredPin = prompt(`Введите ПИН-код профиля "${importName}" для подтверждения:`);
-        if (enteredPin !== importData.pin) {
-          alert("❌ Неверный ПИН-код! Перезапись отменена.");
-          return;
-        }
-
       } else {
-        // Профиля нет, проверяем лимит
+        // Если игрока нет, проверяем лимит в 4 профиля
         if (Object.keys(db.profiles).length >= 4) {
-          alert(`На устройстве уже 4 профиля. Удалите один, чтобы добавить "${importName}".`);
+          alert(`На этом устройстве уже 4 профиля. Удалите один, чтобы добавить "${importName}".`);
           return;
         }
       }
 
-      // Сохраняем
+      // 3. Сохраняем данные
       db.profiles[importName] = importData;
-      db.lastActive = importName;
+      db.lastActive = importName; // Делаем его активным
       localStorage.setItem('eng_db', JSON.stringify(db));
       
       document.getElementById('import-code').value = '';
-      alert(`✅ Прогресс игрока "${importName}" успешно загружен! Обновите страницу игры.`);
+      alert(`✅ Прогресс игрока "${importName}" успешно загружен! Можете возвращаться в игру.`);
       
     } catch (e) {
-      alert("❌ Ошибка! Код поврежден или вставлен не полностью. Убедитесь, что скопировали его целиком.");
+      alert("❌ Ошибка! Код поврежден или скопирован не полностью.");
       console.error(e);
     }
   }
+
+  // Запускаем генерацию кода сразу при открытии страницы
+  window.onload = () => {
+    generateExportCode();
+  };
 </script>
 </body>
 </html>
