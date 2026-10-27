@@ -11,7 +11,7 @@ neptuneStyle.innerHTML = `
   .n-layer2 { background-size: 300px 300px; opacity: 0.5; }
   .n-layer3 { background-size: 400px 400px; opacity: 0.8; }
 
-  /* Ракета */
+  /* Ракета (всегда в центре) */
   #n-rocket { 
     position: absolute; left: 50%; top: 50%; 
     transform: translate(-50%, -50%) rotate(-45deg); 
@@ -20,12 +20,12 @@ neptuneStyle.innerHTML = `
     filter: drop-shadow(0 0 10px #3b82f6); 
   }
   
-  /* Планеты (текущая и следующая) */
+  /* Планеты (стартуют справа) */
   .n-planet {
-    position: absolute; left: 50%; top: 50%; 
+    position: absolute; left: 70%; top: 50%; /* Сдвиг вправо */
     transform: translate(-50%, -50%) scale(1);
     font-size: 120px; z-index: 1;
-    transition: top 1s ease-out, transform 1s ease-out, opacity 0.5s;
+    transition: top 1s ease-out, left 1s ease-out, transform 1s ease-out, opacity 0.5s;
   }
 
   /* Терминал (Матрица) */
@@ -66,36 +66,36 @@ neptuneStyle.innerHTML = `
 `;
 document.head.appendChild(neptuneStyle);
 
-// 2. Данные планет (Земля - нулевой уровень)
+// 2. Данные планет
 const neptunePlanets = [
-  { name: "Земля", icon: "🌍", target: 10, reward: 5, distKm: 384000, category: "sol" },
-  { name: "Луна", icon: "🌕", target: 12, reward: 5, distKm: 225000000, category: "sol" },
-  { name: "Марс", icon: "🔴", target: 15, reward: 10, distKm: 778000000, category: "sol" },
-  { name: "Юпитер", icon: "🟠", target: 18, reward: 10, distKm: 1400000000, category: "sol" },
-  { name: "Сатурн", icon: "🪐", target: 22, reward: 15, distKm: 2800000000, category: "sol" },
-  { name: "Уран", icon: "🔵", target: 25, reward: 15, distKm: 4500000000, category: "sol" },
-  { name: "Нептун", icon: "🌀", target: 28, reward: 20, distKm: 7500000000, category: "sol" },
-  { name: "Пояс Койпера", icon: "☄️", target: 30, reward: 20, distKm: 15000000000000, category: "sol" },
-  { name: "Облако Оорта", icon: "🌌", target: 35, reward: 25, distKm: 40000000000000, category: "sol" },
-  { name: "Альфа Центавра", icon: "✨", target: 38, reward: 25, distKm: 81400000000000, category: "star" },
-  { name: "Сириус", icon: "⭐", target: 40, reward: 30, distKm: 236000000000000, category: "star" },
-  { name: "Вега", icon: "💙", target: 42, reward: 30, distKm: 350000000000000, category: "star" },
-  { name: "Арктур", icon: "🧡", target: 45, reward: 35, distKm: 6050000000000000, category: "star" },
-  { name: "Бетельгейзе", icon: "❤️‍🔥", target: 48, reward: 35, distKm: 10000000000000000, category: "star" },
-  { name: "Кассиопея", icon: "👑", target: 50, reward: 40, distKm: 12300000000000000, category: "constellation" },
-  { name: "Орион", icon: "🏹", target: 52, reward: 40, distKm: 15000000000000000, category: "constellation" },
-  { name: "Большая Медведица", icon: "🐻", target: 55, reward: 45, distKm: 20000000000000000, category: "constellation" },
-  { name: "Облако Смита", icon: "☁️", target: 58, reward: 45, distKm: 25000000000000000, category: "constellation" },
-  { name: "Межзвездное Облако", icon: "☁️", target: 60, reward: 50, distKm: 154000000000000000, category: "constellation" },
-  { name: "Магеллановы Облака", icon: "🌪️", target: 62, reward: 50, distKm: 236000000000000000, category: "galaxy" },
-  { name: "Галактика Андромеды", icon: "🌪️", target: 65, reward: 55, distKm: 284000000000000000, category: "galaxy" },
-  { name: "Галактика Треугольника", icon: "🔺", target: 68, reward: 55, distKm: 1130000000000000000, category: "galaxy" },
-  { name: "Галактика Боде", icon: "🌌", target: 70, reward: 60, distKm: 1230000000000000000, category: "galaxy" },
-  { name: "Галактика Сигара", icon: "🚬", target: 75, reward: 70, distKm: 5100000000000000000, category: "galaxy" },
-  { name: "Скопление Девы", icon: "💫", target: 80, reward: 80, distKm: 16100000000000000000, category: "cluster" },
-  { name: "Сверхскопление Центавра", icon: "🌀", target: 85, reward: 90, distKm: 18900000000000000000, category: "cluster" },
-  { name: "Сверхскопление Ланиакея", icon: "💦", target: 90, reward: 100, distKm: 23600000000000000000, category: "cluster" },
-  { name: "Великий Аттрактор", icon: "🌑", target: 100, reward: 150, distKm: 23600000000000000000, category: "cluster" }
+  { name: "Земля", icon: "🌍", target: 10, reward: 5, distKm: 384000 },
+  { name: "Луна", icon: "🌕", target: 12, reward: 5, distKm: 225000000 },
+  { name: "Марс", icon: "🔴", target: 15, reward: 10, distKm: 778000000 },
+  { name: "Юпитер", icon: "🟠", target: 18, reward: 10, distKm: 1400000000 },
+  { name: "Сатурн", icon: "🪐", target: 22, reward: 15, distKm: 2800000000 },
+  { name: "Уран", icon: "🔵", target: 25, reward: 15, distKm: 4500000000 },
+  { name: "Нептун", icon: "🌀", target: 28, reward: 20, distKm: 7500000000 },
+  { name: "Пояс Койпера", icon: "☄️", target: 30, reward: 20, distKm: 15000000000000 },
+  { name: "Облако Оорта", icon: "🌌", target: 35, reward: 25, distKm: 40000000000000 },
+  { name: "Альфа Центавра", icon: "✨", target: 38, reward: 25, distKm: 81400000000000 },
+  { name: "Сириус", icon: "⭐", target: 40, reward: 30, distKm: 236000000000000 },
+  { name: "Вега", icon: "💙", target: 42, reward: 30, distKm: 350000000000000 },
+  { name: "Арктур", icon: "🧡", target: 45, reward: 35, distKm: 6050000000000000 },
+  { name: "Бетельгейзе", icon: "❤️‍🔥", target: 48, reward: 35, distKm: 10000000000000000 },
+  { name: "Кассиопея", icon: "👑", target: 50, reward: 40, distKm: 12300000000000000 },
+  { name: "Орион", icon: "🏹", target: 52, reward: 40, distKm: 15000000000000000 },
+  { name: "Большая Медведица", icon: "🐻", target: 55, reward: 45, distKm: 20000000000000000 },
+  { name: "Облако Смита", icon: "☁️", target: 58, reward: 45, distKm: 25000000000000000 },
+  { name: "Межзвездное Облако", icon: "☁️", target: 60, reward: 50, distKm: 154000000000000000 },
+  { name: "Магеллановы Облака", icon: "🌪️", target: 62, reward: 50, distKm: 236000000000000000 },
+  { name: "Галактика Андромеды", icon: "🌪️", target: 65, reward: 55, distKm: 284000000000000000 },
+  { name: "Галактика Треугольника", icon: "🔺", target: 68, reward: 55, distKm: 1130000000000000000 },
+  { name: "Галактика Боде", icon: "🌌", target: 70, reward: 60, distKm: 1230000000000000000 },
+  { name: "Галактика Сигара", icon: "🚬", target: 75, reward: 70, distKm: 5100000000000000000 },
+  { name: "Скопление Девы", icon: "💫", target: 80, reward: 80, distKm: 16100000000000000000 },
+  { name: "Сверхскопление Центавра", icon: "🌀", target: 85, reward: 90, distKm: 18900000000000000000 },
+  { name: "Сверхскопление Ланиакея", icon: "💦", target: 90, reward: 100, distKm: 23600000000000000000 },
+  { name: "Великий Аттрактор", icon: "🌑", target: 100, reward: 150, distKm: 23600000000000000000 }
 ];
 
 // Функция форматирования дистанции
@@ -189,10 +189,10 @@ function openNeptune() {
       </div>
 
       <div id="n-final-screen">
-        <div style="color: #fbbf24; font-family: 'Courier New', Courier, monospace; font-size: 24px; font-weight: bold; text-align: center; text-transform: uppercase; line-height: 1.5; text-shadow: 0 0 10px #fbbf24; margin-bottom: 20px;">
-          ВЫ СОБРАЛИ ВСЕ ДАННЫЕ ВО ВСЕЛЕННОЙ, ТЕПЕРЬ ВЫ МОЖЕТЕ ОТПРАВЛЯТЬСЯ НА ЗЕМЛЮ!
+        <div style="color: #fbbf24; font-family: 'Courier New', Courier, monospace; font-size: 20px; font-weight: bold; text-align: center; text-transform: uppercase; line-height: 1.5; text-shadow: 0 0 10px #fbbf24; margin-bottom: 10px;" id="n-final-text">
+          ВЫ СОБРАЛИ ВСЕ ДАННЫЕ ВО ВСЕЛЕННОЙ!<br>ПОДГОТОВКА К ВОЗВРАЩЕНИЮ...
         </div>
-        <div style="font-size: 60px; animation: bounce 1s infinite;">🏠</div>
+        <div id="n-countdown" style="color: #ef4444; font-family: 'Courier New', Courier, monospace; font-size: 80px; font-weight: bold; text-shadow: 0 0 20px #ef4444;">10</div>
       </div>
     `;
     document.querySelector('.content-wrapper').appendChild(view);
@@ -257,7 +257,6 @@ function openNeptune() {
     setTimeout(() => { rocket.style.transition = 'top 1s ease-out'; }, 50);
   }
 
-  // Применяем стили без анимации при загрузке
   const curEl = document.getElementById('n-planet-current');
   const nextEl = document.getElementById('n-planet-next');
   if (curEl) curEl.style.transition = 'none';
@@ -269,8 +268,8 @@ function openNeptune() {
   if (nextEl) void nextEl.offsetWidth;
   
   setTimeout(() => {
-    if (curEl) curEl.style.transition = 'top 1s ease-out, transform 1s ease-out, opacity 0.5s';
-    if (nextEl) nextEl.style.transition = 'top 1s ease-out, transform 1s ease-out, opacity 0.5s';
+    if (curEl) curEl.style.transition = 'top 1s ease-out, left 1s ease-out, transform 1s ease-out, opacity 0.5s';
+    if (nextEl) nextEl.style.transition = 'top 1s ease-out, left 1s ease-out, transform 1s ease-out, opacity 0.5s';
     startNeptuneQuestion();
   }, 50);
 }
@@ -291,14 +290,23 @@ function updateNeptuneHUD() {
   let progressPercent = currentP.target > 0 ? (nProgress / currentP.target) : 0;
   if (progressPercent > 1) progressPercent = 1;
 
-  // Математика движения (параллакс)
+  // Математика движения
   const currentTop = 50 + (progressPercent * 100);
   const currentScale = 2.5 - (progressPercent * 2.0);
-  const currentOpacity = Math.max(0, 1 - (progressPercent * 1.5)); // Плавно исчезает
+  const currentOpacity = Math.max(0, 1 - (progressPercent * 1.5)); 
 
   const nextTop = -50 + (progressPercent * 100);
   const nextScale = 0.5 + (progressPercent * 2.0);
-  const nextOpacity = Math.min(1, progressPercent * 1.5); // Плавно появляется
+  const nextOpacity = Math.min(1, progressPercent * 1.5); 
+
+  // Сдвиг планет вправо
+  let currentLeft = 70; 
+  let nextLeft = 70;
+
+  // Если это финальный Великий Аттрактор, он едет в центр (left: 50%) 
+  if (nPlanetIdx === neptunePlanets.length - 1) {
+    currentLeft = 70 - (progressPercent * 20); // От 70% до 50%
+  }
 
   const hud = document.getElementById('n-hud-text');
   if (hud) hud.innerText = `${currentP.name}: ${nProgress}/${currentP.target}`;
@@ -321,6 +329,7 @@ function updateNeptuneHUD() {
   const curEl = document.getElementById('n-planet-current');
   if (curEl) {
     curEl.innerText = currentP.icon;
+    curEl.style.left = `${currentLeft}%`;
     curEl.style.top = `${currentTop}%`;
     curEl.style.transform = `translate(-50%, -50%) scale(${currentScale})`;
     curEl.style.opacity = currentOpacity;
@@ -331,6 +340,7 @@ function updateNeptuneHUD() {
     if (nextP) {
       nextEl.style.display = 'block';
       nextEl.innerText = nextP.icon;
+      nextEl.style.left = `${nextLeft}%`;
       nextEl.style.top = `${nextTop}%`;
       nextEl.style.transform = `translate(-50%, -50%) scale(${nextScale})`;
       nextEl.style.opacity = nextOpacity;
@@ -422,7 +432,7 @@ function answerNeptune(selectedOpt, btnElement) {
       // Проверяем, долетели ли до планеты
       if (nProgress >= currentP.target) {
         
-        // Если это была последняя планета
+        // Если это была последняя планета (Великий Аттрактор)
         if (!nextP) {
           addStars(currentP.reward);
           
@@ -433,48 +443,63 @@ function answerNeptune(selectedOpt, btnElement) {
           const finalScreen = document.getElementById('n-final-screen');
           const hudText = document.getElementById('n-hud-text');
           const hudDist = document.getElementById('n-hud-dist');
+          
           if (finalScreen) finalScreen.style.display = 'flex';
           if (hudText) hudText.style.display = 'none';
           if (hudDist) hudDist.style.display = 'none';
           
-          nTargetStarSpeed = 20; 
+          nTargetStarSpeed = 5; // Фон бушует
           
           if (rocket) rocket.style.top = '50%'; 
           
-          setTimeout(() => {
-            nPlanetIdx = 0;
-            nProgress = 0;
-            state.neptunePlanetIdx = 0;
-            state.neptuneProgress = 0;
-            saveState();
-            
-            if (finalScreen) finalScreen.style.display = 'none';
-            if (hudText) hudText.style.display = 'block';
-            if (hudDist) hudDist.style.display = 'block';
-            
-            nTargetStarSpeed = 0.33; 
+          // Запуск отсчета 10 секунд
+          let countdown = 10;
+          const timerEl = document.getElementById('n-countdown');
+          if (timerEl) timerEl.innerText = countdown;
 
-            // Мгновенный сброс планет при возврате на Землю
-            const curEl = document.getElementById('n-planet-current');
-            const nextEl = document.getElementById('n-planet-next');
-            if (curEl) curEl.style.transition = 'none';
-            if (nextEl) nextEl.style.transition = 'none';
-            updateNeptuneHUD();
-            if (curEl) void curEl.offsetWidth;
-            if (nextEl) void nextEl.offsetWidth;
-            
-            setTimeout(() => {
-              if (curEl) curEl.style.transition = 'top 1s ease-out, transform 1s ease-out, opacity 0.5s';
-              if (nextEl) nextEl.style.transition = 'top 1s ease-out, transform 1s ease-out, opacity 0.5s';
-              startNeptuneQuestion();
-            }, 50);
+          let int = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+              if (timerEl) timerEl.innerText = countdown;
+            } else {
+              clearInterval(int);
+              if (timerEl) timerEl.innerText = "ПУСК!";
+              
+              setTimeout(() => {
+                nPlanetIdx = 0;
+                nProgress = 0;
+                state.neptunePlanetIdx = 0;
+                state.neptuneProgress = 0;
+                saveState();
+                
+                if (finalScreen) finalScreen.style.display = 'none';
+                if (hudText) hudText.style.display = 'block';
+                if (hudDist) hudDist.style.display = 'block';
+                
+                nTargetStarSpeed = 0.33; 
 
-          }, 5000); 
+                const curEl = document.getElementById('n-planet-current');
+                const nextEl = document.getElementById('n-planet-next');
+                if (curEl) curEl.style.transition = 'none';
+                if (nextEl) nextEl.style.transition = 'none';
+                updateNeptuneHUD();
+                if (curEl) void curEl.offsetWidth;
+                if (nextEl) void nextEl.offsetWidth;
+                
+                setTimeout(() => {
+                  if (curEl) curEl.style.transition = 'top 1s ease-out, left 1s ease-out, transform 1s ease-out, opacity 0.5s';
+                  if (nextEl) nextEl.style.transition = 'top 1s ease-out, left 1s ease-out, transform 1s ease-out, opacity 0.5s';
+                  startNeptuneQuestion();
+                }, 50);
+
+              }, 1000); // Даем 1 секунду посмотреть на "ПУСК!"
+            }
+          }, 1000);
 
           return;
         }
 
-        // Если есть следующая планета
+        // Обычная планета
         addStars(currentP.reward);
         showToast(`🪐 Вы достигли ${nextP.name}! Награда: +${currentP.reward} ⭐`, 'top');
         
@@ -486,7 +511,6 @@ function answerNeptune(selectedOpt, btnElement) {
         state.neptuneProgress = 0;
         saveState();
         
-        // Мгновенная смена планет (текущая встает в центр, следующая - сверху)
         const curEl = document.getElementById('n-planet-current');
         const nextEl = document.getElementById('n-planet-next');
         if (curEl) curEl.style.transition = 'none';
@@ -498,8 +522,8 @@ function answerNeptune(selectedOpt, btnElement) {
         if (nextEl) void nextEl.offsetWidth;
 
         setTimeout(() => {
-          if (curEl) curEl.style.transition = 'top 1s ease-out, transform 1s ease-out, opacity 0.5s';
-          if (nextEl) nextEl.style.transition = 'top 1s ease-out, transform 1s ease-out, opacity 0.5s';
+          if (curEl) curEl.style.transition = 'top 1s ease-out, left 1s ease-out, transform 1s ease-out, opacity 0.5s';
+          if (nextEl) nextEl.style.transition = 'top 1s ease-out, left 1s ease-out, transform 1s ease-out, opacity 0.5s';
           startNeptuneQuestion();
         }, 50);
 
