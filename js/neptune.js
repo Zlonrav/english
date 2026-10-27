@@ -536,7 +536,15 @@ function answerNeptune(selectedOpt, btnElement) {
                 }
 
                 // ЭТАП 2: Гиперпрыжок (5 секунд)
-                nTargetStarSpeed = -15; // Скорость снижена, чтобы звезды были видны
+                nTargetStarSpeed = -15; 
+                
+                // ПРЯЧЕМ ВЕЛИКИЙ АТТРАКТОР
+                const planetToHide = document.getElementById('n-planet-current');
+                if (planetToHide) {
+                  planetToHide.style.transition = 'opacity 1s ease-in';
+                  planetToHide.style.opacity = '0';
+                }
+
                 if (rocket) {
                   // Ракета улетает вниз, растворяясь в пространстве
                   rocket.style.transition = 'top 2s ease-in, transform 2s ease-in, opacity 2s';
