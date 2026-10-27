@@ -39,7 +39,11 @@
     }
   }
 
-  document.getElementById('cheat-password').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') checkCheatPassword();
-  });
+  // Безопасное добавление обработчика Enter
+  const pwdInput = document.getElementById('cheat-password');
+  if (pwdInput) {
+    pwdInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') checkCheatPassword();
+    });
+  }
 </script>
