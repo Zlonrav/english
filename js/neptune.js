@@ -68,34 +68,34 @@ document.head.appendChild(neptuneStyle);
 
 // 2. Данные планет
 const neptunePlanets = [
-  { name: "Земля", icon: "🌍", target: 10, reward: 5, distKm: 384000 },
-  { name: "Луна", icon: "🌕", target: 12, reward: 5, distKm: 225000000 },
-  { name: "Марс", icon: "🔴", target: 15, reward: 10, distKm: 778000000 },
-  { name: "Юпитер", icon: "🟠", target: 18, reward: 10, distKm: 1400000000 },
-  { name: "Сатурн", icon: "🪐", target: 22, reward: 15, distKm: 2800000000 },
-  { name: "Уран", icon: "🔵", target: 25, reward: 15, distKm: 4500000000 },
-  { name: "Нептун", icon: "🌀", target: 28, reward: 20, distKm: 7500000000 },
-  { name: "Пояс Койпера", icon: "☄️", target: 30, reward: 20, distKm: 15000000000000 },
-  { name: "Облако Оорта", icon: "🌌", target: 35, reward: 25, distKm: 40000000000000 },
-  { name: "Альфа Центавра", icon: "✨", target: 38, reward: 25, distKm: 81400000000000 },
-  { name: "Сириус", icon: "⭐", target: 40, reward: 30, distKm: 236000000000000 },
-  { name: "Вега", icon: "💙", target: 42, reward: 30, distKm: 350000000000000 },
-  { name: "Арктур", icon: "🧡", target: 45, reward: 35, distKm: 6050000000000000 },
-  { name: "Бетельгейзе", icon: "❤️‍🔥", target: 48, reward: 35, distKm: 10000000000000000 },
-  { name: "Кассиопея", icon: "👑", target: 50, reward: 40, distKm: 12300000000000000 },
-  { name: "Орион", icon: "🏹", target: 52, reward: 40, distKm: 15000000000000000 },
-  { name: "Большая Медведица", icon: "🐻", target: 55, reward: 45, distKm: 20000000000000000 },
-  { name: "Облако Смита", icon: "☁️", target: 58, reward: 45, distKm: 25000000000000000 },
-  { name: "Межзвездное Облако", icon: "☁️", target: 60, reward: 50, distKm: 154000000000000000 },
-  { name: "Магеллановы Облака", icon: "🌪️", target: 62, reward: 50, distKm: 236000000000000000 },
-  { name: "Галактика Андромеды", icon: "🌪️", target: 65, reward: 55, distKm: 284000000000000000 },
-  { name: "Галактика Треугольника", icon: "🔺", target: 68, reward: 55, distKm: 1130000000000000000 },
-  { name: "Галактика Боде", icon: "🌌", target: 70, reward: 60, distKm: 1230000000000000000 },
-  { name: "Галактика Сигара", icon: "🚬", target: 75, reward: 70, distKm: 5100000000000000000 },
-  { name: "Скопление Девы", icon: "💫", target: 80, reward: 80, distKm: 16100000000000000000 },
-  { name: "Сверхскопление Центавра", icon: "🌀", target: 85, reward: 90, distKm: 18900000000000000000 },
-  { name: "Сверхскопление Ланиакея", icon: "💦", target: 90, reward: 100, distKm: 23600000000000000000 },
-  { name: "Великий Аттрактор", icon: "🌑", target: 100, reward: 150, distKm: 23600000000000000000 }
+  { name: "Земля", rod: "Земли", icon: "🌍", target: 10, reward: 5, distKm: 384000 },
+  { name: "Луна", rod: "Луны", icon: "🌕", target: 12, reward: 5, distKm: 225000000 },
+  { name: "Марс", rod: "Марса", icon: "🔴", target: 15, reward: 10, distKm: 778000000 },
+  { name: "Юпитер", rod: "Юпитера", icon: "🟠", target: 18, reward: 10, distKm: 1400000000 },
+  { name: "Сатурн", rod: "Сатурна", icon: "🪐", target: 22, reward: 15, distKm: 2800000000 },
+  { name: "Уран", rod: "Урана", icon: "🔵", target: 25, reward: 15, distKm: 4500000000 },
+  { name: "Нептун", rod: "Нептуна", icon: "🌀", target: 28, reward: 20, distKm: 7500000000 },
+  { name: "Пояс Койпера", rod: "Пояса Койпера", icon: "☄️", target: 30, reward: 20, distKm: 15000000000000 },
+  { name: "Облако Оорта", rod: "Облака Оорта", icon: "🌌", target: 35, reward: 25, distKm: 40000000000000 },
+  { name: "Альфа Центавра", rod: "Альфы Центавра", icon: "✨", target: 38, reward: 25, distKm: 81400000000000 },
+  { name: "Сириус", rod: "Сириуса", icon: "⭐", target: 40, reward: 30, distKm: 236000000000000 },
+  { name: "Вега", rod: "Веги", icon: "💙", target: 42, reward: 30, distKm: 350000000000000 },
+  { name: "Арктур", rod: "Арктура", icon: "🧡", target: 45, reward: 35, distKm: 6050000000000000 },
+  { name: "Бетельгейзе", rod: "Бетельгейзе", icon: "❤️‍🔥", target: 48, reward: 35, distKm: 10000000000000000 },
+  { name: "Кассиопея", rod: "Кассиопеи", icon: "👑", target: 50, reward: 40, distKm: 12300000000000000 },
+  { name: "Орион", rod: "Ориона", icon: "🏹", target: 52, reward: 40, distKm: 15000000000000000 },
+  { name: "Большая Медведица", rod: "Большой Медведицы", icon: "🐻", target: 55, reward: 45, distKm: 20000000000000000 },
+  { name: "Облако Смита", rod: "Облака Смита", icon: "☁️", target: 58, reward: 45, distKm: 25000000000000000 },
+  { name: "Межзвездное Облако", rod: "Межзвездного Облака", icon: "☁️", target: 60, reward: 50, distKm: 154000000000000000 },
+  { name: "Магеллановы Облака", rod: "Магеллановых Облаков", icon: "🌪️", target: 62, reward: 50, distKm: 236000000000000000 },
+  { name: "Галактика Андромеды", rod: "Галактики Андромеды", icon: "🌪️", target: 65, reward: 55, distKm: 284000000000000000 },
+  { name: "Галактика Треугольника", rod: "Галактики Треугольника", icon: "🔺", target: 68, reward: 55, distKm: 1130000000000000000 },
+  { name: "Галактика Боде", rod: "Галактики Боде", icon: "🌌", target: 70, reward: 60, distKm: 1230000000000000000 },
+  { name: "Галактика Сигара", rod: "Галактики Сигара", icon: "🚬", target: 75, reward: 70, distKm: 5100000000000000000 },
+  { name: "Скопление Девы", rod: "Скопления Девы", icon: "💫", target: 80, reward: 80, distKm: 16100000000000000000 },
+  { name: "Сверхскопление Центавра", rod: "Сверхскопления Центавра", icon: "🌀", target: 85, reward: 90, distKm: 18900000000000000000 },
+  { name: "Сверхскопление Ланиакея", rod: "Сверхскопления Ланиакея", icon: "💦", target: 90, reward: 100, distKm: 23600000000000000000 },
+  { name: "Великий Аттрактор", rod: "Великого Аттрактора", icon: "🌑", target: 100, reward: 150, distKm: 23600000000000000000 }
 ];
 
 // Функция форматирования дистанции
@@ -524,7 +524,7 @@ function answerNeptune(selectedOpt, btnElement) {
 
         // Обычная планета — берем награду следующей планеты!
         addStars(nextP.reward);
-        showToast(`🪐 Вы достигли ${nextP.name}! Награда: +${nextP.reward} ⭐`, 'top');
+        showToast(`🪐 Вы достигли ${nextP.rod}! Награда: +${nextP.reward} ⭐`, 'top');
         
         nPlanetIdx++;
         nProgress = 0;
