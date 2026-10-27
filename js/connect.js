@@ -164,6 +164,9 @@ function selectConnectItem(item, element, side) {
       connectLeftSelected = null;
       connectRightSelected = null;
       connectPairsLeft--;
+      if (connectPairsLeft === 0) {
+        connectLocked = true; 
+      }
 
       setTimeout(() => {
         savedLeft.style.visibility = 'hidden';
