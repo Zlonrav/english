@@ -312,7 +312,6 @@ function updateNeptuneHUD() {
   }
 
   const hud = document.getElementById('n-hud-text');
-  // Показываем ЦЕЛЬ (следующую планету)
   if (hud) hud.innerText = `Цель: ${targetP.name} (${nProgress}/${targetP.target})`;
 
   const hudDist = document.getElementById('n-hud-dist');
@@ -413,11 +412,14 @@ function answerNeptune(selectedOpt, btnElement) {
   const currentP = neptunePlanets[nPlanetIdx];
   const nextP = neptunePlanets[nPlanetIdx + 1];
   
+  // Определяем, сколько шагов нужно для текущего перелета
+  const targetSteps = nextP ? nextP.target : currentP.target;
+  
   if (selectedOpt === nCurrentCorrectWord) {
     // ПРАВИЛЬНО (+1)
     if (btnElement) btnElement.classList.add('correct');
     
-    nProgress = Math.min(nProgress + 1, currentP.target); 
+    nProgress = Math.min(nProgress + 1, targetSteps); 
     updateNeptuneHUD(); 
 
     state.neptunePlanetIdx = nPlanetIdx;
@@ -434,7 +436,7 @@ function answerNeptune(selectedOpt, btnElement) {
 
     setTimeout(() => {
       // Проверяем, долетели ли до планеты
-      if (nProgress >= currentP.target) {
+      if (nProgress >= targetSteps) {
         
         // Если это была последняя планета (Великий Аттрактор)
         if (!nextP) {
@@ -452,7 +454,7 @@ function answerNeptune(selectedOpt, btnElement) {
           if (hudText) hudText.style.display = 'none';
           if (hudDist) hudDist.style.display = 'none';
           
-          nTargetStarSpeed = 5; // Фон бушует
+          nTargetStarSpeed = 5; 
           
           if (rocket) rocket.style.top = '50%'; 
           
@@ -496,16 +498,16 @@ function answerNeptune(selectedOpt, btnElement) {
                   startNeptuneQuestion();
                 }, 50);
 
-              }, 1000); // Даем 1 секунду посмотреть на "ПУСК!"
+              }, 1000); 
             }
           }, 1000);
 
           return;
         }
 
-        // Обычная планета
-        addStars(currentP.reward);
-        showToast(`🪐 Вы достигли ${nextP.name}! Награда: +${currentP.reward} ⭐`, 'top');
+        // Обычная планета — берем награду следующей планеты!
+        addStars(nextP.reward);
+        showToast(`🪐 Вы достигли ${nextP.name}! Награда: +${nextP.reward} ⭐`, 'top');
         
         nPlanetIdx++;
         nProgress = 0;
