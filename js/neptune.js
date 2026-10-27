@@ -286,8 +286,11 @@ function closeNeptune() {
 function updateNeptuneHUD() {
   const currentP = neptunePlanets[nPlanetIdx];
   const nextP = neptunePlanets[nPlanetIdx + 1];
+  
+  // Определяем, куда мы летим. Если есть следующая планета - цель она, иначе - текущая (Великий Аттрактор)
+  const targetP = nextP || currentP;
 
-  let progressPercent = currentP.target > 0 ? (nProgress / currentP.target) : 0;
+  let progressPercent = targetP.target > 0 ? (nProgress / targetP.target) : 0;
   if (progressPercent > 1) progressPercent = 1;
 
   // Математика движения
@@ -305,23 +308,24 @@ function updateNeptuneHUD() {
 
   // Если это финальный Великий Аттрактор, он едет в центр (left: 50%) 
   if (nPlanetIdx === neptunePlanets.length - 1) {
-    currentLeft = 70 - (progressPercent * 20); // От 70% до 50%
+    currentLeft = 70 - (progressPercent * 20); 
   }
 
   const hud = document.getElementById('n-hud-text');
-  if (hud) hud.innerText = `${currentP.name}: ${nProgress}/${currentP.target}`;
+  // Показываем ЦЕЛЬ (следующую планету)
+  if (hud) hud.innerText = `Цель: ${targetP.name} (${nProgress}/${targetP.target})`;
 
   const hudDist = document.getElementById('n-hud-dist');
   if (hudDist) {
-    let remainingSteps = Math.max(0, currentP.target - nProgress);
-    let kmPerStep = currentP.distKm / currentP.target;
+    let remainingSteps = Math.max(0, targetP.target - nProgress);
+    let kmPerStep = targetP.distKm / targetP.target;
     let remainingKm = remainingSteps * kmPerStep;
 
     if (remainingSteps <= 0) {
       hudDist.innerText = "Достигнуто!";
       hudDist.style.color = "#10b981"; 
     } else {
-      hudDist.innerText = `До цели: ${formatDistance(remainingKm)}`;
+      hudDist.innerText = `Осталось: ${formatDistance(remainingKm)}`;
       hudDist.style.color = "#88ffee";
     }
   }
