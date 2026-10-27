@@ -49,6 +49,21 @@
     <div id="cheat-profiles-list" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;"></div>
   </div>
 
+  <!-- НОВАЯ КАРТОЧКА: Редактирование -->
+  <div class="card" style="border-color: #2563eb;">
+    <h3 style="color: #60a5fa;">✏️ Редактирование профиля</h3>
+    <p class="desc">Смена имени и PIN-кода для выбранного игрока.</p>
+    
+    <select id="edit-profile-select" onchange="loadProfileForEdit()" style="margin-bottom: 10px;">
+      <option value="">-- Выберите игрока --</option>
+    </select>
+    
+    <input type="text" id="edit-new-name" placeholder="Новое имя">
+    <input type="text" id="edit-new-pin" placeholder="Новый PIN-код (4 цифры)" maxlength="4">
+    
+    <button onclick="saveProfileChanges()" class="btn-blue">Сохранить изменения</button>
+  </div>
+
   <div class="card">
     <h3>⭐ Добавить звёзды</h3>
     <input type="number" id="stars-amount" placeholder="Сколько звёзд?" value="1000">
@@ -108,13 +123,13 @@
       document.getElementById('main-content').style.display = 'block';
       renderCheatProfiles();
       renderNeptuneOptions();
+      renderEditProfiles();
     } else {
       alert('Неверный пароль!');
       document.getElementById('cheat-password').value = '';
     }
   }
 
-  // Вход по Enter
   document.getElementById('cheat-password').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') checkCheatPassword();
   });
@@ -155,7 +170,85 @@
       if (db.lastActive === name) db.lastActive = null;
       localStorage.setItem('eng_db', JSON.stringify(db));
       renderCheatProfiles();
+      renderEditProfiles(); // Обновляем выпадающий список
     }
+  }
+
+  // ================= РЕДАКТИРОВАНИЕ ПРОФИЛЯ =================
+  function renderEditProfiles() {
+    const select = document.getElementById('edit-profile-select');
+    const db = JSON.parse(localStorage.getItem('eng_db'));
+    
+    select.innerHTML = '<option value="">-- Выберите игрока --</option>';
+    if (!db || !db.profiles) return;
+
+    for (const name in db.profiles) {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.innerText = name;
+      select.appendChild(opt);
+    }
+    // Очищаем поля при обновлении списка
+    document.getElementById('edit-new-name').value = '';
+    document.getElementById('edit-new-pin').value = '';
+  }
+
+  function loadProfileForEdit() {
+    const name = document.getElementById('edit-profile-select').value;
+    if (!name) {
+      document.getElementById('edit-new-name').value = '';
+      document.getElementById('edit-new-pin').value = '';
+      return;
+    }
+    
+    const db = JSON.parse(localStorage.getItem('eng_db'));
+    if (db && db.profiles && db.profiles[name]) {
+      document.getElementById('edit-new-name').value = name;
+      document.getElementById('edit-new-pin').value = db.profiles[name].pin || '';
+    }
+  }
+
+  function saveProfileChanges() {
+    const oldName = document.getElementById('edit-profile-select').value;
+    const newName = document.getElementById('edit-new-name').value.trim();
+    const newPin = document.getElementById('edit-new-pin').value.trim();
+
+    if (!oldName) { alert("Сначала выберите игрока из списка!"); return; }
+    if (!newName) { alert("Имя не может быть пустым!"); return; }
+    if (newPin.length !== 4 || isNaN(newPin)) { alert("ПИН-код должен состоять ровно из 4 цифр!"); return; }
+
+    let db = JSON.parse(localStorage.getItem('eng_db'));
+
+    // Если имя меняется, проверяем, не занято ли оно
+    if (newName !== oldName && db.profiles[newName]) {
+      alert(`Ошибка! Игрок с именем "${newName}" уже существует.`);
+      return;
+    }
+
+    // Переносим данные
+    const profileData = db.profiles[oldName];
+    profileData.petName = newName; // Обновляем имя внутри профиля
+    profileData.pin = newPin;      // Обновляем пин-код
+
+    // Удаляем старый ключ и создаем новый
+    if (newName !== oldName) {
+      delete db.profiles[oldName];
+      db.profiles[newName] = profileData;
+
+      // Если это был активный профиль, обновляем lastActive
+      if (db.lastActive === oldName) {
+        db.lastActive = newName;
+      }
+    } else {
+      db.profiles[oldName] = profileData; // Просто сохраняем изменения пина
+    }
+
+    localStorage.setItem('eng_db', JSON.stringify(db));
+    alert(`✅ Данные игрока успешно обновлены!\nНовое имя: ${newName}\nНовый ПИН: ${newPin}`);
+    
+    // Перерисовываем все списки
+    renderCheatProfiles();
+    renderEditProfiles();
   }
 
   // ================= ЧИТЫ ДЛЯ НЕПТУНА =================
