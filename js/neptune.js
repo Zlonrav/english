@@ -11,7 +11,7 @@ neptuneStyle.innerHTML = `
   .n-layer2 { background-size: 300px 300px; opacity: 0.5; }
   .n-layer3 { background-size: 400px 400px; opacity: 0.8; }
 
-  /* Ракета (всегда в центре) */
+  /* Ракета */
   #n-rocket { 
     position: absolute; left: 50%; top: 50%; 
     transform: translate(-50%, -50%) rotate(-45deg) scale(1); 
@@ -20,7 +20,7 @@ neptuneStyle.innerHTML = `
     filter: drop-shadow(0 0 10px #3b82f6); 
   }
   
-  /* Планеты (стартуют справа) */
+  /* Планеты */
   .n-planet {
     position: absolute; left: 70%; top: 50%;
     transform: translate(-50%, -50%) scale(1);
@@ -48,7 +48,7 @@ neptuneStyle.innerHTML = `
   .n-opt-btn.correct { background: #10b981; color: #fff; border-color: #10b981; }
   .n-opt-btn.wrong { background: #ef4444; color: #fff; border-color: #ef4444; }
 
-  /* Экран ошибки (Топливо) и Финала */
+  /* Экран ошибки и Финала */
   #n-error-screen, #n-final-screen {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: #000; z-index: 50; display: none; flex-direction: column;
@@ -66,7 +66,7 @@ neptuneStyle.innerHTML = `
 `;
 document.head.appendChild(neptuneStyle);
 
-// 2. Данные планет (с родительным падежом и 125 шагами у Аттрактора)
+// 2. Данные планет
 const neptunePlanets = [
   { name: "Земля", rod: "Земли", icon: "🌍", target: 10, reward: 5, distKm: 384000 },
   { name: "Луна", rod: "Луны", icon: "🌕", target: 12, reward: 5, distKm: 225000000 },
@@ -94,8 +94,8 @@ const neptunePlanets = [
   { name: "Галактика Сигара", rod: "Галактики Сигара", icon: "🚬", target: 75, reward: 70, distKm: 5100000000000000000 },
   { name: "Скопление Девы", rod: "Скопления Девы", icon: "💫", target: 80, reward: 80, distKm: 16100000000000000000 },
   { name: "Сверхскопление Центавра", rod: "Сверхскопления Центавра", icon: "🌀", target: 85, reward: 90, distKm: 18900000000000000000 },
-  { name: "Сверхскопление Ланиакея", rod: "Сверхскопления Ланиакея", icon: "💦", target: 90, reward: 100, distKm: 23600000000000000000 },
-  { name: "Великий Аттрактор", rod: "Великого Аттрактора", icon: "🌑", target: 125, reward: 150, distKm: 23600000000000000000 }
+  { name: "Сверхскопление Ланиакея", rod: "Сверхскопления Ланиакея", icon: "💦", target: 100, reward: 100, distKm: 23600000000000000000 },
+  { name: "Великий Аттрактор", rod: "Великого Аттрактора", icon: "🌑", target: 25, reward: 150, distKm: 23600000000000000000 }
 ];
 
 // Функция форматирования дистанции
@@ -290,8 +290,8 @@ function updateNeptuneHUD() {
   const currentP = neptunePlanets[nPlanetIdx];
   const nextP = neptunePlanets[nPlanetIdx + 1];
   
-  const targetP = nextP || currentP;
-  let progressPercent = targetP.target > 0 ? (nProgress / targetP.target) : 0;
+  // ИСПОЛЬЗУЕМ currentP.target ДЛЯ ПРОГРЕССА
+  let progressPercent = currentP.target > 0 ? (nProgress / currentP.target) : 0;
   if (progressPercent > 1) progressPercent = 1;
 
   let currentTop = 50 + (progressPercent * 100);
@@ -302,15 +302,8 @@ function updateNeptuneHUD() {
   if (nPlanetIdx === neptunePlanets.length - 1) {
     currentTop = 50;
     currentOpacity = 1;
-
-    if (progressPercent <= 0.8) {
-      // Первые 100 шагов (рост до 250%)
-      currentScale = 0.5 + (progressPercent / 0.8) * 2.0; 
-    } else {
-      // Последние 25 шагов (рост от 250% до 500%)
-      let extraProgress = (progressPercent - 0.8) / 0.2; 
-      currentScale = 2.5 + (extraProgress * 2.5); 
-    }
+    // Рост от 250% до 500% (так как target теперь 25 шагов)
+    currentScale = 2.5 + (progressPercent * 2.5); 
   }
 
   const nextTop = -50 + (progressPercent * 100);
@@ -321,16 +314,16 @@ function updateNeptuneHUD() {
   let nextLeft = 70;
 
   if (nPlanetIdx === neptunePlanets.length - 1) {
-    currentLeft = 70 - (Math.min(progressPercent, 0.8) / 0.8) * 20; // Двигается в центр за первые 100 шагов
+    currentLeft = 50; // Аттрактор всегда по центру
   }
 
   const hud = document.getElementById('n-hud-text');
-  if (hud) hud.innerText = `Цель: ${targetP.name} (${nProgress}/${targetP.target})`;
+  if (hud) hud.innerText = `Цель: ${nextP ? nextP.name : currentP.name} (${nProgress}/${currentP.target})`;
 
   const hudDist = document.getElementById('n-hud-dist');
   if (hudDist) {
-    let remainingSteps = Math.max(0, targetP.target - nProgress);
-    let kmPerStep = targetP.distKm / targetP.target;
+    let remainingSteps = Math.max(0, currentP.target - nProgress);
+    let kmPerStep = currentP.distKm / currentP.target;
     let remainingKm = remainingSteps * kmPerStep;
 
     if (remainingSteps <= 0) {
@@ -380,10 +373,9 @@ function updateNeptuneHUD() {
   // УМЕНЬШЕНИЕ РАКЕТЫ ВНУТРИ АТТРАКТОРА
   const rocketEl = document.getElementById('n-rocket');
   if (rocketEl) {
-    if (nPlanetIdx === neptunePlanets.length - 1 && progressPercent > 0.8) {
-      let extra = (progressPercent - 0.8) / 0.2;
-      rocketEl.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(${Math.max(0, 1 - extra)})`;
-      rocketEl.style.opacity = Math.max(0, 1 - extra);
+    if (nPlanetIdx === neptunePlanets.length - 1 && progressPercent > 0) {
+      rocketEl.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(${Math.max(0, 1 - progressPercent)})`;
+      rocketEl.style.opacity = Math.max(0, 1 - progressPercent);
     } else {
       rocketEl.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
       rocketEl.style.opacity = 1;
@@ -450,10 +442,10 @@ function answerNeptune(selectedOpt, btnElement) {
   const currentP = neptunePlanets[nPlanetIdx];
   const nextP = neptunePlanets[nPlanetIdx + 1];
   
-  const targetSteps = nextP ? nextP.target : currentP.target;
+  // ИСПОЛЬЗУЕМ currentP.target
+  const targetSteps = currentP.target;
   
   if (selectedOpt === nCurrentCorrectWord) {
-    // ПРАВИЛЬНО (+1)
     if (btnElement) btnElement.classList.add('correct');
     
     nProgress = Math.min(nProgress + 1, targetSteps); 
@@ -474,7 +466,6 @@ function answerNeptune(selectedOpt, btnElement) {
     setTimeout(() => {
       if (nProgress >= targetSteps) {
         
-        // ФИНАЛ
         if (!nextP) {
           addStars(currentP.reward, "Нептун");
           
@@ -495,20 +486,12 @@ function answerNeptune(selectedOpt, btnElement) {
           nTargetStarSpeed = 5; 
           
           if (rocket) {
-            rocket.style.transition = 'top 1s ease-out, transform 0.5s ease-out, opacity 0.5s ease-out';
-            rocket.style.top = '50%'; 
-            rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
-            rocket.style.opacity = 1;
+            rocket.style.opacity = '0';
+            rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(0)`;
           }
           
           let countdown = 10;
           if (timerEl) timerEl.innerText = countdown;
-
-          // ПРЯЧЕМ РАКЕТУ НА ВРЕМЯ ОТСЧЕТА
-          if (rocket) {
-            rocket.style.opacity = '0';
-            rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(0)`;
-          }
 
           let int = setInterval(() => {
             countdown--;
@@ -518,7 +501,7 @@ function answerNeptune(selectedOpt, btnElement) {
               clearInterval(int);
               if (timerEl) timerEl.innerText = "ПУСК!";
               
-              // ЭТАП 1: Пауза перед гиперпрыжком (1 сек)
+              // ЭТАП 1
               setTimeout(() => {
                 if (finalText) finalText.style.opacity = '0';
                 if (timerEl) timerEl.style.opacity = '0';
@@ -526,99 +509,116 @@ function answerNeptune(selectedOpt, btnElement) {
                 const warpText = document.getElementById('n-warp-text');
                 if (warpText) warpText.style.opacity = '1';
 
-                // ДЕЛАЕМ ФОН ФИНАЛЬНОГО ЭКРАНА ПРОЗРАЧНЫМ, ЧТОБЫ УВИДЕТЬ КОСМОС
                 if (finalScreen) finalScreen.style.background = 'transparent';
 
-                // ПОКАЗЫВАЕМ РАКЕТУ ДЛЯ ГИПЕРПРЫЖКА
-                if (rocket) {
-                  rocket.style.opacity = '1';
-                  rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
-                }
-
-                // ЭТАП 2: Гиперпрыжок (5 секунд)
-                nTargetStarSpeed = -15; 
-                
-                // ПРЯЧЕМ ВЕЛИКИЙ АТТРАКТОР
                 const planetToHide = document.getElementById('n-planet-current');
                 if (planetToHide) {
                   planetToHide.style.transition = 'opacity 1s ease-in';
                   planetToHide.style.opacity = '0';
                 }
 
+                // РАКЕТА: НОСОМ ВНИЗ + ВИБРАЦИЯ
                 if (rocket) {
-                  // Ракета улетает вниз, растворяясь в пространстве
-                  rocket.style.transition = 'top 2s ease-in, transform 2s ease-in, opacity 2s';
-                  rocket.style.top = '150%'; 
-                  rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(0)`;
-                  rocket.style.opacity = '0';
+                  rocket.style.opacity = '1';
+                  rocket.style.transition = 'none';
+                  rocket.style.top = '50%';
+                  rocket.style.transform = 'translate(-50%, -50%) rotate(135deg)'; // Разворот
                 }
 
+                let vibInt = setInterval(() => {
+                  if (rocket) {
+                    let offsetX = (Math.random() - 0.5) * 6;
+                    let offsetY = (Math.random() - 0.5) * 6;
+                    rocket.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px)) rotate(135deg)`;
+                  }
+                }, 50);
+
+                // ЭТАП 2: Гиперпрыжок (5 секунд)
+                nTargetStarSpeed = -15; 
+
                 setTimeout(() => {
-                  // ЭТАП 3: Прибытие
+                  // Конец вибрации, ракета улетает вниз
+                  clearInterval(vibInt);
+                  if (rocket) {
+                    rocket.style.transition = 'top 1s ease-in, transform 1s ease-in';
+                    rocket.style.transform = 'translate(-50%, -50%) rotate(135deg)';
+                    setTimeout(() => {
+                      rocket.style.top = '150%';
+                    }, 10);
+                  }
+
                   if (warpText) warpText.innerText = "ПРИБЫТИЕ НА ЗЕМЛЮ...";
                   
-                  nPlanetIdx = 0;
-                  nProgress = 0;
-                  state.neptunePlanetIdx = 0;
-                  state.neptuneProgress = 0;
-                  saveState();
-                  
-                  // ВОЗВРАЩАЕМ ФОН И СКРЫВАЕМ ФИНАЛЬНЫЙ ЭКРАН
-                  if (finalScreen) {
-                    finalScreen.style.display = 'none';
-                    finalScreen.style.background = 'rgba(0,0,0,0.9)'; // Возвращаем на будущее
-                  }
-                  
-                  if (finalText) finalText.style.opacity = '1';
-                  if (timerEl) timerEl.style.opacity = '1';
-                  if (warpText) warpText.style.opacity = '0';
-                  if (hudText) hudText.style.display = 'block';
-                  if (hudDist) hudDist.style.display = 'block';
-                  
-                  nTargetStarSpeed = 0.33; 
-
-                  const curEl = document.getElementById('n-planet-current');
-                  const nextEl = document.getElementById('n-planet-next');
-                  
-                  // Ставим Землю наверх, чтобы она выплыла сверху
-                  if (curEl) {
-                      curEl.style.transition = 'none';
-                      curEl.style.opacity = '0'; 
-                      curEl.style.top = '-50%'; 
-                      curEl.style.transform = `translate(-50%, -50%) scale(1)`;
-                  }
-                  if (nextEl) nextEl.style.transition = 'none';
-                  
-                  updateNeptuneHUD();
-                  
-                  if (curEl) void curEl.offsetWidth;
-                  if (nextEl) void nextEl.offsetWidth;
-                  
+                  // Ждем 1 секунду, пока ракета улетает вниз
                   setTimeout(() => {
-                    // Земля выезжает в центр, ракета плавно появляется снизу
-                    if (curEl) {
-                        curEl.style.transition = 'top 2s ease-out, left 2s ease-out, transform 2s ease-out, opacity 2s';
-                        curEl.style.top = '50%';
-                        curEl.style.opacity = '1';
-                    }
-                    if (nextEl) nextEl.style.transition = 'top 2s ease-out, left 2s ease-out, transform 2s ease-out, opacity 2s';
+                    nPlanetIdx = 0;
+                    nProgress = 0;
+                    state.neptunePlanetIdx = 0;
+                    state.neptuneProgress = 0;
+                    saveState();
                     
-                    if (rocket) {
-                      rocket.style.transition = 'top 2s ease-out, transform 2s ease-out, opacity 2s';
-                      rocket.style.top = '50%';
-                      rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
-                      rocket.style.opacity = '1'; // Ракета возвращается домой
+                    if (finalScreen) {
+                      finalScreen.style.display = 'none';
+                      finalScreen.style.background = 'rgba(0,0,0,0.9)';
                     }
+                    
+                    if (finalText) finalText.style.opacity = '1';
+                    if (timerEl) timerEl.style.opacity = '1';
+                    if (warpText) warpText.style.opacity = '0';
+                    if (hudText) hudText.style.display = 'block';
+                    if (hudDist) hudDist.style.display = 'block';
+                    
+                    nTargetStarSpeed = 0.33; 
 
-                    // Запускаем игру только после завершения анимации
+                    const curEl = document.getElementById('n-planet-current');
+                    const nextEl = document.getElementById('n-planet-next');
+                    
+                    if (curEl) {
+                        curEl.style.transition = 'none';
+                        curEl.style.opacity = '0'; 
+                        curEl.style.top = '-50%'; 
+                        curEl.style.transform = `translate(-50%, -50%) scale(1)`;
+                    }
+                    if (nextEl) nextEl.style.transition = 'none';
+
+                    // Ставим ракету внизу за экраном
+                    if (rocket) {
+                      rocket.style.transition = 'none';
+                      rocket.style.top = '150%';
+                      rocket.style.opacity = '0';
+                      rocket.style.transform = 'translate(-50%, -50%) rotate(-45deg)';
+                    }
+                    
+                    updateNeptuneHUD();
+                    
+                    if (curEl) void curEl.offsetWidth;
+                    if (nextEl) void nextEl.offsetWidth;
+                    if (rocket) void rocket.offsetWidth;
+                    
                     setTimeout(() => {
-                      startNeptuneQuestion();
-                    }, 2000);
+                      // Земля выезжает, ракета вылетает снизу
+                      if (curEl) {
+                          curEl.style.transition = 'top 2s ease-out, left 2s ease-out, transform 2s ease-out, opacity 2s';
+                          curEl.style.top = '50%';
+                          curEl.style.opacity = '1';
+                      }
+                      if (nextEl) nextEl.style.transition = 'top 2s ease-out, left 2s ease-out, transform 2s ease-out, opacity 2s';
+                      
+                      if (rocket) {
+                        rocket.style.transition = 'top 2s ease-out, opacity 2s';
+                        rocket.style.top = '50%';
+                        rocket.style.opacity = '1';
+                      }
 
-                  }, 50);
+                      setTimeout(() => {
+                        startNeptuneQuestion();
+                      }, 2000);
 
-                }, 5000); // Ждем 5 секунд гиперпрыжка
-              }, 1000); // Ждем 1 секунду после слова "ПУСК!"
+                    }, 50);
+
+                  }, 1000); // Ждем улет ракеты
+                }, 5000); // Ждем 5 сек гиперпрыжка
+              }, 1000); // Ждем 1 сек после "ПУСК!"
             }
           }, 1000);
 
