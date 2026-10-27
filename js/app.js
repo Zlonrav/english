@@ -151,6 +151,8 @@ allAchievements = allAchievements.concat([
   { id: 'gold_10', icon: '🏆', title: 'Коллекционер', desc: 'Изучи 10 карточек на 100%', check: (s) => s.learned.length >= 10 },
   { id: 'gold_50', icon: '👑', title: 'Мастер слова', desc: 'Изучи 50 карточек на 100%', check: (s) => s.learned.length >= 50 },
   { id: 'gold_100', icon: '🌍', title: 'Покоритель слов', desc: 'Изучи 100 карточек на 100%', check: (s) => s.learned.length >= 100 },
+  { id: 'neptune_1', icon: '🚀', title: 'Первый шаг', desc: 'Долети до Великого Аттрактора', check: (s) => (s.neptuneFlights || 0) >= 1 },
+  { id: 'neptune_10', icon: '🌌', title: 'Галактический исследователь', desc: 'Соверши 10 полетов к Аттрактору', check: (s) => (s.neptuneFlights || 0) >= 10 },
 ]);
 
 function openAchievements() {
