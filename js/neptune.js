@@ -246,7 +246,7 @@ function openNeptune() {
 
   errorScreen.style.display = 'none';
   finalScreen.style.display = 'none';
-  // Управляем видимостью элементов в зависимости от тестового режима
+  
   if (state.neptuneTestMode) {
     if (document.getElementById('n-terminal')) document.getElementById('n-terminal').style.display = 'none';
     if (document.getElementById('n-test-panel')) document.getElementById('n-test-panel').style.display = 'flex';
@@ -315,6 +315,7 @@ function updateNeptuneHUD() {
   let progressPercent = currentP.target > 0 ? (nProgress / currentP.target) : 0;
   if (progressPercent > 1) progressPercent = 1;
 
+  // Базовые настройки (как у обычных планет)
   let currentTop = 50 + (progressPercent * 100);
   let currentScale = 2.5 - (progressPercent * 2.0);
   let currentOpacity = Math.max(0, 1 - (progressPercent * 1.5)); 
@@ -325,27 +326,28 @@ function updateNeptuneHUD() {
   let nextOpacity = Math.min(1, progressPercent * 1.5); 
   let nextLeft = 70;
 
-  // ЛОГИКА ВЕЛИКОГО АТТРАКТОРА (target: 125)
+  // ================= ЛОГИКА ВЕЛИКОГО АТТРАКТОРА =================
   if (nPlanetIdx === neptunePlanets.length - 1) {
-    currentTop = 50;
+    currentTop = 50; 
     currentOpacity = 1;
 
-    if (progressPercent <= 0.8) {
-      // 0 - 100 шагов: стоит справа
-      currentScale = 2.5;
-      currentLeft = 70;
-    } else if (progressPercent <= 0.952) {
-      // 101 - 119 шагов: едет в центр
-      let p = (progressPercent - 0.8) / 0.152;
-      currentLeft = 70 - (p * 20);
-      currentScale = 2.5;
+    if (nProgress <= 119) {
+      // 100 - 119 шагов: Аттрактор едет в центр
+      let p = (nProgress - 100) / 19;
+      if (p < 0) p = 0;
+      if (p > 1) p = 1;
+      currentLeft = 70 - (p * 20); // 70% -> 50%
+      currentScale = 2.5; 
     } else {
-      // 120 - 125 шагов: раздувается в центре
-      let p = (progressPercent - 0.952) / 0.048;
+      // 120 - 125 шагов: Аттрактор раздувается
+      let p = (nProgress - 120) / 5;
+      if (p < 0) p = 0;
+      if (p > 1) p = 1;
       currentLeft = 50;
-      currentScale = 2.5 + (p * 2.5); 
+      currentScale = 2.5 + (p * 2.5); // 250% -> 500%
     }
   }
+  // ===============================================================
 
   const hud = document.getElementById('n-hud-text');
   if (hud) hud.innerText = `Цель: ${currentP.name} (${nProgress}/${currentP.target})`;
@@ -403,8 +405,9 @@ function updateNeptuneHUD() {
   // Ракета уменьшается только на 120-125 шагах
   const rocketEl = document.getElementById('n-rocket');
   if (rocketEl) {
-    if (nPlanetIdx === neptunePlanets.length - 1 && progressPercent > 0.952) {
-      let p = (progressPercent - 0.952) / 0.048;
+    if (nPlanetIdx === neptunePlanets.length - 1 && nProgress >= 120) {
+      let p = (nProgress - 120) / 5;
+      if (p > 1) p = 1;
       rocketEl.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(${Math.max(0, 1 - p)})`;
       rocketEl.style.opacity = Math.max(0, 1 - p);
     } else {
@@ -430,7 +433,7 @@ function startNeptuneQuestion() {
   if (state.neptuneTestMode) {
     if (terminal) terminal.style.display = 'none';
     if (testPanel) testPanel.style.display = 'flex';
-    return; // Не генерируем вопросы
+    return;
   }
   
   if (terminal) {
@@ -513,11 +516,16 @@ function answerNeptune(selectedOpt, btnElement) {
         showToast(`🪐 Вы достигли ${nextP.rod}! Награда: +${currentP.reward} ⭐`, 'top');
         
         nPlanetIdx++;
-        nProgress = 0;
+        // ЕСЛИ ПЕРЕШЛИ НА АТТРАКТОР, СТАВИМ ПРОГРЕСС 100, А НЕ 0
+        if (neptunePlanets[nPlanetIdx].name === "Великий Аттрактор") {
+            nProgress = 100;
+        } else {
+            nProgress = 0;
+        }
         nTargetStarSpeed = 0.33; 
         
         state.neptunePlanetIdx = nPlanetIdx;
-        state.neptuneProgress = 0;
+        state.neptuneProgress = nProgress;
         saveState();
         
         const curEl = document.getElementById('n-planet-current');
@@ -603,11 +611,15 @@ function handleTestStep(amount) {
           triggerNeptuneEndgame();
         } else {
           nPlanetIdx++;
-          nProgress = 0;
+          if (neptunePlanets[nPlanetIdx].name === "Великий Аттрактор") {
+              nProgress = 100;
+          } else {
+              nProgress = 0;
+          }
           nTargetStarSpeed = 0.33; 
           
           state.neptunePlanetIdx = nPlanetIdx;
-          state.neptuneProgress = 0;
+          state.neptuneProgress = nProgress;
           saveState();
           
           const curEl = document.getElementById('n-planet-current');
@@ -657,7 +669,7 @@ function handleTestStep(amount) {
   }
 }
 
-// 8. Финальная анимация (вызывается из обычного режима и теста)
+// 8. Финальная анимация
 function triggerNeptuneEndgame() {
   nLocked = true;
   addStars(neptunePlanets[nPlanetIdx].reward, "Нептун");
