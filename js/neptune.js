@@ -16,7 +16,7 @@ neptuneStyle.innerHTML = `
     position: absolute; left: 50%; top: 50%; 
     transform: translate(-50%, -50%) rotate(-45deg) scale(1); 
     font-size: 60px; z-index: 10; 
-    transition: top 1s ease-out, transform 0.5s ease-out, opacity 0.5s ease-out;
+    transition: top 1s ease-out, transform 1s ease-out, opacity 1s ease-out;
     filter: drop-shadow(0 0 10px #3b82f6); 
   }
   
@@ -280,7 +280,7 @@ function openNeptune() {
     rocket.style.top = '50%';
     rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
     rocket.style.opacity = '1';
-    setTimeout(() => { rocket.style.transition = 'top 1s ease-out, transform 0.5s ease-out, opacity 0.5s ease-out'; }, 50);
+    setTimeout(() => { rocket.style.transition = 'top 1s ease-out, transform 1s ease-out, opacity 1s ease-out'; }, 50);
   }
 
   const curEl = document.getElementById('n-planet-current');
@@ -409,18 +409,6 @@ function updateNeptuneHUD() {
       nextEl.style.display = 'none';
     }
   }
-
-  const rocketEl = document.getElementById('n-rocket');
-  if (rocketEl) {
-    if (nPlanetIdx === neptunePlanets.length - 1 && progressPercent > 0.8) {
-      let p = (progressPercent - 0.8) / 0.2;
-      rocketEl.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(${Math.max(0, 1 - p)})`;
-      rocketEl.style.opacity = Math.max(0, 1 - p);
-    } else {
-      rocketEl.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
-      rocketEl.style.opacity = 1;
-    }
-  }
 }
 
 // 5. Генерация вопроса
@@ -429,8 +417,17 @@ function startNeptuneQuestion() {
   
   const rocket = document.getElementById('n-rocket');
   if (rocket) {
-    rocket.style.transition = 'top 0.5s ease-in-out';
+    rocket.style.transition = 'top 0.5s ease-in-out, transform 0.5s ease-out, opacity 0.5s ease-out';
     rocket.style.top = '50%'; 
+    
+    if (nPlanetIdx === neptunePlanets.length - 1 && nProgress > 20) {
+      let p = (nProgress - 20) / 5;
+      rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(${Math.max(0, 1 - p)})`;
+      rocket.style.opacity = Math.max(0, 1 - p);
+    } else {
+      rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
+      rocket.style.opacity = 1;
+    }
   }
 
   const terminal = document.getElementById('n-terminal');
@@ -504,7 +501,19 @@ function answerNeptune(selectedOpt, btnElement) {
     saveState();
 
     nTargetStarSpeed = 2; 
-    if (rocket) rocket.style.top = '10%';
+    if (rocket) {
+      rocket.style.transition = 'top 1s ease-out, transform 1s ease-out, opacity 1s ease-out';
+      rocket.style.top = '10%';
+      
+      if (nPlanetIdx === neptunePlanets.length - 1 && nProgress > 20) {
+        let p = (nProgress - 20) / 5;
+        rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(${Math.max(0, 1 - p)})`;
+        rocket.style.opacity = Math.max(0, 1 - p);
+      } else {
+        rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
+        rocket.style.opacity = 1;
+      }
+    }
     
     if (terminal) {
       terminal.style.opacity = '0';
@@ -574,11 +583,13 @@ function answerNeptune(selectedOpt, btnElement) {
     nTargetStarSpeed = -3; 
 
     if (rocket) {
-      rocket.style.transition = 'top 1s ease-in';
+      rocket.style.transition = 'top 1s ease-in, transform 1s ease-in, opacity 1s ease-in';
       rocket.style.top = '70%';
+      rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
+      rocket.style.opacity = 1;
 
       setTimeout(() => {
-        rocket.style.transition = 'top 0.5s ease-in-out';
+        rocket.style.transition = 'top 0.5s ease-in-out, transform 0.5s ease-out, opacity 0.5s ease-out';
         rocket.style.top = '50%';
         nTargetStarSpeed = 0.33; 
         setTimeout(() => { startNeptuneQuestion(); }, 500);
@@ -611,7 +622,19 @@ function handleTestStep(amount) {
   if (diff > 0) {
     nTargetStarSpeed = 2;
     const rocket = document.getElementById('n-rocket');
-    if (rocket) rocket.style.top = '10%';
+    if (rocket) {
+      rocket.style.transition = 'top 1s ease-out, transform 1s ease-out, opacity 1s ease-out';
+      rocket.style.top = '10%';
+      
+      if (nPlanetIdx === neptunePlanets.length - 1 && nProgress > 20) {
+        let p = (nProgress - 20) / 5;
+        rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(${Math.max(0, 1 - p)})`;
+        rocket.style.opacity = Math.max(0, 1 - p);
+      } else {
+        rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
+        rocket.style.opacity = 1;
+      }
+    }
     
     setTimeout(() => {
       if (nProgress >= targetSteps) {
@@ -662,13 +685,15 @@ function handleTestStep(amount) {
     nTargetStarSpeed = -3;
     const rocket = document.getElementById('n-rocket');
     if (rocket) {
-      rocket.style.transition = 'top 1s ease-in';
+      rocket.style.transition = 'top 1s ease-in, transform 1s ease-in, opacity 1s ease-in';
       rocket.style.top = '70%';
+      rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
+      rocket.style.opacity = 1;
     }
     
     setTimeout(() => {
       if (rocket) {
-        rocket.style.transition = 'top 0.5s ease-in-out';
+        rocket.style.transition = 'top 0.5s ease-in-out, transform 0.5s ease-out, opacity 0.5s ease-out';
         rocket.style.top = '50%';
       }
       nTargetStarSpeed = 0.33; 
