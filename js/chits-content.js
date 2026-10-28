@@ -149,6 +149,7 @@ function deleteCheatProfile(name) {
     renderCheatProfiles();
     renderEditProfiles();
     renderBlockUsers();
+    renderStarsUsers(); 
   }
 }
 
