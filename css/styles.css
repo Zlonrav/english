@@ -669,9 +669,8 @@ html, body {
 }
 /* ================= БЛОКИРОВКА РАЗДЕЛОВ ================= */
 .menu-btn.blocked-section {
-  filter: grayscale(1) opacity(0.4); /* Делает кнопку серой и полупрозрачной */
   pointer-events: none; /* Запрещает клики */
-  box-shadow: none !important;
+  opacity: 0.85; /* Легкая прозрачность, чтобы было видно, что кнопка неактивна */
   transform: none !important;
   position: relative;
 }
@@ -682,5 +681,4 @@ html, body {
   position: absolute;
   right: 20px;
   font-size: 24px;
-  filter: none; /* Чтобы замок не был серым */
 }
