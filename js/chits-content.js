@@ -48,6 +48,14 @@ const chitsHTML = `
       </div>
       <p class="desc" id="neptune-step-hint" style="text-align: center; margin-top: 5px;">Выберите планету</p>
     </div>
+
+    <!-- НОВЫЙ БЛОК ТЕСТИРОВАНИЯ -->
+    <div style="margin-top: 15px; border-top: 1px dashed #555; padding-top: 10px;">
+      <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; margin-bottom: 10px;">
+        <input type="checkbox" id="neptune-test-mode" style="width: auto; margin: 0;"> 🛠 Режим тестирования (без вопросов)
+      </label>
+      <button onclick="saveNeptuneTestMode()" class="btn-blue">Сохранить настройки Нептуна</button>
+    </div>
   </div>
 
   <div class="card">
