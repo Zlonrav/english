@@ -313,10 +313,20 @@ function updateNeptuneHUD() {
   const currentP = neptunePlanets[nPlanetIdx];
   const nextP = neptunePlanets[nPlanetIdx + 1];
   
-  let progressPercent = currentP.target > 0 ? (nProgress / currentP.target) : 0;
+  // Определяем цель для текущего этапа
+  let displayTarget = currentP.target;
+  let totalDist = currentP.distKm;
+
+  // Если мы на Ланиакее или Аттракторе, цель всегда 125, и дистанция берется от Аттрактора
+  if (currentP.name === "Сверхскопление Ланиакея" || currentP.name === "Великий Аттрактор") {
+      displayTarget = 125;
+      totalDist = neptunePlanets[neptunePlanets.length - 1].distKm;
+  }
+
+  let progressPercent = displayTarget > 0 ? (nProgress / displayTarget) : 0;
   if (progressPercent > 1) progressPercent = 1;
 
-  // СТАНДАРТНАЯ ЛОГИКА
+  // СТАНДАРТНАЯ ЛОГИКА АНИМАЦИИ
   let currentTop = 50 + (progressPercent * 100);
   let currentScale = 2.5 - (progressPercent * 2.0);
   let currentOpacity = Math.max(0, 1 - (progressPercent * 1.5)); 
@@ -346,22 +356,15 @@ function updateNeptuneHUD() {
   }
 
   const hud = document.getElementById('n-hud-text');
-  
-  // ВЫЧИСЛЯЕМ ЦЕЛЬ ДЛЯ ОТОБРАЖЕНИЯ /125
-  let displayTarget = currentP.target;
-  if (currentP.name === "Великий Аттрактор" || (nextP && nextP.name === "Великий Аттрактор")) {
-      displayTarget = 125;
-  }
-
   if (hud) hud.innerText = `Цель: ${nextP ? nextP.name : currentP.name} (${nProgress}/${displayTarget})`;
 
   const hudDist = document.getElementById('n-hud-dist');
   if (hudDist) {
-    let remainingSteps = Math.max(0, currentP.target - nProgress);
-    let kmPerStep = currentP.distKm / currentP.target;
+    let remainingSteps = Math.max(0, displayTarget - nProgress);
+    let kmPerStep = totalDist / displayTarget;
     let remainingKm = remainingSteps * kmPerStep;
 
-    if (nProgress >= 125 && nPlanetIdx === neptunePlanets.length - 1) {
+    if (remainingSteps <= 0) {
       hudDist.innerText = "Достигнуто!";
       hudDist.style.color = "#10b981"; 
     } else {
