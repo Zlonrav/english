@@ -74,7 +74,7 @@ neptuneStyle.innerHTML = `
 `;
 document.head.appendChild(neptuneStyle);
 
-// 2. Данные планет
+// 2. Данные планет (строго по твоей схеме)
 const neptunePlanets = [
   { name: "Земля", rod: "Земли", icon: "🌍", target: 10, reward: 5, distKm: 384000 },
   { name: "Луна", rod: "Луны", icon: "🌕", target: 12, reward: 5, distKm: 225000000 },
@@ -101,9 +101,9 @@ const neptunePlanets = [
   { name: "Галактика Боде", rod: "Галактики Боде", icon: "🌌", target: 70, reward: 60, distKm: 1230000000000000000 },
   { name: "Галактика Сигара", rod: "Галактики Сигара", icon: "🚬", target: 75, reward: 70, distKm: 5100000000000000000 },
   { name: "Скопление Девы", rod: "Скопления Девы", icon: "💫", target: 80, reward: 80, distKm: 16100000000000000000 },
-  { name: "Сверхскопление Центавра", rod: "Сверхскопления Центавра", icon: "🌀", target: 100, reward: 90, distKm: 18900000000000000000 },
-  { name: "Сверхскопление Ланиакея", rod: "Сверхскопления Ланиакея", icon: "💦", target: 125, reward: 100, distKm: 23600000000000000000 },
-  { name: "Великий Аттрактор", rod: "Великого Аттрактора", icon: "🌑", target: 0, reward: 150, distKm: 23600000000000000000 }
+  { name: "Сверхскопление Центавра", rod: "Сверхскопления Центавра", icon: "🌀", target: 85, reward: 90, distKm: 18900000000000000000 },
+  { name: "Сверхскопление Ланиакея", rod: "Сверхскопления Ланиакея", icon: "💦", target: 100, reward: 100, distKm: 23600000000000000000 },
+  { name: "Великий Аттрактор", rod: "Великого Аттрактора", icon: "🌑", target: 25, reward: 150, distKm: 23600000000000000000 }
 ];
 
 function formatDistance(km) {
@@ -263,7 +263,6 @@ function openNeptune() {
   nPlanetIdx = state.neptunePlanetIdx || 0;
   nProgress = state.neptuneProgress || 0;
   
-  // Если сохранился прогресс на Аттракторе (индекс 27), сбрасываем на Землю
   if (nPlanetIdx >= neptunePlanets.length - 1) {
     nPlanetIdx = 0;
     nProgress = 0;
@@ -314,10 +313,7 @@ function updateNeptuneHUD() {
   const currentP = neptunePlanets[nPlanetIdx];
   const nextP = neptunePlanets[nPlanetIdx + 1];
   
-  let displayTarget = currentP.target;
-  let totalDist = currentP.distKm;
-
-  let progressPercent = displayTarget > 0 ? (nProgress / displayTarget) : 0;
+  let progressPercent = currentP.target > 0 ? (nProgress / currentP.target) : 0;
   if (progressPercent > 1) progressPercent = 1;
 
   let currentTop = 50;
@@ -330,41 +326,8 @@ function updateNeptuneHUD() {
   let nextOpacity = 0;
   let nextLeft = 70;
 
-  // ЛОГИКА ДЛЯ ЛАНИАКЕИ (nPlanetIdx === neptunePlanets.length - 2)
-  if (nPlanetIdx === neptunePlanets.length - 2) {
-    // Ланиакея уходит вниз за первые 100 шагов (0.8 от 125)
-    let pCurrent = Math.min(progressPercent / 0.8, 1);
-    currentTop = 50 + (pCurrent * 100);
-    currentScale = 2.5 - (pCurrent * 2.0);
-    currentOpacity = Math.max(0, 1 - (pCurrent * 1.5));
-    currentLeft = 70;
-
-    // Аттрактор спускается сверху за все 125 шагов
-    nextTop = -50 + (progressPercent * 100);
-    nextScale = 0.5 + (progressPercent * 2.0);
-    nextOpacity = Math.min(1, progressPercent * 1.5);
-    nextLeft = 70;
-
-    // С 100 шагов (0.8) до 120 шагов (0.96) Аттрактор едет в центр
-    if (progressPercent > 0.8) {
-      let pMove = Math.min((progressPercent - 0.8) / 0.16, 1);
-      nextLeft = 70 - (pMove * 20);
-    }
-    // С 120 шагов (0.96) до 125 шагов (1.0) Аттрактор раздувается
-    if (progressPercent > 0.96) {
-      let pGrow = (progressPercent - 0.96) / 0.04;
-      nextLeft = 50;
-      nextScale = 2.5 + (pGrow * 2.5);
-    }
-  } 
-  // Для всех остальных планет (включая Аттрактор, на всякий случай)
-  else if (nPlanetIdx === neptunePlanets.length - 1) {
-    currentTop = 50;
-    currentScale = 2.5;
-    currentOpacity = 1;
-    currentLeft = 50;
-  }
-  else {
+  // --- СТАНДАРТНАЯ ЛОГИКА ДЛЯ ВСЕХ ПЛАНЕТ (кроме Аттрактора) ---
+  if (nPlanetIdx < neptunePlanets.length - 1) {
     currentTop = 50 + (progressPercent * 100);
     currentScale = 2.5 - (progressPercent * 2.0);
     currentOpacity = Math.max(0, 1 - (progressPercent * 1.5));
@@ -374,15 +337,33 @@ function updateNeptuneHUD() {
     nextScale = 0.5 + (progressPercent * 2.0);
     nextOpacity = Math.min(1, progressPercent * 1.5);
     nextLeft = 70;
+  } 
+  // --- ЛОГИКА ДЛЯ АТТРАКТОРА (ПОЗНАНИЕ ИСТИНЫ) ---
+  else {
+    currentTop = 50; 
+    currentOpacity = 1;
+    
+    // Первые 20 шагов (0.8) - едет в центр
+    if (progressPercent <= 0.8) {
+      let p = progressPercent / 0.8;
+      currentLeft = 70 - (p * 20); // 70% -> 50%
+      currentScale = 2.5; 
+    } else {
+      // Последние 5 шагов (0.2) - раздувается
+      let p = (progressPercent - 0.8) / 0.2;
+      currentLeft = 50;
+      currentScale = 2.5 + (p * 2.5); // 250% -> 500%
+    }
   }
 
   const hud = document.getElementById('n-hud-text');
-  if (hud) hud.innerText = `Цель: ${nextP ? nextP.name : currentP.name} (${nProgress}/${displayTarget})`;
+  const hudName = (nPlanetIdx === neptunePlanets.length - 1) ? "Познание истины" : (nextP ? nextP.name : currentP.name);
+  if (hud) hud.innerText = `Цель: ${hudName} (${nProgress}/${currentP.target})`;
 
   const hudDist = document.getElementById('n-hud-dist');
   if (hudDist) {
-    let remainingSteps = Math.max(0, displayTarget - nProgress);
-    let kmPerStep = totalDist / displayTarget;
+    let remainingSteps = Math.max(0, currentP.target - nProgress);
+    let kmPerStep = currentP.distKm / currentP.target;
     let remainingKm = remainingSteps * kmPerStep;
 
     if (remainingSteps <= 0) {
@@ -402,9 +383,7 @@ function updateNeptuneHUD() {
     curEl.style.transform = `translate(-50%, -50%) scale(${currentScale})`;
     curEl.style.opacity = currentOpacity;
     
-    if (nPlanetIdx === neptunePlanets.length - 2) {
-      curEl.style.textShadow = 'none';
-    } else if (nPlanetIdx === neptunePlanets.length - 1) {
+    if (nPlanetIdx === neptunePlanets.length - 1) {
       curEl.style.textShadow = '0 0 40px #a855f7, 0 0 80px #a855f7';
     } else {
       curEl.style.textShadow = 'none';
@@ -433,8 +412,8 @@ function updateNeptuneHUD() {
 
   const rocketEl = document.getElementById('n-rocket');
   if (rocketEl) {
-    if (nPlanetIdx === neptunePlanets.length - 2 && progressPercent > 0.96) {
-      let p = (progressPercent - 0.96) / 0.04;
+    if (nPlanetIdx === neptunePlanets.length - 1 && progressPercent > 0.8) {
+      let p = (progressPercent - 0.8) / 0.2;
       rocketEl.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(${Math.max(0, 1 - p)})`;
       rocketEl.style.opacity = Math.max(0, 1 - p);
     } else {
@@ -534,26 +513,27 @@ function answerNeptune(selectedOpt, btnElement) {
 
     setTimeout(() => {
       if (nProgress >= targetSteps) {
-        // Если следующая планета - Аттрактор, то это финал
-        if (nextP && nextP.name === "Великий Аттрактор") {
-          triggerNeptuneEndgame();
-          return;
-        }
         if (!nextP) {
           triggerNeptuneEndgame();
           return;
         }
 
-        // Переход на следующую планету
         addStars(currentP.reward, "Нептун");
         showToast(`🪐 Вы достигли ${nextP.rod}! Награда: +${currentP.reward} ⭐`, 'top');
         
         nPlanetIdx++;
         nProgress = 0;
+        
+        // Если перешли на Аттрактор, даем ему награду сразу
+        if (neptunePlanets[nPlanetIdx].name === "Великий Аттрактор") {
+            addStars(neptunePlanets[nPlanetIdx].reward, "Нептун");
+            showToast(`🌑 Вы достигли Великого Аттрактора! Награда: +150 ⭐`, 'top');
+        }
+        
         nTargetStarSpeed = 0.33; 
         
         state.neptunePlanetIdx = nPlanetIdx;
-        state.neptuneProgress = 0;
+        state.neptuneProgress = nProgress;
         saveState();
         
         const curEl = document.getElementById('n-planet-current');
@@ -635,17 +615,21 @@ function handleTestStep(amount) {
     
     setTimeout(() => {
       if (nProgress >= targetSteps) {
-        if (nextP && nextP.name === "Великий Аттрактор") {
-          triggerNeptuneEndgame();
-        } else if (!nextP) {
+        if (!nextP) {
           triggerNeptuneEndgame();
         } else {
           nPlanetIdx++;
           nProgress = 0;
+          
+          if (neptunePlanets[nPlanetIdx].name === "Великий Аттрактор") {
+              addStars(neptunePlanets[nPlanetIdx].reward, "Нептун");
+              showToast(`🌑 Вы достигли Великого Аттрактора! Награда: +150 ⭐`, 'top');
+          }
+          
           nTargetStarSpeed = 0.33; 
           
           state.neptunePlanetIdx = nPlanetIdx;
-          state.neptuneProgress = 0;
+          state.neptuneProgress = nProgress;
           saveState();
           
           const curEl = document.getElementById('n-planet-current');
