@@ -24,6 +24,11 @@ const chitsHTML = `
   <!-- УПРАВЛЕНИЕ ЗВЕЗДАМИ -->
   <div class="card">
     <h3>⭐ Управление звёздами</h3>
+    
+    <select id="stars-user-select" style="margin-bottom: 10px;">
+      <option value="">-- Выберите игрока --</option>
+    </select>
+    
     <input type="number" id="stars-amount" placeholder="Количество звёзд" value="100">
     <div style="display: flex; gap: 10px; margin-top: 10px;">
       <button onclick="addCheatStars()" class="btn-green" style="margin: 0; width: 50%;">Начислить</button>
@@ -113,6 +118,7 @@ function initChitsUI() {
   renderEditProfiles();
   renderBlockUsers();
   renderCategoryCheckboxes(); 
+  renderStarsUsers(); 
 }
 
 // ================= УПРАВЛЕНИЕ ПРОФИЛЯМИ =================
@@ -211,36 +217,48 @@ function saveProfileChanges() {
 
 // ================= УПРАВЛЕНИЕ ЗВЕЗДАМИ =================
 function addCheatStars() {
-  const data = getState();
-  if (!data) return;
+  const name = document.getElementById('stars-user-select').value;
+  if (!name) { alert("Сначала выберите игрока в списке!"); return; }
+
+  let db = JSON.parse(localStorage.getItem('eng_db'));
+  if (!db.profiles[name]) return;
+
   const amount = parseInt(document.getElementById('stars-amount').value);
   if (isNaN(amount) || amount <= 0) { alert("Введите положительное число!"); return; }
 
-  data.profile.stars = (data.profile.stars || 0) + amount;
-  data.profile.totalStarsEarned = (data.profile.totalStarsEarned || 0) + amount;
+  const profile = db.profiles[name];
+  profile.stars = (profile.stars || 0) + amount;
+  profile.totalStarsEarned = (profile.totalStarsEarned || 0) + amount;
   
-  const currentDaily = data.profile.dailyEarned || 0;
-  data.profile.dailyEarned = Math.min(250, currentDaily + amount);
-  data.profile.dailyEarnedDate = new Date().toDateString();
+  const currentDaily = profile.dailyEarned || 0;
+  profile.dailyEarned = Math.min(250, currentDaily + amount);
+  profile.dailyEarnedDate = new Date().toDateString();
 
-  if (data.profile.dailyEarned >= 250) {
-      data.profile.capBannerShownDate = null; 
+  if (profile.dailyEarned >= 250) {
+      profile.capBannerShownDate = null; 
   }
-  saveState(data.db);
+  
+  localStorage.setItem('eng_db', JSON.stringify(db));
+  alert(`✅ Игроку "${name}" начислено ${amount} ⭐`);
 }
 
 function removeCheatStars() {
-  const data = getState();
-  if (!data) return;
+  const name = document.getElementById('stars-user-select').value;
+  if (!name) { alert("Сначала выберите игрока в списке!"); return; }
+
+  let db = JSON.parse(localStorage.getItem('eng_db'));
+  if (!db.profiles[name]) return;
+
   const amount = parseInt(document.getElementById('stars-amount').value);
   if (isNaN(amount) || amount <= 0) { alert("Введите положительное число!"); return; }
 
-  // Снимаем звезды, но не уходим в минус (Math.max с 0)
-  data.profile.stars = Math.max(0, (data.profile.stars || 0) - amount);
-  data.profile.totalStarsEarned = Math.max(0, (data.profile.totalStarsEarned || 0) - amount);
-  data.profile.dailyEarned = Math.max(0, (data.profile.dailyEarned || 0) - amount);
-
-  saveState(data.db);
+  const profile = db.profiles[name];
+  profile.stars = Math.max(0, (profile.stars || 0) - amount);
+  profile.totalStarsEarned = Math.max(0, (profile.totalStarsEarned || 0) - amount);
+  profile.dailyEarned = Math.max(0, (profile.dailyEarned || 0) - amount);
+  
+  localStorage.setItem('eng_db', JSON.stringify(db));
+  alert(`✅ У игрока "${name}" снято ${amount} ⭐`);
 }
 
 // ================= БЛОКИРОВКА РАЗДЕЛОВ И ТЕМ =================
@@ -433,4 +451,25 @@ function hardReset() {
   localStorage.removeItem('eng_db');
   sessionStorage.clear();
   location.href = 'index.html';
+}
+// ================= НАЧИСЛЕНИЕ И СНЯТИЕ ЗВЁЗД =================
+function renderStarsUsers() {
+  const select = document.getElementById('stars-user-select');
+  const db = JSON.parse(localStorage.getItem('eng_db'));
+  if (!select) return;
+  
+  select.innerHTML = '<option value="">-- Выберите игрока --</option>';
+  if (!db || !db.profiles) return;
+
+  for (const name in db.profiles) {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.innerText = name;
+    select.appendChild(opt);
+  }
+
+  // Автовыбор последнего активного игрока
+  if (db.lastActive && db.profiles[db.lastActive]) {
+    select.value = db.lastActive;
+  }
 }
