@@ -667,3 +667,20 @@ html, body {
   display: inline-block; /* Обязательно для работы transform */
   animation: pulseStar 0.4s ease-in-out;
 }
+/* ================= БЛОКИРОВКА РАЗДЕЛОВ ================= */
+.menu-btn.blocked-section {
+  filter: grayscale(1) opacity(0.4); /* Делает кнопку серой и полупрозрачной */
+  pointer-events: none; /* Запрещает клики */
+  box-shadow: none !important;
+  transform: none !important;
+  position: relative;
+}
+
+/* Добавляем иконку замка в правый край кнопки */
+.menu-btn.blocked-section::after {
+  content: '🔒';
+  position: absolute;
+  right: 20px;
+  font-size: 24px;
+  filter: none; /* Чтобы замок не был серым */
+}
