@@ -127,6 +127,7 @@ function initChitsUI() {
   renderBlockUsers();
   renderCategoryCheckboxes(); 
   renderStarsUsers(); 
+  loadNeptuneTestMode();
 }
 
 // ================= УПРАВЛЕНИЕ ПРОФИЛЯМИ =================
@@ -351,6 +352,7 @@ function loadBlockUser() {
   checkboxes.forEach(cb => {
     if (blockedCats.includes(cb.value)) cb.checked = true;
   });
+  loadNeptuneTestMode();
 }
 
 function saveAllBlocks() {
