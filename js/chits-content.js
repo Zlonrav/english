@@ -220,13 +220,18 @@ function renderBlockUsers() {
     opt.innerText = name;
     select.appendChild(opt);
   }
+
+  // АВТОМАТИЧЕСКИ ВЫБИРАЕМ АКТИВНОГО ИГРОКА
+  if (db.lastActive && db.profiles[db.lastActive]) {
+    select.value = db.lastActive;
+    loadBlockUser();
+  }
 }
 
 function renderCategoryCheckboxes() {
   const container = document.getElementById('category-checkboxes');
   if (!container) return;
   
-  // Если база данных еще не загружена, загружаем её
   if (typeof cardsData === 'undefined') {
      container.innerHTML = '<span style="color: #aaa;">Загрузка тем...</span>';
      if (!document.getElementById('data-js-loader')) {
@@ -234,14 +239,13 @@ function renderCategoryCheckboxes() {
          script.id = 'data-js-loader';
          script.src = 'js/data.js';
          script.onload = () => {
-             renderCategoryCheckboxes(); // Перерисовываем, когда база загрузится
+             renderCategoryCheckboxes();
          };
          document.head.appendChild(script);
      }
      return;
   }
   
-  // Берем реальные названия тем прямо из базы данных!
   const categories = [...new Set(cardsData.map(c => c.cat))];
   
   container.innerHTML = '';
@@ -254,25 +258,29 @@ function renderCategoryCheckboxes() {
     `;
     container.appendChild(label);
   });
+
+  // КОГДА ЧЕКБОКСЫ СОЗДАНЫ, СРАЗУ СТАВИМ ГАЛОЧКИ
+  loadBlockUser(); 
 }
 
 function loadBlockUser() {
   const name = document.getElementById('block-user-select').value;
   const db = JSON.parse(localStorage.getItem('eng_db'));
   
-  // Сбрасываем всё
+  // Сбрасываем главные разделы
   const sections = ['tasks', 'trainer', 'quiz', 'neptune'];
   sections.forEach(sec => {
       const el = document.getElementById(`block-${sec}`);
       if (el) el.checked = false;
   });
   
+  // Сбрасываем темы
   const checkboxes = document.querySelectorAll('.cat-block-checkbox');
   checkboxes.forEach(cb => cb.checked = false);
   
-  if (!name || !db.profiles[name]) return;
+  if (!name || !db.profiles || !db.profiles[name]) return;
   
-  // Загружаем разделы
+  // Ставим галочки для разделов
   const blockedSections = db.profiles[name].blockedSections || [];
   sections.forEach(sec => {
     if (blockedSections.includes(sec)) {
@@ -281,7 +289,7 @@ function loadBlockUser() {
     }
   });
 
-  // Загружаем категории
+  // Ставим галочки для тем
   const blockedCats = db.profiles[name].blockedCategories || [];
   checkboxes.forEach(cb => {
     if (blockedCats.includes(cb.value)) cb.checked = true;
