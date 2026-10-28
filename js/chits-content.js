@@ -21,10 +21,14 @@ const chitsHTML = `
     <button onclick="saveProfileChanges()" class="btn-blue">Сохранить изменения</button>
   </div>
 
+  <!-- УПРАВЛЕНИЕ ЗВЕЗДАМИ -->
   <div class="card">
-    <h3>⭐ Добавить звёзды</h3>
-    <input type="number" id="stars-amount" placeholder="Сколько звёзд?" value="1000">
-    <button onclick="addCheatStars()">Начислить</button>
+    <h3>⭐ Управление звёздами</h3>
+    <input type="number" id="stars-amount" placeholder="Количество звёзд" value="100">
+    <div style="display: flex; gap: 10px; margin-top: 10px;">
+      <button onclick="addCheatStars()" class="btn-green" style="margin: 0; width: 50%;">Начислить</button>
+      <button onclick="removeCheatStars()" style="margin: 0; width: 50%; background: #ef4444;">Снять</button>
+    </div>
   </div>
 
   <div class="card">
@@ -108,7 +112,7 @@ function initChitsUI() {
   renderNeptuneOptions();
   renderEditProfiles();
   renderBlockUsers();
-  renderCategoryCheckboxes(); // Вызываем загрузку тем
+  renderCategoryCheckboxes(); 
 }
 
 // ================= УПРАВЛЕНИЕ ПРОФИЛЯМИ =================
@@ -205,6 +209,40 @@ function saveProfileChanges() {
   renderBlockUsers();
 }
 
+// ================= УПРАВЛЕНИЕ ЗВЕЗДАМИ =================
+function addCheatStars() {
+  const data = getState();
+  if (!data) return;
+  const amount = parseInt(document.getElementById('stars-amount').value);
+  if (isNaN(amount) || amount <= 0) { alert("Введите положительное число!"); return; }
+
+  data.profile.stars = (data.profile.stars || 0) + amount;
+  data.profile.totalStarsEarned = (data.profile.totalStarsEarned || 0) + amount;
+  
+  const currentDaily = data.profile.dailyEarned || 0;
+  data.profile.dailyEarned = Math.min(250, currentDaily + amount);
+  data.profile.dailyEarnedDate = new Date().toDateString();
+
+  if (data.profile.dailyEarned >= 250) {
+      data.profile.capBannerShownDate = null; 
+  }
+  saveState(data.db);
+}
+
+function removeCheatStars() {
+  const data = getState();
+  if (!data) return;
+  const amount = parseInt(document.getElementById('stars-amount').value);
+  if (isNaN(amount) || amount <= 0) { alert("Введите положительное число!"); return; }
+
+  // Снимаем звезды, но не уходим в минус (Math.max с 0)
+  data.profile.stars = Math.max(0, (data.profile.stars || 0) - amount);
+  data.profile.totalStarsEarned = Math.max(0, (data.profile.totalStarsEarned || 0) - amount);
+  data.profile.dailyEarned = Math.max(0, (data.profile.dailyEarned || 0) - amount);
+
+  saveState(data.db);
+}
+
 // ================= БЛОКИРОВКА РАЗДЕЛОВ И ТЕМ =================
 function renderBlockUsers() {
   const select = document.getElementById('block-user-select');
@@ -221,7 +259,6 @@ function renderBlockUsers() {
     select.appendChild(opt);
   }
 
-  // АВТОМАТИЧЕСКИ ВЫБИРАЕМ АКТИВНОГО ИГРОКА
   if (db.lastActive && db.profiles[db.lastActive]) {
     select.value = db.lastActive;
     loadBlockUser();
@@ -238,9 +275,7 @@ function renderCategoryCheckboxes() {
          const script = document.createElement('script');
          script.id = 'data-js-loader';
          script.src = 'js/data.js';
-         script.onload = () => {
-             renderCategoryCheckboxes();
-         };
+         script.onload = () => { renderCategoryCheckboxes(); };
          document.head.appendChild(script);
      }
      return;
@@ -259,7 +294,6 @@ function renderCategoryCheckboxes() {
     container.appendChild(label);
   });
 
-  // КОГДА ЧЕКБОКСЫ СОЗДАНЫ, СРАЗУ СТАВИМ ГАЛОЧКИ
   loadBlockUser(); 
 }
 
@@ -267,20 +301,17 @@ function loadBlockUser() {
   const name = document.getElementById('block-user-select').value;
   const db = JSON.parse(localStorage.getItem('eng_db'));
   
-  // Сбрасываем главные разделы
   const sections = ['tasks', 'trainer', 'quiz', 'neptune'];
   sections.forEach(sec => {
       const el = document.getElementById(`block-${sec}`);
       if (el) el.checked = false;
   });
   
-  // Сбрасываем темы
   const checkboxes = document.querySelectorAll('.cat-block-checkbox');
   checkboxes.forEach(cb => cb.checked = false);
   
   if (!name || !db.profiles || !db.profiles[name]) return;
   
-  // Ставим галочки для разделов
   const blockedSections = db.profiles[name].blockedSections || [];
   sections.forEach(sec => {
     if (blockedSections.includes(sec)) {
@@ -289,7 +320,6 @@ function loadBlockUser() {
     }
   });
 
-  // Ставим галочки для тем
   const blockedCats = db.profiles[name].blockedCategories || [];
   checkboxes.forEach(cb => {
     if (blockedCats.includes(cb.value)) cb.checked = true;
@@ -302,7 +332,6 @@ function saveAllBlocks() {
   
   let db = JSON.parse(localStorage.getItem('eng_db'));
   
-  // Сохраняем разделы
   const sections = ['tasks', 'trainer', 'quiz', 'neptune'];
   let newBlockedSections = [];
   sections.forEach(sec => {
@@ -310,7 +339,6 @@ function saveAllBlocks() {
     if (el && el.checked) newBlockedSections.push(sec);
   });
   
-  // Сохраняем категории
   const checkboxes = document.querySelectorAll('.cat-block-checkbox');
   let newBlockedCats = [];
   checkboxes.forEach(cb => {
@@ -384,29 +412,6 @@ function getState() {
 function saveState(db) {
   localStorage.setItem('eng_db', JSON.stringify(db));
   alert("Готово! Можешь возвращаться в игру.");
-}
-
-function addCheatStars() {
-  const data = getState();
-  if (!data) return;
-  const amount = parseInt(document.getElementById('stars-amount').value);
-  
-  // Начисляем в общий банк
-  data.profile.stars = (data.profile.stars || 0) + amount;
-  data.profile.totalStarsEarned = (data.profile.totalStarsEarned || 0) + amount;
-  
-  // Начисляем в дневной лимит (для Нептуна), не превышая 250
-  const currentDaily = data.profile.dailyEarned || 0;
-  data.profile.dailyEarned = Math.min(250, currentDaily + amount);
-  data.profile.dailyEarnedDate = new Date().toDateString();
-
-  // ВАЖНО: Чтобы не сработала проверка на "Дневной лимит достигнут"
-  // Если мы начислили 250, сбрасываем флаг показа баннера
-  if (data.profile.dailyEarned >= 250) {
-      data.profile.capBannerShownDate = null; 
-  }
-
-  saveState(data.db);
 }
 
 function resetRanks() {
