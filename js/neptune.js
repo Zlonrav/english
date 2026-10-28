@@ -95,7 +95,7 @@ const neptunePlanets = [
   { name: "Скопление Девы", rod: "Скопления Девы", icon: "💫", target: 80, reward: 80, distKm: 16100000000000000000 },
   { name: "Сверхскопление Центавра", rod: "Сверхскопления Центавра", icon: "🌀", target: 85, reward: 90, distKm: 18900000000000000000 },
   { name: "Сверхскопление Ланиакея", rod: "Сверхскопления Ланиакея", icon: "💦", target: 100, reward: 100, distKm: 23600000000000000000 },
-  { name: "Великий Аттрактор", rod: "Великого Аттрактора", icon: "🌑", target: 25, reward: 150, distKm: 23600000000000000000 }
+  { name: "Великий Аттрактор", rod: "Великого Аттрактора", icon: "🌑", target: 125, reward: 150, distKm: 23600000000000000000 }
 ];
 
 // Функция форматирования дистанции
@@ -290,35 +290,44 @@ function updateNeptuneHUD() {
   const currentP = neptunePlanets[nPlanetIdx];
   const nextP = neptunePlanets[nPlanetIdx + 1];
   
-  // ИСПОЛЬЗУЕМ currentP.target ДЛЯ ПРОГРЕССА
   let progressPercent = currentP.target > 0 ? (nProgress / currentP.target) : 0;
   if (progressPercent > 1) progressPercent = 1;
 
   let currentTop = 50 + (progressPercent * 100);
   let currentScale = 2.5 - (progressPercent * 2.0);
   let currentOpacity = Math.max(0, 1 - (progressPercent * 1.5)); 
-  
-  // ЛОГИКА ВЕЛИКОГО АТТРАКТОРА
+  let currentLeft = 70; 
+
+  let nextTop = -50 + (progressPercent * 100);
+  let nextScale = 0.5 + (progressPercent * 2.0);
+  let nextOpacity = Math.min(1, progressPercent * 1.5); 
+  let nextLeft = 70;
+
+  // ================= ЛОГИКА ВЕЛИКОГО АТТРАКТОРА =================
   if (nPlanetIdx === neptunePlanets.length - 1) {
     currentTop = 50;
     currentOpacity = 1;
-    // Рост от 250% до 500% (так как target теперь 25 шагов)
-    currentScale = 2.5 + (progressPercent * 2.5); 
+
+    if (progressPercent <= 0.8) {
+      // 0 - 100 шагов: Аттрактор висит справа
+      currentScale = 2.5;
+      currentLeft = 70;
+    } else if (progressPercent <= 0.952) {
+      // 101 - 119 шагов: Аттрактор едет в центр
+      let p = (progressPercent - 0.8) / 0.152;
+      currentLeft = 70 - (p * 20); // С 70% на 50%
+      currentScale = 2.5;
+    } else {
+      // 120 - 125 шагов: Аттрактор раздувается
+      let p = (progressPercent - 0.952) / 0.048;
+      currentLeft = 50;
+      currentScale = 2.5 + (p * 2.5); // С 250% до 500%
+    }
   }
-
-  const nextTop = -50 + (progressPercent * 100);
-  const nextScale = 0.5 + (progressPercent * 2.0);
-  const nextOpacity = Math.min(1, progressPercent * 1.5); 
-
-  let currentLeft = 70; 
-  let nextLeft = 70;
-
-  if (nPlanetIdx === neptunePlanets.length - 1) {
-    currentLeft = 50; // Аттрактор всегда по центру
-  }
+  // ===============================================================
 
   const hud = document.getElementById('n-hud-text');
-  if (hud) hud.innerText = `Цель: ${nextP ? nextP.name : currentP.name} (${nProgress}/${currentP.target})`;
+  if (hud) hud.innerText = `Цель: ${currentP.name} (${nProgress}/${currentP.target})`;
 
   const hudDist = document.getElementById('n-hud-dist');
   if (hudDist) {
@@ -370,12 +379,13 @@ function updateNeptuneHUD() {
     }
   }
 
-  // УМЕНЬШЕНИЕ РАКЕТЫ ВНУТРИ АТТРАКТОРА
+  // Ракета уменьшается только на последних 6 шагах (120-125)
   const rocketEl = document.getElementById('n-rocket');
   if (rocketEl) {
-    if (nPlanetIdx === neptunePlanets.length - 1 && progressPercent > 0) {
-      rocketEl.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(${Math.max(0, 1 - progressPercent)})`;
-      rocketEl.style.opacity = Math.max(0, 1 - progressPercent);
+    if (nPlanetIdx === neptunePlanets.length - 1 && progressPercent > 0.952) {
+      let p = (progressPercent - 0.952) / 0.048;
+      rocketEl.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(${Math.max(0, 1 - p)})`;
+      rocketEl.style.opacity = Math.max(0, 1 - p);
     } else {
       rocketEl.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(1)`;
       rocketEl.style.opacity = 1;
