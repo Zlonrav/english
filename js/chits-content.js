@@ -482,3 +482,17 @@ function renderStarsUsers() {
     select.value = db.lastActive;
   }
 }
+function loadNeptuneTestMode() {
+  const data = getState();
+  const cb = document.getElementById('neptune-test-mode');
+  if (cb && data && data.profile) {
+    cb.checked = data.profile.neptuneTestMode || false;
+  }
+}
+
+function saveNeptuneTestMode() {
+  const data = getState();
+  if (!data) return;
+  data.profile.neptuneTestMode = document.getElementById('neptune-test-mode').checked;
+  saveState(data.db);
+}
