@@ -48,6 +48,39 @@ const chitsHTML = `
     <button onclick="location.href='load.html'" class="btn-grey">Загрузить прогресс</button>
   </div>
 
+  <!-- БЛОКИРОВКА РАЗДЕЛОВ И ТЕМ -->
+  <div class="card" style="border-color: #ef4444;">
+    <h3 style="color: #f87171;">🔒 Блокировка разделов</h3>
+    <p class="desc">Выберите игрока и отметьте, что нужно заблокировать (галочка = закрыто).</p>
+    
+    <select id="block-user-select" onchange="loadBlockUser()" style="margin-bottom: 10px;">
+      <option value="">-- Выберите игрока --</option>
+    </select>
+    
+    <h4 style="margin: 10px 0 5px 0; font-size: 14px; color: #ddd;">Главные разделы:</h4>
+    <div id="block-sections-container" style="display: flex; flex-direction: column; gap: 8px; background: #333; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+      <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+        <input type="checkbox" id="block-tasks" value="tasks" style="width: auto; margin: 0;"> 📚 Задания
+      </label>
+      <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+        <input type="checkbox" id="block-trainer" value="trainer" style="width: auto; margin: 0;"> 🏠 Тренажер
+      </label>
+      <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+        <input type="checkbox" id="block-quiz" value="quiz" style="width: auto; margin: 0;"> 🏆 Проверка знаний
+      </label>
+      <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+        <input type="checkbox" id="block-neptune" value="neptune" style="width: auto; margin: 0;"> 🚀 Нептун
+      </label>
+    </div>
+
+    <h4 style="margin: 10px 0 5px 0; font-size: 14px; color: #ddd;">Темы в Заданиях:</h4>
+    <div id="category-checkboxes" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: #333; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+      <!-- Чекбоксы категорий добавятся через JS -->
+    </div>
+    
+    <button onclick="saveAllBlocks()" class="btn-blue">Сохранить блокировки</button>
+  </div>
+
   <div class="card">
     <h3>🏆 Сбросить звания</h3>
     <p class="desc">Обнуляет прогресс званий (счетчик "всего заработано"), но оставляет золотые карточки и стрики.</p>
@@ -74,9 +107,11 @@ function initChitsUI() {
   renderCheatProfiles();
   renderNeptuneOptions();
   renderEditProfiles();
+  renderBlockUsers();
+  renderCategoryCheckboxes();
 }
 
-// ================= ЛОГИКА =================
+// ================= УПРАВЛЕНИЕ ПРОФИЛЯМИ =================
 function renderCheatProfiles() {
   const listEl = document.getElementById('cheat-profiles-list');
   const db = JSON.parse(localStorage.getItem('eng_db'));
@@ -103,9 +138,11 @@ function deleteCheatProfile(name) {
     localStorage.setItem('eng_db', JSON.stringify(db));
     renderCheatProfiles();
     renderEditProfiles();
+    renderBlockUsers();
   }
 }
 
+// ================= РЕДАКТИРОВАНИЕ ПРОФИЛЯ =================
 function renderEditProfiles() {
   const select = document.getElementById('edit-profile-select');
   const db = JSON.parse(localStorage.getItem('eng_db'));
@@ -165,8 +202,104 @@ function saveProfileChanges() {
   alert(`✅ Данные обновлены!\nНовое имя: ${newName}\nНовый ПИН: ${newPin}`);
   renderCheatProfiles();
   renderEditProfiles();
+  renderBlockUsers();
 }
 
+// ================= БЛОКИРОВКА РАЗДЕЛОВ И ТЕМ =================
+const cheatCategories = [
+  "1. Буквы", "2. Цифры", "3. Числа", "4. Порядковые", "5. Люди", "6. Животные", 
+  "7. Части тела", "8. Дом и мебель", "9. Еда и посуда", "10. Фрукты и овощи", 
+  "11. Одежда", "12. Цвета", "13. Погода", "14. Природа", "15. Глаголы", 
+  "16. Прилагательные", "17. Местоимения", "18. Предлоги", "19. Время", 
+  "20. Транспорт", "21. Профессии", "22. Школа", "23. Спорт", "24. Сказки", 
+  "25. Эмоции", "26. Сложные слова"
+];
+
+function renderBlockUsers() {
+  const select = document.getElementById('block-user-select');
+  const db = JSON.parse(localStorage.getItem('eng_db'));
+  if (!select) return;
+  
+  select.innerHTML = '<option value="">-- Выберите игрока --</option>';
+  if (!db || !db.profiles) return;
+
+  for (const name in db.profiles) {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.innerText = name;
+    select.appendChild(opt);
+  }
+}
+
+function renderCategoryCheckboxes() {
+  const container = document.getElementById('category-checkboxes');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  cheatCategories.forEach(cat => {
+    const label = document.createElement('label');
+    label.style.cssText = 'display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px;';
+    label.innerHTML = `
+      <input type="checkbox" value="${cat}" class="cat-block-checkbox" style="width: auto; margin: 0;">
+      ${cat}
+    `;
+    container.appendChild(label);
+  });
+}
+
+function loadBlockUser() {
+  const name = document.getElementById('block-user-select').value;
+  const db = JSON.parse(localStorage.getItem('eng_db'));
+  
+  // Сбрасываем всё
+  const sections = ['tasks', 'trainer', 'quiz', 'neptune'];
+  sections.forEach(sec => document.getElementById(`block-${sec}`).checked = false);
+  const checkboxes = document.querySelectorAll('.cat-block-checkbox');
+  checkboxes.forEach(cb => cb.checked = false);
+  
+  if (!name || !db.profiles[name]) return;
+  
+  // Загружаем разделы
+  const blockedSections = db.profiles[name].blockedSections || [];
+  sections.forEach(sec => {
+    if (blockedSections.includes(sec)) document.getElementById(`block-${sec}`).checked = true;
+  });
+
+  // Загружаем категории
+  const blockedCats = db.profiles[name].blockedCategories || [];
+  checkboxes.forEach(cb => {
+    if (blockedCats.includes(cb.value)) cb.checked = true;
+  });
+}
+
+function saveAllBlocks() {
+  const name = document.getElementById('block-user-select').value;
+  if (!name) { alert("Выберите игрока!"); return; }
+  
+  let db = JSON.parse(localStorage.getItem('eng_db'));
+  
+  // Сохраняем разделы
+  const sections = ['tasks', 'trainer', 'quiz', 'neptune'];
+  let newBlockedSections = [];
+  sections.forEach(sec => {
+    if (document.getElementById(`block-${sec}`).checked) newBlockedSections.push(sec);
+  });
+  
+  // Сохраняем категории
+  const checkboxes = document.querySelectorAll('.cat-block-checkbox');
+  let newBlockedCats = [];
+  checkboxes.forEach(cb => {
+    if (cb.checked) newBlockedCats.push(cb.value);
+  });
+  
+  db.profiles[name].blockedSections = newBlockedSections;
+  db.profiles[name].blockedCategories = newBlockedCats;
+  
+  localStorage.setItem('eng_db', JSON.stringify(db));
+  alert(`✅ Настройки блокировки для "${name}" сохранены!`);
+}
+
+// ================= ЧИТЫ ДЛЯ НЕПТУНА =================
 const cheatNeptunePlanets = [
   { name: "Земля", target: 10 }, { name: "Луна", target: 12 }, { name: "Марс", target: 15 },
   { name: "Юпитер", target: 18 }, { name: "Сатурн", target: 22 }, { name: "Уран", target: 25 },
@@ -176,8 +309,8 @@ const cheatNeptunePlanets = [
   { name: "Орион", target: 52 }, { name: "Большая Медведица", target: 55 }, { name: "Облако Смита", target: 58 },
   { name: "Межзвездное Облако", target: 60 }, { name: "Магеллановы Облака", target: 62 }, { name: "Галактика Андромеды", target: 65 },
   { name: "Галактика Треугольника", target: 68 }, { name: "Галактика Боде", target: 70 }, { name: "Галактика Сигара", target: 75 },
-  { name: "Скопление Девы", target: 80 }, { name: "Сверхскопление Центавра", target: 85 }, { name: "Сверхскопление Ланиакея", target: 90 },
-  { name: "Великий Аттрактор", target: 125 }
+  { name: "Скопление Девы", target: 80 }, { name: "Сверхскопление Центавра", target: 85 }, { name: "Сверхскопление Ланиакея", target: 100 },
+  { name: "Великий Аттрактор", target: 25 }
 ];
 
 function renderNeptuneOptions() {
@@ -216,6 +349,7 @@ function resetNeptuneCheat() {
   saveState(data.db);
 }
 
+// ================= ОСТАЛЬНЫЕ ЧИТЫ =================
 function getState() {
   const db = JSON.parse(localStorage.getItem('eng_db'));
   if (!db || !db.lastActive) { alert("Сначала зайди в профиль в игре!"); return null; }
