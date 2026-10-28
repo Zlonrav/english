@@ -3,16 +3,28 @@ function renderCategoryList() {
   const categories = [...new Set(cardsData.map(c => c.cat))];
   const container = document.getElementById('category-list-container');
   container.innerHTML = '';
+  
+  // Получаем список заблокированных тем для текущего игрока
+  const blockedCats = state.blockedCategories || [];
 
   categories.forEach(cat => {
     const total = cardsData.filter(c => c.cat === cat).length;
     const learned = cardsData.filter(c => c.cat === cat && (state.listenCounts[c.word] || 0) >= 25).length;
     const done = learned === total;
+    const isBlocked = blockedCats.includes(cat);
 
     const btn = document.createElement('button');
-    btn.className = `category-btn ${done ? 'done' : ''}`;
-    btn.innerHTML = `<span>${cat}</span><span class="cat-progress">${learned} / ${total}</span>`;
-    btn.onclick = () => showCategory(cat);
+    // Добавляем класс .blocked-section, если тема заблокирована
+    btn.className = `category-btn ${done ? 'done' : ''} ${isBlocked ? 'blocked-section' : ''}`;
+    
+    // Если заблокировано, добавляем иконку замка
+    btn.innerHTML = `<span>${isBlocked ? '🔒 ' : ''}${cat}</span><span class="cat-progress">${learned} / ${total}</span>`;
+    
+    // Вешаем клик только если тема не заблокирована
+    if (!isBlocked) {
+      btn.onclick = () => showCategory(cat);
+    }
+    
     container.appendChild(btn);
   });
 }
