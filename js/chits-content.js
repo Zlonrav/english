@@ -75,7 +75,7 @@ const chitsHTML = `
 
     <h4 style="margin: 10px 0 5px 0; font-size: 14px; color: #ddd;">Темы в Заданиях:</h4>
     <div id="category-checkboxes" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: #333; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
-      <!-- Чекбоксы категорий добавятся через JS -->
+      <span style="color: #aaa; font-size: 14px;">Загрузка тем...</span>
     </div>
     
     <button onclick="saveAllBlocks()" class="btn-blue">Сохранить блокировки</button>
@@ -108,7 +108,7 @@ function initChitsUI() {
   renderNeptuneOptions();
   renderEditProfiles();
   renderBlockUsers();
-  renderCategoryCheckboxes();
+  renderCategoryCheckboxes(); // Вызываем загрузку тем
 }
 
 // ================= УПРАВЛЕНИЕ ПРОФИЛЯМИ =================
@@ -206,15 +206,6 @@ function saveProfileChanges() {
 }
 
 // ================= БЛОКИРОВКА РАЗДЕЛОВ И ТЕМ =================
-const cheatCategories = [
-  "1. Буквы", "2. Цифры", "3. Числа", "4. Порядковые", "5. Люди", "6. Животные", 
-  "7. Части тела", "8. Дом и мебель", "9. Еда и посуда", "10. Фрукты и овощи", 
-  "11. Одежда", "12. Цвета", "13. Погода", "14. Природа", "15. Глаголы", 
-  "16. Прилагательные", "17. Местоимения", "18. Предлоги", "19. Время", 
-  "20. Транспорт", "21. Профессии", "22. Школа", "23. Спорт", "24. Сказки", 
-  "25. Эмоции", "26. Сложные слова"
-];
-
 function renderBlockUsers() {
   const select = document.getElementById('block-user-select');
   const db = JSON.parse(localStorage.getItem('eng_db'));
@@ -235,8 +226,26 @@ function renderCategoryCheckboxes() {
   const container = document.getElementById('category-checkboxes');
   if (!container) return;
   
+  // Если база данных еще не загружена, загружаем её
+  if (typeof cardsData === 'undefined') {
+     container.innerHTML = '<span style="color: #aaa;">Загрузка тем...</span>';
+     if (!document.getElementById('data-js-loader')) {
+         const script = document.createElement('script');
+         script.id = 'data-js-loader';
+         script.src = 'js/data.js';
+         script.onload = () => {
+             renderCategoryCheckboxes(); // Перерисовываем, когда база загрузится
+         };
+         document.head.appendChild(script);
+     }
+     return;
+  }
+  
+  // Берем реальные названия тем прямо из базы данных!
+  const categories = [...new Set(cardsData.map(c => c.cat))];
+  
   container.innerHTML = '';
-  cheatCategories.forEach(cat => {
+  categories.forEach(cat => {
     const label = document.createElement('label');
     label.style.cssText = 'display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px;';
     label.innerHTML = `
@@ -253,7 +262,11 @@ function loadBlockUser() {
   
   // Сбрасываем всё
   const sections = ['tasks', 'trainer', 'quiz', 'neptune'];
-  sections.forEach(sec => document.getElementById(`block-${sec}`).checked = false);
+  sections.forEach(sec => {
+      const el = document.getElementById(`block-${sec}`);
+      if (el) el.checked = false;
+  });
+  
   const checkboxes = document.querySelectorAll('.cat-block-checkbox');
   checkboxes.forEach(cb => cb.checked = false);
   
@@ -262,7 +275,10 @@ function loadBlockUser() {
   // Загружаем разделы
   const blockedSections = db.profiles[name].blockedSections || [];
   sections.forEach(sec => {
-    if (blockedSections.includes(sec)) document.getElementById(`block-${sec}`).checked = true;
+    if (blockedSections.includes(sec)) {
+        const el = document.getElementById(`block-${sec}`);
+        if (el) el.checked = true;
+    }
   });
 
   // Загружаем категории
@@ -282,7 +298,8 @@ function saveAllBlocks() {
   const sections = ['tasks', 'trainer', 'quiz', 'neptune'];
   let newBlockedSections = [];
   sections.forEach(sec => {
-    if (document.getElementById(`block-${sec}`).checked) newBlockedSections.push(sec);
+    const el = document.getElementById(`block-${sec}`);
+    if (el && el.checked) newBlockedSections.push(sec);
   });
   
   // Сохраняем категории
