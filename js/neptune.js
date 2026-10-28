@@ -315,7 +315,7 @@ function updateNeptuneHUD() {
   let progressPercent = currentP.target > 0 ? (nProgress / currentP.target) : 0;
   if (progressPercent > 1) progressPercent = 1;
 
-  // Базовые настройки (как у обычных планет)
+  // СТАНДАРТНАЯ ЛОГИКА ДЛЯ ВСЕХ ПЛАНЕТ (включая путь от Ланиакеи к Аттрактору)
   let currentTop = 50 + (progressPercent * 100);
   let currentScale = 2.5 - (progressPercent * 2.0);
   let currentOpacity = Math.max(0, 1 - (progressPercent * 1.5)); 
@@ -326,23 +326,22 @@ function updateNeptuneHUD() {
   let nextOpacity = Math.min(1, progressPercent * 1.5); 
   let nextLeft = 70;
 
-  // ================= ЛОГИКА ВЕЛИКОГО АТТРАКТОРА =================
+  // ================= СПЕЦИАЛЬНАЯ ЛОГИКА ТОЛЬКО ДЛЯ ВЕЛИКОГО АТТРАКТОРА =================
   if (nPlanetIdx === neptunePlanets.length - 1) {
+    // Мы уже на Аттракторе. nProgress от 100 до 125.
     currentTop = 50; 
     currentOpacity = 1;
 
     if (nProgress <= 119) {
-      // 100 - 119 шагов: Аттрактор едет в центр
+      // 100 - 119 шагов: Аттрактор едет из правого края в центр
       let p = (nProgress - 100) / 19;
       if (p < 0) p = 0;
-      if (p > 1) p = 1;
       currentLeft = 70 - (p * 20); // 70% -> 50%
       currentScale = 2.5; 
     } else {
       // 120 - 125 шагов: Аттрактор раздувается
       let p = (nProgress - 120) / 5;
       if (p < 0) p = 0;
-      if (p > 1) p = 1;
       currentLeft = 50;
       currentScale = 2.5 + (p * 2.5); // 250% -> 500%
     }
@@ -350,7 +349,8 @@ function updateNeptuneHUD() {
   // ===============================================================
 
   const hud = document.getElementById('n-hud-text');
-  if (hud) hud.innerText = `Цель: ${currentP.name} (${nProgress}/${currentP.target})`;
+  // Показываем ЦЕЛЬ (следующую планету, если она есть)
+  if (hud) hud.innerText = `Цель: ${nextP ? nextP.name : currentP.name} (${nProgress}/${currentP.target})`;
 
   const hudDist = document.getElementById('n-hud-dist');
   if (hudDist) {
@@ -402,7 +402,7 @@ function updateNeptuneHUD() {
     }
   }
 
-  // Ракета уменьшается только на 120-125 шагах
+  // Ракета исчезает только на 120-125 шагах
   const rocketEl = document.getElementById('n-rocket');
   if (rocketEl) {
     if (nPlanetIdx === neptunePlanets.length - 1 && nProgress >= 120) {
@@ -516,7 +516,6 @@ function answerNeptune(selectedOpt, btnElement) {
         showToast(`🪐 Вы достигли ${nextP.rod}! Награда: +${currentP.reward} ⭐`, 'top');
         
         nPlanetIdx++;
-        // ЕСЛИ ПЕРЕШЛИ НА АТТРАКТОР, СТАВИМ ПРОГРЕСС 100, А НЕ 0
         if (neptunePlanets[nPlanetIdx].name === "Великий Аттрактор") {
             nProgress = 100;
         } else {
