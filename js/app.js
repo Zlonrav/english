@@ -206,6 +206,20 @@ function markAsLearned(word) {
 
 // ================= УТИЛИТЫ =================
 function updateUI() {
+  // Проверяем блокировки разделов
+  const sections = ['tasks', 'trainer', 'quiz', 'neptune'];
+  sections.forEach(sec => {
+    const btn = document.getElementById(`menu-btn-${sec}`);
+    if (btn) {
+      if (state.blockedSections && state.blockedSections.includes(sec)) {
+        btn.classList.add('blocked-section');
+      } else {
+        btn.classList.remove('blocked-section');
+      }
+    }
+  });
+
+  // Остальной код обновления интерфейса
   document.getElementById('ui-stars').innerText = state.stars || 0;
   document.getElementById('ui-streak').innerText = state.streak || 0;
   updatePet();
