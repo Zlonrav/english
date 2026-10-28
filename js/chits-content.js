@@ -392,7 +392,7 @@ const cheatNeptunePlanets = [
   { name: "Межзвездное Облако", target: 60 }, { name: "Магеллановы Облака", target: 62 }, { name: "Галактика Андромеды", target: 65 },
   { name: "Галактика Треугольника", target: 68 }, { name: "Галактика Боде", target: 70 }, { name: "Галактика Сигара", target: 75 },
   { name: "Скопление Девы", target: 80 }, { name: "Сверхскопление Центавра", target: 85 }, { name: "Сверхскопление Ланиакея", target: 100 },
-  { name: "Великий Аттрактор", target: 125 }
+  { name: "Великий Аттрактор", target: 25 }
 ];
 
 function renderNeptuneOptions() {
