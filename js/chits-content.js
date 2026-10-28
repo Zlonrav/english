@@ -390,8 +390,22 @@ function addCheatStars() {
   const data = getState();
   if (!data) return;
   const amount = parseInt(document.getElementById('stars-amount').value);
+  
+  // Начисляем в общий банк
   data.profile.stars = (data.profile.stars || 0) + amount;
   data.profile.totalStarsEarned = (data.profile.totalStarsEarned || 0) + amount;
+  
+  // Начисляем в дневной лимит (для Нептуна), не превышая 250
+  const currentDaily = data.profile.dailyEarned || 0;
+  data.profile.dailyEarned = Math.min(250, currentDaily + amount);
+  data.profile.dailyEarnedDate = new Date().toDateString();
+
+  // ВАЖНО: Чтобы не сработала проверка на "Дневной лимит достигнут"
+  // Если мы начислили 250, сбрасываем флаг показа баннера
+  if (data.profile.dailyEarned >= 250) {
+      data.profile.capBannerShownDate = null; 
+  }
+
   saveState(data.db);
 }
 
