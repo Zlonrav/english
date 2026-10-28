@@ -682,3 +682,9 @@ html, body {
   right: 20px;
   font-size: 24px;
 }
+.category-btn.blocked-section {
+  pointer-events: none !important; /* Запрещает любые клики и наведения */
+  transform: none !important; /* Убирает эффект нажатия (проседания) */
+  cursor: default; /* Убирает курсор-руку (на ПК) */
+  opacity: 0.85; /* Слегка бледнее */
+}
