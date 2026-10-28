@@ -101,9 +101,9 @@ const neptunePlanets = [
   { name: "Галактика Боде", rod: "Галактики Боде", icon: "🌌", target: 70, reward: 60, distKm: 1230000000000000000 },
   { name: "Галактика Сигара", rod: "Галактики Сигара", icon: "🚬", target: 75, reward: 70, distKm: 5100000000000000000 },
   { name: "Скопление Девы", rod: "Скопления Девы", icon: "💫", target: 80, reward: 80, distKm: 16100000000000000000 },
-  { name: "Сверхскопление Центавра", rod: "Сверхскопления Центавра", icon: "🌀", target: 85, reward: 90, distKm: 18900000000000000000 },
-  { name: "Сверхскопление Ланиакея", rod: "Сверхскопления Ланиакея", icon: "💦", target: 100, reward: 100, distKm: 23600000000000000000 },
-  { name: "Великий Аттрактор", rod: "Великого Аттрактора", icon: "🌑", target: 125, reward: 150, distKm: 23600000000000000000 }
+  { name: "Сверхскопление Центавра", rod: "Сверхскопления Центавра", icon: "🌀", target: 100, reward: 90, distKm: 18900000000000000000 },
+  { name: "Сверхскопление Ланиакея", rod: "Сверхскопления Ланиакея", icon: "💦", target: 125, reward: 100, distKm: 23600000000000000000 },
+  { name: "Великий Аттрактор", rod: "Великого Аттрактора", icon: "🌑", target: 0, reward: 150, distKm: 23600000000000000000 }
 ];
 
 function formatDistance(km) {
@@ -263,7 +263,8 @@ function openNeptune() {
   nPlanetIdx = state.neptunePlanetIdx || 0;
   nProgress = state.neptuneProgress || 0;
   
-  if (nPlanetIdx >= neptunePlanets.length) {
+  // Если сохранился прогресс на Аттракторе (индекс 27), сбрасываем на Землю
+  if (nPlanetIdx >= neptunePlanets.length - 1) {
     nPlanetIdx = 0;
     nProgress = 0;
     state.neptunePlanetIdx = 0;
@@ -313,46 +314,66 @@ function updateNeptuneHUD() {
   const currentP = neptunePlanets[nPlanetIdx];
   const nextP = neptunePlanets[nPlanetIdx + 1];
   
-  // Определяем цель для текущего этапа
   let displayTarget = currentP.target;
   let totalDist = currentP.distKm;
-
-  // Если мы на Ланиакее или Аттракторе, цель всегда 125, и дистанция берется от Аттрактора
-  if (currentP.name === "Сверхскопление Ланиакея" || currentP.name === "Великий Аттрактор") {
-      displayTarget = 125;
-      totalDist = neptunePlanets[neptunePlanets.length - 1].distKm;
-  }
 
   let progressPercent = displayTarget > 0 ? (nProgress / displayTarget) : 0;
   if (progressPercent > 1) progressPercent = 1;
 
-  // СТАНДАРТНАЯ ЛОГИКА АНИМАЦИИ
-  let currentTop = 50 + (progressPercent * 100);
-  let currentScale = 2.5 - (progressPercent * 2.0);
-  let currentOpacity = Math.max(0, 1 - (progressPercent * 1.5)); 
-  let currentLeft = 70; 
+  let currentTop = 50;
+  let currentScale = 2.5;
+  let currentOpacity = 1;
+  let currentLeft = 70;
 
-  let nextTop = -50 + (progressPercent * 100);
-  let nextScale = 0.5 + (progressPercent * 2.0);
-  let nextOpacity = Math.min(1, progressPercent * 1.5); 
+  let nextTop = -50;
+  let nextScale = 0.5;
+  let nextOpacity = 0;
   let nextLeft = 70;
 
-  // СПЕЦИАЛЬНАЯ ЛОГИКА ДЛЯ АТТРАКТОРА
-  if (nPlanetIdx === neptunePlanets.length - 1) {
-    currentTop = 50; 
-    currentOpacity = 1;
+  // ЛОГИКА ДЛЯ ЛАНИАКЕИ (nPlanetIdx === neptunePlanets.length - 2)
+  if (nPlanetIdx === neptunePlanets.length - 2) {
+    // Ланиакея уходит вниз за первые 100 шагов (0.8 от 125)
+    let pCurrent = Math.min(progressPercent / 0.8, 1);
+    currentTop = 50 + (pCurrent * 100);
+    currentScale = 2.5 - (pCurrent * 2.0);
+    currentOpacity = Math.max(0, 1 - (pCurrent * 1.5));
+    currentLeft = 70;
 
-    if (nProgress <= 119) {
-      let p = (nProgress - 100) / 19;
-      if (p < 0) p = 0;
-      currentLeft = 70 - (p * 20); 
-      currentScale = 2.5; 
-    } else {
-      let p = (nProgress - 120) / 5;
-      if (p < 0) p = 0;
-      currentLeft = 50;
-      currentScale = 2.5 + (p * 2.5); 
+    // Аттрактор спускается сверху за все 125 шагов
+    nextTop = -50 + (progressPercent * 100);
+    nextScale = 0.5 + (progressPercent * 2.0);
+    nextOpacity = Math.min(1, progressPercent * 1.5);
+    nextLeft = 70;
+
+    // С 100 шагов (0.8) до 120 шагов (0.96) Аттрактор едет в центр
+    if (progressPercent > 0.8) {
+      let pMove = Math.min((progressPercent - 0.8) / 0.16, 1);
+      nextLeft = 70 - (pMove * 20);
     }
+    // С 120 шагов (0.96) до 125 шагов (1.0) Аттрактор раздувается
+    if (progressPercent > 0.96) {
+      let pGrow = (progressPercent - 0.96) / 0.04;
+      nextLeft = 50;
+      nextScale = 2.5 + (pGrow * 2.5);
+    }
+  } 
+  // Для всех остальных планет (включая Аттрактор, на всякий случай)
+  else if (nPlanetIdx === neptunePlanets.length - 1) {
+    currentTop = 50;
+    currentScale = 2.5;
+    currentOpacity = 1;
+    currentLeft = 50;
+  }
+  else {
+    currentTop = 50 + (progressPercent * 100);
+    currentScale = 2.5 - (progressPercent * 2.0);
+    currentOpacity = Math.max(0, 1 - (progressPercent * 1.5));
+    currentLeft = 70;
+
+    nextTop = -50 + (progressPercent * 100);
+    nextScale = 0.5 + (progressPercent * 2.0);
+    nextOpacity = Math.min(1, progressPercent * 1.5);
+    nextLeft = 70;
   }
 
   const hud = document.getElementById('n-hud-text');
@@ -381,7 +402,9 @@ function updateNeptuneHUD() {
     curEl.style.transform = `translate(-50%, -50%) scale(${currentScale})`;
     curEl.style.opacity = currentOpacity;
     
-    if (nPlanetIdx === neptunePlanets.length - 1) {
+    if (nPlanetIdx === neptunePlanets.length - 2) {
+      curEl.style.textShadow = 'none';
+    } else if (nPlanetIdx === neptunePlanets.length - 1) {
       curEl.style.textShadow = '0 0 40px #a855f7, 0 0 80px #a855f7';
     } else {
       curEl.style.textShadow = 'none';
@@ -410,9 +433,8 @@ function updateNeptuneHUD() {
 
   const rocketEl = document.getElementById('n-rocket');
   if (rocketEl) {
-    if (nPlanetIdx === neptunePlanets.length - 1 && nProgress >= 120) {
-      let p = (nProgress - 120) / 5;
-      if (p > 1) p = 1;
+    if (nPlanetIdx === neptunePlanets.length - 2 && progressPercent > 0.96) {
+      let p = (progressPercent - 0.96) / 0.04;
       rocketEl.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(${Math.max(0, 1 - p)})`;
       rocketEl.style.opacity = Math.max(0, 1 - p);
     } else {
@@ -512,24 +534,26 @@ function answerNeptune(selectedOpt, btnElement) {
 
     setTimeout(() => {
       if (nProgress >= targetSteps) {
+        // Если следующая планета - Аттрактор, то это финал
+        if (nextP && nextP.name === "Великий Аттрактор") {
+          triggerNeptuneEndgame();
+          return;
+        }
         if (!nextP) {
           triggerNeptuneEndgame();
           return;
         }
 
+        // Переход на следующую планету
         addStars(currentP.reward, "Нептун");
         showToast(`🪐 Вы достигли ${nextP.rod}! Награда: +${currentP.reward} ⭐`, 'top');
         
         nPlanetIdx++;
-        if (neptunePlanets[nPlanetIdx].name === "Великий Аттрактор") {
-            nProgress = 100;
-        } else {
-            nProgress = 0;
-        }
+        nProgress = 0;
         nTargetStarSpeed = 0.33; 
         
         state.neptunePlanetIdx = nPlanetIdx;
-        state.neptuneProgress = nProgress;
+        state.neptuneProgress = 0;
         saveState();
         
         const curEl = document.getElementById('n-planet-current');
@@ -611,19 +635,17 @@ function handleTestStep(amount) {
     
     setTimeout(() => {
       if (nProgress >= targetSteps) {
-        if (!nextP) {
+        if (nextP && nextP.name === "Великий Аттрактор") {
+          triggerNeptuneEndgame();
+        } else if (!nextP) {
           triggerNeptuneEndgame();
         } else {
           nPlanetIdx++;
-          if (neptunePlanets[nPlanetIdx].name === "Великий Аттрактор") {
-              nProgress = 100;
-          } else {
-              nProgress = 0;
-          }
+          nProgress = 0;
           nTargetStarSpeed = 0.33; 
           
           state.neptunePlanetIdx = nPlanetIdx;
-          state.neptuneProgress = nProgress;
+          state.neptuneProgress = 0;
           saveState();
           
           const curEl = document.getElementById('n-planet-current');
@@ -699,18 +721,15 @@ function triggerNeptuneEndgame() {
     rocket.style.transform = `translate(-50%, -50%) rotate(-45deg) scale(0)`;
   }
 
-  // ПАУЗА 3 СЕКУНДЫ И ПЛАВНОЕ ЗАТЕМНЕНИЕ
   if (finalScreen) {
     finalScreen.style.display = 'flex';
     finalScreen.style.transition = 'none';
     finalScreen.style.opacity = '0';
 
-    // Через 3 секунды начинаем плавно затемнять
     setTimeout(() => {
       finalScreen.style.transition = 'opacity 1s ease-in-out';
       finalScreen.style.opacity = '1';
 
-      // Через 1 секунду (когда затемнение закончилось) начинаем отсчет
       setTimeout(() => {
         let countdown = 10;
         if (timerEl) timerEl.innerText = countdown;
@@ -814,7 +833,7 @@ function triggerNeptuneEndgame() {
             }, 1000);
           }
         }, 1000);
-      }, 1000); // Конец задержки на затемнение
-    }, 3000); // Конец паузы 3 секунды
+      }, 1000);
+    }, 3000);
   }
 }
