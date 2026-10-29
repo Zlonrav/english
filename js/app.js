@@ -362,7 +362,8 @@ function renderAuthScreen() {
   
   document.getElementById('pin-pad-container').style.display = 'none';
   document.getElementById('create-profile-container').style.display = 'none';
-  document.getElementById('auth-title').innerText = "Кто играет?";
+    document.getElementById('auth-title').innerHTML = `Кто играет? 
+    <span onclick="location.href='load.html'" style="cursor: pointer; font-size: 18px; transition: transform 0.2s; margin-left: 5px;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="Загрузить профиль">💾</span>`;
 
   document.getElementById('auth-rules-link').style.display = 'block';
 
@@ -439,7 +440,8 @@ function previewNewPet() {
 
 function cancelCreate() {
   isCreating = false;
-  document.getElementById('auth-title').innerText = "Кто играет?";
+    document.getElementById('auth-title').innerHTML = `Кто играет? 
+    <span onclick="location.href='load.html'" style="cursor: pointer; font-size: 18px; transition: transform 0.2s; margin-left: 5px;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="Загрузить профиль">💾</span>`;
   document.getElementById('auth-rules-link').style.display = 'block'; // Показываем ссылку на правила
   document.getElementById('create-profile-container').style.display = 'none';
   
