@@ -20,11 +20,14 @@ neptuneStyle.innerHTML = `
     filter: drop-shadow(0 0 10px #3b82f6); 
   }
   
-  /* Планеты */
+  /* Планеты (теперь это контейнеры для картинок или эмодзи) */
   .n-planet {
     position: absolute; left: 70%; top: 50%;
     transform: translate(-50%, -50%) scale(1);
-    font-size: 120px; z-index: 1;
+    width: 120px; height: 120px; /* Задаем жесткий размер */
+    display: flex; justify-content: center; align-items: center;
+    font-size: 120px; line-height: 1;
+    z-index: 1;
     transition: top 1s ease-out, left 1s ease-out, transform 1s ease-out, opacity 0.5s;
   }
 
@@ -74,15 +77,15 @@ neptuneStyle.innerHTML = `
 `;
 document.head.appendChild(neptuneStyle);
 
-// 2. Данные планет (строго по твоей схеме)
+// 2. Данные планет (с картинками)
 const neptunePlanets = [
-  { name: "Земля", rod: "Земли", icon: "🌍", target: 10, reward: 5, distKm: 384000 },
-  { name: "Луна", rod: "Луны", icon: "🌕", target: 12, reward: 5, distKm: 225000000 },
-  { name: "Марс", rod: "Марса", icon: "🔴", target: 15, reward: 10, distKm: 778000000 },
-  { name: "Юпитер", rod: "Юпитера", icon: "🟠", target: 18, reward: 10, distKm: 1400000000 },
-  { name: "Сатурн", rod: "Сатурна", icon: "🪐", target: 22, reward: 15, distKm: 2800000000 },
-  { name: "Уран", rod: "Урана", icon: "🔵", target: 25, reward: 15, distKm: 4500000000 },
-  { name: "Нептун", rod: "Нептуна", icon: "🌀", target: 28, reward: 20, distKm: 7500000000 },
+  { name: "Земля", rod: "Земли", icon: "img/planets/earth.png", target: 10, reward: 5, distKm: 384000 },
+  { name: "Луна", rod: "Луны", icon: "img/planets/moon.png", target: 12, reward: 5, distKm: 225000000 },
+  { name: "Марс", rod: "Марса", icon: "img/planets/mars.png", target: 15, reward: 10, distKm: 778000000 },
+  { name: "Юпитер", rod: "Юпитера", icon: "img/planets/jupiter.png", target: 18, reward: 10, distKm: 1400000000 },
+  { name: "Сатурн", rod: "Сатурна", icon: "img/planets/saturn.png", target: 22, reward: 15, distKm: 2800000000 },
+  { name: "Уран", rod: "Урана", icon: "img/planets/uranus.png", target: 25, reward: 15, distKm: 4500000000 },
+  { name: "Нептун", rod: "Нептуна", icon: "img/planets/neptune.png", target: 28, reward: 20, distKm: 7500000000 },
   { name: "Пояс Койпера", rod: "Пояса Койпера", icon: "☄️", target: 30, reward: 20, distKm: 15000000000000 },
   { name: "Облако Оорта", rod: "Облака Оорта", icon: "🌌", target: 35, reward: 25, distKm: 40000000000000 },
   { name: "Альфа Центавра", rod: "Альфы Центавра", icon: "✨", target: 38, reward: 25, distKm: 81400000000000 },
@@ -92,16 +95,16 @@ const neptunePlanets = [
   { name: "Бетельгейзе", rod: "Бетельгейзе", icon: "🔴", target: 48, reward: 35, distKm: 10000000000000000 },
   { name: "Кассиопея", rod: "Кассиопеи", icon: "🌟", target: 50, reward: 40, distKm: 12300000000000000 },
   { name: "Орион", rod: "Ориона", icon: "🏹", target: 52, reward: 40, distKm: 15000000000000000 },
-  { name: "Большая Медведица", rod: "Большой Медведицы", icon: "🐻", target: 55, reward: 45, distKm: 20000000000000000 },
+  { name: "Большая Медведица", rod: "Большой Медведицы", icon: "img/planets/ursa-major.png", target: 55, reward: 45, distKm: 20000000000000000 },
   { name: "Облако Смита", rod: "Облака Смита", icon: "🌫️", target: 58, reward: 45, distKm: 25000000000000000 },
   { name: "Межзвездное Облако", rod: "Межзвездного Облака", icon: "☁️", target: 60, reward: 50, distKm: 154000000000000000 },
   { name: "Магеллановы Облака", rod: "Магеллановых Облаков", icon: "🌪️", target: 62, reward: 50, distKm: 236000000000000000 },
-  { name: "Галактика Андромеды", rod: "Галактики Андромеды", icon: "🌌", target: 65, reward: 55, distKm: 284000000000000000 },
+  { name: "Галактика Андромеды", rod: "Галактики Андромеды", icon: "img/planets/andromeda.png", target: 65, reward: 55, distKm: 284000000000000000 },
   { name: "Галактика Треугольника", rod: "Галактики Треугольника", icon: "🔺", target: 68, reward: 55, distKm: 1130000000000000000 },
   { name: "Галактика Боде", rod: "Галактики Боде", icon: "🌌", target: 70, reward: 60, distKm: 1230000000000000000 },
   { name: "Галактика Сигара", rod: "Галактики Сигара", icon: "💥", target: 75, reward: 70, distKm: 5100000000000000000 },
   { name: "Скопление Девы", rod: "Скопления Девы", icon: "💫", target: 80, reward: 80, distKm: 16100000000000000000 },
-  { name: "Сверхскопление Центавра", rod: "Сверхскопления Центавра", icon: "🌑", target: 85, reward: 90, distKm: 18900000000000000000 },
+  { name: "Сверхскопление Центавра", rod: "Сверхскопления Центавра", icon: "img/planets/centaurus.png", target: 85, reward: 90, distKm: 18900000000000000000 },
   { name: "Сверхскопление Ланиакея", rod: "Сверхскопления Ланиакея", icon: "🌠", target: 100, reward: 100, distKm: 23600000000000000000 },
   { name: "Великий Аттрактор", rod: "Великого Аттрактора", icon: "🌀", target: 25, reward: 150, distKm: 23600000000000000000 }
 ];
@@ -343,16 +346,14 @@ function updateNeptuneHUD() {
     currentTop = 50; 
     currentOpacity = 1;
     
-    // Первые 20 шагов (0.8) - едет в центр
     if (progressPercent <= 0.8) {
       let p = progressPercent / 0.8;
-      currentLeft = 70 - (p * 20); // 70% -> 50%
+      currentLeft = 70 - (p * 20); 
       currentScale = 2.5; 
     } else {
-      // Последние 5 шагов (0.2) - раздувается
       let p = (progressPercent - 0.8) / 0.2;
       currentLeft = 50;
-      currentScale = 2.5 + (p * 2.5); // 250% -> 500%
+      currentScale = 2.5 + (p * 2.5); 
     }
   }
 
@@ -377,16 +378,23 @@ function updateNeptuneHUD() {
 
   const curEl = document.getElementById('n-planet-current');
   if (curEl) {
-    curEl.innerText = currentP.icon;
+    // УНИВЕРСАЛЬНЫЙ ВЫВОД: Если это картинка (.png), то тег <img>, иначе - текст (эмодзи)
+    if (currentP.icon.includes('.png')) {
+      curEl.innerHTML = `<img src="${currentP.icon}" style="width: 100%; height: 100%; object-fit: contain;">`;
+    } else {
+      curEl.innerText = currentP.icon;
+    }
+    
     curEl.style.left = `${currentLeft}%`;
     curEl.style.top = `${currentTop}%`;
     curEl.style.transform = `translate(-50%, -50%) scale(${currentScale})`;
     curEl.style.opacity = currentOpacity;
     
+    // Свечение для Аттрактора
     if (nPlanetIdx === neptunePlanets.length - 1) {
-      curEl.style.textShadow = '0 0 40px #a855f7, 0 0 80px #a855f7';
+      curEl.style.filter = 'drop-shadow(0 0 40px #a855f7) drop-shadow(0 0 80px #a855f7)';
     } else {
-      curEl.style.textShadow = 'none';
+      curEl.style.filter = 'none';
     }
   }
 
@@ -394,16 +402,22 @@ function updateNeptuneHUD() {
   if (nextEl) {
     if (nextP) {
       nextEl.style.display = 'block';
-      nextEl.innerText = nextP.icon;
+      
+      if (nextP.icon.includes('.png')) {
+        nextEl.innerHTML = `<img src="${nextP.icon}" style="width: 100%; height: 100%; object-fit: contain;">`;
+      } else {
+        nextEl.innerText = nextP.icon;
+      }
+
       nextEl.style.left = `${nextLeft}%`;
       nextEl.style.top = `${nextTop}%`;
       nextEl.style.transform = `translate(-50%, -50%) scale(${nextScale})`;
       nextEl.style.opacity = nextOpacity;
 
       if (nPlanetIdx + 1 === neptunePlanets.length - 1) {
-        nextEl.style.textShadow = '0 0 40px #a855f7, 0 0 80px #a855f7';
+        nextEl.style.filter = 'drop-shadow(0 0 40px #a855f7) drop-shadow(0 0 80px #a855f7)';
       } else {
-        nextEl.style.textShadow = 'none';
+        nextEl.style.filter = 'none';
       }
     } else {
       nextEl.style.display = 'none';
@@ -533,7 +547,6 @@ function answerNeptune(selectedOpt, btnElement) {
         nPlanetIdx++;
         nProgress = 0;
         
-        // Если перешли на Аттрактор, даем ему награду сразу
         if (neptunePlanets[nPlanetIdx].name === "Великий Аттрактор") {
             addStars(neptunePlanets[nPlanetIdx].reward, "Нептун");
             showToast(`🌑 Вы достигли Великого Аттрактора! Награда: +150 ⭐`, 'top');
