@@ -56,7 +56,9 @@
     <!-- ЭКРАН ВХОДА (АВТОРИЗАЦИЯ) -->
   <div id="auth-view" class="view" style="display: flex; align-items: center; justify-content: center;">
     <div class="quiz-menu">
-      <h2 style="text-align: center; color: var(--main-color); margin-top: 0;" id="auth-title">Кто играет?</h2>
+      <h2 style="text-align: center; color: var(--main-color); margin-top: 0;" id="auth-title">Кто играет?
+        <span onclick="location.href='load.html'" style="cursor: pointer; font-size: 18px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="Сохранить профиль">💾</span>
+      </h2>
       
       <!-- Список профилей -->
       <div id="profiles-list"></div>
@@ -85,7 +87,6 @@
       <div style="margin-top: 25px; text-align: center; width: 100%; display: flex; justify-content: center; align-items: center; gap: 15px;" id="auth-rules-link">
         <span style="opacity: 0.5">📚</span> 
         <a href="rules.html" target="_blank" style="color: var(--text-muted); font-size: 14px; text-decoration: none; border-bottom: 1px dashed var(--text-muted); padding-bottom: 2px; opacity: 0.5;">Правила игры</a>
-        <span onclick="location.href='load.html'" style="cursor: pointer; font-size: 16px; opacity: 0.6; transition: 0.2s; line-height: 1;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.1)'" onmouseout="this.style.opacity='0.6'; this.style.transform='scale(1)'" title="Загрузить профиль">📂</span>
       </div>
     </div>
   </div>
