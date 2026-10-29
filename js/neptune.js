@@ -87,7 +87,7 @@ const neptunePlanets = [
   { name: "Уран", rod: "Урана", icon: "img/planets/uranus.png", target: 25, reward: 15, distKm: 4500000000 },
   { name: "Нептун", rod: "Нептуна", icon: "img/planets/neptune.png", target: 28, reward: 20, distKm: 7500000000 },
   { name: "Пояс Койпера", rod: "Пояса Койпера", icon: "img/planets/kuiper-belt.png", target: 30, reward: 20, distKm: 15000000000000 },
-  { name: "Облако Оорта", rod: "Облака Оорта", icon: "🌌", target: 35, reward: 25, distKm: 40000000000000 },
+  { name: "Облако Оорта", rod: "Облака Оорта", icon: "img/planets/oort-cloud.png", target: 35, reward: 25, distKm: 40000000000000 },
   { name: "Альфа Центавра", rod: "Альфы Центавра", icon: "✨", target: 38, reward: 25, distKm: 81400000000000 },
   { name: "Сириус", rod: "Сириуса", icon: "⭐", target: 40, reward: 30, distKm: 236000000000000 },
   { name: "Вега", rod: "Веги", icon: "img/planets/vega.png", target: 42, reward: 30, distKm: 350000000000000 },
