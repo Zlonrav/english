@@ -20,11 +20,11 @@ neptuneStyle.innerHTML = `
     filter: drop-shadow(0 0 10px #3b82f6); 
   }
   
-  /* Планеты (теперь это контейнеры для картинок или эмодзи) */
+  /* Планеты */
   .n-planet {
     position: absolute; left: 70%; top: 50%;
     transform: translate(-50%, -50%) scale(1);
-    width: 120px; height: 120px; /* Задаем жесткий размер */
+    width: 120px; height: 120px; /* Жесткий размер для картинок */
     display: flex; justify-content: center; align-items: center;
     font-size: 120px; line-height: 1;
     z-index: 1;
@@ -331,11 +331,13 @@ function updateNeptuneHUD() {
 
   // --- СТАНДАРТНАЯ ЛОГИКА ДЛЯ ВСЕХ ПЛАНЕТ (кроме Аттрактора) ---
   if (nPlanetIdx < neptunePlanets.length - 1) {
+    // Текущая планета плавно улетает вниз и растворяется
     currentTop = 50 + (progressPercent * 100);
     currentScale = 2.5 - (progressPercent * 2.0);
     currentOpacity = Math.max(0, 1 - (progressPercent * 1.5));
     currentLeft = 70;
 
+    // Следующая планета плавно спускается сверху и встает в центр
     nextTop = -50 + (progressPercent * 100);
     nextScale = 0.5 + (progressPercent * 2.0);
     nextOpacity = Math.min(1, progressPercent * 1.5);
@@ -346,14 +348,16 @@ function updateNeptuneHUD() {
     currentTop = 50; 
     currentOpacity = 1;
     
+    // Первые 20 шагов (0.8) - едет в центр
     if (progressPercent <= 0.8) {
       let p = progressPercent / 0.8;
-      currentLeft = 70 - (p * 20); 
+      currentLeft = 70 - (p * 20); // 70% -> 50%
       currentScale = 2.5; 
     } else {
+      // Последние 5 шагов (0.2) - раздувается
       let p = (progressPercent - 0.8) / 0.2;
       currentLeft = 50;
-      currentScale = 2.5 + (p * 2.5); 
+      currentScale = 2.5 + (p * 2.5); // 250% -> 500%
     }
   }
 
@@ -390,7 +394,6 @@ function updateNeptuneHUD() {
     curEl.style.transform = `translate(-50%, -50%) scale(${currentScale})`;
     curEl.style.opacity = currentOpacity;
     
-    // Свечение для Аттрактора
     if (nPlanetIdx === neptunePlanets.length - 1) {
       curEl.style.filter = 'drop-shadow(0 0 40px #a855f7) drop-shadow(0 0 80px #a855f7)';
     } else {
