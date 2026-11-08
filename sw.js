@@ -1,4 +1,4 @@
-const CACHE_NAME = 'anglomania-v1'; // Меняй версию при обновлении файлов (v1 -> v2)
+const CACHE_NAME = 'anglomania-v2'; // Меняй версию при обновлении файлов (v1 -> v2)
 const urlsToCache = [
   './',
   './index.html',
