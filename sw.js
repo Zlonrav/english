@@ -6,7 +6,6 @@ const urlsToCache = [
   './css/styles.css',
   
   // Твои JS файлы
-  './data_british.js', // Важно! Судя по скриншоту, он лежит в корне
   './js/data.js',
   './js/tenses_data.js',
   './js/connect.js',
